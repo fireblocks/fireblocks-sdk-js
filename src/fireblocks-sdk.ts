@@ -5,7 +5,7 @@ import { VaultAccountResponse, CreateTransactionResponse, TransactionArguments, 
     ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse } from "./types";
 import queryString from "query-string";
 
-export class FireblocksApi {
+export class FireblocksSDK {
 
     private authProvider: IAuthProvider;
     private apiBaseUrl: string;
