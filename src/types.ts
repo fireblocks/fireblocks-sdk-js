@@ -10,6 +10,18 @@ export interface AssetResponse {
     lockedAmount?: string;
 }
 
+export interface WalletAssetResponse extends AssetResponse{
+    status: string;
+    address: string;
+    tag: string;
+}
+
+export interface WalletContainerResponse {
+    id: string;
+    name: string;
+    assets: WalletAssetResponse[]
+}
+
 export interface CreateTransactionResponse {
     id: string;
     status: string;
@@ -37,6 +49,60 @@ export interface ExchangeResponse {
     assets: AssetResponse[];
     isSubaccount: boolean;
     status: string;
+}
+
+export interface TransactionResponse {
+    id: string;
+    assetId: string;
+    source: {
+        id: string;
+        type: PeerType;
+        name?: string;
+    };
+    destination: {
+        id: string;
+        type: PeerType;
+        name?: string;
+    };
+    amount: number;
+    amountUSD: number;
+    netAmount: number;
+    createdAt: number;
+    lastUpdated: number;
+    status: string;
+    txHash: string;
+    numOfConfirmations?: number;
+    failureReason?: string;
+    signedBy: string[];
+    rejectedBy: string;
+    destinationAddress: string;
+    destinationTag: string;
+}
+
+export interface CancelTransactionResponse {
+    success: boolean;
+}
+
+export interface TransactionFilter {
+    before?: number;
+    after?: number;
+    status?: TransactionStatus;
+}
+
+export enum TransactionStatus {
+    SUBMITTED = "SUBMITTED",
+    PENDING_SIGNATURE= "PENDING_SIGNATURE",
+    PENDING_AUTHORIZATION = "PENDING_AUTHORIZATION",
+    PENDING = "PENDING",
+    BROADCASTING = "BROADCASTING",
+    CONFIRMING= "CONFIRMING",
+    CONFIRMED = "CONFIRMED",
+    CANCELLING = "CANCELLING",
+    CANCELLED = "CANCELLED",
+    REJECTED = "REJECTED",
+    FAILED = "FAILED",
+    TIMEOUT = "TIMEOUT",
+    BLOCKED = "BLOCKED"
 }
 
 export enum PeerType {
