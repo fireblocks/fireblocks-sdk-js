@@ -1,1 +1,1 @@
-# fireblocks-api
+# fireblocks-sdk-js
