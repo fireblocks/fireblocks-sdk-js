@@ -5,11 +5,7 @@ import crypto from "crypto";
 
 export class ApiTokenProvider implements IAuthProvider {
 
-    private privateKey: any;
-
-    constructor(privateKeyFilePath: string, private apiKey: string) {
-        this.privateKey = fs.readFileSync(privateKeyFilePath, "utf8");
-    }
+    constructor(private privateKey: string, private apiKey: string) { }
 
     signJwt(path: string, bodyJson?: any): string {
         const token =  jwt.sign({

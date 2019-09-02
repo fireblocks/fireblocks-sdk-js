@@ -30,6 +30,15 @@ export interface TransactionArguments {
     fee?: number;
 }
 
+export interface ExchangeResponse {
+    id: string;
+    type: string;
+    name: string;
+    assets: AssetResponse[];
+    isSubaccount: boolean;
+    status: string;
+}
+
 export enum PeerType {
     VAULT_ACCOUNT = "VAULT_ACCOUNT",
     EXCHANGE_ACCOUNT = "EXCHANGE_ACCOUNT",
