@@ -1,7 +1,7 @@
 import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
-import { VaultAccountResponse, TransactionOperation, CreateTransactionResponse, TransactionArguments, AssetResponse,
+import { VaultAccountResponse, CreateTransactionResponse, TransactionArguments, AssetResponse,
     ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse } from "./types";
 import queryString from "query-string";
 
@@ -63,7 +63,23 @@ export class FireblocksApi {
         return this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
     }
 
-    public async createTransaction(args: TransactionArguments): Promise<CreateTransactionResponse> {
-        return this.apiClient.issuePostRequest("/v1/transactions", args);
+    public async createExternalWallet(name: string): Promise<WalletContainerResponse> {
+        const body = {
+            name: name
+        };
+
+        return this.apiClient.issuePostRequest("/v1/external_wallets", body);
+    }
+
+    public async createInternalWallet(name: string): Promise<WalletContainerResponse> {
+        const body = {
+            name: name
+        };
+
+        return this.apiClient.issuePostRequest("/v1/internal_wallets", body);
+    }
+
+    public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
+        return this.apiClient.issuePostRequest("/v1/transactions", options);
     }
 }

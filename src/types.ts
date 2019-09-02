@@ -10,7 +10,7 @@ export interface AssetResponse {
     lockedAmount?: string;
 }
 
-export interface WalletAssetResponse extends AssetResponse{
+export interface WalletAssetResponse extends AssetResponse {
     status: string;
     address: string;
     tag: string;
@@ -19,7 +19,7 @@ export interface WalletAssetResponse extends AssetResponse{
 export interface WalletContainerResponse {
     id: string;
     name: string;
-    assets: WalletAssetResponse[]
+    assets: WalletAssetResponse[];
 }
 
 export interface CreateTransactionResponse {
