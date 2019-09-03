@@ -77,7 +77,7 @@ export interface TransactionResponse {
     netAmount: number;
     createdAt: number;
     lastUpdated: number;
-    status: string;
+    status: TransactionStatus;
     txHash: string;
     numOfConfirmations?: number;
     failureReason?: string;
