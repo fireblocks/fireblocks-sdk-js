@@ -15,3 +15,16 @@ Make sure you have the credentials for Fireblocks API Services. Otherwise, pleas
 `npm install fireblocks-sdk --save`
 or
 `yarn add fireblocks-sdk`
+
+### Importing Fireblocks SDK
+JavaScript:
+```
+const FireblocksSDK = require("fireblocks-sdk").FireblocksSDK;
+const sdkClient = new FireblocksSDK(privateKey, apiKey);
+```
+
+TypeScript:
+```
+import { FireblocksSDK } from "fireblocks-sdk";
+const sdkClient = new FireblocksSDK(privateKey, apiKey);
+```
