@@ -1,12 +1,17 @@
 {
   "name": "fireblocks-api",
   "version": "1.0.0",
-  "main": "fireblocks-api.js",
+  "main": "dist/fireblocks-sdk.js",
+  "types": "dist/types.d.ts",
   "scripts": {
     "build": "tsc && npm run tslint",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "prepare" : "npm run build",
     "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fireblocks/fireblocks-sdk-js.git"
   },
   "license": "MIT",
   "dependencies": {
