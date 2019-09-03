@@ -6,11 +6,25 @@ For the complete API reference, go to [API reference](https://api.fireblocks.io/
 
 ## Usage
 ### Before You Begin
-Request Fireblocks for instructions API Credentials.
+Make sure you have the credentials for Fireblocks API Services. Otherwise, please contact Fireblocks support for further instructions on how to obtain your API credentials.
 
 ### Requirements
 - [node.js](https://nodejs.org) v6.3.1 or newer
-- [`yarn`](https://yarnpkg.com/en/docs/install)
 
 ### Installation
-`npm install fireblocks-sdk`
+`npm install fireblocks-sdk --save`
+or
+`yarn add fireblocks-sdk`
+
+### Importing Fireblocks SDK
+JavaScript:
+```
+const FireblocksSDK = require("fireblocks-sdk").FireblocksSDK;
+const sdkClient = new FireblocksSDK(privateKey, apiKey);
+```
+
+TypeScript:
+```
+import { FireblocksSDK } from "fireblocks-sdk";
+const sdkClient = new FireblocksSDK(privateKey, apiKey);
+```
