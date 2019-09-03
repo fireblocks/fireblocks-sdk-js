@@ -4,7 +4,9 @@
   "main": "fireblocks-api.js",
   "scripts": {
     "build": "tsc && npm run tslint",
-    "tslint": "tslint -c tslint.json -p tsconfig.json"
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "prepare" : "npm run build",
+    "postversion": "git push && git push --tags"
   },
   "license": "MIT",
   "dependencies": {
