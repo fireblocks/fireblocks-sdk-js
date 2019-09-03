@@ -32,6 +32,14 @@ export interface TransferPeerPath {
     id: string;
 }
 
+export interface DepositAddressResponse {
+    assetId: string;
+    address: string;
+    tag?: string;
+    description?: string;
+    type: string;
+}
+
 export interface TransactionArguments {
     assetId: string;
     source: TransferPeerPath;

@@ -2,7 +2,7 @@ import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
 import { VaultAccountResponse, CreateTransactionResponse, TransactionArguments, AssetResponse,
-    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse } from "./types";
+    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse } from "./types";
 import queryString from "query-string";
 
 export class FireblocksSDK {
@@ -32,6 +32,27 @@ export class FireblocksSDK {
      */
     public async getVaultAccounts(): Promise<VaultAccountResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/vault/accounts");
+    }
+
+    /**
+     * Gets a single vault account.
+     */
+    public async getVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}`);
+    }
+
+    /**
+     * Gets a single vault account asset.
+     */
+    public async getVaultAccountAsset(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`);
+    }
+
+    /**
+     * Gets deposit addresses for an asset in a vault account.
+     */
+    public async getDepositAddresses(vaultAccountId: string, assetId: string): Promise<DepositAddressResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`);
     }
 
     /**
