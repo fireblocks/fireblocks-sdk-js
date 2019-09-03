@@ -1,5 +1,5 @@
 {
-  "name": "fireblocks-api",
+  "name": "fireblocks-sdk-js",
   "version": "1.0.0",
   "main": "dist/fireblocks-sdk.js",
   "types": "dist/types.d.ts",
