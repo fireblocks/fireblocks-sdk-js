@@ -111,7 +111,7 @@ export class FireblocksSDK {
             name: name
         };
 
-        return this.apiClient.issuePostRequest("/v1/vault/accounts", body);
+        return await this.apiClient.issuePostRequest("/v1/vault/accounts", body);
     }
 
     /**
@@ -120,7 +120,7 @@ export class FireblocksSDK {
      * @param assetId The asset to add.
      */
     public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
-        return this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
     }
 
     public async createExternalWallet(name: string): Promise<WalletContainerResponse> {
@@ -128,7 +128,7 @@ export class FireblocksSDK {
             name: name
         };
 
-        return this.apiClient.issuePostRequest("/v1/external_wallets", body);
+        return await this.apiClient.issuePostRequest("/v1/external_wallets", body);
     }
 
     /**
@@ -140,7 +140,7 @@ export class FireblocksSDK {
             name: name
         };
 
-        return this.apiClient.issuePostRequest("/v1/internal_wallets", body);
+        return await this.apiClient.issuePostRequest("/v1/internal_wallets", body);
     }
 
     /**
@@ -157,7 +157,7 @@ export class FireblocksSDK {
             address: address,
             tag: tag
         };
-        return this.apiClient.issuePostRequest(path, body);
+        return await this.apiClient.issuePostRequest(path, body);
     }
 
     /**
@@ -174,13 +174,13 @@ export class FireblocksSDK {
             address: address,
             tag: tag
         };
-        return this.apiClient.issuePostRequest(path, body);
+        return await this.apiClient.issuePostRequest(path, body);
     }
 
     /**
      * Creates a new transaction with the specified options.
      */
     public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
-        return this.apiClient.issuePostRequest("/v1/transactions", options);
+        return await this.apiClient.issuePostRequest("/v1/transactions", options);
     }
 }
