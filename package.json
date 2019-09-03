@@ -1,12 +1,12 @@
 {
   "name": "fireblocks-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/fireblocks-sdk.js",
   "types": "dist/fireblocks-sdk.d.ts",
   "scripts": {
     "build": "tsc && npm run tslint",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "prepare" : "npm run build",
+    "prepare": "npm run build",
     "postversion": "git push && git push --tags"
   },
   "repository": {
