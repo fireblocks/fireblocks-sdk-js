@@ -10,7 +10,8 @@ Request Fireblocks for instructions API Credentials.
 
 ### Requirements
 - [node.js](https://nodejs.org) v6.3.1 or newer
-- [`yarn`](https://yarnpkg.com/en/docs/install)
 
 ### Installation
-`npm install fireblocks-sdk`
+`npm install fireblocks-sdk --save`
+or
+`yarn add fireblocks-sdk`
