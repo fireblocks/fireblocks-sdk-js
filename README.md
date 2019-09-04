@@ -20,11 +20,12 @@ or
 JavaScript:
 ```
 const FireblocksSDK = require("fireblocks-sdk").FireblocksSDK;
-const sdkClient = new FireblocksSDK(privateKey, apiKey);
+const fireblocks = new FireblocksSDK(privateKey, apiKey);
 ```
 
 TypeScript:
 ```
 import { FireblocksSDK } from "fireblocks-sdk";
-const sdkClient = new FireblocksSDK(privateKey, apiKey);
+const fireblocks = new FireblocksSDK(privateKey, apiKey);
 ```
+
