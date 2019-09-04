@@ -48,6 +48,7 @@ export interface TransactionArguments {
     operation?: TransactionOperation;
     waitForStatus?: boolean;
     fee?: number;
+    gasPrice?: number;
 }
 
 export interface ExchangeResponse {
