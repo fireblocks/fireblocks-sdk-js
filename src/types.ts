@@ -44,11 +44,11 @@ export interface TransactionArguments {
     assetId: string;
     source: TransferPeerPath;
     destination?: TransferPeerPath;
-    amount: number;
+    amount: number | string;
     operation?: TransactionOperation;
     waitForStatus?: boolean;
-    fee?: number;
-    gasPrice?: number;
+    fee?: number | string;
+    gasPrice?: number | string;
 }
 
 export interface ExchangeResponse {

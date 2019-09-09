@@ -34,23 +34,28 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest("/v1/vault/accounts");
     }
 
-    /**
-     * Gets a single vault account.
-     */
+     /**
+      * Gets a single vault account.
+      * @param vaultAccountId The vault account ID.
+      */
     public async getVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}`);
     }
 
-    /**
-     * Gets a single vault account asset.
-     */
+     /**
+      * Gets a single vault account asset.
+      * @param vaultAccountId The vault account ID.
+      * @param assetId The ID of the asset to get.
+      */
     public async getVaultAccountAsset(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`);
     }
 
-    /**
-     * Gets deposit addresses for an asset in a vault account.
-     */
+     /**
+      * Gets deposit addresses for an asset in a vault account.
+      * @param vaultAccountId The vault account ID.
+      * @param assetId The ID of the asset for which to get the deposit address.
+      */
     public async getDepositAddresses(vaultAccountId: string, assetId: string): Promise<DepositAddressResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`);
     }
@@ -60,6 +65,14 @@ export class FireblocksSDK {
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/exchange_accounts");
+    }
+
+    /**
+     * Gets a single exchange account by ID.
+     * @param exchangeAccountId The exchange account ID.
+     */
+    public async getExchangeAccount(exchangeAccountId: string): Promise<ExchangeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}`);
     }
 
     /**
@@ -80,10 +93,44 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets a single internal wallet.
+     * @param walletId The internal wallet ID.
+     */
+    public async getInternalWallet(walletId: string): Promise<WalletContainerResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/internal_wallets/${walletId}`);
+    }
+
+    /**
+     * Gets a single internal wallet asset.
+     * @param walletId The internal wallet ID.
+     * @param assetId The asset ID.
+     */
+    public async getInternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/internal_wallets/${walletId}/${assetId}`);
+    }
+
+    /**
      * Gets all external wallets for your tenant.
      */
-    public async getexternalWallets(): Promise<WalletContainerResponse[]> {
+    public async getExternalWallets(): Promise<WalletContainerResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/external_wallets");
+    }
+
+    /**
+     * Gets a single external wallet.
+     * @param walletId The external wallet ID.
+     */
+    public async getExternalWallet(walletId: string): Promise<WalletContainerResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/external_wallets/${walletId}`);
+    }
+
+    /**
+     * Gets a single external wallet asset.
+     * @param walletId The external wallet ID.
+     * @param assetId The asset ID.
+     */
+    public async getExternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/external_wallets/${walletId}/${assetId}`);
     }
 
     /**
@@ -116,7 +163,7 @@ export class FireblocksSDK {
 
     /**
      * Creates a new asset within an existing vault account.
-     * @param vaultAccountId The vault account Id.
+     * @param vaultAccountId The vault account ID.
      * @param assetId The asset to add.
      */
     public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
