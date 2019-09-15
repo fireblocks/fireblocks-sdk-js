@@ -48,9 +48,9 @@ const fireblocks = new FireblocksSDK(privateKey, apiKey);
 
 Parameters:
 
-- status: Only retrieves transactions with the specified status.
-- before: Only gets transactions created before a given timestamp (in seconds).
-- after: Only gets transactions created after a given timestamp (in seconds).
+- `status:` Only retrieves transactions with the specified status.
+- `before:` Only gets transactions created before a given timestamp (in seconds).
+- `after:` Only gets transactions created after a given timestamp (in seconds).
 
 ```ts
 const transactions = await fireblocks.getTransactions({ status: "FAILED" });
@@ -85,9 +85,9 @@ const transactions = await fireblocks.getTransactions({ status: "FAILED" });
 
 #### Get Transaction By Id
 
-Parameter:
+Parameters:
 
-- id: the transaction ID
+- `id:` the transaction ID
 
 ```ts
 const txId = "66ce3e76-2c9c-4921-b94b-b417db0ee6cc";
@@ -123,27 +123,27 @@ const transactionById = fireblocks.getTransactionById(txId);
 
 Parameters:
 
-- assetId
-- source
-  - type
-  - id
-- destination
-  - type
-  - id
-- amount
-- fee
-- note
+- `assetId`
+- `source`
+  - `type`
+  - `id`
+- `destination`
+  - `type`
+  - `id`
+- `amount`
+- `fee`
+- `note`
 
 ```ts
 const payload: TransactionArguments = {
   assetId: "BTC",
   source: {
     type: "VAULT_ACCOUNT",
-    id: "S0m3Id"
+    id: "0"
   },
   destination: {
     type: "EXCHANGE_ACCOUNT",
-    id: "3xch4ng3"
+    id: "03d6d5af-5241-5673-acfa-4674187e3d1c"
   },
   amount: 2,
   fee: -1,
@@ -156,9 +156,9 @@ const result = await fireblocks.createTransaction(payload);
 
 #### Cancel transaction
 
-Parameter:
+Parameters:
 
-- id: ID of the transaction to cancel
+- `id:` ID of the transaction to cancel
 
 ```ts
 const result = await fireblocks.cancelTransactionById("some-tx-id");
@@ -190,7 +190,7 @@ const result = await fireblocks.getVaultAccounts();
 
 Parameter:
 
-- id: ID of the vault account to retrieve
+- `id`: ID of the vault account to retrieve
 
 ```ts
 const result = await fireblocks.getVaultAccount("0");
@@ -200,8 +200,8 @@ const result = await fireblocks.getVaultAccount("0");
 
 Parameters:
 
-- id: ID of the vault account
-- asset: ID of the asset
+- `id`: ID of the vault account
+- `asset`: ID of the asset
 
 ```ts
 const result = await fireblocks.getVaultAccountAsset("0", "BTC");
@@ -216,7 +216,7 @@ const result = await fireblocks.getVaultAccountAsset("0", "BTC");
 
 Parameter:
 
-- name: Name of the vault account to create
+- `name`: Name of the vault account to create
 
 ```ts
 const result = await fireblocks.createVaultAccount("My New Vault");
@@ -229,10 +229,10 @@ const result = await fireblocks.createVaultAccount("My New Vault");
 
 #### Update Vault Account
 
-Parameter:
+Parameters:
 
-- id: ID of the vault account to update
-- name: New name for the vault account
+- `id`: ID of the vault account to update
+- `name`: New name for the vault account
 
 ```ts
 const result = await fireblocks.updateVaultAccount("1", "Updated Name");
@@ -248,8 +248,8 @@ Creates a new asset within an existing vault account.
 
 Parameters:
 
-- id: ID of the vault account
-- assetId: Asset to create to the chosen vault account
+- `id`: ID of the vault account
+- `assetId`: Asset to create to the chosen vault account
 
 ```ts
 const result = await fireblocks.createVaultAsset(id, assetId);
@@ -299,7 +299,7 @@ In addition to your Vault Accounts, Fireblocks blocks allows you to add internal
 
 Parameter:
 
-- name: name of the wallet
+- `name`: name of the wallet
 
 ```ts
 const result = await fireblocks.createInternalWallet("Internal wallet");
@@ -308,12 +308,12 @@ const result = await fireblocks.createInternalWallet("Internal wallet");
 
 #### Create Internal Wallet Asset
 
-Parameter:
+Parameters:
 
-- containerId: ID of the internal wallet to create the asset to
-- assetId: asset type
-- address: Address of the wallet to add
-- tag
+- `containerId`: ID of the internal wallet to create the asset to
+- `assetId`: asset type
+- `address`: Address of the wallet to add
+- `tag`
 
 ```ts
 const result = await fireblocks.createInternalWalletAsset(
@@ -334,7 +334,7 @@ const result = await fireblocks.getInternalWallets();
 
 Parameter:
 
-- name: name of the wallet
+- `name`: name of the wallet
 
 ```ts
 const result = await fireblocks.createExternalWallet("External wallet");
@@ -343,12 +343,12 @@ const result = await fireblocks.createExternalWallet("External wallet");
 
 #### Create External Wallet Asset
 
-Parameter:
+Parameters:
 
-- containerId: ID of the external wallet to create the asset to
-- assetId: asset type
-- address: Address of the wallet to add
-- tag
+- `containerId`: ID of the external wallet to create the asset to
+- `assetId`: asset type
+- `address`: Address of the wallet to add
+- `tag`
 
 ```ts
 const result = await fireblocks.createExternalWalletAsset(
@@ -395,8 +395,8 @@ Gets deposit addresses for an asset in a vault account.
 
 Parameters:
 
-- id: vault account ID
-- assetId: asset to get deposit addresses to
+- `id`: vault account ID
+- `assetId`: asset to get deposit addresses to
 
 ```ts
 const result = await fireblocks.getDepositAddresses(id, assetId);
