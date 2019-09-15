@@ -48,9 +48,9 @@ const fireblocks = new FireblocksSDK(privateKey, apiKey);
 
 Parameters:
 
-- `status:` Only retrieves transactions with the specified status.
-- `before:` Only gets transactions created before a given timestamp (in seconds).
-- `after:` Only gets transactions created after a given timestamp (in seconds).
+- `status`: Only retrieves transactions with the specified status.
+- `before`: Only gets transactions created before a given timestamp (in seconds).
+- `after`: Only gets transactions created after a given timestamp (in seconds).
 
 ```ts
 const transactions = await fireblocks.getTransactions({ status: "FAILED" });
@@ -87,7 +87,7 @@ const transactions = await fireblocks.getTransactions({ status: "FAILED" });
 
 Parameters:
 
-- `id:` the transaction ID
+- `id`: the transaction ID
 
 ```ts
 const txId = "66ce3e76-2c9c-4921-b94b-b417db0ee6cc";
@@ -158,7 +158,7 @@ const result = await fireblocks.createTransaction(payload);
 
 Parameters:
 
-- `id:` ID of the transaction to cancel
+- `id`: ID of the transaction to cancel
 
 ```ts
 const result = await fireblocks.cancelTransactionById("some-tx-id");
