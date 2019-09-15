@@ -32,6 +32,17 @@ export interface TransferPeerPath {
     id: string;
 }
 
+interface DestinationTransferPeerPath {
+    type: PeerType;
+    id: string;
+    oneTimeAddress?: IOneTimeAddress;
+}
+
+interface IOneTimeAddress {
+    address: string;
+    tag: string;
+}
+
 export interface DepositAddressResponse {
     assetId: string;
     address: string;
@@ -43,12 +54,13 @@ export interface DepositAddressResponse {
 export interface TransactionArguments {
     assetId: string;
     source: TransferPeerPath;
-    destination?: TransferPeerPath;
+    destination?: DestinationTransferPeerPath;
     amount: number | string;
     operation?: TransactionOperation;
     waitForStatus?: boolean;
     fee?: number | string;
     gasPrice?: number | string;
+    note: string;
 }
 
 export interface ExchangeResponse {
@@ -74,6 +86,7 @@ export interface TransactionResponse {
         name?: string;
     };
     amount: number;
+    fee: number;
     amountUSD: number;
     netAmount: number;
     createdAt: number;
@@ -83,9 +96,11 @@ export interface TransactionResponse {
     numOfConfirmations?: number;
     failureReason?: string;
     signedBy: string[];
+    createdBy: string;
     rejectedBy: string;
     destinationAddress: string;
     destinationTag: string;
+    addressType: string;
 }
 
 export interface CancelTransactionResponse {

@@ -28,6 +28,13 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets all assets that are currently supported by Fireblocks.
+     */
+    public async getSupportedAssets(): Promise<VaultAccountResponse[]> {
+        return await this.apiClient.issueGetRequest("/v1/supported_assets");
+    }
+
+    /**
      * Gets all vault accounts for your tenant.
      */
     public async getVaultAccounts(): Promise<VaultAccountResponse[]> {
@@ -159,6 +166,18 @@ export class FireblocksSDK {
         };
 
         return await this.apiClient.issuePostRequest("/v1/vault/accounts", body);
+    }
+
+    /**
+     * Updates a vault account.
+     * @param name A new name for the vault account.
+     */
+    public async updateVaultAccount(vaultAccountId: string, name: string): Promise<VaultAccountResponse> {
+        const body = {
+            name: name
+        };
+
+        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}`, body);
     }
 
     /**

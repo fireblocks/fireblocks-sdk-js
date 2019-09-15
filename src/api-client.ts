@@ -31,4 +31,18 @@ export class ApiClient {
         });
     }
 
+    public async issuePutRequest(path: string, body: any) {
+        const token = this.authProvider.signJwt(path, body);
+
+        return await requestPromise.put({
+            uri: this.apiBaseUrl + path,
+            headers: {
+                "X-API-Key": this.authProvider.getApiKey(),
+                "Authorization": `Bearer ${token}`
+            },
+            body: body,
+            json: true
+        });
+    }
+
 }
