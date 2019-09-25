@@ -50,6 +50,10 @@ export interface DepositAddressResponse {
     description?: string;
     type: string;
 }
+export interface GenerateAddressResponse {
+    address: string;
+    tag?: string;
+}
 
 export interface TransactionArguments {
     assetId: string;
@@ -104,6 +108,10 @@ export interface TransactionResponse {
 }
 
 export interface CancelTransactionResponse {
+    success: boolean;
+}
+
+export interface OperationSuccessResponse {
     success: boolean;
 }
 
