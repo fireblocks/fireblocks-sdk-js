@@ -2,7 +2,7 @@ import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
 import { VaultAccountResponse, CreateTransactionResponse, TransactionArguments, AssetResponse,
-    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse } from "./types";
+    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse, GenerateAddressResponse, OperationSuccessResponse } from "./types";
 import queryString from "query-string";
 
 export class FireblocksSDK {
@@ -41,30 +41,39 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest("/v1/vault/accounts");
     }
 
-     /**
-      * Gets a single vault account.
-      * @param vaultAccountId The vault account ID.
-      */
+    /**
+     * Gets a single vault account.
+     * @param vaultAccountId The vault account ID.
+     */
     public async getVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}`);
     }
 
-     /**
-      * Gets a single vault account asset.
-      * @param vaultAccountId The vault account ID.
-      * @param assetId The ID of the asset to get.
-      */
+    /**
+     * Gets a single vault account asset.
+     * @param vaultAccountId The vault account ID.
+     * @param assetId The ID of the asset to get.
+     */
     public async getVaultAccountAsset(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`);
     }
 
-     /**
-      * Gets deposit addresses for an asset in a vault account.
-      * @param vaultAccountId The vault account ID.
-      * @param assetId The ID of the asset for which to get the deposit address.
-      */
+    /**
+     * Gets deposit addresses for an asset in a vault account.
+     * @param vaultAccountId The vault account ID.
+     * @param assetId The ID of the asset for which to get the deposit address.
+     */
     public async getDepositAddresses(vaultAccountId: string, assetId: string): Promise<DepositAddressResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`);
+    }
+
+    /**
+     * Generates a new address for an asset in a vault account.
+     * @param vaultAccountId The vault account ID.
+     * @param assetId The ID of the asset for which to get the deposit address.
+     */
+    public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string): Promise<GenerateAddressResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, { description });
     }
 
     /**
@@ -80,6 +89,38 @@ export class FireblocksSDK {
      */
     public async getExchangeAccount(exchangeAccountId: string): Promise<ExchangeResponse> {
         return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}`);
+    }
+
+    /**
+     * Transfer from a main exchange account to a subaccount.
+     * @param exchangeAccountId The exchange ID in Fireblocks.
+     * @param subaccountId The ID of the subaccount in the exchange.
+     * @param assetId The asset to transfer.
+     * @param amount The amount to transfer.
+     */
+    public async transferToSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number): Promise<OperationSuccessResponse> {
+        const body = {
+            subaccountId,
+            amount
+        };
+
+        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_to_subaccount`, body);
+    }
+
+    /**
+     * Transfer from a subaccount to a main exchange account.
+     * @param exchangeAccountId The exchange ID in Fireblocks.
+     * @param subaccountId The ID of the subaccount in the exchange.
+     * @param assetId The asset to transfer.
+     * @param amount The amount to transfer.
+     */
+    public async transferFromSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number): Promise<OperationSuccessResponse> {
+        const body = {
+            subaccountId,
+            amount
+        };
+
+        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_from_subaccount`, body);
     }
 
     /**
