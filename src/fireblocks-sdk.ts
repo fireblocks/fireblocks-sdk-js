@@ -302,4 +302,39 @@ export class FireblocksSDK {
     public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
         return await this.apiClient.issuePostRequest("/v1/transactions", options);
     }
+
+
+    /**
+     * Deletes a single internal wallet
+     * @param walletId The internal wallet ID
+     */
+    public async deleteInternalWallet(walletId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/internal_wallets/${walletId}`);
+    }
+
+    /**
+     * Deletes a single internal wallet asset
+     * @param walletId The internal wallet ID
+     * @param assetId The asset ID
+     */
+    public async deleteInternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/internal_wallets/${walletId}/${assetId}`);
+    }
+
+    /**
+     * Deletes a single external wallet
+     * @param walletId The external wallet ID
+     */
+    public async deleteExternalWallet(walletId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/external_wallets/${walletId}`);
+    }
+
+    /**
+     * Deletes a single external wallet asset
+     * @param walletId The external wallet ID
+     * @param assetId The asset ID
+     */
+    public async deleteExternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/external_wallets/${walletId}/${assetId}`);
+    }
 }

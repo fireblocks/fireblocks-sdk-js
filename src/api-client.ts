@@ -45,4 +45,16 @@ export class ApiClient {
         });
     }
 
+    public async issueDeleteRequest(path: string) {
+        const token = this.authProvider.signJwt(path);
+
+        return await requestPromise.delete({
+            uri: this.apiBaseUrl + path,
+            headers: {
+                "X-API-Key": this.authProvider.getApiKey(),
+                "Authorization": `Bearer ${token}`
+            },
+            json: true
+        });
+    }
 }
