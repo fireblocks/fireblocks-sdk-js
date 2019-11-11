@@ -62,8 +62,8 @@ export interface TransactionArguments {
     amount: number | string;
     operation?: TransactionOperation;
     waitForStatus?: boolean;
-    fee?: number | string;
-    gasPrice?: number | string;
+    fee?: number;
+    gasPrice?: number;
     note: string;
 }
 
@@ -83,11 +83,13 @@ export interface TransactionResponse {
         id: string;
         type: PeerType;
         name?: string;
+        subType?: string;
     };
     destination: {
         id: string;
         type: PeerType;
         name?: string;
+        subType?: string;
     };
     amount: number;
     fee: number;
@@ -103,8 +105,13 @@ export interface TransactionResponse {
     createdBy: string;
     rejectedBy: string;
     destinationAddress: string;
+    destinationAddressDescription?: string;
     destinationTag: string;
     addressType: string;
+    note: string;
+    exchangeTxId: string;
+    requestedAmount: number;
+    serviceFee?: number;
 }
 
 export interface CancelTransactionResponse {
