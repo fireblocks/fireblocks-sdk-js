@@ -1,6 +1,5 @@
 import { IAuthProvider } from "./iauth-provider";
 import jwt from "jsonwebtoken";
-import fs from "fs";
 import crypto from "crypto";
 
 export class ApiTokenProvider implements IAuthProvider {

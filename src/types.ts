@@ -10,6 +10,11 @@ export interface AssetResponse {
     lockedAmount?: string;
 }
 
+export interface CreateVaultAssetResponse {
+    id: string;
+    eosAccountName?: string;
+}
+
 export interface WalletAssetResponse extends AssetResponse {
     status: string;
     address: string;
@@ -40,7 +45,7 @@ interface DestinationTransferPeerPath {
 
 interface IOneTimeAddress {
     address: string;
-    tag: string;
+    tag?: string;
 }
 
 export interface DepositAddressResponse {
@@ -65,6 +70,9 @@ export interface TransactionArguments {
     fee?: number;
     gasPrice?: number;
     note: string;
+    cpuStaking?: number;
+    networkStaking?: number;
+    autoStaking?: boolean;
 }
 
 export interface ExchangeResponse {
@@ -122,6 +130,18 @@ export interface OperationSuccessResponse {
     success: boolean;
 }
 
+export interface NetworkConnectionResponse {
+    id: string;
+    localChannel: {
+        networkId: string;
+        name: string
+    };
+    remoteChannel: {
+        networkId: string;
+        name: string
+    };
+}
+
 export interface TransactionFilter {
     before?: number;
     after?: number;
@@ -149,7 +169,8 @@ export enum PeerType {
     EXCHANGE_ACCOUNT = "EXCHANGE_ACCOUNT",
     INTERNAL_WALLET = "INTERNAL_WALLET",
     EXTERNAL_WALLET = "EXTERNAL_WALLET",
-    UNKNOWN = "UNKNOWN"
+    UNKNOWN = "UNKNOWN",
+    NETWORK_CONNECTION = "NETWORK_CONNECTION"
 }
 
 export enum TransactionOperation {

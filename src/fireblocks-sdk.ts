@@ -2,7 +2,8 @@ import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
 import { VaultAccountResponse, CreateTransactionResponse, TransactionArguments, AssetResponse,
-    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse, GenerateAddressResponse, OperationSuccessResponse } from "./types";
+    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse, GenerateAddressResponse, OperationSuccessResponse, NetworkConnectionResponse } from "./types";
+export * from "./types";
 import queryString from "query-string";
 
 export class FireblocksSDK {
@@ -65,6 +66,20 @@ export class FireblocksSDK {
      */
     public async getDepositAddresses(vaultAccountId: string, assetId: string): Promise<DepositAddressResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`);
+    }
+
+    /**
+     * Gets all network connections
+     */
+    public async getNetworkConnections(): Promise<NetworkConnectionResponse[]> {
+        return await this.apiClient.issueGetRequest("/v1/network_connections");
+    }
+
+    /**
+     * Gets a single network connection by id
+     */
+    public async getNetworkConnectionById(connectionId: string): Promise<NetworkConnectionResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}`);
     }
 
     /**
