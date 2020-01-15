@@ -2,7 +2,7 @@ import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
 import { VaultAccountResponse, CreateTransactionResponse, TransactionArguments, AssetResponse,
-    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse, GenerateAddressResponse, OperationSuccessResponse, NetworkConnectionResponse } from "./types";
+    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse, GenerateAddressResponse, OperationSuccessResponse, NetworkConnectionResponse, FiatAccountResponse } from "./types";
 export * from "./types";
 import queryString from "query-string";
 
@@ -148,6 +148,47 @@ export class FireblocksSDK {
         };
 
         return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_from_subaccount`, body);
+    }
+
+    /**
+     * Gets all fiat accounts for your tenant
+     */
+    public async getFiatAccounts(): Promise<FiatAccountResponse[]> {
+        return await this.apiClient.issueGetRequest("/v1/fiat_accounts");
+    }
+
+    /**
+     * Gets a single fiat account by ID
+     * @param exchangeAccountId The exchange account ID
+     */
+    public async getFiatAccountById(accountId: string): Promise<FiatAccountResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/fiat_accounts/${accountId}`);
+    }
+
+    /**
+     * Redeem from a fiat account to a linked DDA
+     * @param accountId The fiat account ID in Fireblocks
+     * @param amount The amount to transfer
+     */
+    public async redeemToLinkedDDA(accountId: string, amount: number): Promise<OperationSuccessResponse> {
+        const body = {
+            amount
+        };
+
+        return await this.apiClient.issuePostRequest(`/v1/fiat_accounts/${accountId}/redeem_to_linked_dda`, body);
+    }
+
+    /**
+     * Deposit to a fiat account from a linked DDA
+     * @param accountId The fiat account ID in Fireblocks
+     * @param amount The amount to transfer
+     */
+    public async depositFromLinkedDDA(accountId: string, amount: number): Promise<OperationSuccessResponse> {
+        const body = {
+            amount
+        };
+
+        return await this.apiClient.issuePostRequest(`/v1/fiat_accounts/${accountId}/deposit_from_linked_dda`, body);
     }
 
     /**

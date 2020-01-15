@@ -6,8 +6,19 @@ export interface VaultAccountResponse {
 
 export interface AssetResponse {
     id: string;
+    total: string;
+    /**
+     * @deprecated - replaced by "total"
+     */
     balance?: string;
     lockedAmount?: string;
+    available: string;
+    selfStakedCPU?: string;
+    selfStakedNetwork?: string;
+    pendingRefundCPU?: string;
+    pendingRefundNetwork?: string;
+    totalStakedCPU?: string;
+    totalStakedNetwork?: string;
 }
 
 export interface CreateVaultAssetResponse {
@@ -84,6 +95,14 @@ export interface ExchangeResponse {
     status: string;
 }
 
+export interface FiatAccountResponse {
+    id: string;
+    type: string;
+    name: string;
+    address?: string;
+    assets: AssetResponse[];
+}
+
 export interface TransactionResponse {
     id: string;
     assetId: string;
@@ -100,7 +119,11 @@ export interface TransactionResponse {
         subType?: string;
     };
     amount: number;
-    fee: number;
+    /**
+     * @deprecated - replaced by "networkFee"
+     */
+    fee?: number;
+    networkFee: number;
     amountUSD: number;
     netAmount: number;
     createdAt: number;
@@ -120,6 +143,7 @@ export interface TransactionResponse {
     exchangeTxId: string;
     requestedAmount: number;
     serviceFee?: number;
+    feeCurrency: string;
 }
 
 export interface CancelTransactionResponse {
@@ -170,7 +194,8 @@ export enum PeerType {
     INTERNAL_WALLET = "INTERNAL_WALLET",
     EXTERNAL_WALLET = "EXTERNAL_WALLET",
     UNKNOWN = "UNKNOWN",
-    NETWORK_CONNECTION = "NETWORK_CONNECTION"
+    NETWORK_CONNECTION = "NETWORK_CONNECTION",
+    FIAT_ACCOUNT = "FIAT_ACCOUNT"
 }
 
 export enum TransactionOperation {
