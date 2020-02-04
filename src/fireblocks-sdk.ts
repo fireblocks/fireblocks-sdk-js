@@ -43,10 +43,19 @@ export class FireblocksSDK {
     }
 
     /**
+     * @deprecated Replaced by getVaultAccountById.
      * Gets a single vault account
      * @param vaultAccountId The vault account ID
      */
     public async getVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
+        return await this.getVaultAccountById(vaultAccountId);
+    }
+
+    /**
+     * Gets a single vault account
+     * @param vaultAccountId The vault account ID
+     */
+    public async getVaultAccountById(vaultAccountId: string): Promise<VaultAccountResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}`);
     }
 
@@ -69,6 +78,28 @@ export class FireblocksSDK {
     }
 
     /**
+     * Generates a new address for an asset in a vault account
+     * @param vaultAccountId The vault account ID
+     * @param assetId The ID of the asset for which to generate the deposit address
+     * @param description A description for the new address
+     */
+    public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string): Promise<GenerateAddressResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, { description });
+    }
+
+    /**
+     * Sets the description of an existing address
+     * @param vaultAccountId The vault account ID
+     * @param assetId The ID of the asset
+     * @param address The address for which to set the description
+     * @param tag The XRP tag, or EOS memo, for which to set the description
+     * @param description The description to set
+     */
+    public async setAddressDescription(vaultAccountId: string, assetId: string, address: string, tag?: string, description?: string): Promise<GenerateAddressResponse> {
+        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${address}:${tag || ""}`, { description: description || "" });
+    }
+
+    /**
      * Gets all network connections
      */
     public async getNetworkConnections(): Promise<NetworkConnectionResponse[]> {
@@ -83,27 +114,6 @@ export class FireblocksSDK {
     }
 
     /**
-     * Generates a new address for an asset in a vault account
-     * @param vaultAccountId The vault account ID
-     * @param assetId The ID of the asset for which to get the deposit address
-     */
-    public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string): Promise<GenerateAddressResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, { description });
-    }
-
-    /**
-     * Sets the description of an existing address
-     * @param vaultAccountId The vault account ID
-     * @param assetId The ID of the asset for which to get the deposit address
-     * @param address The ID of the asset for which to get the deposit address
-     * @param tag The ID of the asset for which to get the deposit address
-     * @param description The description to set
-     */
-    public async setAddressDescription(vaultAccountId: string, assetId: string, address: string, tag?: string, description?: string): Promise<GenerateAddressResponse> {
-        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${address}:${tag || ""}`, { description: description || "" });
-    }
-
-    /**
      * Gets all exchange accounts for your tenant
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
@@ -111,10 +121,19 @@ export class FireblocksSDK {
     }
 
     /**
+     * @deprecated Replaced by getExchangeAccountById
      * Gets a single exchange account by ID
      * @param exchangeAccountId The exchange account ID
      */
     public async getExchangeAccount(exchangeAccountId: string): Promise<ExchangeResponse> {
+        return await this.getExchangeAccount(exchangeAccountId);
+    }
+
+    /**
+     * Gets a single exchange account by ID
+     * @param exchangeAccountId The exchange account ID
+     */
+    public async getExchangeAccountById(exchangeAccountId: string): Promise<ExchangeResponse> {
         return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}`);
     }
 
@@ -159,7 +178,7 @@ export class FireblocksSDK {
 
     /**
      * Gets a single fiat account by ID
-     * @param exchangeAccountId The exchange account ID
+     * @param accountId The fiat account ID
      */
     public async getFiatAccountById(accountId: string): Promise<FiatAccountResponse> {
         return await this.apiClient.issueGetRequest(`/v1/fiat_accounts/${accountId}`);
