@@ -170,7 +170,13 @@ export interface TransactionFilter {
     before?: number;
     after?: number;
     status?: TransactionStatus;
+    orderBy?: TransactionOrder;
     limit?: number;
+}
+
+export enum TransactionOrder {
+    CREATED_AT = "createdAt",
+    LAST_UPDATED = "lastUpdated"
 }
 
 export enum TransactionStatus {

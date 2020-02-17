@@ -216,6 +216,7 @@ export class FireblocksSDK {
      * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
      * @param filter.status Only gets transactions with the spcified status
      * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
+     * @param filter.orderBy Determines the order of the results
      */
     public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
