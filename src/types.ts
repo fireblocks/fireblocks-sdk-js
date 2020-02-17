@@ -170,6 +170,7 @@ export interface TransactionFilter {
     before?: number;
     after?: number;
     status?: TransactionStatus;
+    limit?: number;
 }
 
 export enum TransactionStatus {

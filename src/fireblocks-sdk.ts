@@ -212,9 +212,10 @@ export class FireblocksSDK {
 
     /**
      * Gets a list of transactions matching the given filter
-     * @param filter.before Only gets transactions created before a given timestamp (in seconds)
-     * @param filter.after Only gets transactions created after a given timestamp (in seconds)
+     * @param filter.before Only gets transactions created before a given timestamp (in milliseconds)
+     * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
      * @param filter.status Only gets transactions with the spcified status
+     * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
      */
     public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
