@@ -11,7 +11,7 @@ export class ApiTokenProvider implements IAuthProvider {
             uri: path,
             nonce: Date.now(),
             iat: Math.floor(Date.now() / 1000),
-            exp: Math.floor(Date.now() / 1000) + 20,
+            exp: Math.floor(Date.now() / 1000) + 55,
             sub: this.apiKey,
             bodyHash: crypto.createHash("sha256").update(JSON.stringify(bodyJson || "")).digest().toString("hex")
         } as any, this.privateKey, { algorithm: "RS256"});
