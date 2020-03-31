@@ -13,6 +13,7 @@ export interface AssetResponse {
     balance?: string;
     lockedAmount?: string;
     available: string;
+    pending: string;
     selfStakedCPU?: string;
     selfStakedNetwork?: string;
     pendingRefundCPU?: string;
@@ -131,7 +132,7 @@ export interface TransactionResponse {
     status: TransactionStatus;
     txHash: string;
     numOfConfirmations?: number;
-    failureReason?: string;
+    subStatus?: string;
     signedBy: string[];
     createdBy: string;
     rejectedBy: string;
@@ -181,12 +182,16 @@ export enum TransactionOrder {
 
 export enum TransactionStatus {
     SUBMITTED = "SUBMITTED",
+    QUEUED = "QUEUED",
     PENDING_SIGNATURE= "PENDING_SIGNATURE",
     PENDING_AUTHORIZATION = "PENDING_AUTHORIZATION",
-    PENDING = "PENDING",
+    PENDING_3RD_PARTY_MANUAL_APPROVAL = "PENDING_3RD_PARTY_MANUAL_APPROVAL",
+    PENDING_3RD_PARTY = "PENDING_3RD_PARTY",
     BROADCASTING = "BROADCASTING",
     CONFIRMING= "CONFIRMING",
-    CONFIRMED = "CONFIRMED",
+    COMPLETED = "COMPLETED",
+    PENDING_AML_CHECKUP = "PENDING_AML_CHECKUP",
+    PENDING_COMPLETED = "PENDING_COMPLETED",
     CANCELLING = "CANCELLING",
     CANCELLED = "CANCELLED",
     REJECTED = "REJECTED",
@@ -202,11 +207,14 @@ export enum PeerType {
     EXTERNAL_WALLET = "EXTERNAL_WALLET",
     UNKNOWN = "UNKNOWN",
     NETWORK_CONNECTION = "NETWORK_CONNECTION",
-    FIAT_ACCOUNT = "FIAT_ACCOUNT"
+    FIAT_ACCOUNT = "FIAT_ACCOUNT",
+    COMPOUND = "COMPOUND"
 }
 
 export enum TransactionOperation {
     TRANSFER = "TRANSFER",
     MINT = "MINT",
-    BURN = "BURN"
+    BURN = "BURN",
+    SUPPLY_TO_COMPOUND = "SUPPLY_TO_COMPOUND",
+    REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND"
 }
