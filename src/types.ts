@@ -8,7 +8,7 @@ export interface AssetResponse {
     id: string;
     total: string;
     /**
-     * @deprecated - replaced by "total"
+     * @deprecated Replaced by "total"
      */
     balance?: string;
     lockedAmount?: string;
@@ -121,7 +121,7 @@ export interface TransactionResponse {
     };
     amount: number;
     /**
-     * @deprecated - replaced by "networkFee"
+     * @deprecated Replaced by "networkFee"
      */
     fee?: number;
     networkFee: number;
@@ -190,10 +190,13 @@ export enum TransactionStatus {
     PENDING = "PENDING",
     BROADCASTING = "BROADCASTING",
     CONFIRMING= "CONFIRMING",
+    /**
+     * @deprecated Replaced by "COMPLETED"
+     */
     CONFIRMED = "CONFIRMED",
     COMPLETED = "COMPLETED",
     PENDING_AML_CHECKUP = "PENDING_AML_CHECKUP",
-    PENDING_COMPLETED = "PENDING_COMPLETED",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
     CANCELLING = "CANCELLING",
     CANCELLED = "CANCELLED",
     REJECTED = "REJECTED",
