@@ -289,13 +289,31 @@ export class FireblocksSDK {
     /**
      * Creates a new vault account
      * @param name A name for the new vault account
+     * @param hiddenOnUI If true, the created account and all related transactions will not be shown on Fireblocks console
      */
-    public async createVaultAccount(name: string): Promise<VaultAccountResponse> {
+    public async createVaultAccount(name: string, hiddenOnUI?: boolean): Promise<VaultAccountResponse> {
         const body = {
-            name: name
+            name: name,
+            hiddenOnUI: hiddenOnUI || false
         };
 
         return await this.apiClient.issuePostRequest("/v1/vault/accounts", body);
+    }
+
+    /**
+     * Hides a vault account in Fireblocks console
+     * @param vaultAccountId The vault account ID
+     */
+    public async hideVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/hide`, {});
+    }
+
+    /**
+     * Reveals a hidden vault account in Fireblocks console
+     * @param vaultAccountId The vault account ID
+     */
+    public async unhideVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/unhide`, {});
     }
 
     /**

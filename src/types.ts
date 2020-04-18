@@ -1,6 +1,7 @@
 export interface VaultAccountResponse {
     id: string;
     name: string;
+    hiddenOnUI: boolean;
     assets: AssetResponse[];
 }
 
