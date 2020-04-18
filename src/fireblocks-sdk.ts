@@ -304,7 +304,7 @@ export class FireblocksSDK {
      * Hides a vault account in Fireblocks console
      * @param vaultAccountId The vault account ID
      */
-    public async hideVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
+    public async hideVaultAccount(vaultAccountId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/hide`, {});
     }
 
@@ -312,7 +312,7 @@ export class FireblocksSDK {
      * Reveals a hidden vault account in Fireblocks console
      * @param vaultAccountId The vault account ID
      */
-    public async unhideVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
+    public async unhideVaultAccount(vaultAccountId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/unhide`, {});
     }
 
