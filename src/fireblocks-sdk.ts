@@ -96,7 +96,14 @@ export class FireblocksSDK {
      * @param description The description to set
      */
     public async setAddressDescription(vaultAccountId: string, assetId: string, address: string, tag?: string, description?: string): Promise<GenerateAddressResponse> {
-        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${address}:${tag || ""}`, { description: description || "" });
+        let addressId = address;
+        if (tag && tag.length > 0) {
+            addressId = `${address}:${tag}`;
+        }
+
+        return await this.apiClient.issuePutRequest(
+            `/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}`,
+            { description: description || "" });
     }
 
     /**
