@@ -3,6 +3,7 @@ export interface VaultAccountResponse {
     name: string;
     hiddenOnUI: boolean;
     assets: AssetResponse[];
+    amlUserId?: string;
 }
 
 export interface AssetResponse {
@@ -38,6 +39,7 @@ export interface WalletContainerResponse {
     id: string;
     name: string;
     assets: WalletAssetResponse[];
+    amlUserId?: string;
 }
 
 export interface CreateTransactionResponse {
@@ -67,6 +69,7 @@ export interface DepositAddressResponse {
     tag?: string;
     description?: string;
     type: string;
+    amlUserId?: string;
 }
 export interface GenerateAddressResponse {
     address: string;
@@ -79,13 +82,13 @@ export interface TransactionArguments {
     destination?: DestinationTransferPeerPath;
     amount: number | string;
     operation?: TransactionOperation;
-    waitForStatus?: boolean;
     fee?: number;
     gasPrice?: number;
     note: string;
     cpuStaking?: number;
     networkStaking?: number;
     autoStaking?: boolean;
+    amlUserId?: string;
 }
 
 export interface ExchangeResponse {
@@ -199,7 +202,7 @@ export enum TransactionStatus {
      */
     CONFIRMED = "CONFIRMED",
     COMPLETED = "COMPLETED",
-    PENDING_AML_CHECKUP = "PENDING_AML_CHECKUP",
+    PENDING_AML_SCREENING = "PENDING_AML_SCREENING",
     PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
     CANCELLING = "CANCELLING",
     CANCELLED = "CANCELLED",

@@ -1,3 +1,4 @@
+
 import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
@@ -438,5 +439,49 @@ export class FireblocksSDK {
      */
     public async deleteExternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/external_wallets/${walletId}/${assetId}`);
+    }
+
+    /**
+     * Sets a user ID to pass as reference when performing AML screening
+     * @param vaultAccountId The vault account ID
+     * @param userId The user ID to set
+     */
+    public async setAmlUserIdForVaultAccount(vaultAccountId: string, userId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_aml_user_id`, { userId });
+    }
+
+    /**
+     * Sets a user ID to pass as reference when performing AML screening
+     * @param walletId The ID of the internal wallet
+     * @param userId The user ID to set
+     */
+    public async setAmlUserIdForInternalWallet(walletId: string, userId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_aml_user_id`, { userId });
+    }
+
+    /**
+     * Sets a user ID to pass as reference when performing AML screening
+     * @param walletId The ID of the external wallet
+     * @param userId The user ID to set
+     */
+    public async setAmlUserIdForExternalWallet(walletId: string, userId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_aml_user_id`, { userId });
+    }
+
+    /**
+     * Sets a user ID to pass as reference when performing AML screening
+     * @param vaultAccountId The vault account ID
+     * @param assetId The ID of the asset
+     * @param address The address
+     * @param tag The XRP tag, or EOS memo
+     * @param userId The user ID to set
+     */
+    public async setAmlUserIdForAddress(vaultAccountId: string, assetId: string, address: string, tag?: string, userId?: string): Promise<OperationSuccessResponse> {
+        let addressId = address;
+        if (tag && tag.length > 0) {
+            addressId = `${address}:${tag}`;
+        }
+
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_aml_user_id`, { userId });
     }
 }
