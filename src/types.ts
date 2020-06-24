@@ -3,7 +3,7 @@ export interface VaultAccountResponse {
     name: string;
     hiddenOnUI: boolean;
     assets: AssetResponse[];
-    amlUserId?: string;
+    customerRefId?: string;
 }
 
 export interface AssetResponse {
@@ -39,7 +39,7 @@ export interface WalletContainerResponse {
     id: string;
     name: string;
     assets: WalletAssetResponse[];
-    amlUserId?: string;
+    customerRefId?: string;
 }
 
 export interface CreateTransactionResponse {
@@ -69,7 +69,7 @@ export interface DepositAddressResponse {
     tag?: string;
     description?: string;
     type: string;
-    amlUserId?: string;
+    customerRefId?: string;
 }
 export interface GenerateAddressResponse {
     address: string;
@@ -88,7 +88,7 @@ export interface TransactionArguments {
     cpuStaking?: number;
     networkStaking?: number;
     autoStaking?: boolean;
-    amlUserId?: string;
+    customerRefId?: string;
 }
 
 export interface ExchangeResponse {
@@ -149,6 +149,10 @@ export interface TransactionResponse {
     requestedAmount: number;
     serviceFee?: number;
     feeCurrency: string;
+    amlScreeningResult?: {
+        provider: string;
+        payload: any;
+    };
 }
 
 export interface CancelTransactionResponse {

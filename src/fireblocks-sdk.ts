@@ -83,9 +83,10 @@ export class FireblocksSDK {
      * @param vaultAccountId The vault account ID
      * @param assetId The ID of the asset for which to generate the deposit address
      * @param description A description for the new address
+     * @param customerRefId A customer reference ID
      */
-    public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string): Promise<GenerateAddressResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, { description });
+    public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string, customerRefId?: string): Promise<GenerateAddressResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, { description, customerRefId });
     }
 
     /**
@@ -298,10 +299,12 @@ export class FireblocksSDK {
      * Creates a new vault account
      * @param name A name for the new vault account
      * @param hiddenOnUI If true, the created account and all related transactions will not be shown on Fireblocks console
+     * @param customerRefId A customer reference ID
      */
-    public async createVaultAccount(name: string, hiddenOnUI?: boolean): Promise<VaultAccountResponse> {
+    public async createVaultAccount(name: string, hiddenOnUI?: boolean, customerRefId?: string): Promise<VaultAccountResponse> {
         const body = {
-            name: name,
+            name,
+            customerRefId,
             hiddenOnUI: hiddenOnUI || false
         };
 
@@ -345,9 +348,15 @@ export class FireblocksSDK {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
     }
 
-    public async createExternalWallet(name: string): Promise<WalletContainerResponse> {
+    /**
+     * Creates a new external wallet
+     * @param name A name for the new external wallet
+     * @param customerRefId A customer reference ID
+     */
+    public async createExternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse> {
         const body = {
-            name: name
+            name,
+            customerRefId
         };
 
         return await this.apiClient.issuePostRequest("/v1/external_wallets", body);
@@ -356,10 +365,12 @@ export class FireblocksSDK {
     /**
      * Creates a new internal wallet
      * @param name A name for the new internal wallet
+     * @param customerRefId A customer reference ID
      */
-    public async createInternalWallet(name: string): Promise<WalletContainerResponse> {
+    public async createInternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse> {
         const body = {
-            name: name
+            name,
+            customerRefId
         };
 
         return await this.apiClient.issuePostRequest("/v1/internal_wallets", body);
@@ -442,46 +453,46 @@ export class FireblocksSDK {
     }
 
     /**
-     * Sets a user ID to pass as reference when performing AML screening
+     * Sets a customer reference ID
      * @param vaultAccountId The vault account ID
-     * @param userId The user ID to set
+     * @param customerRefId The customer reference ID to set
      */
-    public async setAmlUserIdForVaultAccount(vaultAccountId: string, userId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_aml_user_id`, { userId });
+    public async setCustomerRefIdForVaultAccount(vaultAccountId: string, customerRefId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_customer_ref_id`, { customerRefId });
     }
 
     /**
-     * Sets a user ID to pass as reference when performing AML screening
+     * Sets a customer reference ID
      * @param walletId The ID of the internal wallet
-     * @param userId The user ID to set
+     * @param customerRefId The customer reference ID to set
      */
-    public async setAmlUserIdForInternalWallet(walletId: string, userId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_aml_user_id`, { userId });
+    public async setCustomerRefIdForInternalWallet(walletId: string, customerRefId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_customer_ref_id`, { customerRefId });
     }
 
     /**
-     * Sets a user ID to pass as reference when performing AML screening
+     * Sets a customer reference ID
      * @param walletId The ID of the external wallet
-     * @param userId The user ID to set
+     * @param customerRefId The customer reference ID to set
      */
-    public async setAmlUserIdForExternalWallet(walletId: string, userId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_aml_user_id`, { userId });
+    public async setCustomerRefIdForExternalWallet(walletId: string, customerRefId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_customer_ref_id`, { customerRefId });
     }
 
     /**
-     * Sets a user ID to pass as reference when performing AML screening
+     * Sets a customer reference ID
      * @param vaultAccountId The vault account ID
      * @param assetId The ID of the asset
      * @param address The address
      * @param tag The XRP tag, or EOS memo
-     * @param userId The user ID to set
+     * @param customerRefId The customer reference ID to set
      */
-    public async setAmlUserIdForAddress(vaultAccountId: string, assetId: string, address: string, tag?: string, userId?: string): Promise<OperationSuccessResponse> {
+    public async setCustomerRefIdForAddress(vaultAccountId: string, assetId: string, address: string, tag?: string, customerRefId?: string): Promise<OperationSuccessResponse> {
         let addressId = address;
         if (tag && tag.length > 0) {
             addressId = `${address}:${tag}`;
         }
 
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_aml_user_id`, { userId });
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, { customerRefId });
     }
 }
