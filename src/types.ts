@@ -185,6 +185,8 @@ export interface TransactionFilter {
     assets?: string;
     sourceType?: PeerType;
     destinationType?: PeerType;
+    sourceId?: string;
+    destinationId?: string;
 }
 
 export enum TransactionOrder {
