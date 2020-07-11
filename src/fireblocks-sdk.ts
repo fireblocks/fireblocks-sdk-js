@@ -1,9 +1,29 @@
-
 import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
-import { VaultAccountResponse, CreateTransactionResponse, TransactionArguments, AssetResponse,
-    ExchangeResponse, TransactionResponse, TransactionFilter, CancelTransactionResponse, WalletContainerResponse, WalletAssetResponse, DepositAddressResponse, GenerateAddressResponse, OperationSuccessResponse, NetworkConnectionResponse, FiatAccountResponse } from "./types";
+import {
+    VaultAccountResponse,
+    CreateTransactionResponse,
+    TransactionArguments,
+    AssetResponse,
+    ExchangeResponse,
+    TransactionResponse,
+    TransactionFilter,
+    CancelTransactionResponse,
+    WalletContainerResponse,
+    WalletAssetResponse,
+    DepositAddressResponse,
+    GenerateAddressResponse,
+    OperationSuccessResponse,
+    NetworkConnectionResponse,
+    FiatAccountResponse,
+    CreateTransferTicketArgs,
+    TransferTicketResponse,
+    TermResponse,
+    MakeTransferOfTermArgs,
+    CreateTransferTicketResponse
+} from "./types";
+
 export * from "./types";
 import queryString from "query-string";
 
@@ -86,7 +106,10 @@ export class FireblocksSDK {
      * @param customerRefId A customer reference ID
      */
     public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string, customerRefId?: string): Promise<GenerateAddressResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, { description, customerRefId });
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, {
+            description,
+            customerRefId
+        });
     }
 
     /**
@@ -105,7 +128,7 @@ export class FireblocksSDK {
 
         return await this.apiClient.issuePutRequest(
             `/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}`,
-            { description: description || "" });
+            {description: description || ""});
     }
 
     /**
@@ -417,6 +440,55 @@ export class FireblocksSDK {
         return await this.apiClient.issuePostRequest("/v1/transactions", options);
     }
 
+    /**
+     * Creates a new transfer ticket
+     */
+    public async createTransferTicket(options: CreateTransferTicketArgs): Promise<CreateTransferTicketResponse> {
+        return await this.apiClient.issuePostRequest("/v1/transfer_tickets", options);
+    }
+
+    /**
+     * Gets all transfer tickets
+     */
+    public async getTransferTickets(): Promise<TransferTicketResponse[]> {
+        return await this.apiClient.issueGetRequest("/v1/transfer_tickets");
+    }
+
+    /**
+     * Get a transfer ticket by ticket ID
+     * @param ticketId
+     */
+    public async getTransferTicketById(ticketId: string): Promise<TransferTicketResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/transfer_tickets/${ticketId}`);
+    }
+
+    /**
+     * Get a term in transfer ticket
+     * @param ticketId
+     * @param termId
+     */
+    public async getTermInTransferTicket(ticketId: string, termId: string): Promise<TermResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/transfer_tickets/${ticketId}/${termId}`);
+    }
+
+    /**
+     * Cancel the transfer ticket
+     * @param ticketId
+     */
+    public async cancelTransferTicket(ticketId: string) {
+        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/cancel`, {});
+    }
+
+    /**
+     * Make a transfer of a term
+     * @param ticketId
+     * @param termId
+     * @param options
+     */
+    public async makeATransferOfTerm(ticketId: string, termId: string, options: MakeTransferOfTermArgs) {
+        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/${termId}`,
+            options);
+    }
 
     /**
      * Deletes a single internal wallet
@@ -458,7 +530,7 @@ export class FireblocksSDK {
      * @param customerRefId The customer reference ID to set
      */
     public async setCustomerRefIdForVaultAccount(vaultAccountId: string, customerRefId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_customer_ref_id`, { customerRefId });
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_customer_ref_id`, {customerRefId});
     }
 
     /**
@@ -467,7 +539,7 @@ export class FireblocksSDK {
      * @param customerRefId The customer reference ID to set
      */
     public async setCustomerRefIdForInternalWallet(walletId: string, customerRefId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_customer_ref_id`, { customerRefId });
+        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_customer_ref_id`, {customerRefId});
     }
 
     /**
@@ -476,7 +548,7 @@ export class FireblocksSDK {
      * @param customerRefId The customer reference ID to set
      */
     public async setCustomerRefIdForExternalWallet(walletId: string, customerRefId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_customer_ref_id`, { customerRefId });
+        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_customer_ref_id`, {customerRefId});
     }
 
     /**
@@ -493,6 +565,6 @@ export class FireblocksSDK {
             addressId = `${address}:${tag}`;
         }
 
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, { customerRefId });
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, {customerRefId});
     }
 }
