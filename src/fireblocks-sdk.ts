@@ -486,7 +486,7 @@ export class FireblocksSDK {
      * @param options
      */
     public async makeATransferOfTerm(ticketId: string, termId: string, options: MakeTransferOfTermArgs) {
-        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/${termId}`,
+        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/${termId}/transfer`,
             options);
     }
 
