@@ -184,7 +184,9 @@ export interface TransactionFilter {
     txHash?: string;
     assets?: string;
     sourceType?: PeerType;
-    destinationType?: PeerType;
+    sourceId?: string;
+    destType?: PeerType;
+    destId: string;
 }
 
 export enum TransactionOrder {
