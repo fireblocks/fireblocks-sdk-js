@@ -286,7 +286,7 @@ export interface TermResponse {
     note: string;
 }
 
-export interface MakeTransferOfTermArgs {
+export interface ExecuteTermArgs {
     source: {
         type: string;
         id: string;

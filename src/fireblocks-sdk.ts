@@ -20,7 +20,7 @@ import {
     CreateTransferTicketArgs,
     TransferTicketResponse,
     TermResponse,
-    MakeTransferOfTermArgs,
+    ExecuteTermArgs,
     CreateTransferTicketResponse
 } from "./types";
 
@@ -463,11 +463,11 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get a term in transfer ticket
+     * Get a term of transfer ticket
      * @param ticketId
      * @param termId
      */
-    public async getTermInTransferTicket(ticketId: string, termId: string): Promise<TermResponse> {
+    public async getTransferTicketTerm(ticketId: string, termId: string): Promise<TermResponse> {
         return await this.apiClient.issueGetRequest(`/v1/transfer_tickets/${ticketId}/${termId}`);
     }
 
@@ -480,12 +480,12 @@ export class FireblocksSDK {
     }
 
     /**
-     * Make a transfer of a term
+     * Executes a transaction for a single term of a transfer ticket
      * @param ticketId
      * @param termId
      * @param options
      */
-    public async makeATransferOfTerm(ticketId: string, termId: string, options: MakeTransferOfTermArgs) {
+    public async executeTransferTicketTerm(ticketId: string, termId: string, options: ExecuteTermArgs) {
         return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/${termId}/transfer`,
             options);
     }
