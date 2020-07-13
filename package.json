@@ -5,7 +5,7 @@
   "types": "dist/fireblocks-sdk.d.ts",
   "scripts": {
     "build": "tsc && npm run tslint",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "tslint": "tslint -c tslint.json -p tsconfig.json --fix",
     "prepare": "npm run build",
     "postversion": "git push && git push --tags"
   },

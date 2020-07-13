@@ -71,6 +71,7 @@ export interface DepositAddressResponse {
     type: string;
     customerRefId?: string;
 }
+
 export interface GenerateAddressResponse {
     address: string;
     tag?: string;
@@ -197,7 +198,7 @@ export enum TransactionOrder {
 export enum TransactionStatus {
     SUBMITTED = "SUBMITTED",
     QUEUED = "QUEUED",
-    PENDING_SIGNATURE= "PENDING_SIGNATURE",
+    PENDING_SIGNATURE = "PENDING_SIGNATURE",
     PENDING_AUTHORIZATION = "PENDING_AUTHORIZATION",
     PENDING_3RD_PARTY_MANUAL_APPROVAL = "PENDING_3RD_PARTY_MANUAL_APPROVAL",
     PENDING_3RD_PARTY = "PENDING_3RD_PARTY",
@@ -206,7 +207,7 @@ export enum TransactionStatus {
      */
     PENDING = "PENDING",
     BROADCASTING = "BROADCASTING",
-    CONFIRMING= "CONFIRMING",
+    CONFIRMING = "CONFIRMING",
     /**
      * @deprecated Replaced by "COMPLETED"
      */
@@ -239,4 +240,61 @@ export enum TransactionOperation {
     BURN = "BURN",
     SUPPLY_TO_COMPOUND = "SUPPLY_TO_COMPOUND",
     REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND"
+}
+
+export interface CreateTransferTicketArgs {
+    externalTicketId: string;
+    description?: string;
+    terms: {
+        networkConnectionId: string;
+        outgoing: boolean;
+        asset: string;
+        amount: string;
+        note: string;
+    }[];
+}
+
+export enum TransferTicketStatus {
+    OPEN = "OPEN",
+    PARTIALLY_FULFILLED = "PARTIALLY_FULFILLED",
+    FULFILLED = "FULFILLED",
+    FAILED = "FAILED",
+    CANCELED = "CANCELED"
+}
+
+export enum TransferTicketTermStatus {
+    OPEN = "OPEN",
+    FULFILLED = "FULFILLED"
+}
+
+export interface TransferTicketResponse {
+    ticketId: string;
+    externalTicketId: string;
+    description: string;
+    status: TransferTicketStatus;
+    terms: TermResponse[];
+}
+
+export interface TermResponse {
+    termId: string;
+    networkConnectionId: string;
+    outgoing: boolean;
+    asset: string;
+    amount: string;
+    txIds: string[];
+    status: TransferTicketTermStatus;
+    note: string;
+}
+
+export interface ExecuteTermArgs {
+    source: {
+        type: string;
+        id: string;
+    };
+    fee?: number;
+    gasPrice?: number;
+}
+
+export interface CreateTransferTicketResponse {
+
 }
