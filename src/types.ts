@@ -181,6 +181,12 @@ export interface TransactionFilter {
     status?: TransactionStatus;
     orderBy?: TransactionOrder;
     limit?: number;
+    txHash?: string;
+    assets?: string;
+    sourceType?: PeerType;
+    destType?: PeerType;
+    sourceId?: string;
+    destId?: string;
 }
 
 export enum TransactionOrder {
