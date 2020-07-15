@@ -47,6 +47,31 @@ export interface CreateTransactionResponse {
     status: string;
 }
 
+export interface EstimateFeeResponse {
+    low: EstimatedFee;
+    medium: EstimatedFee;
+    high: EstimatedFee;
+}
+
+export interface EstimateTransactionFeeResponse {
+    low: EstimatedTransactionFee;
+    medium: EstimatedTransactionFee;
+    high: EstimatedTransactionFee;
+}
+
+export interface EstimatedFee {
+    networkFee?: string;
+    gasPrice?: string;
+    feePerByte?: string;
+}
+
+export interface EstimatedTransactionFee {
+    networkFee?: string;
+    gasPrice?: string;
+    gasLimit?: string;
+    feePerByte?: string;
+}
+
 export interface TransferPeerPath {
     type: PeerType;
     id: string;

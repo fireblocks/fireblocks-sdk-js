@@ -21,7 +21,9 @@ import {
     TransferTicketResponse,
     TermResponse,
     ExecuteTermArgs,
-    CreateTransferTicketResponse
+    CreateTransferTicketResponse,
+    EstimateTransactionFeeResponse,
+    EstimateFeeResponse
 } from "./types";
 
 export * from "./types";
@@ -438,6 +440,20 @@ export class FireblocksSDK {
      */
     public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
         return await this.apiClient.issuePostRequest("/v1/transactions", options);
+    }
+
+    /**
+     * Estimates the fee for a transaction request
+     */
+    public async estimateFeeForTransaction(options: TransactionArguments): Promise<EstimateTransactionFeeResponse> {
+        return await this.apiClient.issuePostRequest("/v1/transactions/estimate_fee", options);
+    }
+
+    /**
+     * Gets the estimated fees for an asset
+     */
+    public async getFeeForAsset(asset: string): Promise<EstimateFeeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/estimate_network_fee?assetId=${asset}`);
     }
 
     /**
