@@ -275,7 +275,7 @@ export interface CreateTransferTicketArgs {
         outgoing: boolean;
         asset: string;
         amount: string;
-        note: string;
+        note?: string;
     }[];
 }
 
