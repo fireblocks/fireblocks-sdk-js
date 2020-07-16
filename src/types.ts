@@ -312,7 +312,7 @@ export interface TermResponse {
 }
 
 export interface ExecuteTermArgs {
-    source: {
+    source?: {
         type: string;
         id: string;
     };
@@ -321,5 +321,5 @@ export interface ExecuteTermArgs {
 }
 
 export interface CreateTransferTicketResponse {
-
+    ticketId: string;
 }
