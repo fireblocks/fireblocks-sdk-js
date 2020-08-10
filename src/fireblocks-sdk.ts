@@ -589,7 +589,7 @@ export class FireblocksSDK {
      * @param txId
      * @param requiredConfirmationsNumber
      */
-    public async setConfirmationsForTransactionById(txId: string, requiredConfirmationsNumber: number) {
+    public async setConfirmationThresholdForTxId(txId: string, requiredConfirmationsNumber: number) {
         return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
     }
 
@@ -598,7 +598,7 @@ export class FireblocksSDK {
      * @param txHash
      * @param requiredConfirmationsNumber
      */
-    public async setConfirmationsForTransactionsByTxHash(txHash: string, requiredConfirmationsNumber: number) {
+    public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number) {
         return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
     }
 }
