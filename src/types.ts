@@ -321,5 +321,5 @@ export interface ExecuteTermArgs {
 }
 
 export interface CreateTransferTicketResponse {
-
+    ticketId: string;
 }

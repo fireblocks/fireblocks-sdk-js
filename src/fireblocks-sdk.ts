@@ -583,4 +583,22 @@ export class FireblocksSDK {
 
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, {customerRefId});
     }
+
+    /**
+     * Set the required number of confirmations for transaction
+     * @param txId
+     * @param requiredConfirmationsNumber
+     */
+    public async setConfirmationThresholdForTxId(txId: string, requiredConfirmationsNumber: number) {
+        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
+    }
+
+    /**
+     * Set the required number of confirmtations for transactions by tx hash
+     * @param txHash
+     * @param requiredConfirmationsNumber
+     */
+    public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number) {
+        return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
+    }
 }
