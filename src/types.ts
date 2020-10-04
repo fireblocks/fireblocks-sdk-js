@@ -95,11 +95,13 @@ export interface DepositAddressResponse {
     description?: string;
     type: string;
     customerRefId?: string;
+    addressFormat: string;
 }
 
 export interface GenerateAddressResponse {
     address: string;
     tag?: string;
+    legacyAddress?: string;
 }
 
 export interface TransactionArguments {
