@@ -73,8 +73,8 @@ export interface EstimatedTransactionFee {
 }
 
 export interface TransferPeerPath {
-    type: PeerType;
-    id: string;
+    type?: PeerType;
+    id?: string;
 }
 
 interface DestinationTransferPeerPath {
@@ -104,11 +104,18 @@ export interface GenerateAddressResponse {
     legacyAddress?: string;
 }
 
+export interface RawMessageArguments {
+    content: string;
+    bip44addressIndex?: number;
+    bip44change?: number;
+    derivationPath?: number[];
+}
+
 export interface TransactionArguments {
-    assetId: string;
-    source: TransferPeerPath;
+    assetId?: string;
+    source?: TransferPeerPath;
     destination?: DestinationTransferPeerPath;
-    amount: number | string;
+    amount?: number | string;
     operation?: TransactionOperation;
     fee?: number;
     gasPrice?: number;
@@ -117,6 +124,8 @@ export interface TransactionArguments {
     networkStaking?: number;
     autoStaking?: boolean;
     customerRefId?: string;
+    algorithm?: string;
+    rawMessages?: RawMessageArguments[];
 }
 
 export interface ExchangeResponse {
@@ -181,6 +190,20 @@ export interface TransactionResponse {
         provider: string;
         payload: any;
     };
+    signedMessages?: SignedMessageResponse[];
+}
+
+export interface SignedMessageResponse {
+    content: string;
+    algorithm: string;
+    derivationPath: string;
+    signature: {
+        fullSig: string;
+        r?: string;
+        s?: string;
+        v?: number;
+    };
+    publicKey: string;
 }
 
 export interface CancelTransactionResponse {
@@ -266,7 +289,8 @@ export enum TransactionOperation {
     MINT = "MINT",
     BURN = "BURN",
     SUPPLY_TO_COMPOUND = "SUPPLY_TO_COMPOUND",
-    REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND"
+    REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND",
+    RAW = "RAW"
 }
 
 export interface CreateTransferTicketArgs {
@@ -324,4 +348,18 @@ export interface ExecuteTermArgs {
 
 export interface CreateTransferTicketResponse {
     ticketId: string;
+}
+
+export interface PublicKeyInfoArgs {
+    algorithm?: string;
+    derivationPath?: string;
+    compressed?: boolean;
+}
+
+export interface PublicKeyInfoForVaultAccountArgs {
+    assetId: string;
+    vaultAccountId: number;
+    change: number;
+    addressIndex: number;
+    compressed?: boolean;
 }
