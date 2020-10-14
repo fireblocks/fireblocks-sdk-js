@@ -104,7 +104,18 @@ export interface GenerateAddressResponse {
     legacyAddress?: string;
 }
 
-export interface RawMessageArguments {
+export enum SigningAlgorithm {
+    MPC_ECDSA_SECP256K1 = "MPC_ECDSA_SECP256K1",
+    MPC_ECDSA_SECP256R1 = "MPC_ECDSA_SECP256R1",
+    MPC_EDDSA_ED25519 = "MPC_EDDSA_ED25519"
+}
+
+export interface RawMessageData {
+    messages: RawMessage[];
+    algorithm?: SigningAlgorithm;
+}
+
+export interface RawMessage {
     content: string;
     bip44addressIndex?: number;
     bip44change?: number;
@@ -124,8 +135,9 @@ export interface TransactionArguments {
     networkStaking?: number;
     autoStaking?: boolean;
     customerRefId?: string;
-    algorithm?: string;
-    rawMessages?: RawMessageArguments[];
+    extraParameters?: {
+        rawMessageData: RawMessageData;
+    };
 }
 
 export interface ExchangeResponse {
