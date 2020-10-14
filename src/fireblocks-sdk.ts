@@ -625,7 +625,7 @@ export class FireblocksSDK {
      * @param args
      */
     public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs) {
-        let url = `/v1/vault/accounts/{vaultAccountId}/{assetId}/{change}/{addressIndex}`;
+        let url = `/v1/vault/accounts/${args.vaultAccountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
         if (args.compressed) {
             url += `?compressed=${args.compressed}`;
         }
