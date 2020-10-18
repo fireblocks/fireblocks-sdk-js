@@ -117,6 +117,7 @@ export interface TransactionArguments {
     networkStaking?: number;
     autoStaking?: boolean;
     customerRefId?: string;
+    extraParameters?: object;
 }
 
 export interface ExchangeResponse {
