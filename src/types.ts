@@ -130,6 +130,7 @@ export interface TransactionArguments {
     operation?: TransactionOperation;
     fee?: number;
     gasPrice?: number;
+    gasLimit?: number;
     note: string;
     cpuStaking?: number;
     networkStaking?: number;
