@@ -23,7 +23,7 @@ import {
     ExecuteTermArgs,
     CreateTransferTicketResponse,
     EstimateTransactionFeeResponse,
-    EstimateFeeResponse
+    EstimateFeeResponse, PublicKeyInfoArgs, PublicKeyInfoForVaultAccountArgs
 } from "./types";
 
 export * from "./types";
@@ -594,11 +594,41 @@ export class FireblocksSDK {
     }
 
     /**
-     * Set the required number of confirmtations for transactions by tx hash
+     * Set the required number of confirmations for transactions by tx hash
      * @param txHash
      * @param requiredConfirmationsNumber
      */
     public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number) {
         return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
+    }
+
+    /**
+     * Get the public key information
+     * @param args
+     */
+    public async getPublicKeyInfo(args: PublicKeyInfoArgs) {
+        let url = `/v1/vault/public_key_info`;
+        if (args.algorithm) {
+            url += `?algorithm=${args.algorithm}`;
+        }
+        if (args.derivationPath) {
+            url += `&derivationPath=${args.derivationPath}`;
+        }
+        if (args.compressed) {
+            url += `&compressed=${args.compressed}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Get the public key information for a vault account
+     * @param args
+     */
+    public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs) {
+        let url = `/v1/vault/accounts/${args.vaultAccountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
+        if (args.compressed) {
+            url += `?compressed=${args.compressed}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
     }
 }
