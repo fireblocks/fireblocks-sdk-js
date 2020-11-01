@@ -130,14 +130,13 @@ export interface TransactionArguments {
     operation?: TransactionOperation;
     fee?: number;
     gasPrice?: number;
+    gasLimit?: number;
     note: string;
     cpuStaking?: number;
     networkStaking?: number;
     autoStaking?: boolean;
     customerRefId?: string;
-    extraParameters?: {
-        rawMessageData: RawMessageData;
-    };
+    extraParameters?: object;
 }
 
 export interface ExchangeResponse {
