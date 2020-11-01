@@ -129,6 +129,7 @@ export interface TransactionArguments {
     amount?: number | string;
     operation?: TransactionOperation;
     fee?: number;
+    feeLevel?: FeeLevel;
     gasPrice?: number;
     gasLimit?: number;
     note: string;
@@ -137,6 +138,12 @@ export interface TransactionArguments {
     autoStaking?: boolean;
     customerRefId?: string;
     extraParameters?: object;
+}
+
+export enum FeeLevel {
+    HIGH = "HIGH",
+    MEDIUM = "MEDIUM",
+    LOW = "LOW"
 }
 
 export interface ExchangeResponse {
