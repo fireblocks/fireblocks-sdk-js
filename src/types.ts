@@ -130,6 +130,7 @@ export interface TransactionArguments {
     operation?: TransactionOperation;
     fee?: number;
     feeLevel?: FeeLevel;
+    failOnLowFee?: boolean;
     gasPrice?: number;
     gasLimit?: number;
     note: string;
