@@ -374,3 +374,19 @@ export interface PublicKeyInfoForVaultAccountArgs {
     addressIndex: number;
     compressed?: boolean;
 }
+
+export interface GasStationInfo {
+    balance: {[asset: string]: string};
+    configuration: {
+        gasThreshold: string;
+        gasCap: string;
+        maxGasPrice: string;
+    };
+}
+
+export interface PublicKeyResonse {
+    status: number;
+    algorithm: string;
+    derivationPath: number[];
+    publicKey: string;
+}

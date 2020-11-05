@@ -23,7 +23,7 @@ import {
     ExecuteTermArgs,
     CreateTransferTicketResponse,
     EstimateTransactionFeeResponse,
-    EstimateFeeResponse, PublicKeyInfoArgs, PublicKeyInfoForVaultAccountArgs
+    EstimateFeeResponse, PublicKeyInfoArgs, PublicKeyInfoForVaultAccountArgs, GasStationInfo
 } from "./types";
 
 export * from "./types";
@@ -326,11 +326,12 @@ export class FireblocksSDK {
      * @param hiddenOnUI If true, the created account and all related transactions will not be shown on Fireblocks console
      * @param customerRefId A customer reference ID
      */
-    public async createVaultAccount(name: string, hiddenOnUI?: boolean, customerRefId?: string): Promise<VaultAccountResponse> {
+    public async createVaultAccount(name: string, hiddenOnUI?: boolean, customerRefId?: string, autoFuel?: boolean): Promise<VaultAccountResponse> {
         const body = {
             name,
             customerRefId,
-            hiddenOnUI: hiddenOnUI || false
+            hiddenOnUI: hiddenOnUI || false,
+            autoFuel
         };
 
         return await this.apiClient.issuePostRequest("/v1/vault/accounts", body);
@@ -350,6 +351,15 @@ export class FireblocksSDK {
      */
     public async unhideVaultAccount(vaultAccountId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/unhide`, {});
+    }
+
+    /**
+     * Sets autoFuel to true/false for a vault account
+     * @param vaultAccountId The vault account ID
+     * @param autoFuel The new value for the autoFuel flag
+     */
+    public async setAutoFuel(vaultAccountId: string, autoFuel: boolean): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, { autoFuel });
     }
 
     /**
@@ -589,7 +599,7 @@ export class FireblocksSDK {
      * @param txId
      * @param requiredConfirmationsNumber
      */
-    public async setConfirmationThresholdForTxId(txId: string, requiredConfirmationsNumber: number) {
+    public async setConfirmationThresholdForTxId(txId: string, requiredConfirmationsNumber: number): Promise<OperationSuccessResponse> {
         return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
     }
 
@@ -598,7 +608,7 @@ export class FireblocksSDK {
      * @param txHash
      * @param requiredConfirmationsNumber
      */
-    public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number) {
+    public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number): Promise<OperationSuccessResponse> {
         return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
     }
 
@@ -630,5 +640,25 @@ export class FireblocksSDK {
             url += `?compressed=${args.compressed}`;
         }
         return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Get configuration and status of the Gas Station account
+     */
+    public async getGasStationInfo(): Promise<GasStationInfo> {
+        const url = `/v1/gas_station`;
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Set configuration of the Gas Station account
+     */
+    public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string): Promise<OperationSuccessResponse> {
+        const url = `/v1/gas_station/configuration`;
+
+        const body = { gasThreshold, gasCap, maxGasPrice };
+
+        return await this.apiClient.issuePutRequest(url, body);
     }
 }
