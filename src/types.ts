@@ -4,6 +4,7 @@ export interface VaultAccountResponse {
     hiddenOnUI: boolean;
     assets: AssetResponse[];
     customerRefId?: string;
+    autoFuel: boolean;
 }
 
 export interface AssetResponse {
@@ -373,4 +374,20 @@ export interface PublicKeyInfoForVaultAccountArgs {
     change: number;
     addressIndex: number;
     compressed?: boolean;
+}
+
+export interface GasStationInfo {
+    balance: {[asset: string]: string};
+    configuration: {
+        gasThreshold: string;
+        gasCap: string;
+        maxGasPrice: string;
+    };
+}
+
+export interface PublicKeyResonse {
+    status: number;
+    algorithm: string;
+    derivationPath: number[];
+    publicKey: string;
 }
