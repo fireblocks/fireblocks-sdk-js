@@ -331,7 +331,7 @@ export class FireblocksSDK {
             name,
             customerRefId,
             hiddenOnUI: hiddenOnUI || false,
-            autoFuel
+            autoFuel: autoFuel || false
         };
 
         return await this.apiClient.issuePostRequest("/v1/vault/accounts", body);
