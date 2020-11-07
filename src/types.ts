@@ -4,6 +4,7 @@ export interface VaultAccountResponse {
     hiddenOnUI: boolean;
     assets: AssetResponse[];
     customerRefId?: string;
+    autoFuel: boolean;
 }
 
 export interface AssetResponse {
