@@ -439,7 +439,11 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
-        return await this.apiClient.issuePostRequest("/v1/transactions", options);
+        const args = {
+            ...options,
+            maxTransactionFee: options.maxTransactionFee?.toString()
+        }
+        return await this.apiClient.issuePostRequest("/v1/transactions", args);
     }
 
     /**
