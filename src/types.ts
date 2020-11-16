@@ -131,7 +131,7 @@ export interface TransactionArguments {
     fee?: number;
     feeLevel?: FeeLevel;
     failOnLowFee?: boolean;
-    maxTransactionFee?: number | string;
+    maxFee?: number | string;
     gasPrice?: number;
     gasLimit?: number;
     note: string;

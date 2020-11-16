@@ -441,7 +441,7 @@ export class FireblocksSDK {
     public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
         const args = {
             ...options,
-            maxTransactionFee: options.maxTransactionFee?.toString()
+            maxFee: options.maxFee?.toString()
         }
         return await this.apiClient.issuePostRequest("/v1/transactions", args);
     }
