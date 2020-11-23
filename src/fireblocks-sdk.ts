@@ -1,6 +1,6 @@
-import { ApiClient } from "./api-client";
-import { ApiTokenProvider } from "./api-token-provider";
-import { IAuthProvider } from "./iauth-provider";
+import {ApiClient} from "./api-client";
+import {ApiTokenProvider} from "./api-token-provider";
+import {IAuthProvider} from "./iauth-provider";
 import {
     VaultAccountResponse,
     CreateTransactionResponse,
@@ -439,11 +439,7 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
-        const args = {
-            ...options,
-            maxFee: options.maxFee?.toString()
-        }
-        return await this.apiClient.issuePostRequest("/v1/transactions", args);
+        return await this.apiClient.issuePostRequest("/v1/transactions", options);
     }
 
     /**

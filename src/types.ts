@@ -128,12 +128,12 @@ export interface TransactionArguments {
     destination?: DestinationTransferPeerPath;
     amount?: number | string;
     operation?: TransactionOperation;
-    fee?: number;
+    fee?: number | string;
     feeLevel?: FeeLevel;
     failOnLowFee?: boolean;
-    maxFee?: number | string;
-    gasPrice?: number;
-    gasLimit?: number;
+    maxFee?: string;
+    gasPrice?: number | string;
+    gasLimit?: number | string;
     note: string;
     cpuStaking?: number;
     networkStaking?: number;
