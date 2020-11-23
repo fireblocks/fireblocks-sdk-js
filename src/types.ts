@@ -207,8 +207,11 @@ export interface TransactionResponse {
     serviceFee?: number;
     feeCurrency: string;
     amlScreeningResult?: {
-        provider: string;
+        provider?: string;
         payload: any;
+        screeningStatus: string;
+        bypassReason: string;
+        timestamp: number;
     };
     signedMessages?: SignedMessageResponse[];
 }
