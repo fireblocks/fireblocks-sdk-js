@@ -129,15 +129,24 @@ export interface TransactionArguments {
     destination?: DestinationTransferPeerPath;
     amount?: number | string;
     operation?: TransactionOperation;
-    fee?: number;
-    gasPrice?: number;
-    gasLimit?: number;
+    fee?: number | string;
+    feeLevel?: FeeLevel;
+    failOnLowFee?: boolean;
+    maxFee?: string;
+    gasPrice?: number | string;
+    gasLimit?: number | string;
     note: string;
     cpuStaking?: number;
     networkStaking?: number;
     autoStaking?: boolean;
     customerRefId?: string;
     extraParameters?: object;
+}
+
+export enum FeeLevel {
+    HIGH = "HIGH",
+    MEDIUM = "MEDIUM",
+    LOW = "LOW"
 }
 
 export interface ExchangeResponse {
@@ -199,8 +208,11 @@ export interface TransactionResponse {
     serviceFee?: number;
     feeCurrency: string;
     amlScreeningResult?: {
-        provider: string;
+        provider?: string;
         payload: any;
+        screeningStatus: string;
+        bypassReason: string;
+        timestamp: number;
     };
     signedMessages?: SignedMessageResponse[];
 }
