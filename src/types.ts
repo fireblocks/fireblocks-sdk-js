@@ -314,7 +314,8 @@ export enum TransactionOperation {
     BURN = "BURN",
     SUPPLY_TO_COMPOUND = "SUPPLY_TO_COMPOUND",
     REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND",
-    RAW = "RAW"
+    RAW = "RAW",
+    CONTRACT_CALL = "CONTRACT_CALL"
 }
 
 export interface CreateTransferTicketArgs {
