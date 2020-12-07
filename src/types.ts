@@ -76,6 +76,7 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
+    address?: string;
 }
 
 interface DestinationTransferPeerPath {
@@ -105,22 +106,16 @@ export interface GenerateAddressResponse {
     legacyAddress?: string;
 }
 
-export enum SigningAlgorithm {
-    MPC_ECDSA_SECP256K1 = "MPC_ECDSA_SECP256K1",
-    MPC_ECDSA_SECP256R1 = "MPC_ECDSA_SECP256R1",
-    MPC_EDDSA_ED25519 = "MPC_EDDSA_ED25519"
-}
-
-export interface RawMessageData {
-    messages: RawMessage[];
-    algorithm?: SigningAlgorithm;
-}
-
 export interface RawMessage {
     content: string;
     bip44addressIndex?: number;
     bip44change?: number;
     derivationPath?: number[];
+}
+
+export interface TransactionDestination {
+    amount: string | number;
+    destination: DestinationTransferPeerPath;
 }
 
 export interface TransactionArguments {
@@ -141,6 +136,7 @@ export interface TransactionArguments {
     autoStaking?: boolean;
     customerRefId?: string;
     extraParameters?: object;
+    destinations?: TransactionDestination[];
 }
 
 export enum FeeLevel {
@@ -389,7 +385,7 @@ export interface PublicKeyInfoForVaultAccountArgs {
 }
 
 export interface GasStationInfo {
-    balance: {[asset: string]: string};
+    balance: { [asset: string]: string };
     configuration: {
         gasThreshold: string;
         gasCap: string;
