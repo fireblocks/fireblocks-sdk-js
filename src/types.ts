@@ -141,6 +141,7 @@ export interface TransactionArguments {
     autoStaking?: boolean;
     customerRefId?: string;
     extraParameters?: object;
+    replaceTxByHash?: string;
 }
 
 export enum FeeLevel {
