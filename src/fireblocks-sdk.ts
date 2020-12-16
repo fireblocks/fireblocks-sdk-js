@@ -668,7 +668,7 @@ export class FireblocksSDK {
     public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string ) {
         const url = `/v1/transactions/${txId}/drop`;
 
-        const body = { txId, feeLevel, requestedFee };
+        const body = { feeLevel, requestedFee };
 
         return await this.apiClient.issuePostRequest(url, body);
     }
