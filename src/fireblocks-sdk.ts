@@ -661,4 +661,15 @@ export class FireblocksSDK {
 
         return await this.apiClient.issuePutRequest(url, body);
     }
+
+    /**
+     * Drop an ETH based transaction
+     */
+    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string ) {
+        const url = `/v1/transactions/${txId}/drop`;
+
+        const body = { txId, feeLevel, requestedFee };
+
+        return await this.apiClient.issuePostRequest(url, body);
+    }
 }
