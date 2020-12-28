@@ -677,12 +677,12 @@ export class FireblocksSDK {
      * Get max spendable amount per asset and vault.
      */
     public async getMaxSpendableAmount(vaultAccountId: string, assetId: string, manualSigning?: Boolean): Promise<MaxSpendableAmountResponse> {
-            let url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_spendable_amount`;
+        let url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_spendable_amount`;
 
-            if (manualSigning) {
-                url += `?manualSigning=${manualSigning}`;
-            }
+        if (manualSigning) {
+            url += `?manualSigning=${manualSigning}`;
+        }
 
-            return await this.apiClient.issueGetRequest(url);
+        return await this.apiClient.issueGetRequest(url);
     }
 }
