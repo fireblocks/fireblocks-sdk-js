@@ -106,6 +106,17 @@ export interface GenerateAddressResponse {
     legacyAddress?: string;
 }
 
+export enum SigningAlgorithm {
+    MPC_ECDSA_SECP256K1 = "MPC_ECDSA_SECP256K1",
+    MPC_ECDSA_SECP256R1 = "MPC_ECDSA_SECP256R1",
+    MPC_EDDSA_ED25519 = "MPC_EDDSA_ED25519"
+}
+
+export interface RawMessageData {
+    messages: RawMessage[];
+    algorithm?: SigningAlgorithm;
+}
+
 export interface RawMessage {
     content: string;
     bip44addressIndex?: number;
