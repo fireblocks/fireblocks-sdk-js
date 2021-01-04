@@ -412,3 +412,7 @@ export interface PublicKeyResonse {
     derivationPath: number[];
     publicKey: string;
 }
+
+export interface MaxSpendableAmountResponse {
+    maxSpendableAmount: string;
+}

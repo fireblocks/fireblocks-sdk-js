@@ -23,7 +23,7 @@ import {
     ExecuteTermArgs,
     CreateTransferTicketResponse,
     EstimateTransactionFeeResponse,
-    EstimateFeeResponse, PublicKeyInfoArgs, PublicKeyInfoForVaultAccountArgs, GasStationInfo
+    EstimateFeeResponse, PublicKeyInfoArgs, PublicKeyInfoForVaultAccountArgs, GasStationInfo, MaxSpendableAmountResponse
 } from "./types";
 
 export * from "./types";
@@ -671,5 +671,18 @@ export class FireblocksSDK {
         const body = { feeLevel, requestedFee };
 
         return await this.apiClient.issuePostRequest(url, body);
+    }
+
+    /**
+     * Get max spendable amount per asset and vault.
+     */
+    public async getMaxSpendableAmount(vaultAccountId: string, assetId: string, manualSigning?: Boolean): Promise<MaxSpendableAmountResponse> {
+        let url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_spendable_amount`;
+
+        if (manualSigning) {
+            url += `?manualSigning=${manualSigning}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
     }
 }
