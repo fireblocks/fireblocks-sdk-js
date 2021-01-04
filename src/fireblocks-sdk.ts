@@ -1,6 +1,6 @@
-import {ApiClient} from "./api-client";
-import {ApiTokenProvider} from "./api-token-provider";
-import {IAuthProvider} from "./iauth-provider";
+import { ApiClient } from "./api-client";
+import { ApiTokenProvider } from "./api-token-provider";
+import { IAuthProvider } from "./iauth-provider";
 import {
     VaultAccountResponse,
     CreateTransactionResponse,

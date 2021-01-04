@@ -76,6 +76,7 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
+    address?: string;
 }
 
 interface DestinationTransferPeerPath {
@@ -123,6 +124,11 @@ export interface RawMessage {
     derivationPath?: number[];
 }
 
+export interface TransactionDestination {
+    amount: string | number;
+    destination: DestinationTransferPeerPath;
+}
+
 export interface TransactionArguments {
     assetId?: string;
     source?: TransferPeerPath;
@@ -141,6 +147,7 @@ export interface TransactionArguments {
     autoStaking?: boolean;
     customerRefId?: string;
     extraParameters?: object;
+    destinations?: TransactionDestination[];
     replaceTxByHash?: string;
 }
 
@@ -391,7 +398,7 @@ export interface PublicKeyInfoForVaultAccountArgs {
 }
 
 export interface GasStationInfo {
-    balance: {[asset: string]: string};
+    balance: { [asset: string]: string };
     configuration: {
         gasThreshold: string;
         gasCap: string;
