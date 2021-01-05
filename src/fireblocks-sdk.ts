@@ -27,7 +27,7 @@ import {
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
     GasStationInfo,
-    UnfreezeTransactionResponse
+    UnfreezeTransactionResponse, MaxSpendableAmountResponse
 } from "./types";
 
 export * from "./types";
