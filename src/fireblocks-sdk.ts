@@ -61,8 +61,8 @@ export class FireblocksSDK {
     /**
      * Gets all vault accounts for your tenant
      */
-    public async getVaultAccounts(args: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
-        const url = `/v1/vault/accounts?namePrefix=${args.namePrefix}&nameSuffix=${args.nameSuffix}`;
+    public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
+        const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
         return await this.apiClient.issueGetRequest(url);
     }
 
