@@ -25,6 +25,10 @@ export interface AssetResponse {
     totalStakedNetwork?: string;
 }
 
+export interface UnfreezeTransactionResponse {
+    success: boolean;
+}
+
 export interface CreateVaultAssetResponse {
     id: string;
     eosAccountName?: string;
