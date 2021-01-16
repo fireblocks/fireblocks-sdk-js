@@ -697,4 +697,22 @@ export class FireblocksSDK {
 
         return await this.apiClient.issueGetRequest(url);
     }
+
+    /**
+     * Get vault balance overview per asset.
+     */
+    public async getVaultBalanceByAsset(assetId: string): Promise<AssetResponse> {
+        const url = `/v1/vault/assets/${assetId}`;
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Get all vault assets balance overview .
+     */
+    public async getVaultAssetsBalance(): Promise<AssetResponse> {
+        const url = `/v1/vault/assets`;
+
+        return await this.apiClient.issueGetRequest(url);
+    }
 }
