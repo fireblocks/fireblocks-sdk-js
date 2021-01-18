@@ -27,7 +27,7 @@ import {
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
     GasStationInfo,
-    UnfreezeTransactionResponse, MaxSpendableAmountResponse
+    UnfreezeTransactionResponse, MaxSpendableAmountResponse, VaultAccountsFilter
 } from "./types";
 
 export * from "./types";
@@ -699,19 +699,10 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get vault balance overview per asset.
-     */
-    public async getVaultBalanceByAsset(assetId: string): Promise<AssetResponse> {
-        const url = `/v1/vault/assets/${assetId}`;
-
-        return await this.apiClient.issueGetRequest(url);
-    }
-
-    /**
      * Get all vault assets balance overview .
      */
-    public async getVaultAssetsBalance(): Promise<AssetResponse> {
-        const url = `/v1/vault/assets`;
+    public async getVaultAssetsBalance(filter: VaultAccountsFilter): Promise<AssetResponse> {
+        const url = `/v1/vault/assets?${queryString.stringify(filter)}`;
 
         return await this.apiClient.issueGetRequest(url);
     }
