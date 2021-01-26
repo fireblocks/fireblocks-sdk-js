@@ -27,7 +27,7 @@ import {
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
     GasStationInfo,
-    UnfreezeTransactionResponse, MaxSpendableAmountResponse
+    MaxSpendableAmountResponse
 } from "./types";
 
 export * from "./types";
@@ -322,14 +322,6 @@ export class FireblocksSDK {
      */
     public async cancelTransactionById(txId: string): Promise<CancelTransactionResponse> {
         return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, {});
-    }
-
-    /**
-     * Unfreezes the selected transaction
-     * @param txId The transaction id to unfreeze
-     */
-    public async unfreezeTransactionById(txId: string): Promise<UnfreezeTransactionResponse> {
-        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/unfreeze`, {});
     }
 
     /**
