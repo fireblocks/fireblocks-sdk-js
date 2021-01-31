@@ -680,7 +680,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get max spendable amount per asset and vault.
+     * Get max spendable amount per asset and vault
      */
     public async getMaxSpendableAmount(vaultAccountId: string, assetId: string, manualSigning?: Boolean): Promise<MaxSpendableAmountResponse> {
         let url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_spendable_amount`;
@@ -688,6 +688,15 @@ export class FireblocksSDK {
         if (manualSigning) {
             url += `?manualSigning=${manualSigning}`;
         }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Get all vault assets balance overview
+     */
+    public async getVaultAssetsBalance(filter: VaultAccountsFilter): Promise<AssetResponse> {
+        const url = `/v1/vault/assets?${queryString.stringify(filter)}`;
 
         return await this.apiClient.issueGetRequest(url);
     }
