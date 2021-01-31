@@ -421,3 +421,8 @@ export interface PublicKeyResonse {
 export interface MaxSpendableAmountResponse {
     maxSpendableAmount: string;
 }
+
+export interface VaultAccountsFilter {
+    namePrefix?: string;
+    nameSuffix?: string;
+}

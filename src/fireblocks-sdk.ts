@@ -27,7 +27,8 @@ import {
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
     GasStationInfo,
-    UnfreezeTransactionResponse, MaxSpendableAmountResponse
+    MaxSpendableAmountResponse,
+    VaultAccountsFilter
 } from "./types";
 
 export * from "./types";
@@ -65,8 +66,9 @@ export class FireblocksSDK {
     /**
      * Gets all vault accounts for your tenant
      */
-    public async getVaultAccounts(): Promise<VaultAccountResponse[]> {
-        return await this.apiClient.issueGetRequest("/v1/vault/accounts");
+    public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
+        const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
+        return await this.apiClient.issueGetRequest(url);
     }
 
     /**
@@ -322,14 +324,6 @@ export class FireblocksSDK {
      */
     public async cancelTransactionById(txId: string): Promise<CancelTransactionResponse> {
         return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, {});
-    }
-
-    /**
-     * Unfreezes the selected transaction
-     * @param txId The transaction id to unfreeze
-     */
-    public async unfreezeTransactionById(txId: string): Promise<UnfreezeTransactionResponse> {
-        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/unfreeze`, {});
     }
 
     /**
@@ -686,7 +680,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get max spendable amount per asset and vault.
+     * Get max spendable amount per asset and vault
      */
     public async getMaxSpendableAmount(vaultAccountId: string, assetId: string, manualSigning?: Boolean): Promise<MaxSpendableAmountResponse> {
         let url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_spendable_amount`;
@@ -694,6 +688,15 @@ export class FireblocksSDK {
         if (manualSigning) {
             url += `?manualSigning=${manualSigning}`;
         }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Get all vault assets balance overview
+     */
+    public async getVaultAssetsBalance(filter: VaultAccountsFilter): Promise<AssetResponse> {
+        const url = `/v1/vault/assets?${queryString.stringify(filter)}`;
 
         return await this.apiClient.issueGetRequest(url);
     }
