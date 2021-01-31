@@ -27,7 +27,8 @@ import {
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
     GasStationInfo,
-    UnfreezeTransactionResponse, MaxSpendableAmountResponse, VaultAccountsFilter
+    MaxSpendableAmountResponse,
+    VaultAccountsFilter
 } from "./types";
 
 export * from "./types";
@@ -322,14 +323,6 @@ export class FireblocksSDK {
      */
     public async cancelTransactionById(txId: string): Promise<CancelTransactionResponse> {
         return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, {});
-    }
-
-    /**
-     * Unfreezes the selected transaction
-     * @param txId The transaction id to unfreeze
-     */
-    public async unfreezeTransactionById(txId: string): Promise<UnfreezeTransactionResponse> {
-        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/unfreeze`, {});
     }
 
     /**
@@ -686,7 +679,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get max spendable amount per asset and vault.
+     * Get max spendable amount per asset and vault
      */
     public async getMaxSpendableAmount(vaultAccountId: string, assetId: string, manualSigning?: Boolean): Promise<MaxSpendableAmountResponse> {
         let url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_spendable_amount`;
@@ -699,7 +692,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get all vault assets balance overview .
+     * Get all vault assets balance overview
      */
     public async getVaultAssetsBalance(filter: VaultAccountsFilter): Promise<AssetResponse> {
         const url = `/v1/vault/assets?${queryString.stringify(filter)}`;
