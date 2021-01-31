@@ -27,7 +27,8 @@ import {
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
     GasStationInfo,
-    MaxSpendableAmountResponse
+    MaxSpendableAmountResponse,
+    VaultAccountsFilter
 } from "./types";
 
 export * from "./types";
@@ -65,8 +66,9 @@ export class FireblocksSDK {
     /**
      * Gets all vault accounts for your tenant
      */
-    public async getVaultAccounts(): Promise<VaultAccountResponse[]> {
-        return await this.apiClient.issueGetRequest("/v1/vault/accounts");
+    public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
+        const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
+        return await this.apiClient.issueGetRequest(url);
     }
 
     /**
