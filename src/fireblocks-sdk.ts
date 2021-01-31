@@ -23,7 +23,12 @@ import {
     ExecuteTermArgs,
     CreateTransferTicketResponse,
     EstimateTransactionFeeResponse,
-    EstimateFeeResponse, PublicKeyInfoArgs, PublicKeyInfoForVaultAccountArgs, GasStationInfo, MaxSpendableAmountResponse, VaultAccountsFilter
+    EstimateFeeResponse,
+    PublicKeyInfoArgs,
+    PublicKeyInfoForVaultAccountArgs,
+    GasStationInfo,
+    MaxSpendableAmountResponse,
+    VaultAccountsFilter
 } from "./types";
 
 export * from "./types";
