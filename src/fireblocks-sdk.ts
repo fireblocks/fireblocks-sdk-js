@@ -28,7 +28,8 @@ import {
     PublicKeyInfoForVaultAccountArgs,
     GasStationInfo,
     MaxSpendableAmountResponse,
-    VaultAccountsFilter
+    VaultAccountsFilter,
+    RequestOptions
 } from "./types";
 
 export * from "./types";
@@ -454,15 +455,15 @@ export class FireblocksSDK {
     /**
      * Creates a new transaction with the specified options
      */
-    public async createTransaction(options: TransactionArguments): Promise<CreateTransactionResponse> {
-        return await this.apiClient.issuePostRequest("/v1/transactions", options);
+    public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
     }
 
     /**
      * Estimates the fee for a transaction request
      */
-    public async estimateFeeForTransaction(options: TransactionArguments): Promise<EstimateTransactionFeeResponse> {
-        return await this.apiClient.issuePostRequest("/v1/transactions/estimate_fee", options);
+    public async estimateFeeForTransaction(transactionArguments: TransactionArguments): Promise<EstimateTransactionFeeResponse> {
+        return await this.apiClient.issuePostRequest("/v1/transactions/estimate_fee", transactionArguments);
     }
 
     /**

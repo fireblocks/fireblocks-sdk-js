@@ -1,5 +1,6 @@
 import { IAuthProvider } from "./iauth-provider";
 import requestPromise from "request-promise-native";
+import { RequestOptions } from "./types";
 
 export class ApiClient {
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string) { }
@@ -17,14 +18,17 @@ export class ApiClient {
         });
     }
 
-    public async issuePostRequest(path: string, body: any) {
+    public async issuePostRequest(path: string, body: any, requestOptions?: RequestOptions) {
         const token = this.authProvider.signJwt(path, body);
+
+        const idempotencyKey = requestOptions?.idempotencyKey;
 
         return await requestPromise.post({
             uri: this.apiBaseUrl + path,
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
+                "Idempotency-Key": idempotencyKey
             },
             body: body,
             json: true

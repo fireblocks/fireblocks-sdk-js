@@ -426,3 +426,7 @@ export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;
 }
+
+export interface RequestOptions {
+    idempotencyKey: string;
+}
