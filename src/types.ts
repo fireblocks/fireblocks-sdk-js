@@ -317,7 +317,8 @@ export enum PeerType {
     UNKNOWN = "UNKNOWN",
     NETWORK_CONNECTION = "NETWORK_CONNECTION",
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
-    COMPOUND = "COMPOUND"
+    COMPOUND = "COMPOUND",
+    ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS"
 }
 
 export enum TransactionOperation {
@@ -424,4 +425,8 @@ export interface MaxSpendableAmountResponse {
 export interface VaultAccountsFilter {
     accountNamePrefix?: string;
     accountNameSuffix?: string;
+}
+
+export interface RequestOptions {
+    idempotencyKey: string;
 }
