@@ -145,7 +145,7 @@ export interface TransactionArguments {
     maxFee?: string;
     gasPrice?: number | string;
     gasLimit?: number | string;
-    note: string;
+    note?: string;
     cpuStaking?: number;
     networkStaking?: number;
     autoStaking?: boolean;
