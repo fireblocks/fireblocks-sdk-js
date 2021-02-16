@@ -326,7 +326,8 @@ export enum PeerType {
 }
 
 export enum VirtualType {
-    OFF_EXCHANGE = "OFF_EXCHANGE"
+    OFF_EXCHANGE = "OFF_EXCHANGE",
+    DEFAULT = "DEFAULT"
 }
 
 export enum TransactionOperation {
