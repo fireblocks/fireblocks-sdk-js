@@ -29,7 +29,8 @@ import {
     GasStationInfo,
     MaxSpendableAmountResponse,
     VaultAccountsFilter,
-    RequestOptions
+    RequestOptions,
+    ValidateAddressResponse
 } from "./types";
 
 export * from "./types";
@@ -698,6 +699,15 @@ export class FireblocksSDK {
      */
     public async getVaultAssetsBalance(filter: VaultAccountsFilter): Promise<AssetResponse> {
         const url = `/v1/vault/assets?${queryString.stringify(filter)}`;
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Get address validation info
+     */
+    public async validateAddress(assetId: string, address: string): Promise<ValidateAddressResponse> {
+        const url = `/v1/transactions/validate_address/${assetId}/${address}`;
 
         return await this.apiClient.issueGetRequest(url);
     }

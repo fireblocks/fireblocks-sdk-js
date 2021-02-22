@@ -430,3 +430,9 @@ export interface VaultAccountsFilter {
 export interface RequestOptions {
     idempotencyKey: string;
 }
+
+export interface ValidateAddressResponse {
+    isValid: boolean;
+    isActive: boolean;
+    requireTag: boolean;
+}
