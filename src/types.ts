@@ -423,8 +423,8 @@ export interface MaxSpendableAmountResponse {
 }
 
 export interface VaultAccountsFilter {
-    accountNamePrefix?: string;
-    accountNameSuffix?: string;
+    namePrefix?: string;
+    nameSuffix?: string;
 }
 
 export interface RequestOptions {
