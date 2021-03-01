@@ -29,7 +29,8 @@ import {
     GasStationInfo,
     MaxSpendableAmountResponse,
     VaultAccountsFilter,
-    RequestOptions
+    RequestOptions,
+    VaultBalancesFilter
 } from "./types";
 
 export * from "./types";
@@ -696,7 +697,7 @@ export class FireblocksSDK {
     /**
      * Get all vault assets balance overview
      */
-    public async getVaultAssetsBalance(filter: VaultAccountsFilter): Promise<AssetResponse[]> {
+    public async getVaultAssetsBalance(filter: VaultBalancesFilter): Promise<AssetResponse[]> {
         const url = `/v1/vault/assets?${queryString.stringify(filter)}`;
 
         return await this.apiClient.issueGetRequest(url);
