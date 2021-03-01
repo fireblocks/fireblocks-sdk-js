@@ -145,7 +145,7 @@ export interface TransactionArguments {
     maxFee?: string;
     gasPrice?: number | string;
     gasLimit?: number | string;
-    note: string;
+    note?: string;
     cpuStaking?: number;
     networkStaking?: number;
     autoStaking?: boolean;
@@ -433,4 +433,10 @@ export interface VaultBalancesFilter {
 }
 export interface RequestOptions {
     idempotencyKey: string;
+}
+
+export interface ValidateAddressResponse {
+    isValid: boolean;
+    isActive: boolean;
+    requireTag: boolean;
 }
