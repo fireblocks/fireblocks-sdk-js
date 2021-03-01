@@ -704,8 +704,8 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest(url);
     }
 
-     /**
-     * Get vault balance overview per asset 
+    /**
+     * Get vault balance overview per asset
      */
     public async getVaultBlanceByAsset(assetId: string): Promise<AssetResponse> {
         const url = `/v1/vault/assets/${assetId}`;
