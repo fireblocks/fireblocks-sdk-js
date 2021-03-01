@@ -30,6 +30,7 @@ import {
     MaxSpendableAmountResponse,
     VaultAccountsFilter,
     RequestOptions,
+    VaultBalancesFilter,
     ValidateAddressResponse
 } from "./types";
 
@@ -697,9 +698,17 @@ export class FireblocksSDK {
     /**
      * Get all vault assets balance overview
      */
-    public async getVaultAssetsBalance(filter: VaultAccountsFilter): Promise<AssetResponse> {
+    public async getVaultAssetsBalance(filter: VaultBalancesFilter): Promise<AssetResponse[]> {
         const url = `/v1/vault/assets?${queryString.stringify(filter)}`;
 
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+     /**
+     * Get vault balance overview per asset 
+     */
+    public async getVaultBlanceByAsset(assetId: string): Promise<AssetResponse> {
+        const url = `/v1/vault/assets/${assetId}`;
         return await this.apiClient.issueGetRequest(url);
     }
 
@@ -708,7 +717,6 @@ export class FireblocksSDK {
      */
     public async validateAddress(assetId: string, address: string): Promise<ValidateAddressResponse> {
         const url = `/v1/transactions/validate_address/${assetId}/${address}`;
-
         return await this.apiClient.issueGetRequest(url);
     }
 }
