@@ -438,5 +438,5 @@ export interface RequestOptions {
 export interface ValidateAddressResponse {
     isValid: boolean;
     isActive: boolean;
-    requireTag: boolean;
+    requiresTag: boolean;
 }
