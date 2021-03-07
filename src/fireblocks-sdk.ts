@@ -29,7 +29,7 @@ import {
     GasStationInfo,
     MaxSpendableAmountResponse,
     VaultAccountsFilter,
-    RequestOptions
+    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest
 } from "./types";
 
 export * from "./types";
@@ -635,6 +635,30 @@ export class FireblocksSDK {
             url += `&compressed=${args.compressed}`;
         }
         return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * allocate funds from you default balance to a private ledger
+     * @param vaultAccountId
+     * @param asset
+     * @param vaultAccountId
+     * @param asset
+     * @param args
+     */
+    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest) {
+        const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/lock_allocation`;
+        return await this.apiClient.issuePostRequest(url, args);
+    }
+
+    /**
+     * deallocate funds from a private ledger to your default balance
+     * @param vaultAccountId
+     * @param asset
+     * @param args
+     */
+    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest) {
+        const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/release_allocation`;
+        return await this.apiClient.issuePostRequest(url, args);
     }
 
     /**

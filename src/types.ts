@@ -341,6 +341,16 @@ export enum TransactionOperation {
     INTERNAL_LEDGER_TRANSFER = "INTERNAL_LEDGER_TRANSFER"
 }
 
+export interface AllocateFundsRequest {
+    allocationId: string;
+    amount: string;
+}
+
+export interface DeallocateFundsRequest {
+    allocationId: string;
+    amount: string;
+}
+
 export interface CreateTransferTicketArgs {
     externalTicketId: string;
     description?: string;
