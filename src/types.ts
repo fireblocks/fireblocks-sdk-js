@@ -338,7 +338,6 @@ export enum TransactionOperation {
     REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND",
     RAW = "RAW",
     CONTRACT_CALL = "CONTRACT_CALL",
-    INTERNAL_LEDGER_TRANSFER = "INTERNAL_LEDGER_TRANSFER"
 }
 
 export interface AllocateFundsRequest {
