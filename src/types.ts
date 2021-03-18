@@ -446,6 +446,16 @@ export interface VaultAccountsFilter {
     nameSuffix?: string;
 }
 
+export interface VaultBalancesFilter {
+    accountNamePrefix?: string;
+    accountNameSuffix?: string;
+}
 export interface RequestOptions {
     idempotencyKey: string;
+}
+
+export interface ValidateAddressResponse {
+    isValid: boolean;
+    isActive: boolean;
+    requiresTag: boolean;
 }
