@@ -31,7 +31,8 @@ import {
     VaultAccountsFilter,
     RequestOptions,
     VaultBalancesFilter,
-    ValidateAddressResponse
+    ValidateAddressResponse,
+    CreateVaultAssetResponse
 } from "./types";
 
 export * from "./types";
@@ -388,7 +389,7 @@ export class FireblocksSDK {
      * @param vaultAccountId The vault account ID
      * @param assetId The asset to add
      */
-    public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
+    public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<CreateVaultAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
     }
 
