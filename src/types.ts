@@ -31,7 +31,10 @@ export interface UnfreezeTransactionResponse {
 
 export interface CreateVaultAssetResponse {
     id: string;
-    eosAccountName?: string;
+    address: string;
+    legacyAddress: string;
+    tag: string;
+    eosAccountName: string;
 }
 
 export interface WalletAssetResponse extends AssetResponse {

@@ -31,6 +31,7 @@ import {
     VaultAccountsFilter,
     VaultBalancesFilter,
     ValidateAddressResponse,
+    CreateVaultAssetResponse,
     RequestOptions, AllocateFundsRequest, DeallocateFundsRequest
 } from "./types";
 
@@ -388,7 +389,7 @@ export class FireblocksSDK {
      * @param vaultAccountId The vault account ID
      * @param assetId The asset to add
      */
-    public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
+    public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<CreateVaultAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
     }
 
@@ -731,7 +732,7 @@ export class FireblocksSDK {
     /**
      * Get vault balance overview per asset
      */
-    public async getVaultBlanceByAsset(assetId: string): Promise<AssetResponse> {
+    public async getVaultBalanceByAsset(assetId: string): Promise<AssetResponse> {
         const url = `/v1/vault/assets/${assetId}`;
         return await this.apiClient.issueGetRequest(url);
     }

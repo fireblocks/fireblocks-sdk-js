@@ -9,7 +9,7 @@ export class ApiTokenProvider implements IAuthProvider {
     signJwt(path: string, bodyJson?: any): string {
         const token =  jwt.sign({
             uri: path,
-            nonce: Date.now(),
+            nonce: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
             iat: Math.floor(Date.now() / 1000),
             exp: Math.floor(Date.now() / 1000) + 55,
             sub: this.apiKey,
