@@ -83,12 +83,16 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
+    virtualId?: string;
+    virtualType?: VirtualType;
     address?: string;
 }
 
 interface DestinationTransferPeerPath {
     type: PeerType;
     id: string;
+    virtualId?: string;
+    virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
 }
 
@@ -324,6 +328,11 @@ export enum PeerType {
     ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS"
 }
 
+export enum VirtualType {
+    OFF_EXCHANGE = "OFF_EXCHANGE",
+    DEFAULT = "DEFAULT"
+}
+
 export enum TransactionOperation {
     TRANSFER = "TRANSFER",
     MINT = "MINT",
@@ -331,7 +340,17 @@ export enum TransactionOperation {
     SUPPLY_TO_COMPOUND = "SUPPLY_TO_COMPOUND",
     REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND",
     RAW = "RAW",
-    CONTRACT_CALL = "CONTRACT_CALL"
+    CONTRACT_CALL = "CONTRACT_CALL",
+}
+
+export interface AllocateFundsRequest {
+    allocationId: string;
+    amount: string;
+}
+
+export interface DeallocateFundsRequest {
+    allocationId: string;
+    amount: string;
 }
 
 export interface CreateTransferTicketArgs {
