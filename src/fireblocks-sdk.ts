@@ -111,6 +111,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets utxo list for an asset in a vault account
+     * @param vaultAccountId The vault account ID
+     * @param assetId The ID of the asset for which to get the utxo list
+     */
+    public async getListUnspents(vaultAccountId: string, assetId: string): Promise<DepositAddressResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/listUnspents`);
+    }
+
+    /**
      * Generates a new address for an asset in a vault account
      * @param vaultAccountId The vault account ID
      * @param assetId The ID of the asset for which to generate the deposit address
