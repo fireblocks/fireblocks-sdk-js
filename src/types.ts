@@ -109,6 +109,7 @@ export interface DepositAddressResponse {
     type: string;
     customerRefId?: string;
     addressFormat: string;
+    legacyAddress?: string;
 }
 
 export interface GenerateAddressResponse {
