@@ -744,4 +744,20 @@ export class FireblocksSDK {
         const url = `/v1/transactions/validate_address/${assetId}/${address}`;
         return await this.apiClient.issueGetRequest(url);
     }
+
+    /**
+     * Unfreezes the selected transaction
+     * @param txId The transaction id to unfreeze
+     */
+    public async unfreezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
+        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/unfreeze`, {});
+    }
+
+    /**
+     * Freezes the selected transaction
+     * @param txId The transaction id to freeze
+     */
+    public async freezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
+        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {});
+    }
 }
