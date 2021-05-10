@@ -448,6 +448,7 @@ export interface MaxSpendableAmountResponse {
 export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;
+    minAmountThreshold: number;
 }
 
 export interface VaultBalancesFilter {
