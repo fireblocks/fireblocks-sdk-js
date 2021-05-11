@@ -50,8 +50,8 @@ export class FireblocksSDK {
      * @param apiKey Your api key. This is a uuid you received from Fireblocks
      * @param apiBaseUrl The fireblocks server URL. Leave empty to use the default server
      */
-    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io") {
-        this.authProvider = new ApiTokenProvider(privateKey, apiKey);
+    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined) {
+        this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
 
         if (apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
