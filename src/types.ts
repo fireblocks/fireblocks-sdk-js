@@ -90,7 +90,7 @@ export interface TransferPeerPath {
 
 interface DestinationTransferPeerPath {
     type: PeerType;
-    id: string;
+    id?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
