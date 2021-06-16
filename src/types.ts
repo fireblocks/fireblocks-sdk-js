@@ -464,3 +464,10 @@ export interface ValidateAddressResponse {
     isActive: boolean;
     requiresTag: boolean;
 }
+
+export interface ApiUsage {
+    endpoint: string;
+    method: string;
+    limit: number;
+    count: number;
+}

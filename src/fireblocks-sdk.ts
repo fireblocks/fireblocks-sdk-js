@@ -32,7 +32,7 @@ import {
     VaultBalancesFilter,
     ValidateAddressResponse,
     CreateVaultAssetResponse,
-    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest
+    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, ApiUsage
 } from "./types";
 
 export * from "./types";
@@ -65,6 +65,13 @@ export class FireblocksSDK {
      */
     public async getSupportedAssets(): Promise<VaultAccountResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
+    }
+
+    /**
+     * Gets usage of apis and limits for the userId
+     */
+    public async getUsageLimits(): Promise<ApiUsage[]> {
+        return await this.apiClient.issueGetRequest("/v1/usage_limits");
     }
 
     /**
