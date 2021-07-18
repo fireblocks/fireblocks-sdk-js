@@ -7,6 +7,11 @@ export interface VaultAccountResponse {
     autoFuel: boolean;
 }
 
+export enum VirtualAffiliation {
+    OFF_EXCHANGE = "OFF_EXCHANGE",
+    DEFAULT = "DEFAULT"
+}
+
 export interface AssetResponse {
     id: string;
     total: string;
@@ -23,6 +28,17 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    allocatedBalances?: {
+        allocationId: string;
+        thirdPartyAccountId?: string;
+        affiliation?: VirtualAffiliation;
+        virtualType?: VirtualType;
+        total: string;
+        available: string;
+        pending?: string;
+        frozen?: string;
+        locked?: string;
+    }[];
 }
 
 export interface UnfreezeTransactionResponse {
@@ -326,12 +342,14 @@ export enum PeerType {
     NETWORK_CONNECTION = "NETWORK_CONNECTION",
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
     COMPOUND = "COMPOUND",
-    ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS"
+    ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS",
+    OEC_PARTNER = "OEC_PARTNER"
 }
 
 export enum VirtualType {
     OFF_EXCHANGE = "OFF_EXCHANGE",
-    DEFAULT = "DEFAULT"
+    DEFAULT = "DEFAULT",
+    OEC_FEE_BANK = "OEC_FEE_BANK"
 }
 
 export enum TransactionOperation {
