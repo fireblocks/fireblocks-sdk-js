@@ -177,6 +177,7 @@ export interface TransactionArguments {
     extraParameters?: object;
     destinations?: TransactionDestination[];
     replaceTxByHash?: string;
+    externalTransactionId?: string;
 }
 
 export enum FeeLevel {
@@ -251,6 +252,7 @@ export interface TransactionResponse {
         timestamp: number;
     };
     signedMessages?: SignedMessageResponse[];
+    externalTxId?: string;
 }
 
 export interface SignedMessageResponse {
