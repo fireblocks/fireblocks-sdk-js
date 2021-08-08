@@ -252,7 +252,7 @@ export interface TransactionResponse {
         timestamp: number;
     };
     signedMessages?: SignedMessageResponse[];
-    externalTxId?: string;
+    externalTransactionId?: string;
 }
 
 export interface SignedMessageResponse {

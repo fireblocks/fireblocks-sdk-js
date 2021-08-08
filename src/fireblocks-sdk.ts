@@ -276,6 +276,14 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets a transaction matching the external transaction id provided
+     * @param externalTxId
+     */
+    public async getTransactionByExternalTxId(externalTxId: string): Promise<TransactionResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/transactions/external_tx_id/${externalTxId}`);
+    }
+
+    /**
      * Gets all internal wallets for your tenant
      */
     public async getInternalWallets(): Promise<WalletContainerResponse[]> {
