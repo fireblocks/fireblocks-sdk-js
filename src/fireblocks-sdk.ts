@@ -32,7 +32,7 @@ import {
     VaultBalancesFilter,
     ValidateAddressResponse,
     CreateVaultAssetResponse,
-    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest
+    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, User
 } from "./types";
 
 export * from "./types";
@@ -776,5 +776,12 @@ export class FireblocksSDK {
      */
     public async freezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
         return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {});
+    }
+    
+    /**
+     * Gets all Users for your tenant
+     */
+    public async getUsers(): Promise<User[]> {
+        return await this.apiClient.issueGetRequest("/v1/users");
     }
 }
