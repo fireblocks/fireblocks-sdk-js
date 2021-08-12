@@ -484,3 +484,11 @@ export interface ValidateAddressResponse {
     isActive: boolean;
     requiresTag: boolean;
 }
+
+export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    enabled: boolean
+}
