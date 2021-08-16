@@ -777,7 +777,7 @@ export class FireblocksSDK {
     public async freezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
         return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {});
     }
-    
+
     /**
      * Gets all Users for your tenant
      */

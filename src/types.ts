@@ -490,5 +490,6 @@ export interface User {
     firstName: string;
     lastName: string;
     email: string;
-    enabled: boolean
+    enabled: boolean;
+    role: string;
 }
