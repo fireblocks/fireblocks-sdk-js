@@ -5,10 +5,9 @@ import { RequestOptions } from "./types";
 export class ApiClient {
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string) { }
 
-    public async issueGetRequest(path: string) {
+    public async issueGetRequest(path: string, pageMode: boolean = false) {
         const token = this.authProvider.signJwt(path);
-
-        return await requestPromise.get({
+        const res = await requestPromise.get({
             uri: this.apiBaseUrl + path,
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
@@ -16,6 +15,18 @@ export class ApiClient {
             },
             json: true
         });
+
+        if (pageMode) {
+            return {
+                transactions: res,
+                pageDetails: {
+                    next: res.header["next"].toString(),
+                    previous: res.header["previous"].toString(),
+                },
+            };
+        }
+
+        return res;
     }
 
     public async issuePostRequest(path: string, body: any, requestOptions?: RequestOptions) {

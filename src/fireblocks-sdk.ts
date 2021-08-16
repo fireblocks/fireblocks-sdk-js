@@ -32,7 +32,8 @@ import {
     VaultBalancesFilter,
     ValidateAddressResponse,
     CreateVaultAssetResponse,
-    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse
+    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse,
+    TransactionPageResponse
 } from "./types";
 
 export * from "./types";
@@ -271,8 +272,20 @@ export class FireblocksSDK {
      * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
      * @param filter.orderBy Determines the order of the results
      */
-    public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
+    public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[] | TransactionPageResponse> {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
+    }
+
+    /**
+     * Gets a list of transactions per page matching the given filter
+     * @param filter.before Only gets transactions created before a given timestamp (in milliseconds)
+     * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
+     * @param filter.status Only gets transactions with the spcified status
+     * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
+     */
+    public async getTransactionsPerPage(filter: TransactionFilter): Promise<TransactionResponse[] | TransactionPageResponse> {
+        filter.orderBy = undefined;
+        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true);
     }
 
     /**

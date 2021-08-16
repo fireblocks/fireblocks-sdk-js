@@ -203,6 +203,16 @@ export interface FiatAccountResponse {
     assets: AssetResponse[];
 }
 
+export interface TransactionPageResponse {
+    transactions: TransactionResponse[];
+    pageDetails: PageDetails;
+}
+
+export interface PageDetails {
+    previous: string;
+    next: string;
+}
+
 export interface TransactionResponse {
     id: string;
     assetId: string;
