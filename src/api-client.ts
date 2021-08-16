@@ -21,14 +21,11 @@ export class ApiClient {
         });
 
         if (pageMode) {
-            console.log("date header: previous: " + res.headers["previous"] + " next" + res.headers["next"] + " yinon: " + res.headers["yinon"]);
-            const prevHeader = res.header["previous"] ? res.header["previous"].toString() :  "";
-            const nextHeader = res.header["next"] ? res.header["next"].toString() :  "";
             return {
                 transactions: res,
                 pageDetails: {
-                    previous: prevHeader,
-                    next:  nextHeader,
+                    previous: res.headers["previous"] ? res.headers["previous"].toString() :  "",
+                    next:  res.headers["next"] ? res.headers["next"].toString() :  "",
                 }
             };
         }
