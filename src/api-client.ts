@@ -20,13 +20,13 @@ export class ApiClient {
         });
 
         if (pageMode) {
-            const prevHeader = res.header["previous"].toString();
-            const nextHeader = res.header["next"].toString();
+            const prevHeader = res.header["previous"] ? res.header["previous"].toString() :  "";
+            const nextHeader = res.header["next"] ? res.header["next"].toString() :  "";
             return {
                 transactions: res,
                 pageDetails: {
-                    previous: prevHeader ? prevHeader : "",
-                    next:  nextHeader ? nextHeader : "",
+                    previous: prevHeader,
+                    next:  nextHeader,
                 }
             };
         }
