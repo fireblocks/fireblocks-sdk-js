@@ -16,7 +16,8 @@ export class ApiClient {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
             },
-            json: true
+            json: true,
+            resolveWithFullResponse: true
         });
 
         if (pageMode) {
