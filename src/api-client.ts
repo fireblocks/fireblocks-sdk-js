@@ -16,6 +16,9 @@ export class ApiClient {
             json: true
         });
 
+        console.log(res);
+        console.log(res.header["next"].toString());
+
         if (pageMode) {
             return {
                 transactions: res,
