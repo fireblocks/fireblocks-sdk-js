@@ -485,6 +485,14 @@ export interface ValidateAddressResponse {
     requiresTag: boolean;
 }
 
+export interface AssetTypeResponse {
+    id: string;
+    name: string;
+    type: string;
+    contractAddress: string;
+    nativeAsset: string;
+}
+
 export interface User {
     id: string;
     firstName: string;

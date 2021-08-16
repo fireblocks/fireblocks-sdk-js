@@ -32,7 +32,7 @@ import {
     VaultBalancesFilter,
     ValidateAddressResponse,
     CreateVaultAssetResponse,
-    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, User
+    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse, User
 } from "./types";
 
 export * from "./types";
@@ -63,7 +63,7 @@ export class FireblocksSDK {
     /**
      * Gets all assets that are currently supported by Fireblocks
      */
-    public async getSupportedAssets(): Promise<VaultAccountResponse[]> {
+    public async getSupportedAssets(): Promise<AssetTypeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
 
