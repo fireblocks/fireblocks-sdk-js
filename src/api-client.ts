@@ -20,7 +20,7 @@ export class ApiClient {
         });
 
         if (pageMode) {
-            console.log("date header: " + res.header["date"].toString());
+            console.log("date header: " + res.headers);
             const prevHeader = res.header["previous"] ? res.header["previous"].toString() :  "";
             const nextHeader = res.header["next"] ? res.header["next"].toString() :  "";
             return {
