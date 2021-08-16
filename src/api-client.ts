@@ -20,10 +20,8 @@ export class ApiClient {
             resolveWithFullResponse: true
         });
 
-        console.log(res);
-
         if (pageMode) {
-            console.log("date header: previous: " + res.headers["previous"] + " next" + res.headers["next"] + " date: " + res.headers["date"]);
+            console.log("date header: previous: " + res.headers["previous"] + " next" + res.headers["next"] + " yinon: " + res.headers["yinon"]);
             const prevHeader = res.header["previous"] ? res.header["previous"].toString() :  "";
             const nextHeader = res.header["next"] ? res.header["next"].toString() :  "";
             return {
@@ -35,7 +33,7 @@ export class ApiClient {
             };
         }
 
-        return res;
+        return res.body;
     }
 
     public async issuePostRequest(path: string, body: any, requestOptions?: RequestOptions) {
