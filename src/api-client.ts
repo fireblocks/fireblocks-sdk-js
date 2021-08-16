@@ -20,8 +20,10 @@ export class ApiClient {
             resolveWithFullResponse: true
         });
 
+        console.log(res);
+
         if (pageMode) {
-            console.log("date header: " + res.headers);
+            console.log("date header: previous: " + res.headers["previous"] + " next" + res.headers["next"] + " date: " + res.headers["date"]);
             const prevHeader = res.header["previous"] ? res.header["previous"].toString() :  "";
             const nextHeader = res.header["next"] ? res.header["next"].toString() :  "";
             return {
