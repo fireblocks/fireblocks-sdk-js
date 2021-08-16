@@ -22,10 +22,6 @@ export class ApiClient {
         if (pageMode) {
             return {
                 transactions: res,
-                pageDetails: {
-                    next: res.header["next"].toString(),
-                    previous: res.header["previous"].toString(),
-                },
             };
         }
 
