@@ -22,7 +22,7 @@ export class ApiClient {
                 transactions: res.body,
                 pageDetails: {
                     previous: res.headers["previous"] ? res.headers["previous"].toString() :  "",
-                    next:  res.headers["next"] ? res.headers["next"].toString() :  "",
+                    next:  res.headers["yinon"] ? res.headers["next"].toString() :  "",
                 }
             };
         }
