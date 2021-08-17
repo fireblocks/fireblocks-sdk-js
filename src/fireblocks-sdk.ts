@@ -272,8 +272,8 @@ export class FireblocksSDK {
      * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
      * @param filter.orderBy Determines the order of the results
      */
-    public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[] | TransactionPageResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
+    public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`) as TransactionResponse[];
     }
 
     /**
@@ -283,9 +283,9 @@ export class FireblocksSDK {
      * @param filter.status Only gets transactions with the spcified status
      * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
      */
-    public async getTransactionsPerPage(filter: TransactionFilter): Promise<TransactionResponse[] | TransactionPageResponse> {
+    public async getTransactionsPerPage(filter: TransactionFilter): Promise<TransactionPageResponse> {
         filter.orderBy = undefined;
-        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true);
+        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
     }
 
     /**
