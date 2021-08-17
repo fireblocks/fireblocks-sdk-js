@@ -302,6 +302,8 @@ export class FireblocksSDK {
         const urlParams = new URLSearchParams(paramsString);
         // const urlSearchParams = new URLSearchParams(paramsString);
         // Object.fromEntries(urlSearchParams.entries());
+
+        console.log("sdk urlParams: " + urlParams);
         const filter = {
             status: urlParams.get("status"),
             orderBy:  urlParams.get("orderBy") || "createdAt",
@@ -312,8 +314,10 @@ export class FireblocksSDK {
             limit: urlParams.get("limit") ? urlParams.get("limit") : undefined,
             next: urlParams.get("next") ? urlParams.get("next") : undefined,
         };
+        const res = await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
+        console.log("sdk res: " + res);
 
-        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
+        return res;
     }
 
     /**
