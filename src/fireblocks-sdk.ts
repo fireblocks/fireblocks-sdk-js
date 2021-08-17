@@ -289,6 +289,36 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get next page of transactions matching a given path
+     * @param filter.before Only gets transactions created before a given timestamp (in milliseconds)
+     * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
+     * @param filter.status Only gets transactions with the spcified status
+     * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
+     */
+    public async getNextPage(path: string): Promise<TransactionPageResponse> {
+        const paramsString = path.split("?")[1];
+        console.log("params string: " +  paramsString);
+
+        const urlParams = new URLSearchParams(paramsString);
+        // const urlSearchParams = new URLSearchParams(paramsString);
+        // Object.fromEntries(urlSearchParams.entries());
+        const filter = {
+            status: urlParams.get("status"),
+            orderBy:  urlParams.get("orderBy") || "createdAt",
+            txHash: urlParams.get("txHash") !== "" ? urlParams.get("status") : undefined,
+            assets: urlParams.get("assets") !== "" ? urlParams.get("assets") : undefined,
+            sourceType: urlParams.get("sourceType") ? urlParams.get("sourceType") : undefined,
+            destType: urlParams.get("destType") ? urlParams.get("destType") : undefined,
+            limit: urlParams.get("limit") ? urlParams.get("limit") : undefined,
+            next: urlParams.get("next") ? urlParams.get("next") : undefined,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
+    }
+
+
+
+    /**
      * Gets a transaction matching the external transaction id provided
      * @param externalTxId
      */
