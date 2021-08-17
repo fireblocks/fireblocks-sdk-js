@@ -304,7 +304,6 @@ export class FireblocksSDK {
         console.log("sdk urlParams: " + urlParams + "\n");
         const filter = {
             status: urlParams.get("status"),
-            orderBy:  urlParams.get("orderBy") || "createdAt",
             txHash: urlParams.get("txHash") !== "" ? urlParams.get("status") : undefined,
             assets: urlParams.get("assets") !== "" ? urlParams.get("assets") : undefined,
             sourceType: urlParams.get("sourceType") ? urlParams.get("sourceType") : undefined,
