@@ -297,8 +297,6 @@ export class FireblocksSDK {
      */
     public async getNextPage(path: string): Promise<TransactionPageResponse> {
         const paramsString = path.split("?")[1];
-        console.log("params string: " +  paramsString);
-
         const urlParams = new URLSearchParams(paramsString);
         // const urlSearchParams = new URLSearchParams(paramsString);
         // Object.fromEntries(urlSearchParams.entries());
@@ -314,10 +312,8 @@ export class FireblocksSDK {
             limit: urlParams.get("limit") ? urlParams.get("limit") : undefined,
             next: urlParams.get("next") ? urlParams.get("next") : undefined,
         };
-        const res = await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
-        console.log("sdk res pageDetails: " + res.pageDetails + "\n ");
-        console.log("sdk res transactions: " + res.transactions + "\n ");
-        return res;
+        console.log("sdk filter: " + filter + "\n");
+        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
     }
 
     /**
