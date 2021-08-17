@@ -316,8 +316,6 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
     }
 
-
-
     /**
      * Gets a transaction matching the external transaction id provided
      * @param externalTxId

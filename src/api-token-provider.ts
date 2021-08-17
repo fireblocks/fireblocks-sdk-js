@@ -15,7 +15,7 @@ export class ApiTokenProvider implements IAuthProvider {
             sub: this.apiKey,
             bodyHash: crypto.createHash("sha256").update(JSON.stringify(bodyJson || "")).digest().toString("hex")
         } as any, this.privateKey, { algorithm: "RS256"});
-        console.log("token: " + toke);
+        console.log("token: " + token);
         return token;
     }
 
