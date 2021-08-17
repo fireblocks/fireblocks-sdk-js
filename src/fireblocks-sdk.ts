@@ -301,7 +301,7 @@ export class FireblocksSDK {
         // const urlSearchParams = new URLSearchParams(paramsString);
         // Object.fromEntries(urlSearchParams.entries());
 
-        console.log("sdk urlParams: " + urlParams);
+        console.log("sdk urlParams: " + urlParams + "\n");
         const filter = {
             status: urlParams.get("status"),
             orderBy:  urlParams.get("orderBy") || "createdAt",
