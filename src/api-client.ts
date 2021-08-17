@@ -1,5 +1,5 @@
 import { IAuthProvider } from "./iauth-provider";
-import requestPromise from "request-promise-native";
+import requestPromise, { cookie } from "request-promise-native";
 import { RequestOptions } from "./types";
 
 export class ApiClient {
@@ -7,6 +7,7 @@ export class ApiClient {
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
         const token = this.authProvider.signJwt(path);
+        console.log(this.apiBaseUrl + path);
         const res = await requestPromise.get({
             uri: this.apiBaseUrl + path,
             headers: {
