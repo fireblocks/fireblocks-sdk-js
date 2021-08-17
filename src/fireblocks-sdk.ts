@@ -315,8 +315,8 @@ export class FireblocksSDK {
             next: urlParams.get("next") ? urlParams.get("next") : undefined,
         };
         const res = await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
-        console.log("sdk res: " + res);
-
+        console.log("sdk res pageDetails: " + res.pageDetails + "\n ");
+        console.log("sdk res transactions: " + res.transactions + "\n ");
         return res;
     }
 
