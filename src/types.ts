@@ -482,3 +482,7 @@ export interface ValidateAddressResponse {
     isActive: boolean;
     requiresTag: boolean;
 }
+
+export interface ResendWebhooksResponse {
+    webhooksCount: number;
+}
