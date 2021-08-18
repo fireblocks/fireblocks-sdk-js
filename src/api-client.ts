@@ -5,13 +5,11 @@ import { RequestOptions } from "./types";
 export class ApiClient {
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string) { }
 
-    public async issueGetRequest(path: string, pageMode: boolean = false, fullPath = false) {
+    public async issueGetRequest(path: string, pageMode: boolean = false) {
         console.log("before added baseUrl: " + path);
         const token = this.authProvider.signJwt(path);
-        const uri = fullPath ? path : this.apiBaseUrl + path;
-
         const res = await requestPromise.get({
-            uri: uri,
+            uri: this.apiBaseUrl + path,
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`

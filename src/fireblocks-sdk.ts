@@ -293,7 +293,9 @@ export class FireblocksSDK {
      * @param nextOrPreviousPath Each of path from pageDetails `getTransactionsWithPageInfo` response
      */
     public async getTransactionsByPagePath(nextOrPreviousPath: string): Promise<TransactionPageResponse> {
-        return await this.apiClient.issueGetRequest(nextOrPreviousPath, true, true) as TransactionPageResponse;
+        const index = nextOrPreviousPath.indexOf("/v1/");
+        const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
+        return await this.apiClient.issueGetRequest(path, true) as TransactionPageResponse;
     }
 
     /**
