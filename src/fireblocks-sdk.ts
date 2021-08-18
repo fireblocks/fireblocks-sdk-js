@@ -277,7 +277,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets a list of transactions per page matching the given filter
+     * Gets a list of transactions per page matching the given filter, `orderBy` field not allowed
      * @param filter.before Only gets transactions created before a given timestamp (in milliseconds)
      * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
      * @param filter.status Only gets transactions with the spcified status
@@ -289,19 +289,12 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get next page of transactions matching a given path
-     * @param filter.before Only gets transactions created before a given timestamp (in milliseconds)
-     * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
-     * @param filter.status Only gets transactions with the spcified status
-     * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
+     * Get next or previous page of transactions matching a given path
+     * @param path Reconstruct query params from path to build next or previous request
      */
-    public async getNextOrPrevPage(path: string): Promise<TransactionPageResponse> {
-        const paramsString = path.split("?")[1];
-        const urlParams = new URLSearchParams(paramsString);
-        // const urlSearchParams = new URLSearchParams(paramsString);
-        // Object.fromEntries(urlSearchParams.entries());
-
-        console.log("sdk urlParams: " + urlParams + "\n");
+    public async getNextOrPreviousPage(path: string): Promise<TransactionPageResponse> {
+        const paramsPath = path.split("?")[1];
+        const urlParams = new URLSearchParams(paramsPath);
         const filter = {
             before: urlParams.get("before") || undefined,
             after: urlParams.get("after") || undefined,
@@ -316,10 +309,6 @@ export class FireblocksSDK {
             next: urlParams.get("next")  || undefined,
             prev:  urlParams.get("prev")  || undefined,
         };
-        console.log("filter:\n");
-        console.log(filter);
-        console.log("\n");
-
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
     }
 
