@@ -6,7 +6,6 @@ export class ApiClient {
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string) { }
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
-        console.log("before added baseUrl: " + path);
         const token = this.authProvider.signJwt(path);
         const res = await requestPromise.get({
             uri: this.apiBaseUrl + path,
