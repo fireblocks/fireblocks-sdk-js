@@ -283,17 +283,17 @@ export class FireblocksSDK {
      * @param filter.status Only gets transactions with the spcified status
      * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
      */
-    public async getTransactionsPerPage(filter: TransactionFilter): Promise<TransactionPageResponse> {
+    public async getTransactionsWithPageInfo(filter: TransactionFilter): Promise<TransactionPageResponse> {
         filter.orderBy = undefined;
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
     }
 
     /**
      * Get next or previous page of transactions matching a given path
-     * @param path Reconstruct query params from path to build next or previous request
+     * @param nextOrPreviousPath  Each of path from pageDetails `getTransactionsWithPageInfo` response
      */
-    public async getNextOrPreviousPage(path: string): Promise<TransactionPageResponse> {
-        const paramsPath = path.split("?")[1];
+    public async getTransactionsByPagePath(nextOrPreviousPath: string): Promise<TransactionPageResponse> {
+        const paramsPath = nextOrPreviousPath.split("?")[1];
         const urlParams = new URLSearchParams(paramsPath);
         const filter = {
             before: urlParams.get("before") || undefined,
