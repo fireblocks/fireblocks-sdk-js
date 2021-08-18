@@ -32,7 +32,7 @@ import {
     VaultBalancesFilter,
     ValidateAddressResponse,
     CreateVaultAssetResponse,
-    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest
+    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse
 } from "./types";
 
 export * from "./types";
@@ -50,8 +50,8 @@ export class FireblocksSDK {
      * @param apiKey Your api key. This is a uuid you received from Fireblocks
      * @param apiBaseUrl The fireblocks server URL. Leave empty to use the default server
      */
-    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io") {
-        this.authProvider = new ApiTokenProvider(privateKey, apiKey);
+    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined) {
+        this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
 
         if (apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
@@ -63,7 +63,7 @@ export class FireblocksSDK {
     /**
      * Gets all assets that are currently supported by Fireblocks
      */
-    public async getSupportedAssets(): Promise<VaultAccountResponse[]> {
+    public async getSupportedAssets(): Promise<AssetTypeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
 
@@ -273,6 +273,14 @@ export class FireblocksSDK {
      */
     public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
+    }
+
+    /**
+     * Gets a transaction matching the external transaction id provided
+     * @param externalTxId
+     */
+    public async getTransactionByExternalTxId(externalTxId: string): Promise<TransactionResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/transactions/external_tx_id/${externalTxId}`);
     }
 
     /**
