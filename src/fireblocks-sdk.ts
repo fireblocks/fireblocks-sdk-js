@@ -290,26 +290,10 @@ export class FireblocksSDK {
 
     /**
      * Get next or previous page of transactions matching a given path
-     * @param nextOrPreviousPath  Each of path from pageDetails `getTransactionsWithPageInfo` response
+     * @param nextOrPreviousPath Each of path from pageDetails `getTransactionsWithPageInfo` response
      */
     public async getTransactionsByPagePath(nextOrPreviousPath: string): Promise<TransactionPageResponse> {
-        const paramsPath = nextOrPreviousPath.split("?")[1];
-        const urlParams = new URLSearchParams(paramsPath);
-        const filter = {
-            before: urlParams.get("before") || undefined,
-            after: urlParams.get("after") || undefined,
-            status: urlParams.get("status") || undefined,
-            txHash: urlParams.get("txHash") || undefined,
-            assets: urlParams.get("assets") || undefined,
-            sourceType: urlParams.get("sourceType") || undefined,
-            sourceId: urlParams.get("sourceId") || undefined,
-            destType: urlParams.get("destType") || undefined,
-            destId: urlParams.get("destId") || undefined,
-            limit: urlParams.get("limit") || undefined,
-            next: urlParams.get("next")  || undefined,
-            prev:  urlParams.get("prev")  || undefined,
-        };
-        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
+        return await this.apiClient.issueGetRequest(nextOrPreviousPath, true, true) as TransactionPageResponse;
     }
 
     /**
