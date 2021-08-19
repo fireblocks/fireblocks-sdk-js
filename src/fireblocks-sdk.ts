@@ -33,7 +33,7 @@ import {
     ValidateAddressResponse,
     CreateVaultAssetResponse,
     RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse,
-    TransactionPageResponse
+    TransactionPageResponse, TransactionPageFilter
 } from "./types";
 
 export * from "./types";
@@ -283,9 +283,8 @@ export class FireblocksSDK {
      * @param filter.status Only gets transactions with the spcified status
      * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
      */
-    public async getTransactionsWithPageInfo(filter: TransactionFilter): Promise<TransactionPageResponse> {
-        filter.orderBy = undefined;
-        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`, true) as TransactionPageResponse;
+    public async getTransactionsWithPageInfo(pageFilter: TransactionPageFilter): Promise<TransactionPageResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(pageFilter)}`, true) as TransactionPageResponse;
     }
 
     /**

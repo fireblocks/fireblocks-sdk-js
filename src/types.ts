@@ -312,6 +312,19 @@ export interface TransactionFilter {
     destId?: string;
 }
 
+export interface TransactionPageFilter {
+    before?: number;
+    after?: number;
+    status?: TransactionStatus;
+    limit?: number;
+    txHash?: string;
+    assets?: string;
+    sourceType?: PeerType;
+    destType?: PeerType;
+    sourceId?: string;
+    destId?: string;
+}
+
 export enum TransactionOrder {
     CREATED_AT = "createdAt",
     LAST_UPDATED = "lastUpdated"
