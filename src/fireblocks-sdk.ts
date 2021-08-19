@@ -277,7 +277,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets a list of transactions per page matching the given filter, `orderBy` field not allowed
+     * Gets a list of transactions per page matching the given filter
      * @param filter.before Only gets transactions created before a given timestamp (in milliseconds)
      * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
      * @param filter.status Only gets transactions with the spcified status
