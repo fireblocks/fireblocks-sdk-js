@@ -35,7 +35,8 @@ import {
     RequestOptions,
     AllocateFundsRequest,
     DeallocateFundsRequest,
-    ResendWebhooksResponse
+    ResendWebhooksResponse,
+    AssetTypeResponse
 } from "./types";
 
 export * from "./types";
@@ -66,7 +67,7 @@ export class FireblocksSDK {
     /**
      * Gets all assets that are currently supported by Fireblocks
      */
-    public async getSupportedAssets(): Promise<VaultAccountResponse[]> {
+    public async getSupportedAssets(): Promise<AssetTypeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
 
@@ -276,6 +277,14 @@ export class FireblocksSDK {
      */
     public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
+    }
+
+    /**
+     * Gets a transaction matching the external transaction id provided
+     * @param externalTxId
+     */
+    public async getTransactionByExternalTxId(externalTxId: string): Promise<TransactionResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/transactions/external_tx_id/${externalTxId}`);
     }
 
     /**

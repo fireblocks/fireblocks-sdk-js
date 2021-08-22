@@ -49,6 +49,7 @@ export interface CreateVaultAssetResponse {
     id: string;
     address: string;
     legacyAddress: string;
+    enterpriseAddress?: string;
     tag: string;
     eosAccountName: string;
 }
@@ -126,12 +127,14 @@ export interface DepositAddressResponse {
     customerRefId?: string;
     addressFormat: string;
     legacyAddress?: string;
+    enterpriseAddress?: string;
 }
 
 export interface GenerateAddressResponse {
     address: string;
     tag?: string;
     legacyAddress?: string;
+    enterpriseAddress?: string;
 }
 
 export enum SigningAlgorithm {
@@ -177,6 +180,7 @@ export interface TransactionArguments {
     extraParameters?: object;
     destinations?: TransactionDestination[];
     replaceTxByHash?: string;
+    externalTxId?: string;
 }
 
 export enum FeeLevel {
@@ -251,6 +255,7 @@ export interface TransactionResponse {
         timestamp: number;
     };
     signedMessages?: SignedMessageResponse[];
+    externalTxId?: string;
 }
 
 export interface SignedMessageResponse {
@@ -481,6 +486,14 @@ export interface ValidateAddressResponse {
     isValid: boolean;
     isActive: boolean;
     requiresTag: boolean;
+}
+
+export interface AssetTypeResponse {
+    id: string;
+    name: string;
+    type: string;
+    contractAddress: string;
+    nativeAsset: string;
 }
 
 export interface ResendWebhooksResponse {
