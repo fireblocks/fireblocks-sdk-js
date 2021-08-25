@@ -32,7 +32,7 @@ import {
     VaultBalancesFilter,
     ValidateAddressResponse,
     CreateVaultAssetResponse,
-    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse
+    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse, OffExchangeEntityResponse
 } from "./types";
 
 export * from "./types";
@@ -386,7 +386,7 @@ export class FireblocksSDK {
      * @param autoFuel The new value for the autoFuel flag
      */
     public async setAutoFuel(vaultAccountId: string, autoFuel: boolean): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, { autoFuel });
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, {autoFuel});
     }
 
     /**
@@ -708,7 +708,7 @@ export class FireblocksSDK {
     public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string): Promise<OperationSuccessResponse> {
         const url = `/v1/gas_station/configuration`;
 
-        const body = { gasThreshold, gasCap, maxGasPrice };
+        const body = {gasThreshold, gasCap, maxGasPrice};
 
         return await this.apiClient.issuePutRequest(url, body);
     }
@@ -716,10 +716,10 @@ export class FireblocksSDK {
     /**
      * Drop an ETH based transaction
      */
-    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string ) {
+    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string) {
         const url = `/v1/transactions/${txId}/drop`;
 
-        const body = { feeLevel, requestedFee };
+        const body = {feeLevel, requestedFee};
 
         return await this.apiClient.issuePostRequest(url, body);
     }
@@ -776,5 +776,28 @@ export class FireblocksSDK {
      */
     public async freezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
         return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {});
+    }
+
+    /**
+     * Get off exchanges entities
+     */
+    public async getOffExchanges(): Promise<OffExchangeEntityResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchanges`);
+    }
+
+    /**
+     * Get off exchange entity by virtual account id
+     * @param id the ID of the off exchange
+     */
+    public async getOffExchangeById(id: string): Promise<OffExchangeEntityResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchanges/${id}`);
+    }
+
+    /**
+     * Settle off exchange entity by virtual account id
+     * @param id the ID of the off exchange
+     */
+    public async settleOffExchangeById(id: string): Promise<void> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchanges/${id}/settle`, {});
     }
 }

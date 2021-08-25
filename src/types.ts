@@ -492,3 +492,17 @@ export interface AssetTypeResponse {
     contractAddress: string;
     nativeAsset: string;
 }
+
+export interface OffExchangeEntityResponse {
+    id: string;
+    vaultAccountId: string;
+    thirdPartyAccountId: string;
+    balance?: {
+        [assetId: string]: {
+            total?: string;
+            locked?: string;
+            pending?: string;
+            frozen?: string;
+        };
+    };
+}
