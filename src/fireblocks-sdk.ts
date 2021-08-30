@@ -779,25 +779,25 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get off exchanges entities
+     * Get off exchange accounts
      */
-    public async getOffExchanges(): Promise<OffExchangeEntityResponse[]> {
-        return await this.apiClient.issueGetRequest(`/v1/off_exchanges`);
+    public async getOffExchangeAccounts(): Promise<OffExchangeEntityResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange_accounts`);
     }
 
     /**
-     * Get off exchange entity by virtual account id
+     * Get off exchange account by virtual account id
      * @param id the ID of the off exchange
      */
-    public async getOffExchangeById(id: string): Promise<OffExchangeEntityResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/off_exchanges/${id}`);
+    public async getOffExchangeAccountById(id: string): Promise<OffExchangeEntityResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange_accounts/${id}`);
     }
 
     /**
-     * Settle off exchange entity by virtual account id
+     * Settle off exchange account by virtual account id
      * @param id the ID of the off exchange
      */
-    public async settleOffExchangeById(id: string): Promise<void> {
-        return await this.apiClient.issuePostRequest(`/v1/off_exchanges/${id}/settle`, {});
+    public async settleOffExchangeAccountById(id: string): Promise<void> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {});
     }
 }
