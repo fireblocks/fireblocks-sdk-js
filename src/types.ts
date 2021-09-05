@@ -49,6 +49,7 @@ export interface CreateVaultAssetResponse {
     id: string;
     address: string;
     legacyAddress: string;
+    enterpriseAddress?: string;
     tag: string;
     eosAccountName: string;
 }
@@ -126,12 +127,14 @@ export interface DepositAddressResponse {
     customerRefId?: string;
     addressFormat: string;
     legacyAddress?: string;
+    enterpriseAddress?: string;
 }
 
 export interface GenerateAddressResponse {
     address: string;
     tag?: string;
     legacyAddress?: string;
+    enterpriseAddress?: string;
 }
 
 export enum SigningAlgorithm {
