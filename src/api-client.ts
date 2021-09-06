@@ -18,15 +18,11 @@ export class ApiClient {
         });
 
         if (pageMode) {
-            console.log("prevPage: \n");
-            console.log(res.headers["prevPage"]);
-            console.log("nextPage: \n");
-            console.log(res.headers["nextPage"]);
             return {
                 transactions: res.body,
                 pageDetails: {
-                    prevPage: res.headers["prevPage"] ? res.headers["prevPage"].toString() :  "",
-                    nextPage:  res.headers["nextPage"] ? res.headers["nextPage"].toString() :  "",
+                    prevPage: res.headers["prev-page"] ? res.headers["prev-page"].toString() :  "",
+                    nextPage:  res.headers["next-page"] ? res.headers["next-page"].toString() :  "",
                 }
             };
         }
