@@ -209,8 +209,8 @@ export interface TransactionPageResponse {
 }
 
 export interface PageDetails {
-    previous: string;
-    next: string;
+    prevPage: string;
+    nextPage: string;
 }
 
 export interface TransactionResponse {

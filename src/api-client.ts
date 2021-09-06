@@ -21,8 +21,8 @@ export class ApiClient {
             return {
                 transactions: res.body,
                 pageDetails: {
-                    previous: res.headers["previous"] ? res.headers["previous"].toString() :  "",
-                    next:  res.headers["next"] ? res.headers["next"].toString() :  "",
+                    previous: res.headers["prevPage"] ? res.headers["prevPage"].toString() :  "",
+                    next:  res.headers["nextPage"] ? res.headers["nextPage"].toString() :  "",
                 }
             };
         }
