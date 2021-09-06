@@ -18,6 +18,10 @@ export class ApiClient {
         });
 
         if (pageMode) {
+            console.log("prevPage: \n");
+            console.log(res.headers["prevPage"]);
+            console.log("nextPage: \n");
+            console.log(res.headers["nextPage"]);
             return {
                 transactions: res.body,
                 pageDetails: {
