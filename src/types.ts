@@ -18,7 +18,7 @@ export interface AssetResponse {
     /**
      * @deprecated Replaced by "total"
      */
-    balance?: string;
+    balance?: striAssetReng;
     lockedAmount?: string;
     available: string;
     pending: string;
@@ -28,6 +28,7 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    blockInfo?: BlockInfo;
     allocatedBalances?: {
         allocationId: string;
         thirdPartyAccountId?: string;
@@ -193,7 +194,7 @@ export interface ExchangeResponse {
     id: string;
     type: string;
     name: string;
-    assets: AssetResponse[];
+    assets: sponse[];
     isSubaccount: boolean;
     status: string;
 }
