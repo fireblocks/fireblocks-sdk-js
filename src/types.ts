@@ -28,6 +28,8 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    blockHeight?: string;
+    blockHash?: string;
     allocatedBalances?: {
         allocationId: string;
         thirdPartyAccountId?: string;
