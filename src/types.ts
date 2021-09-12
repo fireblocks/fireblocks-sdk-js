@@ -256,6 +256,12 @@ export interface TransactionResponse {
     };
     signedMessages?: SignedMessageResponse[];
     externalTxId?: string;
+    blockInfo?: BlockInfo;
+}
+
+export interface BlockInfo {
+    blockHeight?: string;
+    blockHash?: string;
 }
 
 export interface SignedMessageResponse {
