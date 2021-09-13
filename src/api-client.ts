@@ -35,7 +35,7 @@ export class ApiClient {
 
         const idempotencyKey = requestOptions?.idempotencyKey;
 
-        return await requestPromise.post({
+        return requestPromise.post({
             uri: this.apiBaseUrl + path,
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
