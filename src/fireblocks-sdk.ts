@@ -272,39 +272,23 @@ export class FireblocksSDK {
      * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
      * @param filter.orderBy Determines the order of the results
      */
-    public async getTransactions(filter?: TransactionFilter, pageFilter?: TransactionPageFilter, nextOrPreviousPath?: string ): Promise<TransactionResponse[] | TransactionPageResponse>  {
+    public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
+    }
+    /**
+     * Gets a list of transactions per page matching the given filter or `nextOrPreviousPath`
+     * @param pageFilter Get transactions matching pageFilter params
+     * @param nextOrPreviousPath Get transactions from each of pageDetails paths
+     */
+    public async getTransactionsWithPageInfo(pageFilter?: TransactionPageFilter, nextOrPreviousPath?: string): Promise<TransactionPageResponse> {
         if (pageFilter) {
             return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(pageFilter)}`, true) as TransactionPageResponse;
         } else if (nextOrPreviousPath) {
             const index = nextOrPreviousPath.indexOf("/v1/");
             const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
             return await this.apiClient.issueGetRequest(path, true) as TransactionPageResponse;
-        } else {
-            return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`) as TransactionResponse[];
         }
     }
-
-    // /**
-    //  * Gets a list of transactions per page matching the given filter
-    //  * @param filter.before Only gets transactions created before a given timestamp (in milliseconds)
-    //  * @param filter.after Only gets transactions created after a given timestamp (in milliseconds)
-    //  * @param filter.status Only gets transactions with the spcified status
-    //  * @param filter.limit Limit the amount of returned results. If not specified, a limit of 200 results will be used
-    //  */
-    // public async getTransactionsWithPageInfo(pageFilter: TransactionPageFilter): Promise<TransactionPageResponse> {
-    //     return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(pageFilter)}`, true) as TransactionPageResponse;
-    // }
-    //
-    // /**
-    //  * Get next or previous page of transactions matching a given path
-    //  * @param nextOrPreviousPath Each of path from pageDetails `getTransactionsWithPageInfo` response
-    //  */
-    // public async getTransactionsByPagePath(nextOrPreviousPath: string): Promise<TransactionPageResponse> {
-    //     const index = nextOrPreviousPath.indexOf("/v1/");
-    //     const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
-    //     return await this.apiClient.issueGetRequest(path, true) as TransactionPageResponse;
-    // }
-
     /**
      * Gets a transaction matching the external transaction id provided
      * @param externalTxId
