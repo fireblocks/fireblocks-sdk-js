@@ -282,11 +282,11 @@ export class FireblocksSDK {
      */
     public async getTransactionsWithPageInfo(pageFilter?: TransactionPageFilter, nextOrPreviousPath?: string): Promise<TransactionPageResponse> {
         if (pageFilter) {
-            return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(pageFilter)}`, true) as TransactionPageResponse;
+            return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(pageFilter)}`, true);
         } else if (nextOrPreviousPath) {
             const index = nextOrPreviousPath.indexOf("/v1/");
             const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
-            return await this.apiClient.issueGetRequest(path, true) as TransactionPageResponse;
+            return await this.apiClient.issueGetRequest(path, true);
         }
     }
     /**
