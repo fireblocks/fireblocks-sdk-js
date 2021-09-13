@@ -276,7 +276,7 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
     }
     /**
-     * Gets a list of transactions per page matching the given filter or `nextOrPreviousPath`
+     * Gets a list of transactions per page matching the given filter or path
      * @param pageFilter Get transactions matching pageFilter params
      * @param nextOrPreviousPath Get transactions from each of pageDetails paths
      */
