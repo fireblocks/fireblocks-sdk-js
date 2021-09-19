@@ -90,6 +90,8 @@ export interface EstimatedFee {
     networkFee?: string;
     gasPrice?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface EstimatedTransactionFee {
@@ -97,6 +99,8 @@ export interface EstimatedTransactionFee {
     gasPrice?: string;
     gasLimit?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface TransferPeerPath {
