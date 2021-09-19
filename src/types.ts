@@ -503,3 +503,7 @@ export interface AssetTypeResponse {
     contractAddress: string;
     nativeAsset: string;
 }
+
+export interface ResendWebhooksResponse {
+    webhooksCount: number;
+}
