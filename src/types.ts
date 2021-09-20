@@ -111,7 +111,7 @@ export interface TransferPeerPath {
     address?: string;
 }
 
-interface DestinationTransferPeerPath {
+export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
     virtualId?: string;
@@ -119,7 +119,7 @@ interface DestinationTransferPeerPath {
     oneTimeAddress?: IOneTimeAddress;
 }
 
-interface IOneTimeAddress {
+export interface IOneTimeAddress {
     address: string;
     tag?: string;
 }
@@ -187,6 +187,7 @@ export interface TransactionArguments {
     destinations?: TransactionDestination[];
     replaceTxByHash?: string;
     externalTxId?: string;
+    treatAsGrossAmount?: boolean;
 }
 
 export enum FeeLevel {
