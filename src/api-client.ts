@@ -5,17 +5,29 @@ import { RequestOptions } from "./types";
 export class ApiClient {
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string) { }
 
-    public async issueGetRequest(path: string) {
+    public async issueGetRequest(path: string, pageMode: boolean = false) {
         const token = this.authProvider.signJwt(path);
-
-        return await requestPromise.get({
+        const res = await requestPromise.get({
             uri: this.apiBaseUrl + path,
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
             },
-            json: true
+            json: true,
+            resolveWithFullResponse: true
         });
+
+        if (pageMode) {
+            return {
+                transactions: res.body,
+                pageDetails: {
+                    prevPage: res.headers["prev-page"] ? res.headers["prev-page"].toString() :  "",
+                    nextPage:  res.headers["next-page"] ? res.headers["next-page"].toString() :  "",
+                }
+            };
+        }
+
+        return res.body;
     }
 
     public async issuePostRequest(path: string, body: any, requestOptions?: RequestOptions) {

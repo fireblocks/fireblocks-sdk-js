@@ -33,10 +33,12 @@ import {
     ValidateAddressResponse,
     CreateVaultAssetResponse,
     RequestOptions,
+    ResendWebhooksResponse,
+    AssetTypeResponse,
     AllocateFundsRequest,
     DeallocateFundsRequest,
-    ResendWebhooksResponse,
-    AssetTypeResponse
+    TransactionPageResponse,
+    TransactionPageFilter
 } from "./types";
 
 export * from "./types";
@@ -278,7 +280,20 @@ export class FireblocksSDK {
     public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
     }
-
+    /**
+     * Gets a list of transactions per page matching the given filter or path
+     * @param pageFilter Get transactions matching pageFilter params
+     * @param nextOrPreviousPath Get transactions from each of pageDetails paths
+     */
+    public async getTransactionsWithPageInfo(pageFilter?: TransactionPageFilter, nextOrPreviousPath?: string): Promise<TransactionPageResponse> {
+        if (pageFilter) {
+            return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(pageFilter)}`, true);
+        } else if (nextOrPreviousPath) {
+            const index = nextOrPreviousPath.indexOf("/v1/");
+            const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
+            return await this.apiClient.issueGetRequest(path, true);
+        }
+    }
     /**
      * Gets a transaction matching the external transaction id provided
      * @param externalTxId
@@ -780,12 +795,5 @@ export class FireblocksSDK {
      */
     public async freezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
         return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {});
-    }
-
-    /**
-     * Resend failed webhooks
-     */
-    public async resendWebhooks(): Promise<ResendWebhooksResponse> {
-        return await this.apiClient.issuePostRequest("/v1/webhooks/resend", {});
     }
 }

@@ -213,6 +213,16 @@ export interface FiatAccountResponse {
     assets: AssetResponse[];
 }
 
+export interface TransactionPageResponse {
+    transactions: TransactionResponse[];
+    pageDetails: PageDetails;
+}
+
+export interface PageDetails {
+    prevPage: string;
+    nextPage: string;
+}
+
 export interface TransactionResponse {
     id: string;
     assetId: string;
@@ -309,6 +319,19 @@ export interface TransactionFilter {
     after?: number;
     status?: TransactionStatus;
     orderBy?: TransactionOrder;
+    limit?: number;
+    txHash?: string;
+    assets?: string;
+    sourceType?: PeerType;
+    destType?: PeerType;
+    sourceId?: string;
+    destId?: string;
+}
+
+export interface TransactionPageFilter {
+    before?: number;
+    after?: number;
+    status?: TransactionStatus;
     limit?: number;
     txHash?: string;
     assets?: string;
