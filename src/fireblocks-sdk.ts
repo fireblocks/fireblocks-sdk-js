@@ -32,6 +32,11 @@ import {
     VaultBalancesFilter,
     ValidateAddressResponse,
     CreateVaultAssetResponse,
+    RequestOptions,
+    AllocateFundsRequest,
+    DeallocateFundsRequest,
+    ResendWebhooksResponse,
+    AssetTypeResponse
     RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse,
     TransactionPageResponse, TransactionPageFilter
 } from "./types";

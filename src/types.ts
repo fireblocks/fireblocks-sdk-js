@@ -28,6 +28,8 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    blockHeight?: string;
+    blockHash?: string;
     allocatedBalances?: {
         allocationId: string;
         thirdPartyAccountId?: string;
@@ -49,6 +51,7 @@ export interface CreateVaultAssetResponse {
     id: string;
     address: string;
     legacyAddress: string;
+    enterpriseAddress?: string;
     tag: string;
     eosAccountName: string;
 }
@@ -87,6 +90,8 @@ export interface EstimatedFee {
     networkFee?: string;
     gasPrice?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface EstimatedTransactionFee {
@@ -94,6 +99,8 @@ export interface EstimatedTransactionFee {
     gasPrice?: string;
     gasLimit?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface TransferPeerPath {
@@ -104,7 +111,7 @@ export interface TransferPeerPath {
     address?: string;
 }
 
-interface DestinationTransferPeerPath {
+export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
     virtualId?: string;
@@ -112,7 +119,7 @@ interface DestinationTransferPeerPath {
     oneTimeAddress?: IOneTimeAddress;
 }
 
-interface IOneTimeAddress {
+export interface IOneTimeAddress {
     address: string;
     tag?: string;
 }
@@ -126,12 +133,14 @@ export interface DepositAddressResponse {
     customerRefId?: string;
     addressFormat: string;
     legacyAddress?: string;
+    enterpriseAddress?: string;
 }
 
 export interface GenerateAddressResponse {
     address: string;
     tag?: string;
     legacyAddress?: string;
+    enterpriseAddress?: string;
 }
 
 export enum SigningAlgorithm {
@@ -178,6 +187,7 @@ export interface TransactionArguments {
     destinations?: TransactionDestination[];
     replaceTxByHash?: string;
     externalTxId?: string;
+    treatAsGrossAmount?: boolean;
 }
 
 export enum FeeLevel {
@@ -263,6 +273,12 @@ export interface TransactionResponse {
     };
     signedMessages?: SignedMessageResponse[];
     externalTxId?: string;
+    blockInfo?: BlockInfo;
+}
+
+export interface BlockInfo {
+    blockHeight?: string;
+    blockHash?: string;
 }
 
 export interface SignedMessageResponse {
@@ -514,4 +530,8 @@ export interface AssetTypeResponse {
     type: string;
     contractAddress: string;
     nativeAsset: string;
+}
+
+export interface ResendWebhooksResponse {
+    webhooksCount: number;
 }
