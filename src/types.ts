@@ -533,6 +533,15 @@ export interface AssetTypeResponse {
     nativeAsset: string;
 }
 
+export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    enabled: boolean;
+    role: string;
+}
+
 export interface ResendWebhooksResponse {
     webhooksCount: number;
 }
