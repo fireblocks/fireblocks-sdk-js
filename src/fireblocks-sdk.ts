@@ -37,7 +37,9 @@ import {
     DeallocateFundsRequest,
     ResendWebhooksResponse,
     AssetTypeResponse,
-    User
+    User,
+    TransactionPageResponse,
+    TransactionPageFilter
 } from "./types";
 
 export * from "./types";
@@ -781,6 +783,13 @@ export class FireblocksSDK {
      */
     public async freezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
         return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {});
+    }
+
+    /**
+     * Resend failed webhooks
+     */
+    public async resendWebhooks(): Promise<ResendWebhooksResponse> {
+        return await this.apiClient.issuePostRequest("/v1/webhooks/resend", {});
     }
     
     /**

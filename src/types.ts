@@ -111,7 +111,7 @@ export interface TransferPeerPath {
     address?: string;
 }
 
-interface DestinationTransferPeerPath {
+export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
     virtualId?: string;
@@ -119,7 +119,7 @@ interface DestinationTransferPeerPath {
     oneTimeAddress?: IOneTimeAddress;
 }
 
-interface IOneTimeAddress {
+export interface IOneTimeAddress {
     address: string;
     tag?: string;
 }
@@ -176,6 +176,7 @@ export interface TransactionArguments {
     feeLevel?: FeeLevel;
     failOnLowFee?: boolean;
     maxFee?: string;
+    priorityFee?: number | string;
     gasPrice?: number | string;
     gasLimit?: number | string;
     note?: string;
@@ -187,6 +188,7 @@ export interface TransactionArguments {
     destinations?: TransactionDestination[];
     replaceTxByHash?: string;
     externalTxId?: string;
+    treatAsGrossAmount?: boolean;
 }
 
 export enum FeeLevel {
@@ -210,6 +212,16 @@ export interface FiatAccountResponse {
     name: string;
     address?: string;
     assets: AssetResponse[];
+}
+
+export interface TransactionPageResponse {
+    transactions: TransactionResponse[];
+    pageDetails: PageDetails;
+}
+
+export interface PageDetails {
+    prevPage: string;
+    nextPage: string;
 }
 
 export interface TransactionResponse {
@@ -308,6 +320,19 @@ export interface TransactionFilter {
     after?: number;
     status?: TransactionStatus;
     orderBy?: TransactionOrder;
+    limit?: number;
+    txHash?: string;
+    assets?: string;
+    sourceType?: PeerType;
+    destType?: PeerType;
+    sourceId?: string;
+    destId?: string;
+}
+
+export interface TransactionPageFilter {
+    before?: number;
+    after?: number;
+    status?: TransactionStatus;
     limit?: number;
     txHash?: string;
     assets?: string;
