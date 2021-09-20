@@ -33,12 +33,12 @@ import {
     ValidateAddressResponse,
     CreateVaultAssetResponse,
     RequestOptions,
+    ResendWebhooksResponse,
+    AssetTypeResponse,
     AllocateFundsRequest,
     DeallocateFundsRequest,
-    ResendWebhooksResponse,
-    AssetTypeResponse
-    RequestOptions, AllocateFundsRequest, DeallocateFundsRequest, AssetTypeResponse,
-    TransactionPageResponse, TransactionPageFilter
+    TransactionPageResponse,
+    TransactionPageFilter
 } from "./types";
 
 export * from "./types";
