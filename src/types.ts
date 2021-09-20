@@ -28,6 +28,8 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    blockHeight?: string;
+    blockHash?: string;
     allocatedBalances?: {
         allocationId: string;
         thirdPartyAccountId?: string;
@@ -88,6 +90,8 @@ export interface EstimatedFee {
     networkFee?: string;
     gasPrice?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface EstimatedTransactionFee {
@@ -95,6 +99,8 @@ export interface EstimatedTransactionFee {
     gasPrice?: string;
     gasLimit?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface TransferPeerPath {
@@ -256,6 +262,12 @@ export interface TransactionResponse {
     };
     signedMessages?: SignedMessageResponse[];
     externalTxId?: string;
+    blockInfo?: BlockInfo;
+}
+
+export interface BlockInfo {
+    blockHeight?: string;
+    blockHash?: string;
 }
 
 export interface SignedMessageResponse {
@@ -503,4 +515,8 @@ export interface User {
     email: string;
     enabled: boolean;
     role: string;
+}
+
+export interface ResendWebhooksResponse {
+    webhooksCount: number;
 }
