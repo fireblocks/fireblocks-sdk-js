@@ -281,7 +281,7 @@ export class FireblocksSDK {
     public async getTransactions(filter: TransactionFilter): Promise<TransactionResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(filter)}`);
     }
-    
+
     /**
      * Gets a list of transactions per page matching the given filter or path
      * @param pageFilter Get transactions matching pageFilter params
@@ -295,6 +295,8 @@ export class FireblocksSDK {
             const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
             return await this.apiClient.issueGetRequest(path, true);
         }
+
+        return {transactions: [], pageDetails: { prevPage:  "", nextPage: "" }};
     }
 
     /**
@@ -806,7 +808,7 @@ export class FireblocksSDK {
     public async resendWebhooks(): Promise<ResendWebhooksResponse> {
         return await this.apiClient.issuePostRequest("/v1/webhooks/resend", {});
     }
-    
+
     /**
      * Gets all Users for your tenant
      */
