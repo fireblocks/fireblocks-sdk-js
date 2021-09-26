@@ -189,6 +189,7 @@ export interface TransactionArguments {
     replaceTxByHash?: string;
     externalTxId?: string;
     treatAsGrossAmount?: boolean;
+    forceSweep?: boolean;
 }
 
 export enum FeeLevel {
