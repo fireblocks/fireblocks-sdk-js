@@ -402,6 +402,7 @@ export enum TransactionOperation {
     REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND",
     RAW = "RAW",
     CONTRACT_CALL = "CONTRACT_CALL",
+    TYPED_MESSAGE = "TYPED_MESSAGE",
 }
 
 export interface AllocateFundsRequest {
