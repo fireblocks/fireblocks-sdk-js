@@ -275,7 +275,7 @@ export interface TransactionResponse {
     signedMessages?: SignedMessageResponse[];
     externalTxId?: string;
     blockInfo?: BlockInfo;
-    authorizationInfo: AuthorizationInfo;
+    authorizationInfo?: AuthorizationInfo;
 }
 
 export interface AuthorizationInfo {
