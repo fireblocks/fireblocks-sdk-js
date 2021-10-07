@@ -275,6 +275,20 @@ export interface TransactionResponse {
     signedMessages?: SignedMessageResponse[];
     externalTxId?: string;
     blockInfo?: BlockInfo;
+    authorizationInfo?: AuthorizationInfo;
+}
+
+export interface AuthorizationInfo {
+    allowOperatorAsAuthorizer: boolean;
+    logic: "OR" | "AND";
+    groups: {
+        users: UserGroup;
+        th: number
+    }[];
+}
+
+export interface UserGroup {
+    [id: string]: string;
 }
 
 export interface BlockInfo {
