@@ -56,17 +56,23 @@ export interface CreateVaultAssetResponse {
     eosAccountName: string;
 }
 
-export interface WalletAssetResponse extends AssetResponse {
+export interface WalletContainerResponse<WalletAssetType> {
+    id: string;
+    name: string;
+    assets: WalletAssetType[];
+    customerRefId?: string;
+}
+
+export interface ExternalWalletAsset {
+    id: string;
     status: string;
     address: string;
     tag: string;
+    activationTime?: string;
 }
 
-export interface WalletContainerResponse {
-    id: string;
-    name: string;
-    assets: WalletAssetResponse[];
-    customerRefId?: string;
+export interface InternalWalletAsset extends ExternalWalletAsset {
+    balance: string;
 }
 
 export interface CreateTransactionResponse {
