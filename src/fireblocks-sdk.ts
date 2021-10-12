@@ -174,6 +174,12 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}`);
     }
 
+
+    public async createNetworkId(name: string) {
+        const body = { name };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
+    }
+
     /**
      * Gets all exchange accounts for your tenant
      */
