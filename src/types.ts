@@ -530,6 +530,7 @@ export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;
     minAmountThreshold?: number;
+    assetId?: string;
 }
 
 export interface VaultBalancesFilter {
