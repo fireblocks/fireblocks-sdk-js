@@ -187,9 +187,8 @@ export class FireblocksSDK {
      * Gets a single networkId info by networkId
      */
     public async getNetworkId(networkId: string) {
-        return await this.apiClient.issueGetRequest(`v1/network_ids/${networkId}`);
+        return await this.apiClient.issueGetRequest(`/v1/network_ids/${networkId}`);
     }
-
 
     /**
      * Gets all exchange accounts for your tenant
