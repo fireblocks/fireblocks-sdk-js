@@ -7,7 +7,6 @@ export class ApiClient {
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
         const token = this.authProvider.signJwt(path);
-        console.log(path);
         const res = await requestPromise.get({
             uri: this.apiBaseUrl + path,
             headers: {

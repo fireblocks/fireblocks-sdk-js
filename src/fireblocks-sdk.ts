@@ -187,7 +187,6 @@ export class FireblocksSDK {
      * Gets a single networkId info by networkId
      */
     public async getNetworkId(networkId: string) {
-        console.log(`networkId: ${networkId}`);
         return await this.apiClient.issueGetRequest(`/v1/network_ids/${networkId}`);
     }
 
