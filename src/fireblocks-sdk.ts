@@ -169,6 +169,14 @@ export class FireblocksSDK {
 
     /**
      * Creates a network connection
+     * @param connectionId the connectionId between the peers
+     */
+    public async removeNetworkConnection(connectionId: string) {
+        return await this.apiClient.issuePostRequest(`/v1/network_connections/${connectionId}`, {});
+    }
+
+    /**
+     * Creates a network connection
      * @param localNetworkId NetworkId for the local
      * @param remoteNetworkId NetworkId for the remote
      */
