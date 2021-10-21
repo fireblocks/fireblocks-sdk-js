@@ -209,6 +209,13 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets a all discoverable networkIds
+     */
+    public async getDiscoverableNetworkIds() {
+        return await this.apiClient.issueGetRequest(`/v1/network_ids`);
+    }
+
+    /**
      * Gets all exchange accounts for your tenant
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
