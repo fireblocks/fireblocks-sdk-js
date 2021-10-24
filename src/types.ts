@@ -28,6 +28,8 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    blockHeight?: string;
+    blockHash?: string;
     allocatedBalances?: {
         allocationId: string;
         thirdPartyAccountId?: string;
@@ -54,17 +56,23 @@ export interface CreateVaultAssetResponse {
     eosAccountName: string;
 }
 
-export interface WalletAssetResponse extends AssetResponse {
+export interface WalletContainerResponse<WalletAssetType> {
+    id: string;
+    name: string;
+    assets: WalletAssetType[];
+    customerRefId?: string;
+}
+
+export interface ExternalWalletAsset {
+    id: string;
     status: string;
     address: string;
     tag: string;
+    activationTime?: string;
 }
 
-export interface WalletContainerResponse {
-    id: string;
-    name: string;
-    assets: WalletAssetResponse[];
-    customerRefId?: string;
+export interface InternalWalletAsset extends ExternalWalletAsset {
+    balance: string;
 }
 
 export interface CreateTransactionResponse {
@@ -88,6 +96,8 @@ export interface EstimatedFee {
     networkFee?: string;
     gasPrice?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface EstimatedTransactionFee {
@@ -95,6 +105,8 @@ export interface EstimatedTransactionFee {
     gasPrice?: string;
     gasLimit?: string;
     feePerByte?: string;
+    baseFee?: string;
+    priorityFee?: string;
 }
 
 export interface TransferPeerPath {
@@ -105,7 +117,7 @@ export interface TransferPeerPath {
     address?: string;
 }
 
-interface DestinationTransferPeerPath {
+export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
     virtualId?: string;
@@ -113,7 +125,7 @@ interface DestinationTransferPeerPath {
     oneTimeAddress?: IOneTimeAddress;
 }
 
-interface IOneTimeAddress {
+export interface IOneTimeAddress {
     address: string;
     tag?: string;
 }
@@ -170,6 +182,7 @@ export interface TransactionArguments {
     feeLevel?: FeeLevel;
     failOnLowFee?: boolean;
     maxFee?: string;
+    priorityFee?: number | string;
     gasPrice?: number | string;
     gasLimit?: number | string;
     note?: string;
@@ -181,6 +194,8 @@ export interface TransactionArguments {
     destinations?: TransactionDestination[];
     replaceTxByHash?: string;
     externalTxId?: string;
+    treatAsGrossAmount?: boolean;
+    forceSweep?: boolean;
 }
 
 export enum FeeLevel {
@@ -204,6 +219,16 @@ export interface FiatAccountResponse {
     name: string;
     address?: string;
     assets: AssetResponse[];
+}
+
+export interface TransactionPageResponse {
+    transactions: TransactionResponse[];
+    pageDetails: PageDetails;
+}
+
+export interface PageDetails {
+    prevPage: string;
+    nextPage: string;
 }
 
 export interface TransactionResponse {
@@ -256,6 +281,26 @@ export interface TransactionResponse {
     };
     signedMessages?: SignedMessageResponse[];
     externalTxId?: string;
+    blockInfo?: BlockInfo;
+    authorizationInfo?: AuthorizationInfo;
+}
+
+export interface AuthorizationInfo {
+    allowOperatorAsAuthorizer: boolean;
+    logic: "OR" | "AND";
+    groups: {
+        users: UserGroup;
+        th: number
+    }[];
+}
+
+export interface UserGroup {
+    [id: string]: string;
+}
+
+export interface BlockInfo {
+    blockHeight?: string;
+    blockHash?: string;
 }
 
 export interface SignedMessageResponse {
@@ -296,6 +341,19 @@ export interface TransactionFilter {
     after?: number;
     status?: TransactionStatus;
     orderBy?: TransactionOrder;
+    limit?: number;
+    txHash?: string;
+    assets?: string;
+    sourceType?: PeerType;
+    destType?: PeerType;
+    sourceId?: string;
+    destId?: string;
+}
+
+export interface TransactionPageFilter {
+    before?: number;
+    after?: number;
+    status?: TransactionStatus;
     limit?: number;
     txHash?: string;
     assets?: string;
@@ -472,6 +530,7 @@ export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;
     minAmountThreshold?: number;
+    assetId?: string;
 }
 
 export interface VaultBalancesFilter {
@@ -494,6 +553,19 @@ export interface AssetTypeResponse {
     type: string;
     contractAddress: string;
     nativeAsset: string;
+}
+
+export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    enabled: boolean;
+    role: string;
+}
+
+export interface ResendWebhooksResponse {
+    webhooksCount: number;
 }
 
 export interface OffExchangeEntityResponse {

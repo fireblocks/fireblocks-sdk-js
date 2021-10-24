@@ -1,6 +1,7 @@
 import { IAuthProvider } from "./iauth-provider";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import { v4 as uuid } from "uuid";
 
 export class ApiTokenProvider implements IAuthProvider {
 
@@ -9,7 +10,7 @@ export class ApiTokenProvider implements IAuthProvider {
     signJwt(path: string, bodyJson?: any): string {
         const token =  jwt.sign({
             uri: path,
-            nonce: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+            nonce: uuid(),
             iat: Math.floor(Date.now() / 1000),
             exp: Math.floor(Date.now() / 1000) + 55,
             sub: this.apiKey,
