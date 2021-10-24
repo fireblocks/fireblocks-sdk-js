@@ -567,3 +567,17 @@ export interface User {
 export interface ResendWebhooksResponse {
     webhooksCount: number;
 }
+
+export interface OffExchangeEntityResponse {
+    id: string;
+    vaultAccountId: string;
+    thirdPartyAccountId: string;
+    balance?: {
+        [assetId: string]: {
+            total?: string;
+            locked?: string;
+            pending?: string;
+            frozen?: string;
+        };
+    };
+}
