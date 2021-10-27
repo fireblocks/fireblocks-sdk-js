@@ -172,7 +172,7 @@ export class FireblocksSDK {
      * @param connectionId the connectionId between the peers
      */
     public async removeNetworkConnection(connectionId: string) {
-        return await this.apiClient.issuePostRequest(`/v1/network_connections/${connectionId}`, {});
+        return await this.apiClient.issueDeleteRequest(`/v1/network_connections/${connectionId}`);
     }
 
     /**
