@@ -221,7 +221,7 @@ export class FireblocksSDK {
      * @param isDiscoverable The Discoverability to set
      */
     public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean) {
-        const body = { isDiscoverable };
+        const body = { isDiscoverable: isDiscoverable };
         return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
     }
 
