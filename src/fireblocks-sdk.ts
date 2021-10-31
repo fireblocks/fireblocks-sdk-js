@@ -216,6 +216,16 @@ export class FireblocksSDK {
     }
 
     /**
+     * Set a new networkId
+     * @param networkId The networkId
+     * @param isDiscoverable The Discoverability to set
+     */
+    public async SetNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean) {
+        const body = { isDiscoverable };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
+    }
+
+    /**
      * Gets all exchange accounts for your tenant
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
