@@ -553,6 +553,7 @@ export interface AssetTypeResponse {
     type: string;
     contractAddress: string;
     nativeAsset: string;
+    decimals: number;
 }
 
 export interface User {
