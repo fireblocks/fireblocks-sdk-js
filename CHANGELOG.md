@@ -12,24 +12,18 @@ All notable changes to this project will be documented in this file. Dates are d
 - added decimals to assetTypeResponse [`#51`](https://github.com/fireblocks/fireblocks-sdk-js/pull/51)
 - add off exchanges endpoints [`#42`](https://github.com/fireblocks/fireblocks-sdk-js/pull/42)
 - Add forceSweep field to TransactionArguments [`#46`](https://github.com/fireblocks/fireblocks-sdk-js/pull/46)
-- package-lock.json [`4b45b61`](https://github.com/fireblocks/fireblocks-sdk-js/commit/4b45b617ce35ccc882be4d096008243438fd0523)
-- remove yarn.lock / package-lock [`d0f22c5`](https://github.com/fireblocks/fireblocks-sdk-js/commit/d0f22c5e91b710d4f59a88f225ac03db308f227e)
-- release 1.7.3 [`74835ea`](https://github.com/fireblocks/fireblocks-sdk-js/commit/74835ea2d178ca327fdf6a8bbb7dd6c904cdeb26)
 
 #### [v1.7.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.1...v1.7.2)
 
 > 7 October 2021
 
 - added authorizationInfo field to TransactionResponse interface [`#49`](https://github.com/fireblocks/fireblocks-sdk-js/pull/49)
-- Modify types for internal and external wallet assets [`c3d0c25`](https://github.com/fireblocks/fireblocks-sdk-js/commit/c3d0c25613e22d0c76b0cff4d88bcb9a44328ba2)
 
 #### [v1.7.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.0...v1.7.1)
 
 > 29 September 2021
 
 - Handle empty value passed to page request [`#47`](https://github.com/fireblocks/fireblocks-sdk-js/pull/47)
-- Use uuid as nonce instead of random number [`994d90e`](https://github.com/fireblocks/fireblocks-sdk-js/commit/994d90e6a4d1af9aa75f35f5c36b6c4292d1bc9b)
-- handle empty val [`3b1f590`](https://github.com/fireblocks/fireblocks-sdk-js/commit/3b1f590343fcc6e30f78dee934491e66945ef294)
 
 #### [v1.7.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.6.4...v1.7.0)
 
@@ -43,9 +37,6 @@ All notable changes to this project will be documented in this file. Dates are d
 - Resend webhooks [`#40`](https://github.com/fireblocks/fireblocks-sdk-js/pull/40)
 - Cor 7813 blockheight blockhash in assetresponse [`#45`](https://github.com/fireblocks/fireblocks-sdk-js/pull/45)
 - COR-7812 blockInfo in txn response [`#44`](https://github.com/fireblocks/fireblocks-sdk-js/pull/44)
-- added role to User type [`b64c75c`](https://github.com/fireblocks/fireblocks-sdk-js/commit/b64c75cf4a5d2f68f60852a6868e275b40a2a624)
-- yarn.lock [`1c8cf4d`](https://github.com/fireblocks/fireblocks-sdk-js/commit/1c8cf4dd5b529bcbb2ddf847f6cf63fe3ac8b3e1)
-- COR-1597 merge [`aa5742b`](https://github.com/fireblocks/fireblocks-sdk-js/commit/aa5742b498b2ece1124bf4bd931ae9093edf7f5d)
 
 #### [v1.6.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.6.3...v1.6.4)
 
@@ -58,9 +49,6 @@ All notable changes to this project will be documented in this file. Dates are d
 > 15 August 2021
 
 - External tx ID [`#35`](https://github.com/fireblocks/fireblocks-sdk-js/pull/35)
-- Update response type for getSupportedAsset [`f271968`](https://github.com/fireblocks/fireblocks-sdk-js/commit/f271968177ca127a455f031f9ae7f5a9aa8e6ec0)
-- types update [`86e609d`](https://github.com/fireblocks/fireblocks-sdk-js/commit/86e609d83f5600fdb1385fb898d008b2744cf629)
-- Update types.ts [`d57212d`](https://github.com/fireblocks/fireblocks-sdk-js/commit/d57212dbcecedf99c4386437d5f804f6376c3be7)
 
 #### [v1.6.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.6.1...v1.6.2)
 
@@ -74,7 +62,6 @@ All notable changes to this project will be documented in this file. Dates are d
 
 - Add off exchange custody types [`#34`](https://github.com/fireblocks/fireblocks-sdk-js/pull/34)
 - feat(fireblocks-sdk): bring your own auth provider [`#29`](https://github.com/fireblocks/fireblocks-sdk-js/pull/29)
-- feat: add off exchange custody types [`b997493`](https://github.com/fireblocks/fireblocks-sdk-js/commit/b997493cc0edd6e2e117583b82c306da020c24b8)
 
 #### [v1.5.22](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.21...v1.5.22)
 
@@ -87,9 +74,6 @@ All notable changes to this project will be documented in this file. Dates are d
 > 10 May 2021
 
 - Cor 6703 list unstpent txo [`#27`](https://github.com/fireblocks/fireblocks-sdk-js/pull/27)
-- add listUnstpents - list of utxo for asset in vault account [`cb270cf`](https://github.com/fireblocks/fireblocks-sdk-js/commit/cb270cf28e04e67f18dc9a9b9106a1a9e41da0cb)
-- rename to unspent_inputs [`97ccd8e`](https://github.com/fireblocks/fireblocks-sdk-js/commit/97ccd8ef3cccc7f3c15cf92248ab5cae76b6807e)
-- Add minAmountThreshold [`d0a9bc5`](https://github.com/fireblocks/fireblocks-sdk-js/commit/d0a9bc5942e443970a5b97483159ae7375e39876)
 
 #### [v1.5.20](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.19...v1.5.20)
 
@@ -108,9 +92,6 @@ All notable changes to this project will be documented in this file. Dates are d
 > 26 April 2021
 
 - Off exchange [`#26`](https://github.com/fireblocks/fireblocks-sdk-js/pull/26)
-- allocate/deallocate [`db8b959`](https://github.com/fireblocks/fireblocks-sdk-js/commit/db8b959c22fcccd990e1ffa2d59c57cf8ed15704)
-- off-exchange [`76c9a8a`](https://github.com/fireblocks/fireblocks-sdk-js/commit/76c9a8afbf8195c6183017fb8f5b84c1af3b0328)
-- add default enum [`9956624`](https://github.com/fireblocks/fireblocks-sdk-js/commit/995662462676de40f66aac8f85569014e4e60bb1)
 
 #### [v1.5.17](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.16...v1.5.17)
 
@@ -129,16 +110,12 @@ All notable changes to this project will be documented in this file. Dates are d
 > 1 March 2021
 
 - Add get_vault_balance_by_asset & Update query parameters [`#22`](https://github.com/fireblocks/fireblocks-sdk-js/pull/22)
-- Fix lint issue [`d71de4f`](https://github.com/fireblocks/fireblocks-sdk-js/commit/d71de4ffeb4e408cd50b27026dceb289be9e4ce2)
-- get_vault_accounts [`f1eee05`](https://github.com/fireblocks/fireblocks-sdk-js/commit/f1eee056b186461e8919a4ee05315149bbfe3a46)
-- get_vault_accounts [`7f63440`](https://github.com/fireblocks/fireblocks-sdk-js/commit/7f6344093d9c6c3b5846bcc1f8459043e7e9edde)
 
 #### [v1.5.14](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.13...v1.5.14)
 
 > 22 February 2021
 
 - Add address validation [`#23`](https://github.com/fireblocks/fireblocks-sdk-js/pull/23)
-- add validate_address [`ae45dd5`](https://github.com/fireblocks/fireblocks-sdk-js/commit/ae45dd530766731cc8d0e356c221173c035ce123)
 
 #### [v1.5.13](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.12...v1.5.13)
 
@@ -159,9 +136,6 @@ All notable changes to this project will be documented in this file. Dates are d
 - one time address support [`#19`](https://github.com/fireblocks/fireblocks-sdk-js/pull/19)
 - vault assets balance overview [`#21`](https://github.com/fireblocks/fireblocks-sdk-js/pull/21)
 - Filter vaultAccounts by name [`#18`](https://github.com/fireblocks/fireblocks-sdk-js/pull/18)
-- update filters [`e41e7c4`](https://github.com/fireblocks/fireblocks-sdk-js/commit/e41e7c4176538fc8ec4ca66ccb7ffb3b87a6dbe0)
-- add assets balance summary [`7cb3f55`](https://github.com/fireblocks/fireblocks-sdk-js/commit/7cb3f55ce79f13cbd941f52a077b66c50e339d93)
-- update getVaultAccounts [`e0d6c10`](https://github.com/fireblocks/fireblocks-sdk-js/commit/e0d6c100a05eff60d3c9b41ae3ee7bb65dabed24)
 
 #### [v1.5.10](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.9...v1.5.10)
 
@@ -170,9 +144,6 @@ All notable changes to this project will be documented in this file. Dates are d
 - Unfreeze tx [`#17`](https://github.com/fireblocks/fireblocks-sdk-js/pull/17)
 - Add max spendable amount operation [`#16`](https://github.com/fireblocks/fireblocks-sdk-js/pull/16)
 - Add support for multiple destinations [`#15`](https://github.com/fireblocks/fireblocks-sdk-js/pull/15)
-- multi dest [`fdc27ca`](https://github.com/fireblocks/fireblocks-sdk-js/commit/fdc27ca319367a6b96910468f79fad871ba41907)
-- getMaxSpendableAmount [`a55f4a2`](https://github.com/fireblocks/fireblocks-sdk-js/commit/a55f4a2efe23d9bd5070dff151a11dafbe239c8b)
-- unfreeze [`d2d35a9`](https://github.com/fireblocks/fireblocks-sdk-js/commit/d2d35a9b5555f55c6bb69f923ed36899c4d83d5f)
 
 #### [v1.5.9](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.8...v1.5.9)
 
@@ -180,7 +151,6 @@ All notable changes to this project will be documented in this file. Dates are d
 
 - Update fireblocks-sdk.ts [`#13`](https://github.com/fireblocks/fireblocks-sdk-js/pull/13)
 - RBF-Drop-Transaction [`#12`](https://github.com/fireblocks/fireblocks-sdk-js/pull/12)
-- Add support for RBF [`c9211be`](https://github.com/fireblocks/fireblocks-sdk-js/commit/c9211be761d9a228e940fdd6f99fdf59f0af3798)
 
 #### [v1.5.8](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.7...v1.5.8)
 
@@ -193,9 +163,6 @@ All notable changes to this project will be documented in this file. Dates are d
 > 26 November 2020
 
 - support fee level [`#9`](https://github.com/fireblocks/fireblocks-sdk-js/pull/9)
-- number/string [`0b301dd`](https://github.com/fireblocks/fireblocks-sdk-js/commit/0b301dd57580660388412bfa74f7f4374e7848be)
-- add maxTransactionFee [`6d4ff1f`](https://github.com/fireblocks/fireblocks-sdk-js/commit/6d4ff1f11586d5928c7b6158c2a54cd560640ff4)
-- amlscreeningresult [`0bb9231`](https://github.com/fireblocks/fireblocks-sdk-js/commit/0bb92312d58de65e2ed151ab6cad5c4fd5e5b0b2)
 
 #### [v1.5.6](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.5...v1.5.6)
 
@@ -203,18 +170,12 @@ All notable changes to this project will be documented in this file. Dates are d
 
 - Gas station [`#10`](https://github.com/fireblocks/fireblocks-sdk-js/pull/10)
 - add extra params [`#8`](https://github.com/fireblocks/fireblocks-sdk-js/pull/8)
-- Gas Station [`15012c6`](https://github.com/fireblocks/fireblocks-sdk-js/commit/15012c6ea2e4989917d2170ee46a87852969f23a)
-- Gas Station [`95cea2a`](https://github.com/fireblocks/fireblocks-sdk-js/commit/95cea2a161854c4d9ce247da461b2852d8369fb2)
-- Gas Station [`5176624`](https://github.com/fireblocks/fireblocks-sdk-js/commit/5176624f005bd6e7c78a0d2599823dd11afe3c78)
 
 #### [v1.5.5](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.4...v1.5.5)
 
 > 20 October 2020
 
 - Support raw messages [`#7`](https://github.com/fireblocks/fireblocks-sdk-js/pull/7)
-- add estimate fee for transaction [`9171d5c`](https://github.com/fireblocks/fireblocks-sdk-js/commit/9171d5c12ab619fb59741ef2f06bd39dfa46c2bf)
-- support for raw transactions [`776639f`](https://github.com/fireblocks/fireblocks-sdk-js/commit/776639f60338edb945d3266d6fc857140302285a)
-- support for raw transactions [`8c930df`](https://github.com/fireblocks/fireblocks-sdk-js/commit/8c930df7da1ac0bf7b72fca50ac50af7cc186f6d)
 
 #### [v1.5.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.3...v1.5.4)
 
@@ -233,8 +194,6 @@ All notable changes to this project will be documented in this file. Dates are d
 > 18 August 2020
 
 - support manual-confirmations [`#5`](https://github.com/fireblocks/fireblocks-sdk-js/pull/5)
-- Update fireblocks-sdk.ts [`1a5e58e`](https://github.com/fireblocks/fireblocks-sdk-js/commit/1a5e58eb54aec43f92abec7a07dd95118eb9d538)
-- fix endpoints [`a697256`](https://github.com/fireblocks/fireblocks-sdk-js/commit/a697256cbcdc6e762d9c9e8cf5b22d0fdb76360a)
 
 #### [v1.5.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.5.0...v1.5.1)
 
@@ -248,9 +207,6 @@ All notable changes to this project will be documented in this file. Dates are d
 
 - Transfer assist [`#3`](https://github.com/fireblocks/fireblocks-sdk-js/pull/3)
 - add more types of filters [`#2`](https://github.com/fireblocks/fireblocks-sdk-js/pull/2)
-- sdk update to suppor transfer-assist [`502860c`](https://github.com/fireblocks/fireblocks-sdk-js/commit/502860ca54664f7048fe559d3f420bc31ca61419)
-- update function names [`4b932cf`](https://github.com/fireblocks/fireblocks-sdk-js/commit/4b932cfea3249c7a8653a3d86588109848317e9d)
-- few fixes [`037157a`](https://github.com/fireblocks/fireblocks-sdk-js/commit/037157a6a0e610c3392ff05547a1812b136ec9e5)
 
 #### [v1.4.6](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.4.5...v1.4.6)
 
