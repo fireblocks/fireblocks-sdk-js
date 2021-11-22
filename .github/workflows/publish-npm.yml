@@ -16,9 +16,10 @@ jobs:
           initialTag=${{ github.event.release.tag_name }}
           tag="${initialTag//[v]/}"
           echo $tag
+          git checkout master
           npm --no-git-tag-version version $tag
-          git show
           git commit -m "release $tag"
+          git show
           git push origin HEAD:master
       - run: npm publish
         env:
