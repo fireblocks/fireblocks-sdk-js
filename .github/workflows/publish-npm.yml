@@ -12,6 +12,8 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
+      - run: |
+          tag="${github.events.release.tag_name//[v]/}"
       - name: extract tag name
         id: tag
         with:
