@@ -21,10 +21,9 @@ jobs:
           git checkout --track origin/master
           git config --global user.email "yarinvak@gmail.com"
           git config --global user.name "Yarin Vaknin"
-          npm --no-git-tag-version version $tag
+          npm --no-git-tag-version --allow-same-version version $tag
           git add .
           git commit -m "release $tag"
-          git show
           git push
       - run: npm publish
         env:
