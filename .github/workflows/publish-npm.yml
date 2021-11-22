@@ -22,6 +22,7 @@ jobs:
           git config --global user.email "yarinvak@gmail.com"
           git config --global user.name "Yarin Vaknin"
           npm --no-git-tag-version version $tag
+          git add .
           git commit -m "release $tag"
           git show
           git push
