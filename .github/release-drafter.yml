@@ -43,6 +43,7 @@ autolabeler:
       - '/bugfix/i'
   - label: 'enhancement'
     title:
+      - '/added/i'
       - '/add/i'
       - '/feature/i'
       - '/feat/i'
