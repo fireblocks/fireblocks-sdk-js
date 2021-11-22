@@ -14,12 +14,11 @@ jobs:
       - run: npm install
       - run: |
           tag="${github.events.release.tag_name//[v]/}"
-      - name: extract tag name
-        id: tag
-        with:
-          script: |
-            return github.events.release.tag_name.replace('v','');
-      - run: npm version ${{ steps.tag.outputs.result }}
+          echo $tag
+          echo "::set-env name=tag::$tag"
+        env:
+          ref_tag: ${{ github.tag }}
+      - run: npm version ${{ github.tag }}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
