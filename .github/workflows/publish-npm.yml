@@ -16,10 +16,8 @@ jobs:
           initialTag=${{ github.events.release.tag_name }}
           tag="${initialTag//[v]/}"
           echo $tag
-          echo "::set-env name=tag::$tag"
-        env:
-          ref_tag: ${{ github.tag }}
-      - run: npm version ${{ github.tag }}
+          echo "::set-output name=tag::$tag"
+      - run: npm version ${{ steps.vars.outputs.tag }}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
