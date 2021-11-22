@@ -22,6 +22,8 @@ jobs:
           git config --global user.email "yarinvak@gmail.com"
           git config --global user.name "Yarin Vaknin"
           npm --no-git-tag-version --allow-same-version version $tag
+          npm i -g auto-changelog
+          auto-changelog
           git add .
           git commit -m "release $tag"
           git push
