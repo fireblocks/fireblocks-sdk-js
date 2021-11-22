@@ -19,6 +19,8 @@ jobs:
           git remote update
           git fetch
           git checkout --track origin/master
+          git config --global user.email "yarinvak@gmail.com"
+          git config --global user.name "Yarin Vaknin"
           npm --no-git-tag-version version $tag
           git commit -m "release $tag"
           git show
