@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v1.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.2...v1.8.0)
+#### [v1.8.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.2...v1.8.1)
 
 > 23 November 2021
 
-- use axios instead of deprecated request package [`#56`](https://github.com/fireblocks/fireblocks-sdk-js/pull/56)
+- add timeout mechanism [`#58`](https://github.com/fireblocks/fireblocks-sdk-js/pull/58)
 
 #### [v1.7.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.1...v1.7.2)
 
