@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. Dates are d
 
 > 23 November 2021
 
-- configuration [`b7cec03`](https://github.com/fireblocks/fireblocks-sdk-js/commit/b7cec03ed3c1e144a0063607f72c374eb7524a84)
+- use axios instead of deprecated request package [`#56`](https://github.com/fireblocks/fireblocks-sdk-js/pull/56)
 
 #### [v1.7.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.1...v1.7.2)
 
