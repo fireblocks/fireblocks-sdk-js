@@ -5,7 +5,7 @@
 This repository contains the official Javascript & Typescript SDK for Fireblocks API.
 For the complete API reference, go to [API reference](https://docs.fireblocks.com/api/swagger-ui/).
 
-### Usage
+## Usage
 #### Before You Begin
 Make sure you have the credentials for Fireblocks API Services. Otherwise, please contact Fireblocks support for further instructions on how to obtain your API credentials.
 
