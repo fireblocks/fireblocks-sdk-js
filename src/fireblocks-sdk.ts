@@ -47,8 +47,11 @@ import {
 export * from "./types";
 import queryString from "query-string";
 
-export class FireblocksSDK {
+export interface SDKOptions {
+    timeoutInMs: number;
+}
 
+export class FireblocksSDK {
     private authProvider: IAuthProvider;
     private apiBaseUrl: string;
     private apiClient: ApiClient;
@@ -58,15 +61,17 @@ export class FireblocksSDK {
      * @param privateKey A string representation of your private key
      * @param apiKey Your api key. This is a uuid you received from Fireblocks
      * @param apiBaseUrl The fireblocks server URL. Leave empty to use the default server
+     * @param authProvider
+     * @param sdkOptions
      */
-    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined) {
+    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions?: SDKOptions) {
         this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
 
         if (apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
         }
 
-        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl);
+        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, {timeoutInMs: sdkOptions?.timeoutInMs});
     }
 
     /**

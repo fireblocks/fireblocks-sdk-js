@@ -5,7 +5,7 @@ import axios, { AxiosInstance } from "axios";
 export class ApiClient {
     private axiosInstance: AxiosInstance;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number}) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl
         });
@@ -17,7 +17,8 @@ export class ApiClient {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
-            }
+            },
+            timeout: this.options.timeoutInMs
         });
 
         if (pageMode) {
@@ -43,7 +44,8 @@ export class ApiClient {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`,
                 "Idempotency-Key": idempotencyKey
-            }
+            },
+            timeout: this.options.timeoutInMs
         })).data;
     }
 
@@ -54,7 +56,8 @@ export class ApiClient {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
-            }
+            },
+            timeout: this.options.timeoutInMs
         })).data;
     }
 
@@ -65,7 +68,8 @@ export class ApiClient {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
-            }
+            },
+            timeout: this.options.timeoutInMs
         })).data;
     }
 }
