@@ -179,9 +179,10 @@ export class FireblocksSDK {
      * Creates a network connection
      * @param localNetworkId NetworkId for the local
      * @param remoteNetworkId NetworkId for the remote
+     * @param routingPolicy of the connection
      */
-    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string) {
-        const body = { localNetworkId, remoteNetworkId };
+    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: RoutingPolicy) {
+        const body = { localNetworkId, remoteNetworkId, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
     }
 
