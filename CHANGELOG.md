@@ -2,28 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v1.8.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.0...v1.8.1)
+#### [v1.8.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.2...v1.8.2)
 
-> 23 November 2021
+> 24 November 2021
 
-- add timeout mechanism [`#58`](https://github.com/fireblocks/fireblocks-sdk-js/pull/58)
-
-#### [v1.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.3...v1.8.0)
-
-> 23 November 2021
-
-- use axios instead of deprecated request-promise package [`#56`](https://github.com/fireblocks/fireblocks-sdk-js/pull/56)
-
-#### [v1.7.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.2...v1.7.3)
-
-> 22 November 2021
-
-- Release drafter [`#55`](https://github.com/fireblocks/fireblocks-sdk-js/pull/55)
-- Create node.js CI configuration [`#54`](https://github.com/fireblocks/fireblocks-sdk-js/pull/54)
-- Update API Reference link in README [`#52`](https://github.com/fireblocks/fireblocks-sdk-js/pull/52)
-- added decimals to assetTypeResponse [`#51`](https://github.com/fireblocks/fireblocks-sdk-js/pull/51)
-- add off exchanges endpoints [`#42`](https://github.com/fireblocks/fireblocks-sdk-js/pull/42)
-- Add forceSweep field to TransactionArguments [`#46`](https://github.com/fireblocks/fireblocks-sdk-js/pull/46)
+- bugfix: when Idempotency key is undefined, axios fails [`#59`](https://github.com/fireblocks/fireblocks-sdk-js/pull/59)
 
 #### [v1.7.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.1...v1.7.2)
 
@@ -316,19 +299,11 @@ All notable changes to this project will be documented in this file. Dates are d
 
 - Add API methods [`4efe26c`](https://github.com/fireblocks/fireblocks-sdk-js/commit/4efe26caffaf57d3eed7bf9ff71812dff86c25c0)
 
-#### [v1.0.10](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.0.9...v1.0.10)
+#### [v1.0.10](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.0.8...v1.0.10)
 
 > 25 September 2019
 
 - Add additional methods [`8ea6245`](https://github.com/fireblocks/fireblocks-sdk-js/commit/8ea6245aeb29b994b0cfec854504760e4cabe6f7)
-
-#### [v1.0.9](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.0.8...v1.0.9)
-
-> 25 September 2019
-
-- Added docs for every avalaible methods [`4c93df3`](https://github.com/fireblocks/fireblocks-sdk-js/commit/4c93df3a5cef616aa4876a8430f84bf30588b69d)
-- Review [`bfee4b5`](https://github.com/fireblocks/fireblocks-sdk-js/commit/bfee4b57c5f548cc556c0962855d3ea8e8922450)
-- Add additional methods [`8dffbe9`](https://github.com/fireblocks/fireblocks-sdk-js/commit/8dffbe932a8d78c944d9200cb8b8de826976516d)
 
 #### [v1.0.8](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.0.7...v1.0.8)
 
