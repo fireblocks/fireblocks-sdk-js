@@ -10,8 +10,8 @@ Please delete options that are not relevant.
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
+- [ ] Chore / Documentation
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] This change requires a documentation update
 
 ## How Has This Been Tested?
 
@@ -24,3 +24,4 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] I have performed a self-review of my own code
 - [ ] I have made corresponding changes to the documentation
 - [ ] Any dependent changes have been merged and published in downstream modules
+- [ ] I have added corresponding labels to the PR
