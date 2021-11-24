@@ -1,0 +1,12 @@
+name: PR Title Validation
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: deepakputhraya/action-pr-title@master
+      with:
+        disallowed_prefixes: 'COR-'
+        prefix_case_sensitive: false
