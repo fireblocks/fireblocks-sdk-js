@@ -38,13 +38,17 @@ export class ApiClient {
         const token = this.authProvider.signJwt(path, body);
 
         const idempotencyKey = requestOptions?.idempotencyKey;
+        const headers: any = {
+            "X-API-Key": this.authProvider.getApiKey(),
+            "Authorization": `Bearer ${token}`,
+        };
+
+        if (idempotencyKey) {
+            headers["Idempotency-Key"] = idempotencyKey;
+        }
 
         return (await this.axiosInstance.post(path, body, {
-            headers: {
-                "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`,
-                "Idempotency-Key": idempotencyKey
-            },
+            headers,
             timeout: this.options.timeoutInMs
         })).data;
     }
