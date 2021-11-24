@@ -198,7 +198,7 @@ export class FireblocksSDK {
      * @param routingPolicy network policy
      * @param name A name for the new networkId
      */
-    public async createNetworkId(name: string, routingPolicy: RoutingPolicy) {
+    public async createNetworkId(name: string, routingPolicy?: RoutingPolicy) {
         const body = { name, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
     }
