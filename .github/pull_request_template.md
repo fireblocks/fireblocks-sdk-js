@@ -19,7 +19,7 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 
 - [ ] Locally tested against Fireblocks API
 
-# Checklist:
+## Checklist:
 
 - [ ] I have performed a self-review of my own code
 - [ ] I have made corresponding changes to the documentation
