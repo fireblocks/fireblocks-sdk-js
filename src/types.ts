@@ -336,6 +336,26 @@ export interface NetworkConnectionResponse {
     };
 }
 
+enum DestType {
+    VAULT_ACCOUNT = "VAULT_ACCOUNT",
+    UNMANAGED_WALLET = "UNMANAGED_WALLET",
+    EXCHANGE_ACCOUNT = "EXCHANGE_ACCOUNT",
+    FIAT_ACCOUNT = "FIAT_ACCOUNT"
+}
+
+interface RoutingDest {
+    destType: DestType;
+    destId: string;
+}
+
+export interface RoutingPolicy {
+    crypto?: RoutingDest;
+    sen?: RoutingDest;
+    signet?: RoutingDest;
+    sen_test?: RoutingDest;
+    signet_test?: RoutingDest;
+}
+
 export interface TransactionFilter {
     before?: number;
     after?: number;

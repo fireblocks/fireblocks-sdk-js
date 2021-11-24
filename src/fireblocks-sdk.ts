@@ -40,7 +40,7 @@ import {
     TransactionPageResponse,
     TransactionPageFilter,
     InternalWalletAsset,
-    ExternalWalletAsset
+    ExternalWalletAsset, RoutingPolicy
 } from "./types";
 
 export * from "./types";
@@ -194,10 +194,11 @@ export class FireblocksSDK {
 
     /**
      * Creates a new networkId
+     * @param routingPolicy network policy
      * @param name A name for the new networkId
      */
-    public async createNetworkId(name: string) {
-        const body = { name };
+    public async createNetworkId(name: string, routingPolicy: RoutingPolicy) {
+        const body = { name, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
     }
 
