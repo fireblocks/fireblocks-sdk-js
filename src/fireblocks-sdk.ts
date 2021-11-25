@@ -30,7 +30,7 @@ import {
     VaultAccountsFilter,
     VaultBalancesFilter,
     ValidateAddressResponse,
-    CreateVaultAssetResponse,
+    VaultAssetResponse,
     RequestOptions,
     AllocateFundsRequest,
     DeallocateFundsRequest,
@@ -431,9 +431,18 @@ export class FireblocksSDK {
      * @param vaultAccountId The vault account ID
      * @param assetId The asset to add
      */
-    public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<CreateVaultAssetResponse> {
+    public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<VaultAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
     }
+
+    /**
+     * Retry to create a vault asset for a vault asset that failed 
+     * @param vaultAccountId The vault account ID
+     * @param assetId The asset to add
+     */
+         public async activateVaultAsset(vaultAccountId: string, assetId: string): Promise<VaultAssetResponse> {
+            return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {});
+        }
 
     /**
      * Creates a new external wallet

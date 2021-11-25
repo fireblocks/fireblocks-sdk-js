@@ -47,13 +47,15 @@ export interface UnfreezeTransactionResponse {
     success: boolean;
 }
 
-export interface CreateVaultAssetResponse {
+export interface VaultAssetResponse {
     id: string;
     address: string;
     legacyAddress: string;
     enterpriseAddress?: string;
     tag: string;
     eosAccountName: string;
+    status?: string;
+    activationTxId?: string;
 }
 
 export interface WalletContainerResponse<WalletAssetType> {
