@@ -345,8 +345,8 @@ export enum DestType {
 }
 
 interface RoutingDest {
-    destType: DestType;
-    destId: string;
+    dstType: DestType;
+    dstId: string;
 }
 
 export interface RoutingPolicy {
