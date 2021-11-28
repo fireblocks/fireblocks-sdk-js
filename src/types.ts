@@ -336,12 +336,14 @@ export interface NetworkConnectionResponse {
     };
 }
 
-export enum DestType {
-    VAULT_ACCOUNT = "VAULT_ACCOUNT",
-    UNMANAGED_WALLET = "UNMANAGED_WALLET",
-    EXCHANGE_ACCOUNT = "EXCHANGE_ACCOUNT",
+enum DestType {
+    VAULT_ACCOUNT = "VAULT",
+    UNMANAGED_WALLET = "UNMANAGED",
+    EXCHANGE_ACCOUNT = "EXCHANGE",
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
-    DEFAULT = "DEFAULT",
+    NONE = "NONE",
+    AUTO = "AUTO",
+    DEFAULT= "DEFAULT",
 }
 
 interface RoutingDest {
