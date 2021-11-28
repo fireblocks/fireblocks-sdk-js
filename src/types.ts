@@ -336,7 +336,7 @@ export interface NetworkConnectionResponse {
     };
 }
 
-enum DestType {
+export enum DestType {
     VAULT_ACCOUNT = "VAULT",
     UNMANAGED_WALLET = "UNMANAGED",
     EXCHANGE_ACCOUNT = "EXCHANGE",
