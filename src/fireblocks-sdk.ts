@@ -187,6 +187,16 @@ export class FireblocksSDK {
     }
 
     /**
+     * Set networkId routing policy
+     * @param routingPolicy  the policy
+     * @param networkId the networkId
+     */
+    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy?: RoutingPolicy) {
+        const body = { routingPolicy };
+        return await this.apiClient.issuePostRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
+    }
+
+    /**
      * Gets a single network connection by id
      */
     public async getNetworkConnectionById(connectionId: string): Promise<NetworkConnectionResponse> {
@@ -201,6 +211,16 @@ export class FireblocksSDK {
     public async createNetworkId(name: string, routingPolicy?: RoutingPolicy) {
         const body = { name, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
+    }
+
+    /**
+     * Set networkId routing policy
+     * @param routingPolicy  the policy
+     * @param networkId the networkId
+     */
+    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy?: RoutingPolicy) {
+        const body = { routingPolicy };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
 
     /**
