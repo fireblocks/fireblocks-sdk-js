@@ -2,11 +2,40 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v1.8.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.2...v1.8.2)
+#### [v1.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.2...v1.9.0)
+
+> 29 November 2021
+
+- added typed message [`#48`](https://github.com/fireblocks/fireblocks-sdk-js/pull/48)
+
+#### [v1.8.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.1...v1.8.2)
 
 > 24 November 2021
 
 - bugfix: when Idempotency key is undefined, axios fails [`#59`](https://github.com/fireblocks/fireblocks-sdk-js/pull/59)
+
+#### [v1.8.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.0...v1.8.1)
+
+> 23 November 2021
+
+- add timeout mechanism [`#58`](https://github.com/fireblocks/fireblocks-sdk-js/pull/58)
+
+#### [v1.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.3...v1.8.0)
+
+> 23 November 2021
+
+- use axios instead of deprecated request-promise package [`#56`](https://github.com/fireblocks/fireblocks-sdk-js/pull/56)
+
+#### [v1.7.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.2...v1.7.3)
+
+> 22 November 2021
+
+- Release drafter [`#55`](https://github.com/fireblocks/fireblocks-sdk-js/pull/55)
+- Create node.js CI configuration [`#54`](https://github.com/fireblocks/fireblocks-sdk-js/pull/54)
+- Update API Reference link in README [`#52`](https://github.com/fireblocks/fireblocks-sdk-js/pull/52)
+- added decimals to assetTypeResponse [`#51`](https://github.com/fireblocks/fireblocks-sdk-js/pull/51)
+- add off exchanges endpoints [`#42`](https://github.com/fireblocks/fireblocks-sdk-js/pull/42)
+- Add forceSweep field to TransactionArguments [`#46`](https://github.com/fireblocks/fireblocks-sdk-js/pull/46)
 
 #### [v1.7.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.7.1...v1.7.2)
 
