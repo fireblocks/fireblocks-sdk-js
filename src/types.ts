@@ -56,17 +56,23 @@ export interface CreateVaultAssetResponse {
     eosAccountName: string;
 }
 
-export interface WalletAssetResponse extends AssetResponse {
+export interface WalletContainerResponse<WalletAssetType> {
+    id: string;
+    name: string;
+    assets: WalletAssetType[];
+    customerRefId?: string;
+}
+
+export interface ExternalWalletAsset {
+    id: string;
     status: string;
     address: string;
     tag: string;
+    activationTime?: string;
 }
 
-export interface WalletContainerResponse {
-    id: string;
-    name: string;
-    assets: WalletAssetResponse[];
-    customerRefId?: string;
+export interface InternalWalletAsset extends ExternalWalletAsset {
+    balance: string;
 }
 
 export interface CreateTransactionResponse {
@@ -189,6 +195,7 @@ export interface TransactionArguments {
     replaceTxByHash?: string;
     externalTxId?: string;
     treatAsGrossAmount?: boolean;
+    forceSweep?: boolean;
 }
 
 export enum FeeLevel {
@@ -275,6 +282,20 @@ export interface TransactionResponse {
     signedMessages?: SignedMessageResponse[];
     externalTxId?: string;
     blockInfo?: BlockInfo;
+    authorizationInfo?: AuthorizationInfo;
+}
+
+export interface AuthorizationInfo {
+    allowOperatorAsAuthorizer: boolean;
+    logic: "OR" | "AND";
+    groups: {
+        users: UserGroup;
+        th: number
+    }[];
+}
+
+export interface UserGroup {
+    [id: string]: string;
 }
 
 export interface BlockInfo {
@@ -510,6 +531,7 @@ export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;
     minAmountThreshold?: number;
+    assetId?: string;
 }
 
 export interface VaultBalancesFilter {
@@ -532,6 +554,7 @@ export interface AssetTypeResponse {
     type: string;
     contractAddress: string;
     nativeAsset: string;
+    decimals?: number;
 }
 
 export interface User {
@@ -546,3 +569,18 @@ export interface User {
 export interface ResendWebhooksResponse {
     webhooksCount: number;
 }
+
+export interface OffExchangeEntityResponse {
+    id: string;
+    vaultAccountId: string;
+    thirdPartyAccountId: string;
+    balance?: {
+        [assetId: string]: {
+            total?: string;
+            locked?: string;
+            pending?: string;
+            frozen?: string;
+        };
+    };
+}
+

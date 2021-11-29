@@ -11,7 +11,6 @@ import {
     TransactionFilter,
     CancelTransactionResponse,
     WalletContainerResponse,
-    WalletAssetResponse,
     DepositAddressResponse,
     GenerateAddressResponse,
     OperationSuccessResponse,
@@ -39,14 +38,20 @@ import {
     AssetTypeResponse,
     User,
     TransactionPageResponse,
-    TransactionPageFilter
+    TransactionPageFilter,
+    InternalWalletAsset,
+    ExternalWalletAsset,
+    OffExchangeEntityResponse
 } from "./types";
 
 export * from "./types";
 import queryString from "query-string";
 
-export class FireblocksSDK {
+export interface SDKOptions {
+    timeoutInMs: number;
+}
 
+export class FireblocksSDK {
     private authProvider: IAuthProvider;
     private apiBaseUrl: string;
     private apiClient: ApiClient;
@@ -56,15 +61,17 @@ export class FireblocksSDK {
      * @param privateKey A string representation of your private key
      * @param apiKey Your api key. This is a uuid you received from Fireblocks
      * @param apiBaseUrl The fireblocks server URL. Leave empty to use the default server
+     * @param authProvider
+     * @param sdkOptions
      */
-    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined) {
+    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions?: SDKOptions) {
         this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
 
         if (apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
         }
 
-        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl);
+        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, {timeoutInMs: sdkOptions?.timeoutInMs});
     }
 
     /**
@@ -310,7 +317,7 @@ export class FireblocksSDK {
     /**
      * Gets all internal wallets for your tenant
      */
-    public async getInternalWallets(): Promise<WalletContainerResponse[]> {
+    public async getInternalWallets(): Promise<WalletContainerResponse<InternalWalletAsset>[]> {
         return await this.apiClient.issueGetRequest("/v1/internal_wallets");
     }
 
@@ -318,7 +325,7 @@ export class FireblocksSDK {
      * Gets a single internal wallet
      * @param walletId The internal wallet ID
      */
-    public async getInternalWallet(walletId: string): Promise<WalletContainerResponse> {
+    public async getInternalWallet(walletId: string): Promise<WalletContainerResponse<InternalWalletAsset>> {
         return await this.apiClient.issueGetRequest(`/v1/internal_wallets/${walletId}`);
     }
 
@@ -327,14 +334,14 @@ export class FireblocksSDK {
      * @param walletId The internal wallet ID
      * @param assetId The asset ID
      */
-    public async getInternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+    public async getInternalWalletAsset(walletId: string, assetId: string): Promise<InternalWalletAsset> {
         return await this.apiClient.issueGetRequest(`/v1/internal_wallets/${walletId}/${assetId}`);
     }
 
     /**
      * Gets all external wallets for your tenant
      */
-    public async getExternalWallets(): Promise<WalletContainerResponse[]> {
+    public async getExternalWallets(): Promise<WalletContainerResponse<ExternalWalletAsset>[]> {
         return await this.apiClient.issueGetRequest("/v1/external_wallets");
     }
 
@@ -342,7 +349,7 @@ export class FireblocksSDK {
      * Gets a single external wallet
      * @param walletId The external wallet ID
      */
-    public async getExternalWallet(walletId: string): Promise<WalletContainerResponse> {
+    public async getExternalWallet(walletId: string): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         return await this.apiClient.issueGetRequest(`/v1/external_wallets/${walletId}`);
     }
 
@@ -351,7 +358,7 @@ export class FireblocksSDK {
      * @param walletId The external wallet ID
      * @param assetId The asset ID
      */
-    public async getExternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+    public async getExternalWalletAsset(walletId: string, assetId: string): Promise<ExternalWalletAsset> {
         return await this.apiClient.issueGetRequest(`/v1/external_wallets/${walletId}/${assetId}`);
     }
 
@@ -410,7 +417,7 @@ export class FireblocksSDK {
      * @param autoFuel The new value for the autoFuel flag
      */
     public async setAutoFuel(vaultAccountId: string, autoFuel: boolean): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, { autoFuel });
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, {autoFuel});
     }
 
     /**
@@ -439,7 +446,7 @@ export class FireblocksSDK {
      * @param name A name for the new external wallet
      * @param customerRefId A customer reference ID
      */
-    public async createExternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse> {
+    public async createExternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         const body = {
             name,
             customerRefId
@@ -453,7 +460,7 @@ export class FireblocksSDK {
      * @param name A name for the new internal wallet
      * @param customerRefId A customer reference ID
      */
-    public async createInternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse> {
+    public async createInternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse<InternalWalletAsset>> {
         const body = {
             name,
             customerRefId
@@ -469,7 +476,7 @@ export class FireblocksSDK {
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
      */
-    public async createExternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string): Promise<WalletAssetResponse> {
+    public async createExternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string): Promise<ExternalWalletAsset> {
         const path = `/v1/external_wallets/${walletId}/${assetId}`;
 
         const body = {
@@ -486,7 +493,7 @@ export class FireblocksSDK {
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
      */
-    public async createInternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string): Promise<WalletAssetResponse> {
+    public async createInternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string): Promise<InternalWalletAsset> {
         const path = `/v1/internal_wallets/${walletId}/${assetId}`;
 
         const body = {
@@ -580,7 +587,7 @@ export class FireblocksSDK {
      * @param walletId The internal wallet ID
      * @param assetId The asset ID
      */
-    public async deleteInternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+    public async deleteInternalWalletAsset(walletId: string, assetId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/internal_wallets/${walletId}/${assetId}`);
     }
 
@@ -597,7 +604,7 @@ export class FireblocksSDK {
      * @param walletId The external wallet ID
      * @param assetId The asset ID
      */
-    public async deleteExternalWalletAsset(walletId: string, assetId: string): Promise<WalletAssetResponse> {
+    public async deleteExternalWalletAsset(walletId: string, assetId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/external_wallets/${walletId}/${assetId}`);
     }
 
@@ -732,7 +739,7 @@ export class FireblocksSDK {
     public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string): Promise<OperationSuccessResponse> {
         const url = `/v1/gas_station/configuration`;
 
-        const body = { gasThreshold, gasCap, maxGasPrice };
+        const body = {gasThreshold, gasCap, maxGasPrice};
 
         return await this.apiClient.issuePutRequest(url, body);
     }
@@ -740,10 +747,10 @@ export class FireblocksSDK {
     /**
      * Drop an ETH based transaction
      */
-    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string ) {
+    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string) {
         const url = `/v1/transactions/${txId}/drop`;
 
-        const body = { feeLevel, requestedFee };
+        const body = {feeLevel, requestedFee};
 
         return await this.apiClient.issuePostRequest(url, body);
     }
@@ -814,5 +821,28 @@ export class FireblocksSDK {
      */
     public async getUsers(): Promise<User[]> {
         return await this.apiClient.issueGetRequest("/v1/users");
+    }
+
+    /**
+     * Get off exchange accounts
+     */
+    public async getOffExchangeAccounts(): Promise<OffExchangeEntityResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange_accounts`);
+    }
+
+    /**
+     * Get off exchange account by virtual account id
+     * @param id the ID of the off exchange
+     */
+    public async getOffExchangeAccountById(id: string): Promise<OffExchangeEntityResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange_accounts/${id}`);
+    }
+
+    /**
+     * Settle off exchange account by virtual account id
+     * @param id the ID of the off exchange
+     */
+    public async settleOffExchangeAccountById(id: string): Promise<void> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {});
     }
 }
