@@ -173,6 +173,10 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest("/v1/network_connections");
     }
 
+    async getFilterOptions() {
+        return await this.apiClient.issueGetRequest("/v1/filter_options");
+    }
+
     /**
      * Gets a single network connection by id
      */
