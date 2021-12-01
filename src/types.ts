@@ -429,6 +429,7 @@ export enum TransactionOperation {
 export interface AllocateFundsRequest {
     allocationId: string;
     amount: string;
+    treatAsGrossAmount: boolean;
 }
 
 export interface DeallocateFundsRequest {
