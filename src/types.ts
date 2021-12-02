@@ -54,8 +54,14 @@ export interface VaultAssetResponse {
     enterpriseAddress?: string;
     tag: string;
     eosAccountName: string;
-    status?: string;
+    status?: VaultAssetActivationStatus;
     activationTxId?: string;
+}
+
+export enum VaultAssetActivationStatus {
+    PENDING_ACTIVATION = "PENDING_ACTIVATION",
+    ACTIVATION_FAILED = "ACTIVATION_FAILED",
+    READY = "READY"
 }
 
 export interface WalletContainerResponse<WalletAssetType> {
