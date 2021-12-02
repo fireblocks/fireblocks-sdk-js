@@ -15,6 +15,7 @@ export enum VirtualAffiliation {
 export interface AssetResponse {
     id: string;
     total: string;
+    status: VaultAssetActivationStatus;
     /**
      * @deprecated Replaced by "total"
      */
