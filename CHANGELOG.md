@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v1.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.9.0...v1.10.0)
+
+> 5 December 2021
+
+- Add RequestOptions for all post request [`#64`](https://github.com/fireblocks/fireblocks-sdk-js/pull/64)
+
 #### [v1.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.2...v1.9.0)
 
 > 29 November 2021
 
 - added typed message [`#48`](https://github.com/fireblocks/fireblocks-sdk-js/pull/48)
+- Update pull_request_template.md [`#61`](https://github.com/fireblocks/fireblocks-sdk-js/pull/61)
 
 #### [v1.8.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.1...v1.8.2)
 

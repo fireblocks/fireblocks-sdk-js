@@ -442,7 +442,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Retry to create a vault asset for a vault asset that failed 
+     * Retry to create a vault asset for a vault asset that failed
      * @param vaultAccountId The vault account ID
      * @param assetId The asset to add
      */
