@@ -826,6 +826,17 @@ export class FireblocksSDK {
     }
 
     /**
+     * Resend transaction webhooks
+     * @param txId The transaction for which the message is sent
+     * @param resendCreated If true a webhook will be sent for the creation of the transaction
+     * @param resendStatusUpdated If true a webhook will be sent for the status of the transaction
+     */
+     public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
+        const body = { resendCreated, resendStatusUpdated };
+        return await this.apiClient.issuePostRequest(`/v1/webhooks/resend/${txId}`, body, requestOptions);
+    }
+
+    /**
      * Gets all Users for your tenant
      */
     public async getUsers(): Promise<User[]> {
