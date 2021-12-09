@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v1.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.10.0...v1.11.0)
+
+> 9 December 2021
+
+- Feat added treat as gross amount flag to allocate funds request [`#63`](https://github.com/fireblocks/fireblocks-sdk-js/pull/63)
+
 #### [v1.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.9.0...v1.10.0)
 
 > 5 December 2021
 
 - Add RequestOptions for all post request [`#64`](https://github.com/fireblocks/fireblocks-sdk-js/pull/64)
+- add functionality for activate vault asset [`#62`](https://github.com/fireblocks/fireblocks-sdk-js/pull/62)
 
 #### [v1.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.2...v1.9.0)
 
