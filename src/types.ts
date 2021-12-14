@@ -341,16 +341,20 @@ export enum DestType {
     UNMANAGED_WALLET = "UNMANAGED",
     EXCHANGE_ACCOUNT = "EXCHANGE",
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
-    NONE = "NONE",
-    AUTO = "AUTO",
-    DEFAULT= "DEFAULT",
 }
 
-interface RoutingDest {
+export enum Schema {
+    NONE = "NONE",
+    AUTO = "AUTO",
+    DEFAULT = "DEFAULT",
+    CUSTOM = "CUSTOM",
+}
+
+export interface RoutingDest {
+    schema: Schema;
     dstType: DestType;
     dstId: string;
 }
-
 export interface RoutingPolicy {
     crypto?: RoutingDest;
     sen?: RoutingDest;
