@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v1.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.10.0...v1.11.0)
+#### [v1.11.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.10.0...v1.11.1)
 
-> 9 December 2021
+> 20 December 2021
 
-- Feat added treat as gross amount flag to allocate funds request [`#63`](https://github.com/fireblocks/fireblocks-sdk-js/pull/63)
+- fix: add missing fields to TransactionResponse [`#69`](https://github.com/fireblocks/fireblocks-sdk-js/pull/69)
 
 #### [v1.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.9.0...v1.10.0)
 
