@@ -47,6 +47,23 @@ export class ApiClient {
         });
     }
 
+    public async issuePatchRequest(path: string, body: any, requestOptions?: RequestOptions) {
+        const token = this.authProvider.signJwt(path, body);
+
+        const idempotencyKey = requestOptions?.idempotencyKey;
+
+        return await requestPromise.patch({
+            uri: this.apiBaseUrl + path,
+            headers: {
+                "X-API-Key": this.authProvider.getApiKey(),
+                "Authorization": `Bearer ${token}`,
+                "Idempotency-Key": idempotencyKey
+            },
+            body: body,
+            json: true
+        });
+    }
+
     public async issuePutRequest(path: string, body: any) {
         const token = this.authProvider.signJwt(path, body);
 
