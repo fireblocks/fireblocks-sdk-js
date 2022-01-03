@@ -120,8 +120,8 @@ export class FireblocksSDK {
      * @param vaultAccountId The vault account ID
      * @param assetId The ID of the asset to get
      */
-    public async refreshVaultAssetBalance(vaultAccountId: string, assetId: string): Promise<AssetResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/balance`, "{}");
+    public async refreshVaultAssetBalance(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<AssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/balance`, "{}", requestOptions);
     }
 
     /**
