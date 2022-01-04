@@ -116,6 +116,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets a single vault account asset balance after forcing refresh from the blockchain
+     * @param vaultAccountId The vault account ID
+     * @param assetId The ID of the asset to get
+     */
+    public async refreshVaultAssetBalance(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<AssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/balance`, "{}", requestOptions);
+    }
+
+    /**
      * Gets deposit addresses for an asset in a vault account
      * @param vaultAccountId The vault account ID
      * @param assetId The ID of the asset for which to get the deposit address
