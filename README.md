@@ -35,5 +35,5 @@ const fireblocks = new FireblocksSDK(privateKey, apiKey);
 You can also specify timeout for the http requests:
 ```
 import { FireblocksSDK } from "fireblocks-sdk";
-const fireblocks = new FireblocksSDK(privateKey, apiKey. undefined, {timeoutInMs: 4000});
+const fireblocks = new FireblocksSDK(privateKey, apiKey, undefined, {timeoutInMs: 4000});
 ```
