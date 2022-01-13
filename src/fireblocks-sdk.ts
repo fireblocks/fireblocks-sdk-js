@@ -193,7 +193,7 @@ export class FireblocksSDK {
      */
     public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy?: RoutingPolicy) {
         const body = { routingPolicy };
-        return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
+        return await this.apiClient.issuePostRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
     }
 
     /**
@@ -220,7 +220,7 @@ export class FireblocksSDK {
      */
     public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy?: RoutingPolicy) {
         const body = { routingPolicy };
-        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
+        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
 
     /**
