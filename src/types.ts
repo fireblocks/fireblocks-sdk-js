@@ -343,7 +343,7 @@ export enum DestType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
 
-export enum Schema {
+export enum Scheme {
     NONE = "NONE",
     AUTO = "AUTO",
     DEFAULT = "DEFAULT",
@@ -351,7 +351,7 @@ export enum Schema {
 }
 
 export interface RoutingDest {
-    schema: Schema;
+    scheme: Scheme;
     dstType: DestType;
     dstId: string;
 }
