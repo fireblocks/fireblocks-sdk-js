@@ -258,6 +258,14 @@ export class FireblocksSDK {
     }
 
     /**
+     * Create exchange accounts for your tenant
+     */
+    public async createExchangeAccounts(type: string, name: string): Promise<ExchangeResponse[]> {
+        const body = {type, name};
+        return await this.apiClient.issuePostRequest("/v1/exchange_accounts", body);
+    }
+
+    /**
      * Gets all exchange accounts for your tenant
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
