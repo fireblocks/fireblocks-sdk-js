@@ -248,6 +248,16 @@ export class FireblocksSDK {
     }
 
     /**
+     * Rename a new networkId
+     * @param networkId The networkId
+     * @param isDiscoverable The Discoverability to set
+     */
+    public async renameNetworkId(networkId: string, name: boolean) {
+        const body = { name };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/rename`, body);
+    }
+
+    /**
      * Gets all exchange accounts for your tenant
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
