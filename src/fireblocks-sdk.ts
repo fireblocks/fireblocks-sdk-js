@@ -220,7 +220,7 @@ export class FireblocksSDK {
      */
     public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy?: RoutingPolicy) {
         const body = { routingPolicy };
-        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
 
     /**
@@ -248,17 +248,19 @@ export class FireblocksSDK {
     }
 
     /**
-     * Rename a new networkId
+     * Set name for specific networkId
      * @param networkId The networkId
-     * @param isDiscoverable The Discoverability to set
+     * @param name The name to set
      */
-    public async renameNetworkId(networkId: string, name: boolean) {
+    public async setNetworkIdName(networkId: string, name: boolean) {
         const body = { name };
-        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/rename`, body);
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/rename`, body);
     }
 
     /**
      * Create exchange accounts for your tenant
+     * @param type The exchange type
+     * @param name The name to set
      */
     public async createExchangeAccounts(type: string, name: string): Promise<ExchangeResponse[]> {
         const body = {type, name};
