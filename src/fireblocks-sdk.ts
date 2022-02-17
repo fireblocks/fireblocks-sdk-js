@@ -214,6 +214,17 @@ export class FireblocksSDK {
     }
 
     /**
+     * Creates a new networkId
+     * @param routingPolicy network policy
+     * @param name A name for the new networkId
+     */
+    public async createExternalNetworkId(name: string, accountId: string) {
+        const body = { name, accountId };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids/external`, body);
+    }
+
+
+    /**
      * Set networkId routing policy
      * @param routingPolicy  the policy
      * @param networkId the networkId
