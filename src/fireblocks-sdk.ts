@@ -214,6 +214,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets a single asset within an Exchange Account
+     * @param exchangeAccountId The exchange account ID
+     * @param assetId The ID of the asset
+     */
+    public async getExchangeAsset(exchangeAccountId: string, assetId: string): Promise<ExchangeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}`);
+    }
+
+    /**
      * Transfer from a main exchange account to a subaccount
      * @param exchangeAccountId The exchange ID in Fireblocks
      * @param subaccountId The ID of the subaccount in the exchange
