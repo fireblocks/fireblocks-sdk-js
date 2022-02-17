@@ -273,8 +273,8 @@ export class FireblocksSDK {
      * @param type The exchange type
      * @param name The name to set
      */
-    public async createExchangeAccounts(type: string, name: string): Promise<ExchangeResponse[]> {
-        const body = {type, name};
+    public async createExchangeAccounts(exchangeType: string, name: string): Promise<ExchangeResponse[]> {
+        const body = {exchangeType, name};
         return await this.apiClient.issuePostRequest("/v1/exchange_accounts", body);
     }
 
