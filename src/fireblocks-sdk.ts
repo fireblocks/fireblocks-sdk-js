@@ -759,9 +759,13 @@ export class FireblocksSDK {
      * Set configuration of the Gas Station account
      */
     public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string, assetId?: string): Promise<OperationSuccessResponse> {
-        const url = `/v1/gas_station/configuration`;
+        let url = `/v1/gas_station/configuration`;
 
-        const body = {gasThreshold, gasCap, maxGasPrice, assetId};
+        if (assetId) {
+            url += `/${assetId}`;
+        }
+
+        const body = {gasThreshold, gasCap, maxGasPrice};
 
         return await this.apiClient.issuePutRequest(url, body);
     }
