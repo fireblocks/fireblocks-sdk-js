@@ -756,7 +756,7 @@ export class FireblocksSDK {
      */
     public async getGasStationInfo(assetId?: string): Promise<GasStationInfo> {
         let url = `/v1/gas_station`;
-        
+
         if (assetId) {
             url += `/${assetId}`;
         }

@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v1.13.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.9.0...v1.13.0)
+#### [v1.14.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.9.0...v1.14.0)
 
-> 17 February 2022
+> 3 March 2022
 
-- added get exchange by asset [`#75`](https://github.com/fireblocks/fireblocks-sdk-js/pull/75)
+- Add assetId to gas-station configuration [`#76`](https://github.com/fireblocks/fireblocks-sdk-js/pull/76)
 
 #### [v1.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.2...v1.9.0)
 
