@@ -754,8 +754,12 @@ export class FireblocksSDK {
     /**
      * Get configuration and status of the Gas Station account
      */
-    public async getGasStationInfo(): Promise<GasStationInfo> {
-        const url = `/v1/gas_station`;
+    public async getGasStationInfo(assetId?: string): Promise<GasStationInfo> {
+        let url = `/v1/gas_station`;
+        
+        if (assetId) {
+            url += `/${assetId}`;
+        }
 
         return await this.apiClient.issueGetRequest(url);
     }
@@ -763,8 +767,12 @@ export class FireblocksSDK {
     /**
      * Set configuration of the Gas Station account
      */
-    public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string): Promise<OperationSuccessResponse> {
-        const url = `/v1/gas_station/configuration`;
+    public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string, assetId?: string): Promise<OperationSuccessResponse> {
+        let url = `/v1/gas_station/configuration`;
+
+        if (assetId) {
+            url += `/${assetId}`;
+        }
 
         const body = {gasThreshold, gasCap, maxGasPrice};
 
