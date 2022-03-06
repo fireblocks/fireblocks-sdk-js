@@ -12,6 +12,10 @@ export enum VirtualAffiliation {
     DEFAULT = "DEFAULT"
 }
 
+export interface BalanceRewardInfo {
+    pendingRewards: string;
+}
+
 export interface AssetResponse {
     id: string;
     total: string;
@@ -28,6 +32,7 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    rewardInfo?: BalanceRewardInfo;
     blockHeight?: string;
     blockHash?: string;
     allocatedBalances?: {
@@ -180,6 +185,10 @@ export interface TransactionDestination {
     destination: DestinationTransferPeerPath;
 }
 
+export interface TransactionArgumentsFeePayerInfo {
+    feePayerAccountId: string;
+}
+
 export interface TransactionArguments {
     assetId?: string;
     source?: TransferPeerPath;
@@ -204,6 +213,7 @@ export interface TransactionArguments {
     externalTxId?: string;
     treatAsGrossAmount?: boolean;
     forceSweep?: boolean;
+    feePayerInfo?: TransactionArgumentsFeePayerInfo;
 }
 
 export enum FeeLevel {
@@ -237,6 +247,15 @@ export interface TransactionPageResponse {
 export interface PageDetails {
     prevPage: string;
     nextPage: string;
+}
+
+export interface RewardInfo {
+    srcRewards?: string;
+    destRewards?: string;
+}
+
+export interface FeePayerInfo {
+    feePayerAccountId?: string;
 }
 
 export interface TransactionResponse {
@@ -281,6 +300,8 @@ export interface TransactionResponse {
     blockInfo?: BlockInfo;
     authorizationInfo?: AuthorizationInfo;
     index?: number;
+    rewardInfo?: RewardInfo;
+    feePayerInfo?: FeePayerInfo;
 }
 
 export interface AmountInfo {
