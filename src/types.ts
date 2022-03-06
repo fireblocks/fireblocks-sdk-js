@@ -641,3 +641,10 @@ export interface OffExchangeEntityResponse {
     };
 }
 
+export interface SetFeePayerConfiguration {
+    feePayerAccountId: string;
+}
+
+export interface FeePayerConfiguration {
+    feePayerAccountId: string;
+}
