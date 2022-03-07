@@ -930,16 +930,17 @@ export class FireblocksSDK {
     /**
      * Set Fee Payer configuration
      * @param feePayerConfiguration
+     * @param baseAsset
      * @param requestOptions
      */
-    public async setFeePayerConfiguration(feePayerConfiguration: SetFeePayerConfiguration, requestOptions?: RequestOptions): Promise<FeePayerConfiguration> {
-        return await this.apiClient.issuePostRequest(`/v1/fee_payer`, feePayerConfiguration, requestOptions);
+    public async setFeePayerConfiguration(baseAsset: string, feePayerConfiguration: SetFeePayerConfiguration, requestOptions?: RequestOptions): Promise<FeePayerConfiguration> {
+        return await this.apiClient.issuePostRequest(`/v1/fee_payer/${baseAsset}`, feePayerConfiguration, requestOptions);
     }
 
     /**
      * Get Fee Payer Configuration
      */
-    public async getFeePayerConfiguration(): Promise<FeePayerConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/fee_payer`);
+    public async getFeePayerConfiguration(baseAsset: string): Promise<FeePayerConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/fee_payer/${baseAsset}`);
     }
 }
