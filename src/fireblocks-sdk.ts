@@ -41,7 +41,9 @@ import {
     TransactionPageFilter,
     InternalWalletAsset,
     ExternalWalletAsset,
-    OffExchangeEntityResponse
+    OffExchangeEntityResponse,
+    PagedVaultAccountsResponse,
+    PagedVaultAccountsRequestFilters
 } from "./types";
 
 export * from "./types";
@@ -87,6 +89,23 @@ export class FireblocksSDK {
     public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
         const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
         return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Gets a list of vault accounts per page matching the given filter or path
+     * @param pagedVaultAccountsRequestFilters Filters for the first request
+     * @param nextOrPreviousPageUrl URL containing the full path for the previous/next page as returned from previous request result
+     */
+    public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters?: PagedVaultAccountsRequestFilters, nextOrPreviousPageUrl?: string): Promise<PagedVaultAccountsResponse> {
+        if (nextOrPreviousPageUrl) {
+            const index = nextOrPreviousPageUrl.indexOf("/v1/");
+            const path = nextOrPreviousPageUrl.substring(index, nextOrPreviousPageUrl.length);
+            return await this.apiClient.issueGetRequest(path);
+        } else if (pagedVaultAccountsRequestFilters) {
+            return await this.apiClient.issueGetRequest(`/v1/vault/accounts-paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
+        }
+
+        return {data: [], prevPage:  "", nextPage: ""};
     }
 
     /**

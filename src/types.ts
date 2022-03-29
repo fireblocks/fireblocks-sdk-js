@@ -570,6 +570,21 @@ export interface VaultAccountsFilter {
     assetId?: string;
 }
 
+export interface PagedVaultAccountsRequestFilters {
+    namePrefix?: string;
+    nameSuffix?: string;
+    minAmountThreshold?: number;
+    assetId?: string;
+    orderBy?: "ASC" | "DESC";
+    limit?: number;
+}
+
+export interface PagedVaultAccountsResponse {
+    data: VaultAccountResponse[];
+    prevPage: string;
+    nextPage: string;
+}
+
 export interface VaultBalancesFilter {
     accountNamePrefix?: string;
     accountNameSuffix?: string;
