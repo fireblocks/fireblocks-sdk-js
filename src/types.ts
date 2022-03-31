@@ -581,8 +581,8 @@ export interface PagedVaultAccountsRequestFilters {
 
 export interface PagedVaultAccountsResponse {
     data: VaultAccountResponse[];
-    prevPage: string;
-    nextPage: string;
+    prev: string;
+    next: string;
 }
 
 export interface VaultBalancesFilter {
