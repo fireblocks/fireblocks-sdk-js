@@ -576,7 +576,7 @@ export interface PagedVaultAccountsRequestFilters {
     minAmountThreshold?: number;
     assetId?: string;
     orderBy?: "ASC" | "DESC";
-    limit?: number;
+    limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
 }
 
 export interface PagedVaultAccountsResponse {
