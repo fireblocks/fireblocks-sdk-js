@@ -361,14 +361,42 @@ export interface OperationSuccessResponse {
 
 export interface NetworkConnectionResponse {
     id: string;
-    localChannel: {
-        networkId: string;
-        name: string
-    };
-    remoteChannel: {
-        networkId: string;
-        name: string
-    };
+    remoteNetworkId: NetworkId;
+    localNetworkId: NetworkId;
+    status: string;
+    routingPolicy?: RoutingPolicy;
+}
+
+interface NetworkId {
+    id: string;
+    name: string;
+}
+
+export interface RoutingPolicy {
+    crypto?: RoutingDest;
+    sen?: RoutingDest;
+    signet?: RoutingDest;
+    sen_test?: RoutingDest;
+    signet_test?: RoutingDest;
+}
+
+export interface RoutingDest {
+    scheme: Scheme;
+    dstType: DestType;
+    dstId: string;
+}
+
+export enum Scheme {
+    AUTO = "AUTO",
+    DEFAULT = "DEFAULT",
+    CUSTOM = "CUSTOM",
+}
+
+export enum DestType {
+    VAULT_ACCOUNT = "VAULT",
+    UNMANAGED_WALLET = "UNMANAGED",
+    EXCHANGE_ACCOUNT = "EXCHANGE",
+    FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
 
 export interface TransactionFilter {
