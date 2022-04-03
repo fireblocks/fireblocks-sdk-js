@@ -110,7 +110,7 @@ export class FireblocksSDK {
         }
         else if (typeof input === "object") {
             const pagedVaultAccountsRequestFilters = input as PagedVaultAccountsRequestFilters;
-            return await this.apiClient.issueGetRequest(`/v1/vault/accounts-paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
+            return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
         }
 
         throw new TypeError("Input must be either a filter object of type 'PagedVaultAccountsRequestFilters' or a URL string for next/previous page as return from previous queries");
