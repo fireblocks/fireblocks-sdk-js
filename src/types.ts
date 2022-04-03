@@ -361,9 +361,9 @@ export interface OperationSuccessResponse {
 
 export interface NetworkConnectionResponse {
     id: string;
+    status: string;
     remoteNetworkId: NetworkId;
     localNetworkId: NetworkId;
-    status: string;
     routingPolicy?: RoutingPolicy;
 }
 
