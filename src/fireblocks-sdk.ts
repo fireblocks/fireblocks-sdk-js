@@ -93,27 +93,10 @@ export class FireblocksSDK {
 
     /**
      * Gets a list of vault accounts per page matching the given filter or path
-     * @param nextOrPreviousPageUrl URL containing the full path for the previous/next page as returned from previous request result
-     */
-    public async getVaultAccountsWithPageInfo(nextOrPreviousPageUrl: string): Promise<PagedVaultAccountsResponse>;
-    /**
-     * Gets a list of vault accounts per page matching the given filter or path
      * @param pagedVaultAccountsRequestFilters Filters for the first request
      */
-    public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse>;
-    public async getVaultAccountsWithPageInfo(input: string | PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
-        if (typeof input === "string") {
-            const nextOrPreviousPageUrl = input as string;
-            const index = nextOrPreviousPageUrl.indexOf("/v1/");
-            const path = nextOrPreviousPageUrl.substring(index, nextOrPreviousPageUrl.length);
-            return await this.apiClient.issueGetRequest(path);
-        }
-        else if (typeof input === "object") {
-            const pagedVaultAccountsRequestFilters = input as PagedVaultAccountsRequestFilters;
-            return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
-        }
-
-        throw new TypeError("Input must be either a filter object of type 'PagedVaultAccountsRequestFilters' or a URL string for next/previous page as return from previous queries");
+    public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
     }
 
     /**
