@@ -598,6 +598,27 @@ export interface VaultAccountsFilter {
     assetId?: string;
 }
 
+export interface PagedVaultAccountsRequestFilters {
+    namePrefix?: string;
+    nameSuffix?: string;
+    minAmountThreshold?: number;
+    assetId?: string;
+    orderBy?: "ASC" | "DESC";
+    limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
+    before?: string;
+    after?: string;
+}
+
+export interface PagedVaultAccountsResponse {
+    accounts: VaultAccountResponse[];
+    paging: {
+        before: string;
+        after: string;
+    };
+    previousUrl: string;
+    nextUrl: string;
+}
+
 export interface VaultBalancesFilter {
     accountNamePrefix?: string;
     accountNameSuffix?: string;
