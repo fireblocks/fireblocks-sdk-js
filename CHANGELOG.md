@@ -2,11 +2,52 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v1.14.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.9.0...v1.14.0)
+### [v2.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.14.0...v2.0.0)
+
+> 4 April 2022
+
+- feat: added pagination to vault_accounts endpoint [`#79`](https://github.com/fireblocks/fireblocks-sdk-js/pull/79)
+
+#### [v1.14.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.13.0...v1.14.0)
 
 > 3 March 2022
 
 - Add assetId to gas-station configuration [`#76`](https://github.com/fireblocks/fireblocks-sdk-js/pull/76)
+
+#### [v1.13.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.12.0...v1.13.0)
+
+> 17 February 2022
+
+- added get exchange by asset [`#75`](https://github.com/fireblocks/fireblocks-sdk-js/pull/75)
+- Bump follow-redirects from 1.14.7 to 1.14.8 [`#74`](https://github.com/fireblocks/fireblocks-sdk-js/pull/74)
+- fix typo in README.md [`#72`](https://github.com/fireblocks/fireblocks-sdk-js/pull/72)
+- Bump follow-redirects from 1.14.5 to 1.14.7 [`#73`](https://github.com/fireblocks/fireblocks-sdk-js/pull/73)
+
+#### [v1.12.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.11.1...v1.12.0)
+
+> 4 January 2022
+
+- add refresh balance to js sdk [`#71`](https://github.com/fireblocks/fireblocks-sdk-js/pull/71)
+- Added resend transaction webhooks [`#66`](https://github.com/fireblocks/fireblocks-sdk-js/pull/66)
+
+#### [v1.11.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.11.0...v1.11.1)
+
+> 20 December 2021
+
+- fix: add missing fields to TransactionResponse [`#69`](https://github.com/fireblocks/fireblocks-sdk-js/pull/69)
+
+#### [v1.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.10.0...v1.11.0)
+
+> 9 December 2021
+
+- Feat added treat as gross amount flag to allocate funds request [`#63`](https://github.com/fireblocks/fireblocks-sdk-js/pull/63)
+
+#### [v1.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.9.0...v1.10.0)
+
+> 5 December 2021
+
+- Add RequestOptions for all post request [`#64`](https://github.com/fireblocks/fireblocks-sdk-js/pull/64)
+- add functionality for activate vault asset [`#62`](https://github.com/fireblocks/fireblocks-sdk-js/pull/62)
 
 #### [v1.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.8.2...v1.9.0)
 
