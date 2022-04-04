@@ -382,7 +382,7 @@ export interface RoutingPolicy {
 
 export interface RoutingDest {
     scheme: Scheme;
-    dstType: DestType;
+    dstType: NetworkDestType;
     dstId: string;
 }
 
@@ -392,7 +392,7 @@ export enum Scheme {
     CUSTOM = "CUSTOM",
 }
 
-export enum DestType {
+export enum NetworkDestType {
     VAULT_ACCOUNT = "VAULT",
     UNMANAGED_WALLET = "UNMANAGED",
     EXCHANGE_ACCOUNT = "EXCHANGE",
