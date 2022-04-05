@@ -237,6 +237,19 @@ export class FireblocksSDK {
     }
 
     /**
+     * Convert an asset at an Exchange Account
+     * @param exchangeAccountId The exchange account ID
+     * @param srcAsset The source asset to convert from
+     * @param destAsset The destination asset to convert to
+     * @param amount The amount to convert
+     */
+    public async convertExchangeAsset(exchangeAccountId: string, srcAsset: string, destAsset: string, amount: number, requestOptions?: RequestOptions): Promise<ExchangeResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/convert`, {
+            srcAsset, destAsset, amount
+        }, requestOptions);
+    }
+
+    /**
      * Transfer from a main exchange account to a subaccount
      * @param exchangeAccountId The exchange ID in Fireblocks
      * @param subaccountId The ID of the subaccount in the exchange
