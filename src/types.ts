@@ -281,6 +281,7 @@ export interface TransactionResponse {
     blockInfo?: BlockInfo;
     authorizationInfo?: AuthorizationInfo;
     index?: number;
+    customError?: string;
 }
 
 export interface AmountInfo {
