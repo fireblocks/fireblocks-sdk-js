@@ -939,8 +939,17 @@ export class FireblocksSDK {
 
     /**
      * Get Fee Payer Configuration
+     * @param baseAsset
      */
     public async getFeePayerConfiguration(baseAsset: string): Promise<FeePayerConfiguration> {
         return await this.apiClient.issueGetRequest(`/v1/fee_payer/${baseAsset}`);
+    }
+
+    /**
+     * Delete Fee Payer Configuration
+     * @param baseAsset
+     */
+    public async removeFeePayerConfiguration(baseAsset: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
     }
 }
