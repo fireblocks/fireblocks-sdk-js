@@ -691,6 +691,49 @@ export interface OffExchangeEntityResponse {
     };
 }
 
+export enum PayoutStatus {
+    SUBMITTED = "SUBMITTED",
+    PROCESSING = "PROCESSING",
+    REJECTED = "REJECTED",
+    COMPLETED = "COMPLETED"
+}
+
+export interface PayoutArguments {
+    asset: string;
+    instructions: PayoutInstruction[];
+}
+
+export interface PayoutInstruction {
+    amount: string;
+    displayName: string;
+    legalName: string;
+    legalEntityId: string;
+    mcc: string;
+    address1: string;
+    address2: string;
+    country: string;
+    state: string;
+    zipCode: string;
+    email: string;
+    phoneNumber: string;
+    bankName: string;
+    bankCountry: string;
+    bankState: string;
+    bankAccountNumber: string;
+    bankSecondaryNumber: string;
+    description: string;
+}
+
+export interface PayoutResponse extends PayoutArguments {
+    id: string;
+    status: PayoutStatus;
+}
+
+export interface UpsertPayoutResponse {
+    id: string;
+    status: PayoutStatus;   
+}
+
 export interface SetFeePayerConfiguration {
     feePayerAccountId: string;
 }
