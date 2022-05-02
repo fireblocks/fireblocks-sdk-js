@@ -41,7 +41,11 @@ import {
     TransactionPageFilter,
     InternalWalletAsset,
     ExternalWalletAsset,
-    OffExchangeEntityResponse, SetFeePayerConfiguration, FeePayerConfiguration
+    OffExchangeEntityResponse,
+    SetFeePayerConfiguration,
+    FeePayerConfiguration,
+    PagedVaultAccountsResponse,
+    PagedVaultAccountsRequestFilters
 } from "./types";
 
 export * from "./types";
@@ -87,6 +91,14 @@ export class FireblocksSDK {
     public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
         const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
         return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Gets a list of vault accounts per page matching the given filter or path
+     * @param pagedVaultAccountsRequestFilters Filters for the first request
+     */
+    public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
     }
 
     /**

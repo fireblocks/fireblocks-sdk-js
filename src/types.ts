@@ -314,6 +314,7 @@ export interface AmountInfo {
 export interface FeeInfo {
     networkFee?: string;
     serviceFee?: string;
+    gasPrice?: string;
 }
 
 export interface TransactionResponseDestination {
@@ -382,14 +383,42 @@ export interface OperationSuccessResponse {
 
 export interface NetworkConnectionResponse {
     id: string;
-    localChannel: {
-        networkId: string;
-        name: string
-    };
-    remoteChannel: {
-        networkId: string;
-        name: string
-    };
+    status: string;
+    remoteNetworkId: NetworkId;
+    localNetworkId: NetworkId;
+    routingPolicy?: RoutingPolicy;
+}
+
+interface NetworkId {
+    id: string;
+    name: string;
+}
+
+export interface RoutingPolicy {
+    crypto?: RoutingDest;
+    sen?: RoutingDest;
+    signet?: RoutingDest;
+    sen_test?: RoutingDest;
+    signet_test?: RoutingDest;
+}
+
+export interface RoutingDest {
+    scheme: Scheme;
+    dstType: NetworkDestType;
+    dstId: string;
+}
+
+export enum Scheme {
+    AUTO = "AUTO",
+    DEFAULT = "DEFAULT",
+    CUSTOM = "CUSTOM",
+}
+
+export enum NetworkDestType {
+    VAULT_ACCOUNT = "VAULT",
+    UNMANAGED_WALLET = "UNMANAGED",
+    EXCHANGE_ACCOUNT = "EXCHANGE",
+    FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
 
 export interface TransactionFilter {
@@ -589,6 +618,27 @@ export interface VaultAccountsFilter {
     nameSuffix?: string;
     minAmountThreshold?: number;
     assetId?: string;
+}
+
+export interface PagedVaultAccountsRequestFilters {
+    namePrefix?: string;
+    nameSuffix?: string;
+    minAmountThreshold?: number;
+    assetId?: string;
+    orderBy?: "ASC" | "DESC";
+    limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
+    before?: string;
+    after?: string;
+}
+
+export interface PagedVaultAccountsResponse {
+    accounts: VaultAccountResponse[];
+    paging: {
+        before: string;
+        after: string;
+    };
+    previousUrl: string;
+    nextUrl: string;
 }
 
 export interface VaultBalancesFilter {
