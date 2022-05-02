@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v2.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.0.0...v2.1.0)
+
+> 2 May 2022
+
+- Bump minimist from 1.2.5 to 1.2.6 [`#91`](https://github.com/fireblocks/fireblocks-sdk-js/pull/91)
+
 ### [v2.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.14.0...v2.0.0)
 
 > 4 April 2022
 
 - feat: added pagination to vault_accounts endpoint [`#79`](https://github.com/fireblocks/fireblocks-sdk-js/pull/79)
+- Refactor network connection response [`#81`](https://github.com/fireblocks/fireblocks-sdk-js/pull/81)
+- Bump minimist from 1.2.5 to 1.2.6 [`#80`](https://github.com/fireblocks/fireblocks-sdk-js/pull/80)
 
 #### [v1.14.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.13.0...v1.14.0)
 
