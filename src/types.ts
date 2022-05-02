@@ -293,6 +293,7 @@ export interface AmountInfo {
 export interface FeeInfo {
     networkFee?: string;
     serviceFee?: string;
+    gasPrice?: string;
 }
 
 export interface TransactionResponseDestination {
