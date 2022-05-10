@@ -231,6 +231,10 @@ export interface ExchangeResponse {
     status: string;
 }
 
+export interface ConvertExchangeAssetResponse {
+    status: boolean;
+}
+
 export interface FiatAccountResponse {
     id: string;
     type: string;

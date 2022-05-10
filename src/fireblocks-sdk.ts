@@ -1,55 +1,56 @@
-import { ApiClient } from "./api-client";
-import { ApiTokenProvider } from "./api-token-provider";
-import { IAuthProvider } from "./iauth-provider";
+import {ApiClient} from "./api-client";
+import {ApiTokenProvider} from "./api-token-provider";
+import {IAuthProvider} from "./iauth-provider";
+import queryString from "query-string";
 import {
-    VaultAccountResponse,
-    CreateTransactionResponse,
-    TransactionArguments,
+    AllocateFundsRequest,
     AssetResponse,
-    ExchangeResponse,
-    TransactionResponse,
-    TransactionFilter,
+    AssetTypeResponse,
     CancelTransactionResponse,
-    WalletContainerResponse,
-    DepositAddressResponse,
-    GenerateAddressResponse,
-    OperationSuccessResponse,
-    NetworkConnectionResponse,
-    FiatAccountResponse,
+    ConvertExchangeAssetResponse,
+    CreateTransactionResponse,
     CreateTransferTicketArgs,
-    TransferTicketResponse,
-    TermResponse,
-    ExecuteTermArgs,
     CreateTransferTicketResponse,
-    EstimateTransactionFeeResponse,
+    DeallocateFundsRequest,
+    DepositAddressResponse,
     EstimateFeeResponse,
+    EstimateTransactionFeeResponse,
+    ExchangeResponse,
+    ExecuteTermArgs,
+    ExternalWalletAsset,
+    FiatAccountResponse,
+    GasStationInfo,
+    GenerateAddressResponse,
+    InternalWalletAsset,
+    MaxSpendableAmountResponse,
+    NetworkConnectionResponse,
+    OffExchangeEntityResponse,
+    OperationSuccessResponse,
+    PagedVaultAccountsRequestFilters,
+    PagedVaultAccountsResponse,
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
-    GasStationInfo,
-    MaxSpendableAmountResponse,
-    VaultAccountsFilter,
-    VaultBalancesFilter,
-    ValidateAddressResponse,
-    VaultAssetResponse,
     RequestOptions,
-    AllocateFundsRequest,
-    DeallocateFundsRequest,
     ResendWebhooksResponse,
-    AssetTypeResponse,
-    User,
-    TransactionPageResponse,
+    TermResponse,
+    TransactionArguments,
+    TransactionFilter,
     TransactionPageFilter,
-    InternalWalletAsset,
-    ExternalWalletAsset,
-    OffExchangeEntityResponse,
+    TransactionPageResponse,
+    TransactionResponse,
+    TransferTicketResponse,
+    User,
+    ValidateAddressResponse,
+    VaultAccountResponse,
+    VaultAccountsFilter,
+    VaultAssetResponse,
+    VaultBalancesFilter,
+    WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
-    PagedVaultAccountsResponse,
-    PagedVaultAccountsRequestFilters
 } from "./types";
 
 export * from "./types";
-import queryString from "query-string";
 
 export interface SDKOptions {
     timeoutInMs: number;
@@ -234,6 +235,19 @@ export class FireblocksSDK {
      */
     public async getExchangeAsset(exchangeAccountId: string, assetId: string): Promise<ExchangeResponse> {
         return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}`);
+    }
+
+    /**
+     * Convert an asset at an Exchange Account
+     * @param exchangeAccountId The exchange account ID
+     * @param srcAsset The source asset to convert from
+     * @param destAsset The destination asset to convert to
+     * @param amount The amount to convert
+     */
+    public async convertExchangeAsset(exchangeAccountId: string, srcAsset: string, destAsset: string, amount: number, requestOptions?: RequestOptions): Promise<ConvertExchangeAssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/convert`, {
+            srcAsset, destAsset, amount
+        }, requestOptions);
     }
 
     /**
