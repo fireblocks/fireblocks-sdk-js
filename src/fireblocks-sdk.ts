@@ -45,7 +45,12 @@ import {
     SetFeePayerConfiguration,
     FeePayerConfiguration,
     PagedVaultAccountsResponse,
-    PagedVaultAccountsRequestFilters
+    PagedVaultAccountsRequestFilters,
+    PayoutResponse,
+    PayoutStatus,
+    PayoutsResponse,
+    Payout,
+    PayoutUpdateResponse,
 } from "./types";
 
 export * from "./types";
@@ -937,6 +942,34 @@ export class FireblocksSDK {
      */
     public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<void> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
+    }
+
+    /**
+     * Get payout by id
+     */
+    public async getPayoutById(id: string): Promise<PayoutResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/payments/payout/${id}`);
+    }
+
+    /**
+     * Get payouts
+     */
+    public async getPayouts(status?: PayoutStatus): Promise<PayoutsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/payments/payout?status=${status}`)
+    }
+
+    /**
+     * Create new payout
+     */
+     public async createPayout(data: Payout, requestOptions?: RequestOptions): Promise<PayoutResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/payments/payout`, data, requestOptions);
+    }
+
+    /**
+     * Update payout status
+     */
+    public async updatePayoutStatus(id: string, status: PayoutStatus): Promise<PayoutUpdateResponse> {
+        return await this.apiClient.issuePutRequest(`/v1/payments/payout/${id}`, {status: status});
     }
 
     /**
