@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v2.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.1.0...v2.2.0)
+
+> 10 May 2022
+
+- added convert exchange asset method [`#83`](https://github.com/fireblocks/fireblocks-sdk-js/pull/83)
+
 #### [v2.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.0.0...v2.1.0)
 
 > 2 May 2022
 
 - Bump minimist from 1.2.5 to 1.2.6 [`#91`](https://github.com/fireblocks/fireblocks-sdk-js/pull/91)
+- add fee payer endpoints [`#89`](https://github.com/fireblocks/fireblocks-sdk-js/pull/89)
+- Add gasPrice to response when it exists [`#86`](https://github.com/fireblocks/fireblocks-sdk-js/pull/86)
 
 ### [v2.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v1.14.0...v2.0.0)
 
