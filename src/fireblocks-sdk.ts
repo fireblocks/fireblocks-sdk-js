@@ -46,10 +46,11 @@ import {
     FeePayerConfiguration,
     PagedVaultAccountsResponse,
     PagedVaultAccountsRequestFilters,
-    PayoutArguments,
     PayoutResponse,
     PayoutStatus,
-    UpsertPayoutResponse
+    PayoutsResponse,
+    Payout,
+    PayoutUpdateResponse,
 } from "./types";
 
 export * from "./types";
@@ -953,21 +954,21 @@ export class FireblocksSDK {
     /**
      * Get payouts
      */
-    public async getPayouts(status?: PayoutStatus): Promise<PayoutResponse[]> {
+    public async getPayouts(status?: PayoutStatus): Promise<PayoutsResponse> {
         return await this.apiClient.issueGetRequest(`/v1/payments/payout?status=${status}`)
     }
 
     /**
      * Create new payout
      */
-     public async createPayout(payoutArguments: PayoutArguments, requestOptions?: RequestOptions): Promise<UpsertPayoutResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/payments/payout`, payoutArguments, requestOptions);
+     public async createPayout(data: Payout, requestOptions?: RequestOptions): Promise<PayoutResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/payments/payout`, data, requestOptions);
     }
 
     /**
      * Update payout status
      */
-    public async updatePayoutStatus(id: string, status: PayoutStatus): Promise<UpsertPayoutResponse> {
+    public async updatePayoutStatus(id: string, status: PayoutStatus): Promise<PayoutUpdateResponse> {
         return await this.apiClient.issuePutRequest(`/v1/payments/payout/${id}`, {status: status});
     }
 

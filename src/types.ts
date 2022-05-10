@@ -698,24 +698,27 @@ export enum PayoutStatus {
     COMPLETED = "COMPLETED"
 }
 
-export interface PayoutArguments {
+export interface Payout {
+    id?: string;
+    status?: PayoutStatus;
     asset: string;
     instructions: PayoutInstruction[];
 }
 
 export interface PayoutInstruction {
-    amount: string;
+    id?: string
+    status?: PayoutStatus;
     displayName: string;
     legalName: string;
     legalEntityId: string;
-    mcc: string;
-    address1: string;
-    address2: string;
-    country: string;
-    state: string;
-    zipCode: string;
-    email: string;
-    phoneNumber: string;
+    mcc?: string;
+    address1?: string;
+    address2?: string;
+    country?: string;
+    state?: string;
+    zipCode?: string;
+    email?: string;
+    phoneNumber?: string;
     bankName: string;
     bankCountry: string;
     bankState: string;
@@ -724,14 +727,15 @@ export interface PayoutInstruction {
     description: string;
 }
 
-export interface PayoutResponse extends PayoutArguments {
-    id: string;
-    status: PayoutStatus;
+export type PayoutResponse = Payout;
+
+export interface PayoutsResponse {
+    payouts: Payout[]
 }
 
-export interface UpsertPayoutResponse {
-    id: string;
-    status: PayoutStatus;   
+export interface PayoutUpdateResponse {
+    payoutId: string;
+    status: PayoutStatus;
 }
 
 export interface SetFeePayerConfiguration {
