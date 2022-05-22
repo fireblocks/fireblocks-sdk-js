@@ -413,6 +413,30 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets all contract wallets for your tenant
+     */
+    public async getContractWallets(): Promise<WalletContainerResponse<ExternalWalletAsset>[]> {
+        return await this.apiClient.issueGetRequest("/v1/contracts");
+    }
+
+    /**
+     * Gets a single contract wallet
+     * @param walletId The contract wallet ID
+     */
+    public async getContractWallet(walletId: string): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+        return await this.apiClient.issueGetRequest(`/v1/contracts/${walletId}`);
+    }
+
+    /**
+     * Gets a single contract wallet asset
+     * @param walletId The contract wallet ID
+     * @param assetId The asset ID
+     */
+    public async getContractWalletAsset(walletId: string, assetId: string): Promise<ExternalWalletAsset> {
+        return await this.apiClient.issueGetRequest(`/v1/contracts/${walletId}/${assetId}`);
+    }
+
+    /**
      * Gets detailed information for a single transaction
      * @param txId The transaction id to query
      */
@@ -542,6 +566,18 @@ export class FireblocksSDK {
     }
 
     /**
+     * Creates a new contract wallet
+     * @param name A name for the new contract wallet
+     */
+     public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+        const body = {
+            name,
+        };
+
+        return await this.apiClient.issuePostRequest("/v1/contracts", body, requestOptions);
+    }
+
+    /**
      * Creates a new asset within an exiting external wallet
      * @param walletId The wallet id
      * @param assetId The asset to add
@@ -569,6 +605,23 @@ export class FireblocksSDK {
      */
     public async createInternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<InternalWalletAsset> {
         const path = `/v1/internal_wallets/${walletId}/${assetId}`;
+
+        const body = {
+            address: address,
+            tag: tag
+        };
+        return await this.apiClient.issuePostRequest(path, body, requestOptions);
+    }
+
+    /**
+     * Creates a new asset within an exiting contract wallet
+     * @param walletId The wallet id
+     * @param assetId The asset to add
+     * @param address The wallet address
+     * @param tag (for ripple only) The ripple account tag
+     */
+     public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
+        const path = `/v1/contracts/${walletId}/${assetId}`;
 
         const body = {
             address: address,
@@ -682,6 +735,23 @@ export class FireblocksSDK {
      */
     public async deleteExternalWalletAsset(walletId: string, assetId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/external_wallets/${walletId}/${assetId}`);
+    }
+
+    /**
+     * Deletes a single contract wallet
+     * @param walletId The contract wallet ID
+     */
+     public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/contracts/${walletId}`);
+    }
+
+    /**
+     * Deletes a single contract wallet asset
+     * @param walletId The contract wallet ID
+     * @param assetId The asset ID
+     */
+    public async deleteContractWalletAsset(walletId: string, assetId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/contracts/${walletId}/${assetId}`);
     }
 
     /**
