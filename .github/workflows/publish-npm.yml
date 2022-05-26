@@ -2,6 +2,8 @@ name: Publish to NPM
 on:
   release:
     types: [published]
+env:
+  GIT_TERMINAL_PROMPT: 1    
 jobs:
   publish:
     runs-on: ubuntu-latest
