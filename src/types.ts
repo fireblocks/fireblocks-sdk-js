@@ -285,6 +285,7 @@ export interface TransactionResponse {
     createdBy: string;
     rejectedBy: string;
     destinationAddress: string;
+    sourceAddress?: string;
     destinationAddressDescription?: string;
     destinationTag: string;
     addressType: string;
