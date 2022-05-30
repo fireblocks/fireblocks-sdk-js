@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v2.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.1.0...v2.2.0)
+#### [v2.3.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.1.0...v2.3.0)
 
-> 10 May 2022
+> 26 May 2022
 
-- added convert exchange asset method [`#83`](https://github.com/fireblocks/fireblocks-sdk-js/pull/83)
+- ci: git terminal prompt [`244d3ad`](https://github.com/fireblocks/fireblocks-sdk-js/commit/244d3ad15eb48f8e2f07a0708b295d7044c22d1f)
 
 #### [v2.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.0.0...v2.1.0)
 
