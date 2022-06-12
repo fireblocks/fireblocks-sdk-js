@@ -86,11 +86,12 @@ export interface ExternalWalletAsset {
 
 export interface InternalWalletAsset extends ExternalWalletAsset {
     balance: string;
+    lockedAmount: string;
 }
 
 export interface CreateTransactionResponse {
     id: string;
-    status: string;
+    status: TransactionStatus;
 }
 
 export interface EstimateFeeResponse {
@@ -295,13 +296,14 @@ export interface TransactionResponse {
     serviceFee?: number;
     feeCurrency: string;
     amlScreeningResult?: AmlScreeningResult;
+    operation: TransactionOperation;
     customerRefId?: string;
     amountInfo?: AmountInfo;
     feeInfo?: FeeInfo;
-    signedMessages?: SignedMessageResponse[];
+    signedMessages: SignedMessageResponse[];
     extraParameters?: any;
     externalTxId?: string;
-    destinations?: TransactionResponseDestination[];
+    destinations: TransactionResponseDestination[];
     blockInfo?: BlockInfo;
     authorizationInfo?: AuthorizationInfo;
     index?: number;

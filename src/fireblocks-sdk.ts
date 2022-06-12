@@ -97,6 +97,7 @@ export class FireblocksSDK {
     /**
      * Gets a list of vault accounts per page matching the given filter or path
      * @param pagedVaultAccountsRequestFilters Filters for the first request
+     * @throws if both namePrefix and nameSuffix are specified in pagedVaultAccountsRequestFilters
      */
     public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
@@ -439,6 +440,7 @@ export class FireblocksSDK {
     /**
      * Gets detailed information for a single transaction
      * @param txId The transaction id to query
+     * @throws if no transaction match the specified txId
      */
     public async getTransactionById(txId: string): Promise<TransactionResponse> {
         return await this.apiClient.issueGetRequest(`/v1/transactions/${txId}`);
@@ -949,6 +951,7 @@ export class FireblocksSDK {
 
     /**
      * Get address validation info
+     * @throws every time
      */
     public async validateAddress(assetId: string, address: string): Promise<ValidateAddressResponse> {
         const url = `/v1/transactions/validate_address/${assetId}/${address}`;
