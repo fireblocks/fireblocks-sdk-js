@@ -1,53 +1,62 @@
 import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
+import queryString from "query-string";
 import {
-    VaultAccountResponse,
-    CreateTransactionResponse,
-    TransactionArguments,
+    AllocateFundsRequest,
     AssetResponse,
-    ExchangeResponse,
-    TransactionResponse,
-    TransactionFilter,
+    AssetTypeResponse,
     CancelTransactionResponse,
-    WalletContainerResponse,
-    DepositAddressResponse,
-    GenerateAddressResponse,
-    OperationSuccessResponse,
-    NetworkConnectionResponse,
-    FiatAccountResponse,
+    ConvertExchangeAssetResponse,
+    CreateTransactionResponse,
     CreateTransferTicketArgs,
-    TransferTicketResponse,
-    TermResponse,
-    ExecuteTermArgs,
     CreateTransferTicketResponse,
-    EstimateTransactionFeeResponse,
+    DeallocateFundsRequest,
+    DepositAddressResponse,
     EstimateFeeResponse,
+    EstimateTransactionFeeResponse,
+    ExchangeResponse,
+    ExecuteTermArgs,
+    ExternalWalletAsset,
+    FiatAccountResponse,
+    GasStationInfo,
+    GenerateAddressResponse,
+    InternalWalletAsset,
+    MaxSpendableAmountResponse,
+    NetworkConnectionResponse,
+    OffExchangeEntityResponse,
+    OperationSuccessResponse,
+    PagedVaultAccountsRequestFilters,
+    PagedVaultAccountsResponse,
     PublicKeyInfoArgs,
     PublicKeyInfoForVaultAccountArgs,
-    GasStationInfo,
-    MaxSpendableAmountResponse,
-    VaultAccountsFilter,
-    VaultBalancesFilter,
-    ValidateAddressResponse,
-    CreateVaultAssetResponse,
     RequestOptions,
-    AllocateFundsRequest,
-    DeallocateFundsRequest,
     ResendWebhooksResponse,
-    AssetTypeResponse,
-    User,
-    TransactionPageResponse,
+    TermResponse,
+    TransactionArguments,
+    TransactionFilter,
     TransactionPageFilter,
-    InternalWalletAsset,
-    ExternalWalletAsset, RoutingPolicy
+    TransactionPageResponse,
+    TransactionResponse,
+    TransferTicketResponse,
+    User,
+    ValidateAddressResponse,
+    VaultAccountResponse,
+    VaultAccountsFilter,
+    VaultAssetResponse,
+    VaultBalancesFilter,
+    WalletContainerResponse,
+    SetFeePayerConfiguration,
+    FeePayerConfiguration,
 } from "./types";
 
 export * from "./types";
-import queryString from "query-string";
+
+export interface SDKOptions {
+    timeoutInMs: number;
+}
 
 export class FireblocksSDK {
-
     private authProvider: IAuthProvider;
     private apiBaseUrl: string;
     private apiClient: ApiClient;
@@ -57,15 +66,17 @@ export class FireblocksSDK {
      * @param privateKey A string representation of your private key
      * @param apiKey Your api key. This is a uuid you received from Fireblocks
      * @param apiBaseUrl The fireblocks server URL. Leave empty to use the default server
+     * @param authProvider
+     * @param sdkOptions
      */
-    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined) {
+    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions?: SDKOptions) {
         this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
 
         if (apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
         }
 
-        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl);
+        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, {timeoutInMs: sdkOptions?.timeoutInMs});
     }
 
     /**
@@ -81,6 +92,14 @@ export class FireblocksSDK {
     public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
         const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
         return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Gets a list of vault accounts per page matching the given filter or path
+     * @param pagedVaultAccountsRequestFilters Filters for the first request
+     */
+    public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
     }
 
     /**
@@ -110,6 +129,16 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets a single vault account asset balance after forcing refresh from the blockchain
+     * @param vaultAccountId The vault account ID
+     * @param assetId The ID of the asset to get
+     * @param requestOptions
+     */
+    public async refreshVaultAssetBalance(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<AssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/balance`, "{}", requestOptions);
+    }
+
+    /**
      * Gets deposit addresses for an asset in a vault account
      * @param vaultAccountId The vault account ID
      * @param assetId The ID of the asset for which to get the deposit address
@@ -133,12 +162,13 @@ export class FireblocksSDK {
      * @param assetId The ID of the asset for which to generate the deposit address
      * @param description A description for the new address
      * @param customerRefId A customer reference ID
+     * @param requestOptions
      */
-    public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string, customerRefId?: string): Promise<GenerateAddressResponse> {
+    public async generateNewAddress(vaultAccountId: string, assetId: string, description?: string, customerRefId?: string, requestOptions?: RequestOptions): Promise<GenerateAddressResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses`, {
             description,
             customerRefId
-        });
+        }, requestOptions);
     }
 
     /**
@@ -303,19 +333,42 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets a single asset within an Exchange Account
+     * @param exchangeAccountId The exchange account ID
+     * @param assetId The ID of the asset
+     */
+    public async getExchangeAsset(exchangeAccountId: string, assetId: string): Promise<ExchangeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}`);
+    }
+
+    /**
+     * Convert an asset at an Exchange Account
+     * @param exchangeAccountId The exchange account ID
+     * @param srcAsset The source asset to convert from
+     * @param destAsset The destination asset to convert to
+     * @param amount The amount to convert
+     */
+    public async convertExchangeAsset(exchangeAccountId: string, srcAsset: string, destAsset: string, amount: number, requestOptions?: RequestOptions): Promise<ConvertExchangeAssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/convert`, {
+            srcAsset, destAsset, amount
+        }, requestOptions);
+    }
+
+    /**
      * Transfer from a main exchange account to a subaccount
      * @param exchangeAccountId The exchange ID in Fireblocks
      * @param subaccountId The ID of the subaccount in the exchange
      * @param assetId The asset to transfer
      * @param amount The amount to transfer
+     * @param requestOptions
      */
-    public async transferToSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number): Promise<OperationSuccessResponse> {
+    public async transferToSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = {
             subaccountId,
             amount
         };
 
-        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_to_subaccount`, body);
+        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_to_subaccount`, body, requestOptions);
     }
 
     /**
@@ -324,14 +377,15 @@ export class FireblocksSDK {
      * @param subaccountId The ID of the subaccount in the exchange
      * @param assetId The asset to transfer
      * @param amount The amount to transfer
+     * @param requestOptions
      */
-    public async transferFromSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number): Promise<OperationSuccessResponse> {
+    public async transferFromSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = {
             subaccountId,
             amount
         };
 
-        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_from_subaccount`, body);
+        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_from_subaccount`, body, requestOptions);
     }
 
     /**
@@ -353,26 +407,28 @@ export class FireblocksSDK {
      * Redeem from a fiat account to a linked DDA
      * @param accountId The fiat account ID in Fireblocks
      * @param amount The amount to transfer
+     * @param requestOptions
      */
-    public async redeemToLinkedDDA(accountId: string, amount: number): Promise<OperationSuccessResponse> {
+    public async redeemToLinkedDDA(accountId: string, amount: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = {
             amount
         };
 
-        return await this.apiClient.issuePostRequest(`/v1/fiat_accounts/${accountId}/redeem_to_linked_dda`, body);
+        return await this.apiClient.issuePostRequest(`/v1/fiat_accounts/${accountId}/redeem_to_linked_dda`, body, requestOptions);
     }
 
     /**
      * Deposit to a fiat account from a linked DDA
      * @param accountId The fiat account ID in Fireblocks
      * @param amount The amount to transfer
+     * @param requestOptions
      */
-    public async depositFromLinkedDDA(accountId: string, amount: number): Promise<OperationSuccessResponse> {
+    public async depositFromLinkedDDA(accountId: string, amount: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = {
             amount
         };
 
-        return await this.apiClient.issuePostRequest(`/v1/fiat_accounts/${accountId}/deposit_from_linked_dda`, body);
+        return await this.apiClient.issuePostRequest(`/v1/fiat_accounts/${accountId}/deposit_from_linked_dda`, body, requestOptions);
     }
 
     /**
@@ -461,6 +517,30 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets all contract wallets for your tenant
+     */
+    public async getContractWallets(): Promise<WalletContainerResponse<ExternalWalletAsset>[]> {
+        return await this.apiClient.issueGetRequest("/v1/contracts");
+    }
+
+    /**
+     * Gets a single contract wallet
+     * @param walletId The contract wallet ID
+     */
+    public async getContractWallet(walletId: string): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+        return await this.apiClient.issueGetRequest(`/v1/contracts/${walletId}`);
+    }
+
+    /**
+     * Gets a single contract wallet asset
+     * @param walletId The contract wallet ID
+     * @param assetId The asset ID
+     */
+    public async getContractWalletAsset(walletId: string, assetId: string): Promise<ExternalWalletAsset> {
+        return await this.apiClient.issueGetRequest(`/v1/contracts/${walletId}/${assetId}`);
+    }
+
+    /**
      * Gets detailed information for a single transaction
      * @param txId The transaction id to query
      */
@@ -471,9 +551,10 @@ export class FireblocksSDK {
     /**
      * Cancels the selected transaction
      * @param txId The transaction id to cancel
+     * @param requestOptions
      */
-    public async cancelTransactionById(txId: string): Promise<CancelTransactionResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, {});
+    public async cancelTransactionById(txId: string, requestOptions?: RequestOptions): Promise<CancelTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, {}, requestOptions);
     }
 
     /**
@@ -481,8 +562,12 @@ export class FireblocksSDK {
      * @param name A name for the new vault account
      * @param hiddenOnUI If true, the created account and all related transactions will not be shown on Fireblocks console
      * @param customerRefId A customer reference ID
+     * @param autoFuel
+     * @param requestOptions
+     * @param autoFuel
+     * @param requestOptions
      */
-    public async createVaultAccount(name: string, hiddenOnUI?: boolean, customerRefId?: string, autoFuel?: boolean): Promise<VaultAccountResponse> {
+    public async createVaultAccount(name: string, hiddenOnUI?: boolean, customerRefId?: string, autoFuel?: boolean, requestOptions?: RequestOptions): Promise<VaultAccountResponse> {
         const body = {
             name,
             customerRefId,
@@ -490,36 +575,40 @@ export class FireblocksSDK {
             autoFuel: autoFuel || false
         };
 
-        return await this.apiClient.issuePostRequest("/v1/vault/accounts", body);
+        return await this.apiClient.issuePostRequest("/v1/vault/accounts", body, requestOptions);
     }
 
     /**
      * Hides a vault account in Fireblocks console
      * @param vaultAccountId The vault account ID
+     * @param requestOptions
      */
-    public async hideVaultAccount(vaultAccountId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/hide`, {});
+    public async hideVaultAccount(vaultAccountId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/hide`, {}, requestOptions);
     }
 
     /**
      * Reveals a hidden vault account in Fireblocks console
      * @param vaultAccountId The vault account ID
+     * @param requestOptions
      */
-    public async unhideVaultAccount(vaultAccountId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/unhide`, {});
+    public async unhideVaultAccount(vaultAccountId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/unhide`, {}, requestOptions);
     }
 
     /**
      * Sets autoFuel to true/false for a vault account
      * @param vaultAccountId The vault account ID
      * @param autoFuel The new value for the autoFuel flag
+     * @param requestOptions
      */
-    public async setAutoFuel(vaultAccountId: string, autoFuel: boolean): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, { autoFuel });
+    public async setAutoFuel(vaultAccountId: string, autoFuel: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, {autoFuel}, requestOptions);
     }
 
     /**
      * Updates a vault account
+     * @param vaultAccountId
      * @param name A new name for the vault account
      */
     public async updateVaultAccount(vaultAccountId: string, name: string): Promise<VaultAccountResponse> {
@@ -534,37 +623,62 @@ export class FireblocksSDK {
      * Creates a new asset within an existing vault account
      * @param vaultAccountId The vault account ID
      * @param assetId The asset to add
+     * @param requestOptions
      */
-    public async createVaultAsset(vaultAccountId: string, assetId: string): Promise<CreateVaultAssetResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {});
+    public async createVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {}, requestOptions);
+    }
+
+    /**
+     * Retry to create a vault asset for a vault asset that failed
+     * @param vaultAccountId The vault account ID
+     * @param assetId The asset to add
+     * @param requestOptions
+     */
+    public async activateVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {} , requestOptions);
     }
 
     /**
      * Creates a new external wallet
      * @param name A name for the new external wallet
      * @param customerRefId A customer reference ID
+     * @param requestOptions
      */
-    public async createExternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+    public async createExternalWallet(name: string, customerRefId?: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         const body = {
             name,
             customerRefId
         };
 
-        return await this.apiClient.issuePostRequest("/v1/external_wallets", body);
+        return await this.apiClient.issuePostRequest("/v1/external_wallets", body, requestOptions);
     }
 
     /**
      * Creates a new internal wallet
      * @param name A name for the new internal wallet
      * @param customerRefId A customer reference ID
+     * @param requestOptions
      */
-    public async createInternalWallet(name: string, customerRefId?: string): Promise<WalletContainerResponse<InternalWalletAsset>> {
+    public async createInternalWallet(name: string, customerRefId?: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<InternalWalletAsset>> {
         const body = {
             name,
             customerRefId
         };
 
-        return await this.apiClient.issuePostRequest("/v1/internal_wallets", body);
+        return await this.apiClient.issuePostRequest("/v1/internal_wallets", body, requestOptions);
+    }
+
+    /**
+     * Creates a new contract wallet
+     * @param name A name for the new contract wallet
+     */
+     public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+        const body = {
+            name,
+        };
+
+        return await this.apiClient.issuePostRequest("/v1/contracts", body, requestOptions);
     }
 
     /**
@@ -573,15 +687,16 @@ export class FireblocksSDK {
      * @param assetId The asset to add
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
+     * @param requestOptions
      */
-    public async createExternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string): Promise<ExternalWalletAsset> {
+    public async createExternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
         const path = `/v1/external_wallets/${walletId}/${assetId}`;
 
         const body = {
             address: address,
             tag: tag
         };
-        return await this.apiClient.issuePostRequest(path, body);
+        return await this.apiClient.issuePostRequest(path, body, requestOptions);
     }
 
     /**
@@ -590,15 +705,33 @@ export class FireblocksSDK {
      * @param assetId The asset to add
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
+     * @param requestOptions
      */
-    public async createInternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string): Promise<InternalWalletAsset> {
+    public async createInternalWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<InternalWalletAsset> {
         const path = `/v1/internal_wallets/${walletId}/${assetId}`;
 
         const body = {
             address: address,
             tag: tag
         };
-        return await this.apiClient.issuePostRequest(path, body);
+        return await this.apiClient.issuePostRequest(path, body, requestOptions);
+    }
+
+    /**
+     * Creates a new asset within an exiting contract wallet
+     * @param walletId The wallet id
+     * @param assetId The asset to add
+     * @param address The wallet address
+     * @param tag (for ripple only) The ripple account tag
+     */
+     public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
+        const path = `/v1/contracts/${walletId}/${assetId}`;
+
+        const body = {
+            address: address,
+            tag: tag
+        };
+        return await this.apiClient.issuePostRequest(path, body, requestOptions);
     }
 
     /**
@@ -611,8 +744,8 @@ export class FireblocksSDK {
     /**
      * Estimates the fee for a transaction request
      */
-    public async estimateFeeForTransaction(transactionArguments: TransactionArguments): Promise<EstimateTransactionFeeResponse> {
-        return await this.apiClient.issuePostRequest("/v1/transactions/estimate_fee", transactionArguments);
+    public async estimateFeeForTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<EstimateTransactionFeeResponse> {
+        return await this.apiClient.issuePostRequest("/v1/transactions/estimate_fee", transactionArguments, requestOptions);
     }
 
     /**
@@ -625,8 +758,8 @@ export class FireblocksSDK {
     /**
      * Creates a new transfer ticket
      */
-    public async createTransferTicket(options: CreateTransferTicketArgs): Promise<CreateTransferTicketResponse> {
-        return await this.apiClient.issuePostRequest("/v1/transfer_tickets", options);
+    public async createTransferTicket(options: CreateTransferTicketArgs, requestOptions?: RequestOptions): Promise<CreateTransferTicketResponse> {
+        return await this.apiClient.issuePostRequest("/v1/transfer_tickets", options, requestOptions);
     }
 
     /**
@@ -656,9 +789,10 @@ export class FireblocksSDK {
     /**
      * Cancel the transfer ticket
      * @param ticketId
+     * @param requestOptions
      */
-    public async cancelTransferTicket(ticketId: string) {
-        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/cancel`, {});
+    public async cancelTransferTicket(ticketId: string, requestOptions?: RequestOptions) {
+        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/cancel`, {}, requestOptions);
     }
 
     /**
@@ -666,10 +800,11 @@ export class FireblocksSDK {
      * @param ticketId
      * @param termId
      * @param options
+     * @param requestOptions
      */
-    public async executeTransferTicketTerm(ticketId: string, termId: string, options: ExecuteTermArgs) {
+    public async executeTransferTicketTerm(ticketId: string, termId: string, options: ExecuteTermArgs, requestOptions?: RequestOptions) {
         return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/${termId}/transfer`,
-            options);
+            options, requestOptions);
     }
 
     /**
@@ -707,30 +842,50 @@ export class FireblocksSDK {
     }
 
     /**
+     * Deletes a single contract wallet
+     * @param walletId The contract wallet ID
+     */
+     public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/contracts/${walletId}`);
+    }
+
+    /**
+     * Deletes a single contract wallet asset
+     * @param walletId The contract wallet ID
+     * @param assetId The asset ID
+     */
+    public async deleteContractWalletAsset(walletId: string, assetId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/contracts/${walletId}/${assetId}`);
+    }
+
+    /**
      * Sets a customer reference ID
      * @param vaultAccountId The vault account ID
      * @param customerRefId The customer reference ID to set
+     * @param requestOptions
      */
-    public async setCustomerRefIdForVaultAccount(vaultAccountId: string, customerRefId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_customer_ref_id`, {customerRefId});
+    public async setCustomerRefIdForVaultAccount(vaultAccountId: string, customerRefId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_customer_ref_id`, {customerRefId}, requestOptions);
     }
 
     /**
      * Sets a customer reference ID
      * @param walletId The ID of the internal wallet
      * @param customerRefId The customer reference ID to set
+     * @param requestOptions
      */
-    public async setCustomerRefIdForInternalWallet(walletId: string, customerRefId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_customer_ref_id`, {customerRefId});
+    public async setCustomerRefIdForInternalWallet(walletId: string, customerRefId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_customer_ref_id`, {customerRefId}, requestOptions);
     }
 
     /**
      * Sets a customer reference ID
      * @param walletId The ID of the external wallet
      * @param customerRefId The customer reference ID to set
+     * @param requestOptions
      */
-    public async setCustomerRefIdForExternalWallet(walletId: string, customerRefId: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_customer_ref_id`, {customerRefId});
+    public async setCustomerRefIdForExternalWallet(walletId: string, customerRefId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_customer_ref_id`, {customerRefId}, requestOptions);
     }
 
     /**
@@ -740,32 +895,35 @@ export class FireblocksSDK {
      * @param address The address
      * @param tag The XRP tag, or EOS memo
      * @param customerRefId The customer reference ID to set
+     * @param requestOptions
      */
-    public async setCustomerRefIdForAddress(vaultAccountId: string, assetId: string, address: string, tag?: string, customerRefId?: string): Promise<OperationSuccessResponse> {
+    public async setCustomerRefIdForAddress(vaultAccountId: string, assetId: string, address: string, tag?: string, customerRefId?: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         let addressId = address;
         if (tag && tag.length > 0) {
             addressId = `${address}:${tag}`;
         }
 
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, {customerRefId});
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, {customerRefId}, requestOptions);
     }
 
     /**
      * Set the required number of confirmations for transaction
      * @param txId
      * @param requiredConfirmationsNumber
+     * @param requestOptions
      */
-    public async setConfirmationThresholdForTxId(txId: string, requiredConfirmationsNumber: number): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
+    public async setConfirmationThresholdForTxId(txId: string, requiredConfirmationsNumber: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber}, requestOptions);
     }
 
     /**
      * Set the required number of confirmations for transactions by tx hash
      * @param txHash
      * @param requiredConfirmationsNumber
+     * @param requestOptions
      */
-    public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber});
+    public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber}, requestOptions);
     }
 
     /**
@@ -793,10 +951,11 @@ export class FireblocksSDK {
      * @param vaultAccountId
      * @param asset
      * @param args
+     * @param requestOptions
      */
-    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest) {
+    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest, requestOptions?: RequestOptions) {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/lock_allocation`;
-        return await this.apiClient.issuePostRequest(url, args);
+        return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
 
     /**
@@ -804,10 +963,11 @@ export class FireblocksSDK {
      * @param vaultAccountId
      * @param asset
      * @param args
+     * @param requestOptions
      */
-    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest) {
+    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest, requestOptions?: RequestOptions) {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/release_allocation`;
-        return await this.apiClient.issuePostRequest(url, args);
+        return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
 
     /**
@@ -825,8 +985,12 @@ export class FireblocksSDK {
     /**
      * Get configuration and status of the Gas Station account
      */
-    public async getGasStationInfo(): Promise<GasStationInfo> {
-        const url = `/v1/gas_station`;
+    public async getGasStationInfo(assetId?: string): Promise<GasStationInfo> {
+        let url = `/v1/gas_station`;
+
+        if (assetId) {
+            url += `/${assetId}`;
+        }
 
         return await this.apiClient.issueGetRequest(url);
     }
@@ -834,10 +998,14 @@ export class FireblocksSDK {
     /**
      * Set configuration of the Gas Station account
      */
-    public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string): Promise<OperationSuccessResponse> {
-        const url = `/v1/gas_station/configuration`;
+    public async setGasStationConfiguration(gasThreshold: string, gasCap: string, maxGasPrice?: string, assetId?: string): Promise<OperationSuccessResponse> {
+        let url = `/v1/gas_station/configuration`;
 
-        const body = { gasThreshold, gasCap, maxGasPrice };
+        if (assetId) {
+            url += `/${assetId}`;
+        }
+
+        const body = {gasThreshold, gasCap, maxGasPrice};
 
         return await this.apiClient.issuePutRequest(url, body);
     }
@@ -845,12 +1013,12 @@ export class FireblocksSDK {
     /**
      * Drop an ETH based transaction
      */
-    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string ) {
+    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string, requestOptions?: RequestOptions) {
         const url = `/v1/transactions/${txId}/drop`;
 
-        const body = { feeLevel, requestedFee };
+        const body = {feeLevel, requestedFee};
 
-        return await this.apiClient.issuePostRequest(url, body);
+        return await this.apiClient.issuePostRequest(url, body, requestOptions);
     }
 
     /**
@@ -894,24 +1062,38 @@ export class FireblocksSDK {
     /**
      * Unfreezes the selected transaction
      * @param txId The transaction id to unfreeze
+     * @param requestOptions
      */
-    public async unfreezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
-        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/unfreeze`, {});
+    public async unfreezeTransactionById(txId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/unfreeze`, {}, requestOptions);
     }
 
     /**
      * Freezes the selected transaction
      * @param txId The transaction id to freeze
+     * @param requestOptions
      */
-    public async freezeTransactionById(txId: string): Promise<OperationSuccessResponse> {
-        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {});
+    public async freezeTransactionById(txId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {}, requestOptions);
     }
 
     /**
      * Resend failed webhooks
      */
-    public async resendWebhooks(): Promise<ResendWebhooksResponse> {
-        return await this.apiClient.issuePostRequest("/v1/webhooks/resend", {});
+    public async resendWebhooks(requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
+        return await this.apiClient.issuePostRequest("/v1/webhooks/resend", {}, requestOptions);
+    }
+
+    /**
+     * Resend transaction webhooks
+     * @param txId The transaction for which the message is sent
+     * @param resendCreated If true a webhook will be sent for the creation of the transaction
+     * @param resendStatusUpdated If true a webhook will be sent for the status of the transaction
+     * @param requestOptions
+     */
+     public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
+        const body = { resendCreated, resendStatusUpdated };
+        return await this.apiClient.issuePostRequest(`/v1/webhooks/resend/${txId}`, body, requestOptions);
     }
 
     /**
@@ -919,5 +1101,55 @@ export class FireblocksSDK {
      */
     public async getUsers(): Promise<User[]> {
         return await this.apiClient.issueGetRequest("/v1/users");
+    }
+
+    /**
+     * Get off exchange accounts
+     */
+    public async getOffExchangeAccounts(): Promise<OffExchangeEntityResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange_accounts`);
+    }
+
+    /**
+     * Get off exchange account by virtual account id
+     * @param id the ID of the off exchange
+     */
+    public async getOffExchangeAccountById(id: string): Promise<OffExchangeEntityResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange_accounts/${id}`);
+    }
+
+    /**
+     * Settle off exchange account by virtual account id
+     * @param id the ID of the off exchange
+     * @param requestOptions
+     */
+    public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<void> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
+    }
+
+    /**
+     * Set Fee Payer configuration
+     * @param feePayerConfiguration
+     * @param baseAsset
+     * @param requestOptions
+     */
+    public async setFeePayerConfiguration(baseAsset: string, feePayerConfiguration: SetFeePayerConfiguration, requestOptions?: RequestOptions): Promise<FeePayerConfiguration> {
+        return await this.apiClient.issuePostRequest(`/v1/fee_payer/${baseAsset}`, feePayerConfiguration, requestOptions);
+    }
+
+    /**
+     * Get Fee Payer Configuration
+     * @param baseAsset
+     */
+    public async getFeePayerConfiguration(baseAsset: string): Promise<FeePayerConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/fee_payer/${baseAsset}`);
+    }
+
+    /**
+     * Delete Fee Payer Configuration
+     * @param baseAsset
+     */
+    public async removeFeePayerConfiguration(baseAsset: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
     }
 }

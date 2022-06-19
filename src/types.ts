@@ -12,6 +12,10 @@ export enum VirtualAffiliation {
     DEFAULT = "DEFAULT"
 }
 
+export interface BalanceRewardInfo {
+    pendingRewards: string;
+}
+
 export interface AssetResponse {
     id: string;
     total: string;
@@ -28,6 +32,7 @@ export interface AssetResponse {
     pendingRefundNetwork?: string;
     totalStakedCPU?: string;
     totalStakedNetwork?: string;
+    rewardInfo?: BalanceRewardInfo;
     blockHeight?: string;
     blockHash?: string;
     allocatedBalances?: {
@@ -47,13 +52,21 @@ export interface UnfreezeTransactionResponse {
     success: boolean;
 }
 
-export interface CreateVaultAssetResponse {
+export interface VaultAssetResponse {
     id: string;
     address: string;
     legacyAddress: string;
     enterpriseAddress?: string;
     tag: string;
     eosAccountName: string;
+    status?: VaultAssetActivationStatus;
+    activationTxId?: string;
+}
+
+export enum VaultAssetActivationStatus {
+    PENDING_ACTIVATION = "PENDING_ACTIVATION",
+    ACTIVATION_FAILED = "ACTIVATION_FAILED",
+    READY = "READY"
 }
 
 export interface WalletContainerResponse<WalletAssetType> {
@@ -172,6 +185,10 @@ export interface TransactionDestination {
     destination: DestinationTransferPeerPath;
 }
 
+export interface TransactionArgumentsFeePayerInfo {
+    feePayerAccountId: string;
+}
+
 export interface TransactionArguments {
     assetId?: string;
     source?: TransferPeerPath;
@@ -196,6 +213,7 @@ export interface TransactionArguments {
     externalTxId?: string;
     treatAsGrossAmount?: boolean;
     forceSweep?: boolean;
+    feePayerInfo?: TransactionArgumentsFeePayerInfo;
 }
 
 export enum FeeLevel {
@@ -211,6 +229,10 @@ export interface ExchangeResponse {
     assets: AssetResponse[];
     isSubaccount: boolean;
     status: string;
+}
+
+export interface ConvertExchangeAssetResponse {
+    status: boolean;
 }
 
 export interface FiatAccountResponse {
@@ -231,21 +253,20 @@ export interface PageDetails {
     nextPage: string;
 }
 
+export interface RewardInfo {
+    srcRewards?: string;
+    destRewards?: string;
+}
+
+export interface FeePayerInfo {
+    feePayerAccountId?: string;
+}
+
 export interface TransactionResponse {
     id: string;
     assetId: string;
-    source: {
-        id: string;
-        type: PeerType;
-        name?: string;
-        subType?: string;
-    };
-    destination: {
-        id: string;
-        type: PeerType;
-        name?: string;
-        subType?: string;
-    };
+    source: TransferPeerPathResponse;
+    destination: TransferPeerPathResponse;
     amount: number;
     /**
      * @deprecated Replaced by "networkFee"
@@ -264,6 +285,7 @@ export interface TransactionResponse {
     createdBy: string;
     rejectedBy: string;
     destinationAddress: string;
+    sourceAddress?: string;
     destinationAddressDescription?: string;
     destinationTag: string;
     addressType: string;
@@ -272,17 +294,57 @@ export interface TransactionResponse {
     requestedAmount: number;
     serviceFee?: number;
     feeCurrency: string;
-    amlScreeningResult?: {
-        provider?: string;
-        payload: any;
-        screeningStatus: string;
-        bypassReason: string;
-        timestamp: number;
-    };
+    amlScreeningResult?: AmlScreeningResult;
+    customerRefId?: string;
+    amountInfo?: AmountInfo;
+    feeInfo?: FeeInfo;
     signedMessages?: SignedMessageResponse[];
+    extraParameters?: any;
     externalTxId?: string;
+    destinations?: TransactionResponseDestination[];
     blockInfo?: BlockInfo;
     authorizationInfo?: AuthorizationInfo;
+    index?: number;
+    rewardInfo?: RewardInfo;
+    feePayerInfo?: FeePayerInfo;
+}
+
+export interface AmountInfo {
+    amount?: string;
+    requestedAmount?: string;
+    netAmount?: string;
+    amountUSD?: string;
+}
+
+export interface FeeInfo {
+    networkFee?: string;
+    serviceFee?: string;
+    gasPrice?: string;
+}
+
+export interface TransactionResponseDestination {
+    amount?: string;
+    amountUSD?: string;
+    amlScreeningResult?: AmlScreeningResult;
+    destination?: TransferPeerPathResponse;
+    authorizationInfo?: AuthorizationInfo;
+}
+
+export interface AmlScreeningResult {
+    provider?: string;
+    payload: any;
+    screeningStatus: string;
+    bypassReason: string;
+    timestamp: number;
+}
+
+export interface TransferPeerPathResponse {
+    id: string;
+    type: PeerType;
+    name?: string;
+    subType?: string;
+    virtualType?: VirtualType;
+    virtualId?: string;
 }
 
 export interface AuthorizationInfo {
@@ -326,14 +388,42 @@ export interface OperationSuccessResponse {
 
 export interface NetworkConnectionResponse {
     id: string;
-    localChannel: {
-        networkId: string;
-        name: string
-    };
-    remoteChannel: {
-        networkId: string;
-        name: string
-    };
+    status: string;
+    remoteNetworkId: NetworkId;
+    localNetworkId: NetworkId;
+    routingPolicy?: RoutingPolicy;
+}
+
+interface NetworkId {
+    id: string;
+    name: string;
+}
+
+export interface RoutingPolicy {
+    crypto?: RoutingDest;
+    sen?: RoutingDest;
+    signet?: RoutingDest;
+    sen_test?: RoutingDest;
+    signet_test?: RoutingDest;
+}
+
+export interface RoutingDest {
+    scheme: Scheme;
+    dstType: NetworkDestType;
+    dstId: string;
+}
+
+export enum Scheme {
+    AUTO = "AUTO",
+    DEFAULT = "DEFAULT",
+    CUSTOM = "CUSTOM",
+}
+
+export enum NetworkDestType {
+    VAULT_ACCOUNT = "VAULT",
+    UNMANAGED_WALLET = "UNMANAGED",
+    EXCHANGE_ACCOUNT = "EXCHANGE",
+    FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
 
 export enum DestType {
@@ -450,11 +540,13 @@ export enum TransactionOperation {
     REDEEM_FROM_COMPOUND = "REDEEM_FROM_COMPOUND",
     RAW = "RAW",
     CONTRACT_CALL = "CONTRACT_CALL",
+    TYPED_MESSAGE = "TYPED_MESSAGE",
 }
 
 export interface AllocateFundsRequest {
     allocationId: string;
     amount: string;
+    treatAsGrossAmount?: boolean;
 }
 
 export interface DeallocateFundsRequest {
@@ -557,6 +649,28 @@ export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;
     minAmountThreshold?: number;
+    assetId?: string;
+}
+
+export interface PagedVaultAccountsRequestFilters {
+    namePrefix?: string;
+    nameSuffix?: string;
+    minAmountThreshold?: number;
+    assetId?: string;
+    orderBy?: "ASC" | "DESC";
+    limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
+    before?: string;
+    after?: string;
+}
+
+export interface PagedVaultAccountsResponse {
+    accounts: VaultAccountResponse[];
+    paging: {
+        before: string;
+        after: string;
+    };
+    previousUrl: string;
+    nextUrl: string;
 }
 
 export interface VaultBalancesFilter {
@@ -579,6 +693,7 @@ export interface AssetTypeResponse {
     type: string;
     contractAddress: string;
     nativeAsset: string;
+    decimals?: number;
 }
 
 export interface User {
@@ -592,4 +707,26 @@ export interface User {
 
 export interface ResendWebhooksResponse {
     webhooksCount: number;
+}
+
+export interface OffExchangeEntityResponse {
+    id: string;
+    vaultAccountId: string;
+    thirdPartyAccountId: string;
+    balance?: {
+        [assetId: string]: {
+            total?: string;
+            locked?: string;
+            pending?: string;
+            frozen?: string;
+        };
+    };
+}
+
+export interface SetFeePayerConfiguration {
+    feePayerAccountId: string;
+}
+
+export interface FeePayerConfiguration {
+    feePayerAccountId: string;
 }

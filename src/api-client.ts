@@ -1,50 +1,56 @@
 import { IAuthProvider } from "./iauth-provider";
-import requestPromise from "request-promise-native";
 import { RequestOptions } from "./types";
+import axios, { AxiosInstance } from "axios";
 
 export class ApiClient {
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string) { }
+    private axiosInstance: AxiosInstance;
+
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number}) {
+        this.axiosInstance = axios.create({
+            baseURL: this.apiBaseUrl
+        });
+    }
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
         const token = this.authProvider.signJwt(path);
-        const res = await requestPromise.get({
-            uri: this.apiBaseUrl + path,
+        const res = await this.axiosInstance.get(path, {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
             },
-            json: true,
-            resolveWithFullResponse: true
+            timeout: this.options.timeoutInMs
         });
 
         if (pageMode) {
             return {
-                transactions: res.body,
+                transactions: res.data,
                 pageDetails: {
-                    prevPage: res.headers["prev-page"] ? res.headers["prev-page"].toString() :  "",
-                    nextPage:  res.headers["next-page"] ? res.headers["next-page"].toString() :  "",
+                    prevPage: res.headers["prev-page"] ? res.headers["prev-page"].toString() : "",
+                    nextPage: res.headers["next-page"] ? res.headers["next-page"].toString() : "",
                 }
             };
         }
 
-        return res.body;
+        return res.data;
     }
 
     public async issuePostRequest(path: string, body: any, requestOptions?: RequestOptions) {
         const token = this.authProvider.signJwt(path, body);
 
         const idempotencyKey = requestOptions?.idempotencyKey;
+        const headers: any = {
+            "X-API-Key": this.authProvider.getApiKey(),
+            "Authorization": `Bearer ${token}`,
+        };
 
-        return await requestPromise.post({
-            uri: this.apiBaseUrl + path,
-            headers: {
-                "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`,
-                "Idempotency-Key": idempotencyKey
-            },
-            body: body,
-            json: true
-        });
+        if (idempotencyKey) {
+            headers["Idempotency-Key"] = idempotencyKey;
+        }
+
+        return (await this.axiosInstance.post(path, body, {
+            headers,
+            timeout: this.options.timeoutInMs
+        })).data;
     }
 
     public async issuePatchRequest(path: string, body: any, requestOptions?: RequestOptions) {
@@ -67,27 +73,24 @@ export class ApiClient {
     public async issuePutRequest(path: string, body: any) {
         const token = this.authProvider.signJwt(path, body);
 
-        return await requestPromise.put({
-            uri: this.apiBaseUrl + path,
+        return (await this.axiosInstance.put(path, body, {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
             },
-            body: body,
-            json: true
-        });
+            timeout: this.options.timeoutInMs
+        })).data;
     }
 
     public async issueDeleteRequest(path: string) {
         const token = this.authProvider.signJwt(path);
 
-        return await requestPromise.delete({
-            uri: this.apiBaseUrl + path,
+        return (await this.axiosInstance.delete(path, {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
             },
-            json: true
-        });
+            timeout: this.options.timeoutInMs
+        })).data;
     }
 }

@@ -1,0 +1,36 @@
+name: Publish to NPM
+on:
+  release:
+    types: [published]
+env:
+  GIT_TERMINAL_PROMPT: 1    
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install
+      - run: |
+          initialTag=${{ github.event.release.tag_name }}
+          tag="${initialTag//[v]/}"
+          echo $tag
+          git remote update
+          git fetch
+          git checkout --track origin/master
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "Github Actions"
+          npm --no-git-tag-version --allow-same-version version $tag
+          npm i -g auto-changelog
+          auto-changelog --hide-credit -l 0 -b 3
+          git add .
+          git commit -m "release $tag"
+          git push
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
