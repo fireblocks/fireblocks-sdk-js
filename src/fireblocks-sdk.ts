@@ -48,6 +48,7 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
+     RoutingPolicy,
 } from "./types";
 
 export * from "./types";
