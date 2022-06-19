@@ -413,6 +413,12 @@ export interface RoutingDest {
     dstId: string;
 }
 
+export enum Scheme {
+    AUTO = "AUTO",
+    DEFAULT = "DEFAULT",
+    CUSTOM = "CUSTOM",
+}
+
 export enum NetworkDestType {
     VAULT_ACCOUNT = "VAULT",
     UNMANAGED_WALLET = "UNMANAGED",
@@ -420,11 +426,6 @@ export enum NetworkDestType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
 
-export enum Scheme {
-    AUTO = "AUTO",
-    DEFAULT = "DEFAULT",
-    CUSTOM = "CUSTOM",
-}
 
 export interface RoutingDest {
     scheme: Scheme;
