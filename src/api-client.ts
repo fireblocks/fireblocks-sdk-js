@@ -58,16 +58,14 @@ export class ApiClient {
 
         const idempotencyKey = requestOptions?.idempotencyKey;
 
-        return await requestPromise.patch({
-            uri: this.apiBaseUrl + path,
+        return (await this.axiosInstance.patch(path, body, {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`,
                 "Idempotency-Key": idempotencyKey
             },
-            body: body,
-            json: true
-        });
+            timeout: this.options.timeoutInMs
+        })).data;
     }
 
     public async issuePutRequest(path: string, body: any) {
