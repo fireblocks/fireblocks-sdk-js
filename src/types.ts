@@ -681,7 +681,11 @@ export interface User {
 }
 
 export interface ResendWebhooksResponse {
-    webhooksCount: number;
+    messagesCount: number;
+}
+
+export interface ResendWebhooksByIdResponse {
+    success: boolean;
 }
 
 export interface OffExchangeEntityResponse {
