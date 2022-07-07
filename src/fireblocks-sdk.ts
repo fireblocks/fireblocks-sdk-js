@@ -48,6 +48,7 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
+    ResendWebhooksByIdResponse,
 } from "./types";
 
 export * from "./types";
@@ -98,6 +99,7 @@ export class FireblocksSDK {
     /**
      * Gets a list of vault accounts per page matching the given filter or path
      * @param pagedVaultAccountsRequestFilters Filters for the first request
+     * @throws if both namePrefix and nameSuffix are specified in pagedVaultAccountsRequestFilters
      */
     public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
@@ -440,6 +442,7 @@ export class FireblocksSDK {
     /**
      * Gets detailed information for a single transaction
      * @param txId The transaction id to query
+     * @throws if no transaction match the specified txId
      */
     public async getTransactionById(txId: string): Promise<TransactionResponse> {
         return await this.apiClient.issueGetRequest(`/v1/transactions/${txId}`);
@@ -950,6 +953,7 @@ export class FireblocksSDK {
 
     /**
      * Get address validation info
+     * @throws every time
      */
     public async validateAddress(assetId: string, address: string): Promise<ValidateAddressResponse> {
         const url = `/v1/transactions/validate_address/${assetId}/${address}`;
@@ -988,7 +992,7 @@ export class FireblocksSDK {
      * @param resendStatusUpdated If true a webhook will be sent for the status of the transaction
      * @param requestOptions
      */
-     public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
+     public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksByIdResponse> {
         const body = { resendCreated, resendStatusUpdated };
         return await this.apiClient.issuePostRequest(`/v1/webhooks/resend/${txId}`, body, requestOptions);
     }
