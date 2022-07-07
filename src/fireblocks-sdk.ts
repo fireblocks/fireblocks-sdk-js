@@ -87,6 +87,7 @@ export class FireblocksSDK {
     }
 
     /**
+     * @deprecated this method is deprecated and will be removed in the future. Please use getVaultAccountsWithPageInfo instead.
      * Gets all vault accounts for your tenant
      */
     public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
