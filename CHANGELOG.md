@@ -2,11 +2,29 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v2.3.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.1.0...v2.3.1)
+#### [v2.3.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.3.1...v2.3.2)
+
+> 8 July 2022
+
+- deprecate getVaultAccounts method [`#100`](https://github.com/fireblocks/fireblocks-sdk-js/pull/100)
+
+#### [v2.3.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.3.0...v2.3.1)
 
 > 30 May 2022
 
 - add source address to TransactionResponse [`#94`](https://github.com/fireblocks/fireblocks-sdk-js/pull/94)
+
+#### [v2.3.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.2.0...v2.3.0)
+
+> 26 May 2022
+
+- Support contract wallet containers [`#88`](https://github.com/fireblocks/fireblocks-sdk-js/pull/88)
+
+#### [v2.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.1.0...v2.2.0)
+
+> 10 May 2022
+
+- added convert exchange asset method [`#83`](https://github.com/fireblocks/fireblocks-sdk-js/pull/83)
 
 #### [v2.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.0.0...v2.1.0)
 
