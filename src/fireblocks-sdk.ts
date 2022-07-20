@@ -48,6 +48,7 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
+    RoutingPolicy,
 } from "./types";
 
 export * from "./types";
@@ -199,10 +200,93 @@ export class FireblocksSDK {
     }
 
     /**
+     * Creates a network connection
+     * @param localNetworkId NetworkId for the local
+     * @param remoteNetworkId NetworkId for the remote
+     * @param routingPolicy of the connection
+     */
+    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: RoutingPolicy) {
+        const body = { localNetworkId, remoteNetworkId, routingPolicy };
+        return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
+    }
+    
+    /**
      * Gets a single network connection by id
      */
     public async getNetworkConnectionById(connectionId: string): Promise<NetworkConnectionResponse> {
         return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}`);
+    }
+
+    /**
+     * Deletes a network connection
+     * @param connectionId the connectionId between the peers
+     */
+    public async removeNetworkConnection(connectionId: string) {
+        return await this.apiClient.issueDeleteRequest(`/v1/network_connections/${connectionId}`);
+    }
+
+    /**
+     * Set routing policy for networkId 
+     * @param routingPolicy  the policy
+     * @param networkId the networkId
+     */
+    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy?: RoutingPolicy) {
+        const body = { routingPolicy };
+        return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
+    }
+
+    /**
+     * Gets all discoverable networkIds
+     */
+    public async getDiscoverableNetworkIds() {
+        return await this.apiClient.issueGetRequest(`/v1/network_ids`);
+    }
+
+    /**
+     * Creates a new networkId
+     * @param routingPolicy network policy
+     * @param name A name for the new networkId
+     */
+    public async createNetworkId(name: string, routingPolicy?: RoutingPolicy) {
+        const body = { name, routingPolicy };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
+    }
+
+    /**
+     * Creates a new (external) networkId
+     * @param routingPolicy network policy
+     * @param name A name for the new networkId
+     */
+    public async createExternalNetworkId(name: string, accountId: string) {
+        const body = { name, accountId };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids/external`, body);
+    }
+
+    /**
+     * Gets a single networkId info by networkId
+     */
+    public async getNetworkId(networkId: string) {
+        return await this.apiClient.issueGetRequest(`/v1/network_ids/${networkId}`);
+    }
+
+    /**
+     * Set Discoverability for networkId
+     * @param networkId The networkId
+     * @param isDiscoverable The Discoverability to set
+     */
+    public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean) {
+        const body = { isDiscoverable };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
+    }
+
+    /**
+     * Set networkId routing policy
+     * @param routingPolicy  the policy
+     * @param networkId the networkId
+     */
+    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy?: RoutingPolicy) {
+        const body = { routingPolicy };
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
 
     /**
