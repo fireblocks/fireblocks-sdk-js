@@ -48,7 +48,8 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
-    RoutingPolicy,
+    NetworkConnectionRoutingPolicy,
+    NetworkIdRoutingPolicy,
 } from "./types";
 
 export * from "./types";
@@ -205,7 +206,7 @@ export class FireblocksSDK {
      * @param remoteNetworkId NetworkId for the remote
      * @param routingPolicy of the connection
      */
-    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: RoutingPolicy) {
+    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: NetworkConnectionRoutingPolicy) {
         const body = { localNetworkId, remoteNetworkId, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
     }
@@ -227,10 +228,10 @@ export class FireblocksSDK {
 
     /**
      * Set routing policy for networkId 
-     * @param routingPolicy  the policy
+     * @param routingPolicy the policy
      * @param networkId the networkId
      */
-    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy?: RoutingPolicy) {
+    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy?: NetworkConnectionRoutingPolicy) {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
     }
@@ -247,7 +248,7 @@ export class FireblocksSDK {
      * @param routingPolicy network policy
      * @param name A name for the new networkId
      */
-    public async createNetworkId(name: string, routingPolicy?: RoutingPolicy) {
+    public async createNetworkId(name: string, routingPolicy?: NetworkIdRoutingPolicy) {
         const body = { name, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
     }
@@ -284,7 +285,7 @@ export class FireblocksSDK {
      * @param routingPolicy  the policy
      * @param networkId the networkId
      */
-    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy?: RoutingPolicy) {
+    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy?: NetworkIdRoutingPolicy) {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }

@@ -391,7 +391,7 @@ export interface NetworkConnectionResponse {
     status: string;
     remoteNetworkId: NetworkId;
     localNetworkId: NetworkId;
-    routingPolicy?: RoutingPolicy;
+    routingPolicy?: NetworkConnectionRoutingPolicy;
 }
 
 interface NetworkId {
@@ -399,29 +399,47 @@ interface NetworkId {
     name: string;
 }
 
-export interface RoutingPolicy {
-    crypto?: RoutingDest;
-    sen?: RoutingDest;
-    signet?: RoutingDest;
-    sen_test?: RoutingDest;
-    signet_test?: RoutingDest;
+export interface NetworkConnectionRoutingPolicy {
+    crypto?: NetworkConnectionRoutingDest;
+    sen?: NetworkConnectionRoutingDest;
+    signet?: NetworkConnectionRoutingDest;
+    sen_test?: NetworkConnectionRoutingDest;
+    signet_test?: NetworkConnectionRoutingDest;
 }
 
-export interface RoutingDest {
-    scheme: Scheme;
+export interface NetworkIdRoutingPolicy {
+    crypto?: NetworkIdRoutingDest;
+    sen?: NetworkIdRoutingDest;
+    signet?: NetworkIdRoutingDest;
+    sen_test?: NetworkIdRoutingDest;
+    signet_test?: NetworkIdRoutingDest;
+}
+
+export interface BaseRoutingDest {
     dstType: NetworkDestType;
     dstId: string;
 }
 
-export enum Scheme {
+export interface NetworkConnectionRoutingDest extends BaseRoutingDest {
+    scheme: NetworkConnectionScheme;
+}
+
+export interface NetworkIdRoutingDest extends BaseRoutingDest {
+    scheme: NetworkIdScheme;
+}
+
+export enum NetworkConnectionScheme {
     AUTO = "AUTO",
+    CUSTOM = "CUSTOM",
+}
+
+export enum NetworkIdScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
 }
 
 export enum NetworkDestType {
     VAULT_ACCOUNT = "VAULT",
-    UNMANAGED_WALLET = "UNMANAGED",
     EXCHANGE_ACCOUNT = "EXCHANGE",
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
