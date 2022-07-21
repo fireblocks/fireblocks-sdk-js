@@ -394,6 +394,13 @@ export interface NetworkConnectionResponse {
     routingPolicy?: NetworkConnectionRoutingPolicy;
 }
 
+export interface NetworkIdResponse {
+    id: string;
+    name: string;
+    isDiscoverable: boolean;
+    routingPolicy?: NetworkIdRoutingPolicy;
+}
+
 interface NetworkId {
     id: string;
     name: string;
@@ -429,12 +436,12 @@ export interface NetworkIdRoutingDest extends BaseRoutingDest {
 }
 
 export enum NetworkConnectionScheme {
-    AUTO = "AUTO",
+    DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
 }
 
 export enum NetworkIdScheme {
-    DEFAULT = "DEFAULT",
+    AUTO = "AUTO",
     CUSTOM = "CUSTOM",
 }
 

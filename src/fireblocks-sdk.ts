@@ -50,6 +50,7 @@ import {
     FeePayerConfiguration,
     NetworkConnectionRoutingPolicy,
     NetworkIdRoutingPolicy,
+    NetworkIdResponse,
 } from "./types";
 
 export * from "./types";
@@ -195,6 +196,7 @@ export class FireblocksSDK {
 
     /**
      * Gets all network connections
+     * @returns NetworkConnectionResponse
      */
     public async getNetworkConnections(): Promise<NetworkConnectionResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/network_connections");
@@ -205,14 +207,16 @@ export class FireblocksSDK {
      * @param localNetworkId NetworkId for the local
      * @param remoteNetworkId NetworkId for the remote
      * @param routingPolicy of the connection
+     * @returns NetworkConnectionResponse
      */
-    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: NetworkConnectionRoutingPolicy) {
+    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: NetworkConnectionRoutingPolicy): Promise<NetworkConnectionResponse> {
         const body = { localNetworkId, remoteNetworkId, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
     }
     
     /**
      * Gets a single network connection by id
+     * @returns NetworkConnectionResponse
      */
     public async getNetworkConnectionById(connectionId: string): Promise<NetworkConnectionResponse> {
         return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}`);
@@ -221,8 +225,9 @@ export class FireblocksSDK {
     /**
      * Deletes a network connection
      * @param connectionId the connectionId between the peers
+     * @returns OperationSuccessResponse
      */
-    public async removeNetworkConnection(connectionId: string) {
+    public async removeNetworkConnection(connectionId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/network_connections/${connectionId}`);
     }
 
@@ -238,8 +243,9 @@ export class FireblocksSDK {
 
     /**
      * Gets all discoverable networkIds
+     * @returns NetworkIdResponse
      */
-    public async getDiscoverableNetworkIds() {
+    public async getDiscoverableNetworkIds(): Promise<NetworkIdResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/network_ids`);
     }
 
@@ -247,8 +253,9 @@ export class FireblocksSDK {
      * Creates a new networkId
      * @param routingPolicy network policy
      * @param name A name for the new networkId
+     * @returns NetworkConnectionResponse
      */
-    public async createNetworkId(name: string, routingPolicy?: NetworkIdRoutingPolicy) {
+    public async createNetworkId(name: string, routingPolicy?: NetworkIdRoutingPolicy): Promise<NetworkIdResponse> {
         const body = { name, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
     }
@@ -256,17 +263,19 @@ export class FireblocksSDK {
     /**
      * Creates a new (external) networkId
      * @param routingPolicy network policy
-     * @param name A name for the new networkId
+     * @param name a name for the new networkId
+     * @returns NetworkConnectionResponse
      */
-    public async createExternalNetworkId(name: string, accountId: string) {
+    public async createExternalNetworkId(name: string, accountId: string): Promise<NetworkIdResponse> {
         const body = { name, accountId };
         return await this.apiClient.issuePostRequest(`/v1/network_ids/external`, body);
     }
 
     /**
      * Gets a single networkId info by networkId
+     * @returns NetworkIdResponse
      */
-    public async getNetworkId(networkId: string) {
+    public async getNetworkId(networkId: string): Promise<NetworkIdResponse> {
         return await this.apiClient.issueGetRequest(`/v1/network_ids/${networkId}`);
     }
 
@@ -274,8 +283,9 @@ export class FireblocksSDK {
      * Set Discoverability for networkId
      * @param networkId The networkId
      * @param isDiscoverable The Discoverability to set
+     * @returns OperationSuccessResponse
      */
-    public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean) {
+    public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean): Promise<OperationSuccessResponse> {
         const body = { isDiscoverable };
         return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
     }
