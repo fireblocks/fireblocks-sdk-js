@@ -423,8 +423,8 @@ export interface NetworkIdRoutingPolicy {
 }
 
 export interface BaseRoutingDest {
-    dstType: NetworkDestType;
-    dstId: string;
+    dstType?: NetworkDestType;
+    dstId?: string;
 }
 
 export interface NetworkConnectionRoutingDest extends BaseRoutingDest {
