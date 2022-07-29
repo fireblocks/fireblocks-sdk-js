@@ -85,7 +85,12 @@ export class FireblocksSDK {
     public async getSupportedAssets(): Promise<AssetTypeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
-
+    /**
+     * Gets all assets that are currently supported by Fireblocks and the exchange
+     */
+    public async getSupportedAssetsForExchange(exchangeType: string): Promise<AssetTypeResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/supported_assets/${exchangeType}`);
+    }
     /**
      * @deprecated this method is deprecated and will be removed in the future. Please use getVaultAccountsWithPageInfo instead.
      * Gets all vault accounts for your tenant
