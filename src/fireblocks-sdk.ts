@@ -94,7 +94,7 @@ export class FireblocksSDK {
     // }
     // ARRAY OF EXCHANGES
     public async getSupportedAssetsForExchange(exchangeTypes: string[]): Promise<AssetTypeResponse[]> {
-        return await this.apiClient.issueGetRequest(`/v1/supported_assets/${queryString.stringify(exchangeTypes)}`);
+        return await this.apiClient.issueGetRequest(`/v1/supported_assets/${queryString.stringify({ exchangeTypes })}`);
     }
     /**
      * @deprecated this method is deprecated and will be removed in the future. Please use getVaultAccountsWithPageInfo instead.
