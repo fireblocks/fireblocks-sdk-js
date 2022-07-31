@@ -294,6 +294,7 @@ export class FireblocksSDK {
      * Set networkId routing policy
      * @param routingPolicy  the policy
      * @param networkId the networkId
+     * @returns OperationSuccessResponse
      */
     public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy?: NetworkIdRoutingPolicy) {
         const body = { routingPolicy };
