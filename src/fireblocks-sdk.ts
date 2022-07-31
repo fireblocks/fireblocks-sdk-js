@@ -287,7 +287,7 @@ export class FireblocksSDK {
      */
     public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean): Promise<OperationSuccessResponse> {
         const body = { isDiscoverable };
-        return await this.apiClient.issuePostRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
     }
 
     /**
