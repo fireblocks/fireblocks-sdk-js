@@ -406,7 +406,7 @@ interface NetworkId {
     name: string;
 }
 
-export interface CustomCryptoRoutingPolicy {
+export interface CustomCryptoRoutingDest {
     scheme: NetworkScheme.CUSTOM;
     dstType: NetworkDestType.EXCHANGE_ACCOUNT | NetworkDestType.VAULT_ACCOUNT;
     dstId: string;
@@ -427,7 +427,7 @@ export interface AutoNetworkRoutingDest {
 }
 
 export interface NetworkConnectionRoutingPolicy {
-    crypto?: CustomCryptoRoutingPolicy | DefaultNetworkRoutingDest;
+    crypto?: CustomCryptoRoutingDest | DefaultNetworkRoutingDest;
     sen?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
     signet?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
     sen_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
@@ -435,7 +435,7 @@ export interface NetworkConnectionRoutingPolicy {
 }
 
 export interface NetworkIdRoutingPolicy {
-    crypto?: CustomCryptoRoutingPolicy | AutoNetworkRoutingDest;
+    crypto?: CustomCryptoRoutingDest | AutoNetworkRoutingDest;
     sen?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
     signet?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
     sen_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
