@@ -406,43 +406,46 @@ interface NetworkId {
     name: string;
 }
 
+export interface CustomCryptoRoutingPolicy {
+    scheme: NetworkScheme.CUSTOM;
+    dstType: NetworkDestType.EXCHANGE_ACCOUNT | NetworkDestType.VAULT_ACCOUNT;
+    dstId: string;
+}
+
+export interface CustomFiatRoutingDest {
+    scheme: NetworkScheme.CUSTOM;
+    dstType: NetworkDestType.FIAT_ACCOUNT;
+    dstId: string;
+}
+
+export interface DefaultNetworkRoutingDest {
+    scheme: NetworkScheme.DEFAULT;
+}
+
+export interface AutoNetworkRoutingDest {
+    scheme: NetworkScheme.AUTO;
+}
+
 export interface NetworkConnectionRoutingPolicy {
-    crypto?: NetworkConnectionRoutingDest;
-    sen?: NetworkConnectionRoutingDest;
-    signet?: NetworkConnectionRoutingDest;
-    sen_test?: NetworkConnectionRoutingDest;
-    signet_test?: NetworkConnectionRoutingDest;
+    crypto?: CustomCryptoRoutingPolicy | DefaultNetworkRoutingDest;
+    sen?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
+    signet?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
+    sen_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
+    signet_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
 }
 
 export interface NetworkIdRoutingPolicy {
-    crypto?: NetworkIdRoutingDest;
-    sen?: NetworkIdRoutingDest;
-    signet?: NetworkIdRoutingDest;
-    sen_test?: NetworkIdRoutingDest;
-    signet_test?: NetworkIdRoutingDest;
+    crypto?: CustomCryptoRoutingPolicy | AutoNetworkRoutingDest;
+    sen?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
+    signet?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
+    sen_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
+    signet_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
 }
 
-export interface BaseRoutingDest {
-    dstType?: NetworkDestType;
-    dstId?: string;
-}
-
-export interface NetworkConnectionRoutingDest extends BaseRoutingDest {
-    scheme: NetworkConnectionScheme;
-}
-
-export interface NetworkIdRoutingDest extends BaseRoutingDest {
-    scheme: NetworkIdScheme;
-}
-
-export enum NetworkConnectionScheme {
+export enum NetworkScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
-}
-
-export enum NetworkIdScheme {
     AUTO = "AUTO",
-    CUSTOM = "CUSTOM",
 }
 
 export enum NetworkDestType {
