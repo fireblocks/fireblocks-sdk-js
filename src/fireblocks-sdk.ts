@@ -93,8 +93,12 @@ export class FireblocksSDK {
     //     return await this.apiClient.issueGetRequest(`/v1/supported_assets/${exchangeType}`);
     // }
     // ARRAY OF EXCHANGES
-    public async getSupportedAssetsForExchange(exchangeTypes: string[]): Promise<AssetTypeResponse[]> {
-        return await this.apiClient.issueGetRequest(`/v1/supported_assets/${queryString.stringify({ exchangeTypes })}`);
+    // public async getSupportedAssetsForExchange(exchangeTypes: string[]): Promise<AssetTypeResponse[]> {
+    //     return await this.apiClient.issueGetRequest(`/v1/supported_assets?${queryString.stringify({ exchangeTypes })}`);
+    // }
+    public async activateVaultWallet(vaultAccountId: string, assetId: string): Promise<OperationSuccessResponse> {
+        const url = `v1/vault/accounts/${vaultAccountId}/${assetId}/activate`;
+        return await this.apiClient.issuePostRequest(url, {});
     }
     /**
      * @deprecated this method is deprecated and will be removed in the future. Please use getVaultAccountsWithPageInfo instead.
