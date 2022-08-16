@@ -1,14 +1,25 @@
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions } from "./types";
 import axios, { AxiosInstance } from "axios";
+import FireBlocksError from "./fireblocks-error";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number}) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: { timeoutInMs?: number }) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl
         });
+        this.axiosInstance.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error?.response?.data) {
+                    throw new FireBlocksError(error.response.data.message, error.response.data.code, error.response.status);
+                } else {
+                    throw new Error(error.toJSON());
+                }
+            },
+        );
     }
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
