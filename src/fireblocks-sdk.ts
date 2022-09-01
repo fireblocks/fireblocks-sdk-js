@@ -232,9 +232,9 @@ export class FireblocksSDK {
     }
 
     /**
-     * Set routing policy for networkId 
+     * Set routing policy for a connection 
+     * @param connectionId the network connection's id
      * @param routingPolicy the policy
-     * @param networkId the networkId
      */
     public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy) {
         const body = { routingPolicy };
