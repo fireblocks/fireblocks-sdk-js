@@ -204,9 +204,9 @@ export class FireblocksSDK {
 
     /**
      * Creates a network connection
-     * @param localNetworkId The local netowrk profile id
-     * @param remoteNetworkId The remote network profile id
-     * @param routingPolicy The desired routing policy of the connection
+     * @param localNetworkId The local netowrk profile's id
+     * @param remoteNetworkId The remote network profile's id
+     * @param routingPolicy The desired routing policy for the connection
      * @returns NetworkConnectionResponse
      */
     public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: NetworkConnectionRoutingPolicy): Promise<NetworkConnectionResponse> {
@@ -243,7 +243,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets all discoverable networkIds
+     * Gets all discoverable network profiles
      * @returns NetworkIdResponse
      */
     public async getDiscoverableNetworkIds(): Promise<NetworkIdResponse[]> {
