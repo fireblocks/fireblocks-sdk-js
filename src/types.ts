@@ -216,6 +216,11 @@ export interface TransactionArguments {
     feePayerInfo?: TransactionArgumentsFeePayerInfo;
 }
 
+export enum SignerConnectionFeeLevel {
+    HIGH = "HIGH",
+    MEDIUM = "MEDIUM",
+}
+
 export enum FeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",
@@ -516,6 +521,10 @@ export enum TransactionOperation {
     TYPED_MESSAGE = "TYPED_MESSAGE",
 }
 
+export enum SignerConnectionType {
+    WALLET_CONNECT = "WalletConnect"
+}
+
 export interface AllocateFundsRequest {
     allocationId: string;
     amount: string;
@@ -703,3 +712,26 @@ export interface SetFeePayerConfiguration {
 export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
+
+export interface ISignerConnectionPayload {
+    vaultId: number,
+    feeLevel: SignerConnectionFeeLevel,
+    connectionType: SignerConnectionType
+}
+  
+export interface IWalletConnectPayload extends ISignerConnectionPayload {
+    connectionType: SignerConnectionType.WALLET_CONNECT,
+    uri: string,
+    chainIds: string[]
+}
+
+export interface ICreateConnectionResponse {
+    id: string,
+    sessionMetadata: {
+      appIcon?: string,
+      appId?: string,
+      appName?: string,
+      appUrl?: string,
+      appDescription?: string
+    }
+  }
