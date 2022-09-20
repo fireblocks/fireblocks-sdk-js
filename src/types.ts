@@ -714,24 +714,24 @@ export interface FeePayerConfiguration {
 }
 
 export interface ISignerConnectionPayload {
-    vaultId: number,
-    feeLevel: SignerConnectionFeeLevel,
-    connectionType: SignerConnectionType
+    vaultId: number;
+    feeLevel: SignerConnectionFeeLevel;
+    connectionType: SignerConnectionType;
 }
-  
+
 export interface IWalletConnectPayload extends ISignerConnectionPayload {
-    connectionType: SignerConnectionType.WALLET_CONNECT,
-    uri: string,
-    chainIds: string[]
+    connectionType: SignerConnectionType.WALLET_CONNECT;
+    uri: string;
+    chainIds: string[];
 }
 
 export interface ICreateConnectionResponse {
-    id: string,
+    id: string;
     sessionMetadata: {
       appIcon?: string,
       appId?: string,
       appName?: string,
       appUrl?: string,
       appDescription?: string
-    }
+    };
   }

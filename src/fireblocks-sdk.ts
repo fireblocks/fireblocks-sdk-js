@@ -1051,11 +1051,11 @@ export class FireblocksSDK {
     public async removeFeePayerConfiguration(baseAsset: string): Promise<void> {
         return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
     }
-    
+
     /**
      * Initiate a new signer connection
      * @param payload The required parameters for the connection type
-     * @param requestOptions 
+     * @param requestOptions
      * @returns The created session's ID and its metadata
      * @example {
      *  vaultId: 0
@@ -1075,7 +1075,7 @@ export class FireblocksSDK {
      * @param approve Whether you approve the connection or not
      */
     public async submitSignerConnection(sessionId: string, approve: boolean): Promise<void> {
-        return await this.apiClient.issuePutRequest(`/v1/connections${sessionId}`, {approve});
+        return await this.apiClient.issuePutRequest(`/v1/connections/${sessionId}`, {approve});
     }
 
     /**
@@ -1083,6 +1083,6 @@ export class FireblocksSDK {
      * @param sessionId The ID of the session
      */
     public async removeSignerConnection(sessionId: string): Promise<void> {
-        return await this.apiClient.issueDeleteRequest(`/v1/connections${sessionId}`);
+        return await this.apiClient.issueDeleteRequest(`/v1/connections/${sessionId}`);
     }
 }
