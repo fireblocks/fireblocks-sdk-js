@@ -1,14 +1,23 @@
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions } from "./types";
 import axios, { AxiosInstance } from "axios";
+import { version as SDK_VERSION } from "../package.json";
+import os from "os";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number}) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: { timeoutInMs?: number, extraUserAgent?: string }) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl
         });
+    }
+
+    public getUserAgent(): string {
+        const SDK_PACKAGE = "fireblocks-sdk-js";
+        const SDK_PLATFORM = `${os.type()}; ${os.platform()} ${os.release()}; ${os.arch()}`;
+
+        return `${SDK_PACKAGE}/${SDK_VERSION} (${SDK_PLATFORM})${this.options.extraUserAgent ? ` ${this.options.extraUserAgent}` : ""}`;
     }
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
@@ -16,7 +25,8 @@ export class ApiClient {
         const res = await this.axiosInstance.get(path, {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
+                "User-Agent": this.getUserAgent(),
             },
             timeout: this.options.timeoutInMs
         });
@@ -41,6 +51,7 @@ export class ApiClient {
         const headers: any = {
             "X-API-Key": this.authProvider.getApiKey(),
             "Authorization": `Bearer ${token}`,
+            "User-Agent": this.getUserAgent(),
         };
 
         if (idempotencyKey) {
