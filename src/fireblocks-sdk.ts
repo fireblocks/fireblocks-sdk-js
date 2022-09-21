@@ -53,7 +53,8 @@ import {
 export * from "./types";
 
 export interface SDKOptions {
-    timeoutInMs: number;
+    timeoutInMs?: number;
+    userAgent?: string;
 }
 
 export class FireblocksSDK {
@@ -69,14 +70,14 @@ export class FireblocksSDK {
      * @param authProvider
      * @param sdkOptions
      */
-    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions?: SDKOptions) {
+    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions: SDKOptions = {}) {
         this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
 
         if (apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
         }
 
-        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, {timeoutInMs: sdkOptions?.timeoutInMs});
+        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
     }
 
     /**
