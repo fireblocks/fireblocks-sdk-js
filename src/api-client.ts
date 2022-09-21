@@ -7,7 +7,7 @@ import os from "os";
 export class ApiClient {
     private axiosInstance: AxiosInstance;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: { timeoutInMs?: number, extraUserAgent?: string }) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: { timeoutInMs?: number, userAgent?: string }) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl
         });
@@ -17,7 +17,7 @@ export class ApiClient {
         const SDK_PACKAGE = "fireblocks-sdk-js";
         const SDK_PLATFORM = `${os.type()}; ${os.platform()} ${os.release()}; ${os.arch()}`;
 
-        return `${SDK_PACKAGE}/${SDK_VERSION} (${SDK_PLATFORM})${this.options.extraUserAgent ? ` ${this.options.extraUserAgent}` : ""}`;
+        return `${SDK_PACKAGE}/${SDK_VERSION} (${SDK_PLATFORM})${this.options.userAgent ? ` ${this.options.userAgent}` : ""}`;
     }
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
