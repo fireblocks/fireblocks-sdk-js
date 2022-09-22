@@ -525,6 +525,12 @@ export enum SignerConnectionType {
     WALLET_CONNECT = "WalletConnect"
 }
 
+export enum SignerConnectionMethod {
+    MOBILE = "MOBILE",
+    DESKTOP = "DESKTOP",
+    API = "API"
+}
+
 export interface AllocateFundsRequest {
     allocationId: string;
     amount: string;
@@ -734,4 +740,23 @@ export interface ICreateConnectionResponse {
       appUrl?: string,
       appDescription?: string
     };
+}
+
+export interface ISessionMetadata {
+    appIcon?: string;
+    appId?: string;
+    appName?: string;
+    appUrl?: string;
+    appDescription?: string;
+  }
+
+export interface ISession {
+    id: string;
+    vaultId: number;
+    chainIds?: string[];
+    feeLevel: SignerConnectionFeeLevel;
+    creationDate: Date;
+    connectionType: SignerConnectionType;
+    connectionMethod?: SignerConnectionMethod;
+    sessionMetadata?: ISessionMetadata;
   }

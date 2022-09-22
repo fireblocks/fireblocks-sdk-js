@@ -50,6 +50,7 @@ import {
     FeePayerConfiguration,
     ISignerConnectionPayload,
     ICreateConnectionResponse,
+    ISession,
 } from "./types";
 
 export * from "./types";
@@ -1050,6 +1051,14 @@ export class FireblocksSDK {
      */
     public async removeFeePayerConfiguration(baseAsset: string): Promise<void> {
         return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
+    }
+
+    /**
+     * Get all signer connections of the current user
+     * @returns Array of sessions
+     */
+    public async getAllSignerConnections(): Promise<ISession[]> {
+        return await this.apiClient.issueGetRequest(`/v1/connections`);
     }
 
     /**
