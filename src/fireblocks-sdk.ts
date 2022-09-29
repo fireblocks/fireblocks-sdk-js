@@ -1067,7 +1067,7 @@ export class FireblocksSDK {
      * @param requestOptions
      * @returns The created session's ID and its metadata
      * @example {
-     *  vaultId: 0
+     *  vaultAccountId: 0
      *  feeLevel: "MEDIUM"
      *  connectionType: "WalletConnect"
      *  uri: "wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"

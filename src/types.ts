@@ -752,7 +752,7 @@ export interface ISessionMetadata {
 
 export interface ISession {
     id: string;
-    vaultId: number;
+    vaultAccountId: number;
     chainIds?: string[];
     feeLevel: SignerConnectionFeeLevel;
     creationDate: Date;
