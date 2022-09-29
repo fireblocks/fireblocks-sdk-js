@@ -720,7 +720,7 @@ export interface FeePayerConfiguration {
 }
 
 export interface ISignerConnectionPayload {
-    vaultId: number;
+    vaultAccountId: number;
     feeLevel: SignerConnectionFeeLevel;
     connectionType: SignerConnectionType;
 }
