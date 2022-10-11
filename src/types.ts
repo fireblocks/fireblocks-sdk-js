@@ -703,3 +703,8 @@ export interface SetFeePayerConfiguration {
 export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
+
+export enum TimePeriod {
+    DAY = "DAY",
+    WEEK = "WEEK"
+}
