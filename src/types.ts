@@ -426,26 +426,31 @@ export interface AutoNetworkRoutingDest {
     scheme: NetworkScheme.AUTO;
 }
 
+export interface NoneNetworkRoutingDest {
+    scheme: NetworkScheme.AUTO;
+}
+
 export interface NetworkConnectionRoutingPolicy {
-    crypto?: CustomCryptoRoutingDest | DefaultNetworkRoutingDest;
-    sen?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
-    signet?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
-    sen_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
-    signet_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest;
+    crypto?: CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+    sen?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+    signet?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+    sen_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+    signet_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
 }
 
 export interface NetworkIdRoutingPolicy {
-    crypto?: CustomCryptoRoutingDest | AutoNetworkRoutingDest;
-    sen?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
-    signet?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
-    sen_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
-    signet_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest;
+    crypto?: CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+    sen?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+    signet?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+    sen_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+    signet_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
 }
 
 export enum NetworkScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
     AUTO = "AUTO",
+    NONE = "NONE",
 }
 
 export enum NetworkDestType {
