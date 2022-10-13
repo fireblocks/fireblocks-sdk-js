@@ -1052,7 +1052,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets all Audits for selected time period
+     * Gets all audits for selected time period
      * @param timePeriod
      */
     public async getAudits(timePeriod?: TimePeriod): Promise<any> {
