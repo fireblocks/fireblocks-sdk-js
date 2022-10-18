@@ -703,3 +703,80 @@ export interface SetFeePayerConfiguration {
 export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
+
+export enum TimePeriod {
+    DAY = "DAY",
+    WEEK = "WEEK"
+}
+
+export interface Audit {
+    data?: any;
+    vendorId?: string;
+    tenantId?: string;
+    severity?: string;
+    createdAt?: string;
+    subject?: string;
+    event?: string;
+    user?: string;
+    email?: string;
+    txId?: string;
+    amount?: string;
+    transactionId?: string;
+    walletType?: string;
+    walletName?: string;
+    confirmationThreshold?: string;
+    sourceType?: string;
+    sourceName?: string;
+    sourceId?: string;
+    destination?: string;
+    destAddress?: string;
+    newNote?: string;
+    remoteType?: string;
+    destName?: string;
+    remoteId?: string;
+    note?: string;
+    signedBy?: string;
+    approvedBy?: string;
+    setBy?: string;
+    cancelType?: string;
+    fee?: string;
+    rule?: string;
+    screeningStatus?: string;
+    verdict?: string;
+    bypassReason?: string;
+    status?: string;
+    subStatus?: string;
+    ruleJsonStr?: string;
+    rejectedReason?: string;
+    failReason?: string;
+    oldRole?: string;
+    role?: string;
+    subjectUser?: string;
+    ip?: string;
+    accountName?: string;
+    tag?: string;
+    address?: string;
+    accountType?: string;
+    counterpartyName?: string;
+    initiatedBy?: string;
+    asset?: string;
+    newIpAddress?: string;
+    approverList?: string;
+    removedUserName?: string;
+    removedUserEmail?: string;
+    action?: string;
+    description?: string;
+    userAgent?: string;
+    authorizationInfo?: string;
+    reEnrolledUser?: string;
+    oldThreshold?: string;
+    newThreshold?: string;
+    oldAmount?: string;
+    newAmount?: string;
+    draftPolicyJson?: string;
+}
+
+export interface AuditsResponse {
+    data: Audit[];
+    total: number;
+}
