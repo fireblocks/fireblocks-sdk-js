@@ -49,6 +49,7 @@ import {
     SetFeePayerConfiguration,
     FeePayerConfiguration,
     TimePeriod,
+    AuditsResponse,
 } from "./types";
 
 export * from "./types";
