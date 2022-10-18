@@ -1055,7 +1055,7 @@ export class FireblocksSDK {
      * Gets all audits for selected time period
      * @param timePeriod
      */
-    public async getAudits(timePeriod?: TimePeriod): Promise<any> {
+    public async getAudits(timePeriod?: TimePeriod): Promise<AuditsResponse> {
         let url = `/v1/audits`;
         if (timePeriod) {
             url += `?timePeriod=${timePeriod}`;
