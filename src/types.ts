@@ -427,7 +427,7 @@ export interface AutoNetworkRoutingDest {
 }
 
 export interface NoneNetworkRoutingDest {
-    scheme: NetworkScheme.AUTO;
+    scheme: NetworkScheme.NONE;
 }
 
 export interface NetworkConnectionRoutingPolicy {
