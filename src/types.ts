@@ -430,20 +430,25 @@ export interface NoneNetworkRoutingDest {
     scheme: NetworkScheme.NONE;
 }
 
+export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+
 export interface NetworkConnectionRoutingPolicy {
-    crypto?: CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-    sen?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-    signet?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-    sen_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-    signet_test?: CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+    crypto?: NetworkConnectionCryptoRoutingDest;
+    sen?: NetworkConnectionFiatRoutingDest
+    signet?: NetworkConnectionFiatRoutingDest;
+    sen_test?: NetworkConnectionFiatRoutingDest;
+    signet_test?: NetworkConnectionFiatRoutingDest;
 }
 
 export interface NetworkIdRoutingPolicy {
-    crypto?: CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
-    sen?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
-    signet?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
-    sen_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
-    signet_test?: CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+    crypto?: NetworkIdCryptoRoutingDest;
+    sen?: NetworkIdFiatRoutingDest;
+    signet?: NetworkIdFiatRoutingDest;
+    sen_test?: NetworkIdFiatRoutingDest;
+    signet_test?: NetworkIdFiatRoutingDest;
 }
 
 export enum NetworkScheme {
