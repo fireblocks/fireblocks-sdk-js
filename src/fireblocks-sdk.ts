@@ -48,6 +48,9 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
+    NetworkConnectionRoutingPolicy,
+    NetworkIdRoutingPolicy,
+    NetworkIdResponse,
     TimePeriod,
     AuditsResponse,
 } from "./types";
@@ -195,16 +198,100 @@ export class FireblocksSDK {
 
     /**
      * Gets all network connections
+     * @returns NetworkConnectionResponse
      */
     public async getNetworkConnections(): Promise<NetworkConnectionResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/network_connections");
     }
 
     /**
-     * Gets a single network connection by id
+     * Creates a network connection
+     * @param localNetworkId The local netowrk profile's id
+     * @param remoteNetworkId The remote network profile's id
+     * @param routingPolicy The desired routing policy for the connection
+     * @returns NetworkConnectionResponse
+     */
+    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: NetworkConnectionRoutingPolicy): Promise<NetworkConnectionResponse> {
+        const body = { localNetworkId, remoteNetworkId, routingPolicy };
+        return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
+    }
+    
+    /**
+     * Gets a single network connection
+     * @param connectionId The network connection's id
+     * @returns NetworkConnectionResponse
      */
     public async getNetworkConnectionById(connectionId: string): Promise<NetworkConnectionResponse> {
         return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}`);
+    }
+
+    /**
+     * Removes a network connection
+     * @param connectionId The network connection's id
+     * @returns OperationSuccessResponse
+     */
+    public async removeNetworkConnection(connectionId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/network_connections/${connectionId}`);
+    }
+
+    /**
+     * Sets routing policy for a network connection 
+     * @param connectionId The network connection's id
+     * @param routingPolicy The desired routing policy
+     */
+    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy) {
+        const body = { routingPolicy };
+        return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
+    }
+
+    /**
+     * Gets all discoverable network profiles
+     * @returns NetworkIdResponse
+     */
+    public async getDiscoverableNetworkIds(): Promise<NetworkIdResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/network_ids`);
+    }
+
+    /**
+     * Creates a new network profile
+     * @param name A name for the new network profile
+     * @param routingPolicy The desired routing policy for the network
+     * @returns NetworkConnectionResponse
+     */
+    public async createNetworkId(name: string, routingPolicy?: NetworkIdRoutingPolicy): Promise<NetworkIdResponse> {
+        const body = { name, routingPolicy };
+        return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
+    }
+
+    /**
+     * Gets a single network profile
+     * @param networkId The network profile's id
+     * @returns NetworkIdResponse
+     */
+    public async getNetworkId(networkId: string): Promise<NetworkIdResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/network_ids/${networkId}`);
+    }
+
+    /**
+     * Sets discoverability for network profile
+     * @param networkId The network profile's id
+     * @param isDiscoverable The desired discoverability to set
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean): Promise<OperationSuccessResponse> {
+        const body = { isDiscoverable };
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
+    }
+
+    /**
+     * Sets routing policy for network profile
+     * @param networkId The network profile's id
+     * @param routingPolicy The desired routing policy
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy: NetworkIdRoutingPolicy) {
+        const body = { routingPolicy };
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
 
     /**

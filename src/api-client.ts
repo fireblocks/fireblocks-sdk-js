@@ -65,6 +65,20 @@ export class ApiClient {
         })).data;
     }
 
+    public async issuePatchRequest(path: string, body: any) {
+        const token = this.authProvider.signJwt(path, body);
+
+        const headers: any = {
+            "X-API-Key": this.authProvider.getApiKey(),
+            "Authorization": `Bearer ${token}`,
+        };
+
+        return (await this.axiosInstance.patch(path, body, {
+            headers,
+            timeout: this.options.timeoutInMs
+        })).data;
+    }
+
     public async issueDeleteRequest(path: string) {
         const token = this.authProvider.signJwt(path);
 

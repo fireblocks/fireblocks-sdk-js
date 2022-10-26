@@ -391,7 +391,14 @@ export interface NetworkConnectionResponse {
     status: string;
     remoteNetworkId: NetworkId;
     localNetworkId: NetworkId;
-    routingPolicy?: RoutingPolicy;
+    routingPolicy?: NetworkConnectionRoutingPolicy;
+}
+
+export interface NetworkIdResponse {
+    id: string;
+    name: string;
+    isDiscoverable: boolean;
+    routingPolicy?: NetworkIdRoutingPolicy;
 }
 
 interface NetworkId {
@@ -399,29 +406,60 @@ interface NetworkId {
     name: string;
 }
 
-export interface RoutingPolicy {
-    crypto?: RoutingDest;
-    sen?: RoutingDest;
-    signet?: RoutingDest;
-    sen_test?: RoutingDest;
-    signet_test?: RoutingDest;
-}
-
-export interface RoutingDest {
-    scheme: Scheme;
-    dstType: NetworkDestType;
+export interface CustomCryptoRoutingDest {
+    scheme: NetworkScheme.CUSTOM;
+    dstType: NetworkDestType.EXCHANGE_ACCOUNT | NetworkDestType.VAULT_ACCOUNT;
     dstId: string;
 }
 
-export enum Scheme {
-    AUTO = "AUTO",
+export interface CustomFiatRoutingDest {
+    scheme: NetworkScheme.CUSTOM;
+    dstType: NetworkDestType.FIAT_ACCOUNT;
+    dstId: string;
+}
+
+export interface DefaultNetworkRoutingDest {
+    scheme: NetworkScheme.DEFAULT;
+}
+
+export interface AutoNetworkRoutingDest {
+    scheme: NetworkScheme.AUTO;
+}
+
+export interface NoneNetworkRoutingDest {
+    scheme: NetworkScheme.NONE;
+}
+
+export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+
+export interface NetworkConnectionRoutingPolicy {
+    crypto?: NetworkConnectionCryptoRoutingDest;
+    sen?: NetworkConnectionFiatRoutingDest
+    signet?: NetworkConnectionFiatRoutingDest;
+    sen_test?: NetworkConnectionFiatRoutingDest;
+    signet_test?: NetworkConnectionFiatRoutingDest;
+}
+
+export interface NetworkIdRoutingPolicy {
+    crypto?: NetworkIdCryptoRoutingDest;
+    sen?: NetworkIdFiatRoutingDest;
+    signet?: NetworkIdFiatRoutingDest;
+    sen_test?: NetworkIdFiatRoutingDest;
+    signet_test?: NetworkIdFiatRoutingDest;
+}
+
+export enum NetworkScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
+    AUTO = "AUTO",
+    NONE = "NONE",
 }
 
 export enum NetworkDestType {
     VAULT_ACCOUNT = "VAULT",
-    UNMANAGED_WALLET = "UNMANAGED",
     EXCHANGE_ACCOUNT = "EXCHANGE",
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
