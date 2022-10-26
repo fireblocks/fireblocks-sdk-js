@@ -51,6 +51,8 @@ import {
     NetworkConnectionRoutingPolicy,
     NetworkIdRoutingPolicy,
     NetworkIdResponse,
+    TimePeriod,
+    AuditsResponse,
 } from "./types";
 
 export * from "./types";
@@ -1135,5 +1137,17 @@ export class FireblocksSDK {
      */
     public async removeFeePayerConfiguration(baseAsset: string): Promise<void> {
         return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
+    }
+
+    /**
+     * Gets all audits for selected time period
+     * @param timePeriod
+     */
+    public async getAudits(timePeriod?: TimePeriod): Promise<AuditsResponse> {
+        let url = `/v1/audits`;
+        if (timePeriod) {
+            url += `?timePeriod=${timePeriod}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
     }
 }
