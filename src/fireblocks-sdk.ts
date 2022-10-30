@@ -53,6 +53,7 @@ import {
     NetworkIdResponse,
     TimePeriod,
     AuditsResponse,
+    RoutingAsset,
 } from "./types";
 
 export * from "./types";
@@ -242,6 +243,15 @@ export class FireblocksSDK {
     public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy) {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
+    }
+
+    /**
+     * Sets routing policy for a network connection 
+     * @param connectionId The network connection's id
+     * @param assetType The desired asset type
+     */
+    public async validatePeerDestination(connectionId: string, assetType: RoutingAsset) {
+        return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}/validate_destination/${assetType}`);
     }
 
     /**
