@@ -465,11 +465,11 @@ export enum NetworkDestType {
 }
 
 export enum RoutingAsset {
-	CRYPTO = 'CRYPTO',
-	SIGNET = 'SIGNET',
-	SEN = 'SEN',
-	SIGNET_TEST = 'SIGNET_TEST',
-	SEN_TEST = 'SEN_TEST',
+    CRYPTO = 'CRYPTO',
+    SIGNET = 'SIGNET',
+    SEN = 'SEN',
+    SIGNET_TEST = 'SIGNET_TEST',
+    SEN_TEST = 'SEN_TEST',
 }
 
 export interface TransactionFilter {
