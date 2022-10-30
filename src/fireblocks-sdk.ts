@@ -251,7 +251,7 @@ export class FireblocksSDK {
      * @param assetType The desired asset type
      */
     public async validatePeerDestination(connectionId: string, assetType: RoutingAsset) {
-        return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}/validate_destination/${assetType}`);
+        return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}/is_third_party_routing/${assetType}`);
     }
 
     /**
