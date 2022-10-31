@@ -437,7 +437,7 @@ export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutin
 
 export interface NetworkConnectionRoutingPolicy {
     crypto?: NetworkConnectionCryptoRoutingDest;
-    sen?: NetworkConnectionFiatRoutingDest
+    sen?: NetworkConnectionFiatRoutingDest;
     signet?: NetworkConnectionFiatRoutingDest;
     sen_test?: NetworkConnectionFiatRoutingDest;
     signet_test?: NetworkConnectionFiatRoutingDest;
@@ -476,6 +476,47 @@ export interface TransactionFilter {
     destType?: PeerType;
     sourceId?: string;
     destId?: string;
+}
+
+export interface NFTOwnershipFilter {
+    vaultAccountId?: string;
+    blockchainDescriptor?: string;
+    ids?: string;
+}
+
+interface TokenBalance {
+    vaultAccountId: string;
+    balance: number;
+}
+
+export interface TokenWithBalance extends Token {
+    balance: TokenBalance;
+}
+
+class MediaEntity {
+    url: string;
+    contentType: string;
+    originalURL?: string;
+}
+
+interface NFTCollection {
+    id: string;
+    name: string;
+    symbol: string;
+    address: string;
+}
+
+export interface Token {
+    id: string;
+    tokenId: string;
+    blockchainDescriptor: string;
+    tokenStandard: string;
+    name: string;
+    description?: string;
+    media: MediaEntity[];
+    tokenURI: string;
+    collection: NFTCollection;
+    updatedAt: Date;
 }
 
 export interface TransactionPageFilter {
