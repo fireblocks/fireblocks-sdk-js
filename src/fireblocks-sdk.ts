@@ -1183,7 +1183,7 @@ export class FireblocksSDK {
      * @param tokenId
      */
     public async refreshNFTMetadata(tokenId: string): Promise<void> {
-        return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${tokenId}`, {});
+        return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${tokenId}`, undefined);
     }
 
     /**
@@ -1194,6 +1194,6 @@ export class FireblocksSDK {
     public async refreshNFTOwnershipByVault(vaultAccountId: string, blockchainDescriptor: string): Promise<void> {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
-            {});
+            undefined);
     }
 }
