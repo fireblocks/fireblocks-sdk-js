@@ -246,7 +246,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Sets routing policy for a network connection 
+     * Validates if peer's routing policy is set to it's workspace or to third party service 
      * @param connectionId The network connection's id
      * @param assetType The desired asset type
      */
