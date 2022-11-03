@@ -437,7 +437,7 @@ export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutin
 
 export interface NetworkConnectionRoutingPolicy {
     crypto?: NetworkConnectionCryptoRoutingDest;
-    sen?: NetworkConnectionFiatRoutingDest
+    sen?: NetworkConnectionFiatRoutingDest;
     signet?: NetworkConnectionFiatRoutingDest;
     sen_test?: NetworkConnectionFiatRoutingDest;
     signet_test?: NetworkConnectionFiatRoutingDest;

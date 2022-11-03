@@ -215,7 +215,7 @@ export class FireblocksSDK {
         const body = { localNetworkId, remoteNetworkId, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
     }
-    
+
     /**
      * Gets a single network connection
      * @param connectionId The network connection's id
@@ -235,7 +235,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Sets routing policy for a network connection 
+     * Sets routing policy for a network connection
      * @param connectionId The network connection's id
      * @param routingPolicy The desired routing policy
      */
