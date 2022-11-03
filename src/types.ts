@@ -481,7 +481,7 @@ export interface TransactionFilter {
 export interface NFTOwnershipFilter {
     vaultAccountId?: string;
     blockchainDescriptor?: string;
-    ids?: string;
+    ids?: string[];
 }
 
 interface TokenBalance {

@@ -1166,15 +1166,21 @@ export class FireblocksSDK {
      *
      * @param tokenIds comma seperated list of token ids to fetch
      */
-    public async getNFTs(tokenIds: string): Promise<Token[]> {
-        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?ids=${tokenIds}`);
+    public async getNFTs(tokenIds: string[]): Promise<Token[]> {
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?ids=${tokenIds.join(",")}`);
     }
 
     /**
      *
      * @param filter filter results object
      */
-    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<TokenWithBalance[]> {
+    public async getOwnedNFTs({vaultAccountId, blockchainDescriptor, ids}: NFTOwnershipFilter): Promise<TokenWithBalance[]> {
+        const filter = {
+            vaultAccountId,
+            blockchainDescriptor,
+            ids: ids ?? ids.join(",")
+        };
+
         return await this.apiClient.issueGetRequest(`/v1/nfts/ownership/tokens?${queryString.stringify(filter)}`);
     }
 
