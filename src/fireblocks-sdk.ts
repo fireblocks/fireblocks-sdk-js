@@ -1174,14 +1174,18 @@ export class FireblocksSDK {
      *
      * @param filter filter results object
      */
-    public async getOwnedNFTs({vaultAccountId, blockchainDescriptor, ids}: NFTOwnershipFilter): Promise<TokenWithBalance[]> {
-        const filter = {
-            vaultAccountId,
-            blockchainDescriptor,
-            ids: ids ?? ids.join(",")
-        };
+    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<TokenWithBalance[]> {
+        let requestFilter = {};
+        if (filter) {
+            const {vaultAccountId, blockchainDescriptor, ids} = filter;
+            requestFilter = {
+                vaultAccountId,
+                blockchainDescriptor,
+                ids: ids ?? ids.join(",")
+            };
+        }
 
-        return await this.apiClient.issueGetRequest(`/v1/nfts/ownership/tokens?${queryString.stringify(filter)}`);
+        return await this.apiClient.issueGetRequest(`/v1/nfts/ownership/tokens?${queryString.stringify(requestFilter)}`);
     }
 
     /**
