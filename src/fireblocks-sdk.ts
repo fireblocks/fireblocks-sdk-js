@@ -1164,7 +1164,7 @@ export class FireblocksSDK {
 
     /**
      *
-     * @param tokenIds comma seperated list of token ids to fetch
+     * @param tokenIds List of token ids to fetch
      */
     public async getNFTs(tokenIds: string[]): Promise<Token[]> {
         return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?ids=${tokenIds.join(",")}`);
@@ -1172,20 +1172,23 @@ export class FireblocksSDK {
 
     /**
      *
-     * @param filter filter results object
+     * Gets a list of owned NFT tokens
+     * @param filter.vaultAccountId The vault account ID
+     * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
+     * @param filter.ids List of token ids to fetch
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<TokenWithBalance[]> {
-        let requestFilter = {};
+        let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const {vaultAccountId, blockchainDescriptor, ids} = filter;
-            requestFilter = {
+            const { vaultAccountId, blockchainDescriptor, ids } = filter;
+            const requestFilter = {
                 vaultAccountId,
                 blockchainDescriptor,
-                ids: ids ?? ids.join(",")
+                ids: ids ? ids.join(",") : undefined,
             };
+            url += `?${queryString.stringify(requestFilter)}`;
         }
-
-        return await this.apiClient.issueGetRequest(`/v1/nfts/ownership/tokens?${queryString.stringify(requestFilter)}`);
+        return await this.apiClient.issueGetRequest(url);
     }
 
     /**
