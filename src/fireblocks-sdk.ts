@@ -55,7 +55,7 @@ import {
     AuditsResponse,
     NFTOwnershipFilter,
     Token,
-    TokenWithBalance
+    TokenWithBalance, APIPagedResponse
 } from "./types";
 
 export * from "./types";
@@ -1168,7 +1168,7 @@ export class FireblocksSDK {
      * @param pageCursor
      * @param pageSize
      */
-    public async getNFTs(tokenIds: string[], pageCursor?: string, pageSize?: number): Promise<Token[]> {
+    public async getNFTs(tokenIds: string[], pageCursor?: string, pageSize?: number): Promise<APIPagedResponse<Token>> {
         const queryParams = {
             pageCursor,
             pageSize,
@@ -1185,7 +1185,7 @@ export class FireblocksSDK {
      * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
      * @param filter.ids List of token ids to fetch
      */
-    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<TokenWithBalance[]> {
+    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
             const { vaultAccountId, blockchainDescriptor, ids, pageCursor, pageSize } = filter;

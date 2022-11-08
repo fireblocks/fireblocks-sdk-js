@@ -508,6 +508,14 @@ interface NFTCollection {
     address: string;
 }
 
+export interface Paging {
+    next: string;
+}
+export interface APIPagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
 export interface Token {
     id: string;
     tokenId: string;
