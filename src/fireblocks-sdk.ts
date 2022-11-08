@@ -1165,9 +1165,17 @@ export class FireblocksSDK {
     /**
      *
      * @param tokenIds List of token ids to fetch
+     * @param pageCursor
+     * @param pageSize
      */
-    public async getNFTs(tokenIds: string[]): Promise<Token[]> {
-        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?ids=${tokenIds.join(",")}`);
+    public async getNFTs(tokenIds: string[], pageCursor?: string, pageSize?: number): Promise<Token[]> {
+        const queryParams = {
+            pageCursor,
+            pageSize,
+            ids: tokenIds ? tokenIds.join(",") : undefined,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?ids=${queryString.stringify(queryParams)}`);
     }
 
     /**
