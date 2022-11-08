@@ -1175,7 +1175,7 @@ export class FireblocksSDK {
             ids: tokenIds ? tokenIds.join(",") : undefined,
         };
 
-        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?ids=${queryString.stringify(queryParams)}`);
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?${queryString.stringify(queryParams)}`);
     }
 
     /**
