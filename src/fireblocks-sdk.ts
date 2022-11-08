@@ -1180,10 +1180,12 @@ export class FireblocksSDK {
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<TokenWithBalance[]> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { vaultAccountId, blockchainDescriptor, ids } = filter;
+            const { vaultAccountId, blockchainDescriptor, ids, pageCursor, pageSize } = filter;
             const requestFilter = {
                 vaultAccountId,
                 blockchainDescriptor,
+                pageCursor,
+                pageSize,
                 ids: ids ? ids.join(",") : undefined,
             };
             url += `?${queryString.stringify(requestFilter)}`;

@@ -482,6 +482,8 @@ export interface NFTOwnershipFilter {
     vaultAccountId?: string;
     blockchainDescriptor?: string;
     ids?: string[];
+    pageCursor?: string;
+    pageSize?: number;
 }
 
 interface TokenBalance {
