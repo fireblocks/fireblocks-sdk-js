@@ -1,4 +1,4 @@
-## The Official Javascript & Typescript SDK for Fireblocks API
+## The Official Javascript & Typescript SDK for Fireblocks API.
 [![npm version](https://badge.fury.io/js/fireblocks-sdk.svg)](https://badge.fury.io/js/fireblocks-sdk)
 
 ### About
