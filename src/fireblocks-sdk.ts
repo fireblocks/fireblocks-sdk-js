@@ -54,7 +54,7 @@ import {
     TimePeriod,
     AuditsResponse,
 } from "./types";
-import { AxiosProxyConfig } from 'axios';
+import { AxiosProxyConfig } from "axios";
 
 export * from "./types";
 

@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v2.4.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.0...v2.4.1)
+
+> 21 November 2022
+
+- add proxy support for axios instance [`#116`](https://github.com/fireblocks/fireblocks-sdk-js/pull/116)
+
 #### [v2.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.3.2...v2.4.0)
 
 > 26 October 2022
 
 - Add network related functionality [`#101`](https://github.com/fireblocks/fireblocks-sdk-js/pull/101)
+- Added method to get all audits for selected time period [`#114`](https://github.com/fireblocks/fireblocks-sdk-js/pull/114)
 
 #### [v2.3.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.3.1...v2.3.2)
 

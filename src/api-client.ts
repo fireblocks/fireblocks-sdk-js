@@ -1,6 +1,6 @@
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions } from "./types";
-import axios, { AxiosInstance, AxiosProxyConfig } from 'axios';
+import axios, { AxiosInstance, AxiosProxyConfig } from "axios";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
