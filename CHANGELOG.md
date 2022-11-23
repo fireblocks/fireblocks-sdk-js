@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v2.4.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.0...v2.4.1)
+#### [v2.4.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.0...v2.4.2)
 
-> 21 November 2022
+> 23 November 2022
 
-- add proxy support for axios instance [`#116`](https://github.com/fireblocks/fireblocks-sdk-js/pull/116)
+- update CreateTransactionResponse [`#122`](https://github.com/fireblocks/fireblocks-sdk-js/pull/122)
 
 #### [v2.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.3.2...v2.4.0)
 
