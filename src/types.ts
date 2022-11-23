@@ -91,6 +91,7 @@ export interface InternalWalletAsset extends ExternalWalletAsset {
 export interface CreateTransactionResponse {
     id: string;
     status: string;
+    systemMessages?: ISystemMessageInfo[];
 }
 
 export interface EstimateFeeResponse {
@@ -817,4 +818,9 @@ export interface Audit {
 export interface AuditsResponse {
     data: Audit[];
     total: number;
+}
+
+export interface ISystemMessageInfo {
+    type: string;
+    message: string;
 }
