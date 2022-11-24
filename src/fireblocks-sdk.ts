@@ -59,8 +59,8 @@ import { AxiosProxyConfig } from "axios";
 export * from "./types";
 
 export interface SDKOptions {
-    timeoutInMs: number;
-    proxy: AxiosProxyConfig | false;
+    timeoutInMs?: number;
+    proxy?: AxiosProxyConfig | false;
 }
 
 export class FireblocksSDK {
