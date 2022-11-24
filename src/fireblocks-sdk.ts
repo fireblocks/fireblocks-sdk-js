@@ -1156,23 +1156,23 @@ export class FireblocksSDK {
 
     /**
      *
-     * @param tokenId
+     * @param id
      */
-    public async getNFT(tokenId: string): Promise<Token> {
-        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens/${tokenId}`);
+    public async getNFT(id: string): Promise<Token> {
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens/${id}`);
     }
 
     /**
      *
-     * @param tokenIds List of token ids to fetch
+     * @param ids List of token ids to fetch
      * @param pageCursor
      * @param pageSize
      */
-    public async getNFTs(tokenIds: string[], pageCursor?: string, pageSize?: number): Promise<APIPagedResponse<Token>> {
+    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number): Promise<APIPagedResponse<Token>> {
         const queryParams = {
             pageCursor,
             pageSize,
-            ids: tokenIds ? tokenIds.join(",") : undefined,
+            ids: ids ? ids.join(",") : undefined,
         };
 
         return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?${queryString.stringify(queryParams)}`);
@@ -1203,10 +1203,10 @@ export class FireblocksSDK {
 
     /**
      *
-     * @param tokenId
+     * @param id
      */
-    public async refreshNFTMetadata(tokenId: string): Promise<void> {
-        return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${tokenId}`, undefined);
+    public async refreshNFTMetadata(id: string): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
     }
 
     /**
