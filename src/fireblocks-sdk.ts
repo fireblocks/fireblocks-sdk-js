@@ -53,6 +53,7 @@ import {
     NetworkIdResponse,
     TimePeriod,
     AuditsResponse,
+    RoutingAsset,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -244,6 +245,15 @@ export class FireblocksSDK {
     public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy) {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
+    }
+
+    /**
+     * Validates if peer's routing policy is set to it's workspace or to third party service 
+     * @param connectionId The network connection's id
+     * @param assetType The desired asset type
+     */
+    public async validatePeerDestination(connectionId: string, assetType: RoutingAsset) {
+        return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}/is_third_party_routing/${assetType}`);
     }
 
     /**

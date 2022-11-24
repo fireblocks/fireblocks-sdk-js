@@ -465,6 +465,14 @@ export enum NetworkDestType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
 
+export enum RoutingAsset {
+    CRYPTO = 'CRYPTO',
+    SIGNET = 'SIGNET',
+    SEN = 'SEN',
+    SIGNET_TEST = 'SIGNET_TEST',
+    SEN_TEST = 'SEN_TEST',
+}
+
 export interface TransactionFilter {
     before?: number;
     after?: number;
