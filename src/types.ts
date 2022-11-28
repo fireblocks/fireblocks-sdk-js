@@ -423,18 +423,14 @@ export interface DefaultNetworkRoutingDest {
     scheme: NetworkScheme.DEFAULT;
 }
 
-export interface AutoNetworkRoutingDest {
-    scheme: NetworkScheme.AUTO;
-}
-
 export interface NoneNetworkRoutingDest {
     scheme: NetworkScheme.NONE;
 }
 
 export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
 export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | NoneNetworkRoutingDest;
 
 export interface NetworkConnectionRoutingPolicy {
     crypto?: NetworkConnectionCryptoRoutingDest;
