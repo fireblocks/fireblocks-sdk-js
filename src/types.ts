@@ -451,7 +451,6 @@ export interface NetworkIdRoutingPolicy {
 export enum NetworkScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
-    AUTO = "AUTO",
     NONE = "NONE",
 }
 
