@@ -55,7 +55,8 @@ import {
     AuditsResponse,
     NFTOwnershipFilter,
     Token,
-    TokenWithBalance, APIPagedResponse
+    TokenWithBalance,
+    APIPagedResponse,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
