@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v2.5.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.2...v2.5.0)
+#### [v2.5.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.2...v2.5.1)
 
 > 30 November 2022
 
-- Network-connection: remove AUTO scheme from network Id policy [`#124`](https://github.com/fireblocks/fireblocks-sdk-js/pull/124)
+- add nft endpoints and entities [`#119`](https://github.com/fireblocks/fireblocks-sdk-js/pull/119)
 
 #### [v2.4.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.1...v2.4.2)
 
