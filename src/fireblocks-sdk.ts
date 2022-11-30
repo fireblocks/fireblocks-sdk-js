@@ -53,6 +53,10 @@ import {
     NetworkIdResponse,
     TimePeriod,
     AuditsResponse,
+    NFTOwnershipFilter,
+    Token,
+    TokenWithBalance,
+    APIPagedResponse,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -1151,5 +1155,71 @@ export class FireblocksSDK {
             url += `?timePeriod=${timePeriod}`;
         }
         return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public async getNFT(id: string): Promise<Token> {
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens/${id}`);
+    }
+
+    /**
+     *
+     * @param ids List of NFT tokens to fetch
+     * @param pageCursor
+     * @param pageSize
+     */
+    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number): Promise<APIPagedResponse<Token>> {
+        const queryParams = {
+            pageCursor,
+            pageSize,
+            ids: ids ? ids.join(",") : undefined,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?${queryString.stringify(queryParams)}`);
+    }
+
+    /**
+     *
+     * Gets a list of owned NFT tokens
+     * @param filter.vaultAccountId The vault account ID
+     * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
+     * @param filter.ids List of token ids to fetch
+     */
+    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
+        let url = "/v1/nfts/ownership/tokens";
+        if (filter) {
+            const { blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize } = filter;
+            const requestFilter = {
+                vaultAccountId,
+                blockchainDescriptor,
+                pageCursor,
+                pageSize,
+                ids: ids ? ids.join(",") : undefined,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public async refreshNFTMetadata(id: string): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
+    }
+
+    /**
+     *
+     * @param vaultAccountId
+     * @param blockchainDescriptor
+     */
+    public async refreshNFTOwnershipByVault(vaultAccountId: string, blockchainDescriptor: string): Promise<void> {
+        return await this.apiClient.issuePutRequest(
+            `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
+            undefined);
     }
 }

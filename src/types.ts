@@ -474,6 +474,52 @@ export interface TransactionFilter {
     destId?: string;
 }
 
+export interface NFTOwnershipFilter {
+    blockchainDescriptor?: string;
+    vaultAccountId?: string;
+    ids?: string[];
+    pageCursor?: string;
+    pageSize?: number;
+}
+
+
+class MediaEntity {
+    url: string;
+    contentType: string;
+}
+
+interface NFTCollection {
+    id: string;
+    name: string;
+    symbol: string;
+}
+
+export interface Paging {
+    next: string;
+}
+
+export interface APIPagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
+export interface Token {
+    id: string;
+    tokenId: string;
+    standard: string;
+    blockchainDescriptor: string;
+    description: string;
+    name: string;
+    media: MediaEntity[];
+    metadataURI: string;
+    collection?: NFTCollection;
+}
+
+export interface TokenWithBalance extends Token {
+    balance: number;
+    vaultAccountId: string;
+}
+
 export interface TransactionPageFilter {
     before?: number;
     after?: number;
@@ -684,6 +730,7 @@ export interface VaultBalancesFilter {
     accountNamePrefix?: string;
     accountNameSuffix?: string;
 }
+
 export interface RequestOptions {
     idempotencyKey: string;
 }
