@@ -486,14 +486,8 @@ export interface NFTOwnershipFilter {
     pageSize?: number;
 }
 
-interface TokenBalance {
-    vaultAccountId: string;
-    balance: number;
-}
 
-export interface TokenWithBalance extends Token {
-    balance: TokenBalance;
-}
+
 
 class MediaEntity {
     url: string;
@@ -517,13 +511,18 @@ export interface APIPagedResponse<T> {
 export interface Token {
     id: string;
     tokenId: string;
+    standard: string;
     blockchainDescriptor: string;
-    tokenStandard: string;
-    name: string;
     description: string;
+    name: string;
     media: MediaEntity[];
-    tokenURI: string;
+    metadataURI: string;
     collection: NFTCollection;
+}
+
+export interface TokenWithBalance extends Token {
+    balance: number;
+    vaultAccountId: string;
 }
 
 export interface TransactionPageFilter {
