@@ -1188,7 +1188,7 @@ export class FireblocksSDK {
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { vaultAccountId, blockchainDescriptor, ids, pageCursor, pageSize } = filter;
+            const { blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize } = filter;
             const requestFilter = {
                 vaultAccountId,
                 blockchainDescriptor,
