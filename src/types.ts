@@ -512,7 +512,7 @@ export interface Token {
     name: string;
     media: MediaEntity[];
     metadataURI: string;
-    collection: NFTCollection;
+    collection?: NFTCollection;
 }
 
 export interface TokenWithBalance extends Token {
