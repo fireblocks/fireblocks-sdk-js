@@ -430,8 +430,14 @@ export interface NoneNetworkRoutingDest {
     scheme: NetworkScheme.NONE;
 }
 
-export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionCryptoRoutingDest =
+    CustomCryptoRoutingDest
+    | DefaultNetworkRoutingDest
+    | NoneNetworkRoutingDest;
+export type NetworkConnectionFiatRoutingDest =
+    CustomFiatRoutingDest
+    | DefaultNetworkRoutingDest
+    | NoneNetworkRoutingDest;
 export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
 export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
 
@@ -487,8 +493,6 @@ export interface NFTOwnershipFilter {
 }
 
 
-
-
 class MediaEntity {
     url: string;
     contentType: string;
@@ -503,6 +507,7 @@ interface NFTCollection {
 export interface Paging {
     next: string;
 }
+
 export interface APIPagedResponse<T> {
     data: T[];
     paging?: Paging;
@@ -735,6 +740,7 @@ export interface VaultBalancesFilter {
     accountNamePrefix?: string;
     accountNameSuffix?: string;
 }
+
 export interface RequestOptions {
     idempotencyKey: string;
 }
