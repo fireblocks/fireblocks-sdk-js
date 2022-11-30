@@ -1164,7 +1164,7 @@ export class FireblocksSDK {
 
     /**
      *
-     * @param ids List of token ids to fetch
+     * @param ids List of NFT tokens to fetch
      * @param pageCursor
      * @param pageSize
      */
