@@ -91,6 +91,7 @@ export interface InternalWalletAsset extends ExternalWalletAsset {
 export interface CreateTransactionResponse {
     id: string;
     status: string;
+    systemMessages?: ISystemMessageInfo[];
 }
 
 export interface EstimateFeeResponse {
@@ -422,24 +423,14 @@ export interface DefaultNetworkRoutingDest {
     scheme: NetworkScheme.DEFAULT;
 }
 
-export interface AutoNetworkRoutingDest {
-    scheme: NetworkScheme.AUTO;
-}
-
 export interface NoneNetworkRoutingDest {
     scheme: NetworkScheme.NONE;
 }
 
-export type NetworkConnectionCryptoRoutingDest =
-    CustomCryptoRoutingDest
-    | DefaultNetworkRoutingDest
-    | NoneNetworkRoutingDest;
-export type NetworkConnectionFiatRoutingDest =
-    CustomFiatRoutingDest
-    | DefaultNetworkRoutingDest
-    | NoneNetworkRoutingDest;
-export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | NoneNetworkRoutingDest;
 
 export interface NetworkConnectionRoutingPolicy {
     crypto?: NetworkConnectionCryptoRoutingDest;
@@ -460,7 +451,6 @@ export interface NetworkIdRoutingPolicy {
 export enum NetworkScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
-    AUTO = "AUTO",
     NONE = "NONE",
 }
 
@@ -870,4 +860,9 @@ export interface Audit {
 export interface AuditsResponse {
     data: Audit[];
     total: number;
+}
+
+export interface ISystemMessageInfo {
+    type: string;
+    message: string;
 }

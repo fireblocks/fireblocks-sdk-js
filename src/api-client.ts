@@ -1,13 +1,14 @@
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions } from "./types";
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosProxyConfig } from "axios";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number}) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number, proxyConf?: AxiosProxyConfig | false}) {
         this.axiosInstance = axios.create({
-            baseURL: this.apiBaseUrl
+            baseURL: this.apiBaseUrl,
+            proxy: this.options.proxyConf,
         });
     }
 
