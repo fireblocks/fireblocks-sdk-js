@@ -1190,7 +1190,7 @@ export class FireblocksSDK {
         return await this.apiClient.issueDeleteRequest(`/v1/connections/${sessionId}`);
     }
 
-    /** 
+    /**
      * Gets all audits for selected time period
      * @param timePeriod
      */

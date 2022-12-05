@@ -1,6 +1,6 @@
 {
   "name": "fireblocks-sdk",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "main": "dist/fireblocks-sdk.js",
   "types": "dist/fireblocks-sdk.d.ts",
   "scripts": {
