@@ -217,6 +217,11 @@ export interface TransactionArguments {
     feePayerInfo?: TransactionArgumentsFeePayerInfo;
 }
 
+export enum SignerConnectionFeeLevel {
+    HIGH = "HIGH",
+    MEDIUM = "MEDIUM",
+}
+
 export enum FeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",
@@ -596,6 +601,16 @@ export enum TransactionOperation {
     TYPED_MESSAGE = "TYPED_MESSAGE",
 }
 
+export enum SignerConnectionType {
+    WALLET_CONNECT = "WalletConnect"
+}
+
+export enum SignerConnectionMethod {
+    MOBILE = "MOBILE",
+    DESKTOP = "DESKTOP",
+    API = "API"
+}
+
 export interface AllocateFundsRequest {
     allocationId: string;
     amount: string;
@@ -785,6 +800,47 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
+export interface SignerConnectionPayload {
+    vaultAccountId: number;
+    feeLevel: SignerConnectionFeeLevel;
+    connectionType: SignerConnectionType;
+}
+
+export interface WalletConnectPayload extends SignerConnectionPayload {
+    connectionType: SignerConnectionType.WALLET_CONNECT;
+    uri: string;
+    chainIds: string[];
+}
+
+export interface CreateConnectionResponse {
+    id: string;
+    sessionMetadata: {
+      appIcon?: string,
+      appId?: string,
+      appName?: string,
+      appUrl?: string,
+      appDescription?: string
+    };
+}
+
+export interface SessionMetadata {
+    appIcon?: string;
+    appId?: string;
+    appName?: string;
+    appUrl?: string;
+    appDescription?: string;
+  }
+
+export interface Session {
+    id: string;
+    vaultAccountId: number;
+    chainIds?: string[];
+    feeLevel: SignerConnectionFeeLevel;
+    creationDate: Date;
+    connectionType: SignerConnectionType;
+    connectionMethod?: SignerConnectionMethod;
+    sessionMetadata?: SessionMetadata;
+  }
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"

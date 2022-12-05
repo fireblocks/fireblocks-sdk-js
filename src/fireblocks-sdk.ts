@@ -48,6 +48,9 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
+    SignerConnectionPayload,
+    CreateConnectionResponse,
+    Session,
     NetworkConnectionRoutingPolicy,
     NetworkIdRoutingPolicy,
     NetworkIdResponse,
@@ -1146,6 +1149,48 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get all signer connections of the current user
+     * @returns Array of sessions
+     */
+    public async getAllSignerConnections(): Promise<Session[]> {
+        return await this.apiClient.issueGetRequest(`/v1/connections`);
+    }
+
+    /**
+     * Initiate a new signer connection
+     * @param payload The required parameters for the connection type
+     * @param requestOptions
+     * @returns The created session's ID and its metadata
+     * @example {
+     *  vaultAccountId: 0
+     *  feeLevel: "MEDIUM"
+     *  connectionType: "WalletConnect"
+     *  uri: "wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"
+     *  chainIds: ["ETH", "ETH_TEST"]
+     * }
+     */
+    public async createSignerConnection(payload: SignerConnectionPayload, requestOptions?: RequestOptions): Promise<CreateConnectionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/connections`, payload, requestOptions);
+    }
+
+    /**
+     * Approve or Reject the initiated connection
+     * @param sessionId The ID of the session
+     * @param approve Whether you approve the connection or not
+     */
+    public async submitSignerConnection(sessionId: string, approve: boolean): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/connections/${sessionId}`, {approve});
+    }
+
+    /**
+     * Remove an existing connection
+     * @param sessionId The ID of the session
+     */
+    public async removeSignerConnection(sessionId: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/connections/${sessionId}`);
+    }
+
+    /** 
      * Gets all audits for selected time period
      * @param timePeriod
      */
