@@ -48,9 +48,9 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
-    ISignerConnectionPayload,
-    ICreateConnectionResponse,
-    ISession,
+    SignerConnectionPayload,
+    CreateConnectionResponse,
+    Session,
     NetworkConnectionRoutingPolicy,
     NetworkIdRoutingPolicy,
     NetworkIdResponse,
@@ -1152,7 +1152,7 @@ export class FireblocksSDK {
      * Get all signer connections of the current user
      * @returns Array of sessions
      */
-    public async getAllSignerConnections(): Promise<ISession[]> {
+    public async getAllSignerConnections(): Promise<Session[]> {
         return await this.apiClient.issueGetRequest(`/v1/connections`);
     }
 
@@ -1169,7 +1169,7 @@ export class FireblocksSDK {
      *  chainIds: ["ETH", "ETH_TEST"]
      * }
      */
-    public async createSignerConnection(payload: ISignerConnectionPayload, requestOptions?: RequestOptions): Promise<ICreateConnectionResponse> {
+    public async createSignerConnection(payload: SignerConnectionPayload, requestOptions?: RequestOptions): Promise<CreateConnectionResponse> {
         return await this.apiClient.issuePostRequest(`/v1/connections`, payload, requestOptions);
     }
 
@@ -1189,7 +1189,7 @@ export class FireblocksSDK {
     public async removeSignerConnection(sessionId: string): Promise<void> {
         return await this.apiClient.issueDeleteRequest(`/v1/connections/${sessionId}`);
     }
-    
+
     /** 
      * Gets all audits for selected time period
      * @param timePeriod

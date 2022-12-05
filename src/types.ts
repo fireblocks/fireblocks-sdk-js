@@ -800,19 +800,19 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
-export interface ISignerConnectionPayload {
+export interface SignerConnectionPayload {
     vaultAccountId: number;
     feeLevel: SignerConnectionFeeLevel;
     connectionType: SignerConnectionType;
 }
 
-export interface IWalletConnectPayload extends ISignerConnectionPayload {
+export interface WalletConnectPayload extends SignerConnectionPayload {
     connectionType: SignerConnectionType.WALLET_CONNECT;
     uri: string;
     chainIds: string[];
 }
 
-export interface ICreateConnectionResponse {
+export interface CreateConnectionResponse {
     id: string;
     sessionMetadata: {
       appIcon?: string,
@@ -823,7 +823,7 @@ export interface ICreateConnectionResponse {
     };
 }
 
-export interface ISessionMetadata {
+export interface SessionMetadata {
     appIcon?: string;
     appId?: string;
     appName?: string;
@@ -831,7 +831,7 @@ export interface ISessionMetadata {
     appDescription?: string;
   }
 
-export interface ISession {
+export interface Session {
     id: string;
     vaultAccountId: number;
     chainIds?: string[];
@@ -839,7 +839,7 @@ export interface ISession {
     creationDate: Date;
     connectionType: SignerConnectionType;
     connectionMethod?: SignerConnectionMethod;
-    sessionMetadata?: ISessionMetadata;
+    sessionMetadata?: SessionMetadata;
   }
 export enum TimePeriod {
     DAY = "DAY",
