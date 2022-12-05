@@ -91,6 +91,7 @@ export interface InternalWalletAsset extends ExternalWalletAsset {
 export interface CreateTransactionResponse {
     id: string;
     status: string;
+    systemMessages?: ISystemMessageInfo[];
 }
 
 export interface EstimateFeeResponse {
@@ -396,7 +397,14 @@ export interface NetworkConnectionResponse {
     status: string;
     remoteNetworkId: NetworkId;
     localNetworkId: NetworkId;
-    routingPolicy?: RoutingPolicy;
+    routingPolicy?: NetworkConnectionRoutingPolicy;
+}
+
+export interface NetworkIdResponse {
+    id: string;
+    name: string;
+    isDiscoverable: boolean;
+    routingPolicy?: NetworkIdRoutingPolicy;
 }
 
 interface NetworkId {
@@ -404,29 +412,55 @@ interface NetworkId {
     name: string;
 }
 
-export interface RoutingPolicy {
-    crypto?: RoutingDest;
-    sen?: RoutingDest;
-    signet?: RoutingDest;
-    sen_test?: RoutingDest;
-    signet_test?: RoutingDest;
-}
-
-export interface RoutingDest {
-    scheme: Scheme;
-    dstType: NetworkDestType;
+export interface CustomCryptoRoutingDest {
+    scheme: NetworkScheme.CUSTOM;
+    dstType: NetworkDestType.EXCHANGE_ACCOUNT | NetworkDestType.VAULT_ACCOUNT;
     dstId: string;
 }
 
-export enum Scheme {
-    AUTO = "AUTO",
+export interface CustomFiatRoutingDest {
+    scheme: NetworkScheme.CUSTOM;
+    dstType: NetworkDestType.FIAT_ACCOUNT;
+    dstId: string;
+}
+
+export interface DefaultNetworkRoutingDest {
+    scheme: NetworkScheme.DEFAULT;
+}
+
+export interface NoneNetworkRoutingDest {
+    scheme: NetworkScheme.NONE;
+}
+
+export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | NoneNetworkRoutingDest;
+
+export interface NetworkConnectionRoutingPolicy {
+    crypto?: NetworkConnectionCryptoRoutingDest;
+    sen?: NetworkConnectionFiatRoutingDest;
+    signet?: NetworkConnectionFiatRoutingDest;
+    sen_test?: NetworkConnectionFiatRoutingDest;
+    signet_test?: NetworkConnectionFiatRoutingDest;
+}
+
+export interface NetworkIdRoutingPolicy {
+    crypto?: NetworkIdCryptoRoutingDest;
+    sen?: NetworkIdFiatRoutingDest;
+    signet?: NetworkIdFiatRoutingDest;
+    sen_test?: NetworkIdFiatRoutingDest;
+    signet_test?: NetworkIdFiatRoutingDest;
+}
+
+export enum NetworkScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
+    NONE = "NONE",
 }
 
 export enum NetworkDestType {
     VAULT_ACCOUNT = "VAULT",
-    UNMANAGED_WALLET = "UNMANAGED",
     EXCHANGE_ACCOUNT = "EXCHANGE",
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
 }
@@ -443,6 +477,52 @@ export interface TransactionFilter {
     destType?: PeerType;
     sourceId?: string;
     destId?: string;
+}
+
+export interface NFTOwnershipFilter {
+    blockchainDescriptor?: string;
+    vaultAccountId?: string;
+    ids?: string[];
+    pageCursor?: string;
+    pageSize?: number;
+}
+
+
+class MediaEntity {
+    url: string;
+    contentType: string;
+}
+
+interface NFTCollection {
+    id: string;
+    name: string;
+    symbol: string;
+}
+
+export interface Paging {
+    next: string;
+}
+
+export interface APIPagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
+export interface Token {
+    id: string;
+    tokenId: string;
+    standard: string;
+    blockchainDescriptor: string;
+    description: string;
+    name: string;
+    media: MediaEntity[];
+    metadataURI: string;
+    collection?: NFTCollection;
+}
+
+export interface TokenWithBalance extends Token {
+    balance: number;
+    vaultAccountId: string;
 }
 
 export interface TransactionPageFilter {
@@ -665,6 +745,7 @@ export interface VaultBalancesFilter {
     accountNamePrefix?: string;
     accountNameSuffix?: string;
 }
+
 export interface RequestOptions {
     idempotencyKey: string;
 }
@@ -760,3 +841,84 @@ export interface ISession {
     connectionMethod?: SignerConnectionMethod;
     sessionMetadata?: ISessionMetadata;
   }
+export enum TimePeriod {
+    DAY = "DAY",
+    WEEK = "WEEK"
+}
+
+export interface Audit {
+    data?: any;
+    vendorId?: string;
+    tenantId?: string;
+    severity?: string;
+    createdAt?: string;
+    subject?: string;
+    event?: string;
+    user?: string;
+    email?: string;
+    txId?: string;
+    amount?: string;
+    transactionId?: string;
+    walletType?: string;
+    walletName?: string;
+    confirmationThreshold?: string;
+    sourceType?: string;
+    sourceName?: string;
+    sourceId?: string;
+    destination?: string;
+    destAddress?: string;
+    newNote?: string;
+    remoteType?: string;
+    destName?: string;
+    remoteId?: string;
+    note?: string;
+    signedBy?: string;
+    approvedBy?: string;
+    setBy?: string;
+    cancelType?: string;
+    fee?: string;
+    rule?: string;
+    screeningStatus?: string;
+    verdict?: string;
+    bypassReason?: string;
+    status?: string;
+    subStatus?: string;
+    ruleJsonStr?: string;
+    rejectedReason?: string;
+    failReason?: string;
+    oldRole?: string;
+    role?: string;
+    subjectUser?: string;
+    ip?: string;
+    accountName?: string;
+    tag?: string;
+    address?: string;
+    accountType?: string;
+    counterpartyName?: string;
+    initiatedBy?: string;
+    asset?: string;
+    newIpAddress?: string;
+    approverList?: string;
+    removedUserName?: string;
+    removedUserEmail?: string;
+    action?: string;
+    description?: string;
+    userAgent?: string;
+    authorizationInfo?: string;
+    reEnrolledUser?: string;
+    oldThreshold?: string;
+    newThreshold?: string;
+    oldAmount?: string;
+    newAmount?: string;
+    draftPolicyJson?: string;
+}
+
+export interface AuditsResponse {
+    data: Audit[];
+    total: number;
+}
+
+export interface ISystemMessageInfo {
+    type: string;
+    message: string;
+}

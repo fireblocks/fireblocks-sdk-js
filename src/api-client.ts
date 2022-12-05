@@ -1,13 +1,14 @@
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions } from "./types";
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosProxyConfig } from "axios";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number}) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: {timeoutInMs?: number, proxyConf?: AxiosProxyConfig | false}) {
         this.axiosInstance = axios.create({
-            baseURL: this.apiBaseUrl
+            baseURL: this.apiBaseUrl,
+            proxy: this.options.proxyConf,
         });
     }
 
@@ -61,6 +62,20 @@ export class ApiClient {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`
             },
+            timeout: this.options.timeoutInMs
+        })).data;
+    }
+
+    public async issuePatchRequest(path: string, body: any) {
+        const token = this.authProvider.signJwt(path, body);
+
+        const headers: any = {
+            "X-API-Key": this.authProvider.getApiKey(),
+            "Authorization": `Bearer ${token}`,
+        };
+
+        return (await this.axiosInstance.patch(path, body, {
+            headers,
             timeout: this.options.timeoutInMs
         })).data;
     }
