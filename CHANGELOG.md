@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v2.5.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.2...v2.5.2)
+#### [v2.5.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.2...v2.5.3)
 
-> 5 December 2022
+> 8 December 2022
 
-- Feat/web3 api phase a [`#109`](https://github.com/fireblocks/fireblocks-sdk-js/pull/109)
+- Fireblocks SDK DOS vulnerability - bump query-string version [`#126`](https://github.com/fireblocks/fireblocks-sdk-js/pull/126)
 
 #### [v2.4.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.1...v2.4.2)
 
