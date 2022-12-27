@@ -1,10 +1,10 @@
 export interface VaultAccountResponse {
     id: string;
     name: string;
-    hiddenOnUI: boolean;
-    assets: AssetResponse[];
+    hiddenOnUI?: boolean;
+    assets?: AssetResponse[];
     customerRefId?: string;
-    autoFuel: boolean;
+    autoFuel?: boolean;
 }
 
 export enum VirtualAffiliation {
@@ -24,8 +24,8 @@ export interface AssetResponse {
      */
     balance?: string;
     lockedAmount?: string;
-    available: string;
-    pending: string;
+    available?: string;
+    pending?: string;
     selfStakedCPU?: string;
     selfStakedNetwork?: string;
     pendingRefundCPU?: string;
@@ -58,7 +58,7 @@ export interface VaultAssetResponse {
     legacyAddress: string;
     enterpriseAddress?: string;
     tag: string;
-    eosAccountName: string;
+    eosAccountName?: string;
     status?: VaultAssetActivationStatus;
     activationTxId?: string;
 }
@@ -79,8 +79,8 @@ export interface WalletContainerResponse<WalletAssetType> {
 export interface ExternalWalletAsset {
     id: string;
     status: string;
-    address: string;
-    tag: string;
+    address?: string;
+    tag?: string;
     activationTime?: string;
 }
 
@@ -145,13 +145,13 @@ export interface IOneTimeAddress {
 }
 
 export interface DepositAddressResponse {
-    assetId: string;
+    assetId?: string;
     address: string;
     tag?: string;
     description?: string;
-    type: string;
+    type?: string;
     customerRefId?: string;
-    addressFormat: string;
+    addressFormat?: string;
     legacyAddress?: string;
     enterpriseAddress?: string;
 }
@@ -622,6 +622,11 @@ export interface DeallocateFundsRequest {
     amount: string;
 }
 
+export interface allocateFundsResponse {
+    id: string;
+    status: string;
+}
+
 export interface CreateTransferTicketArgs {
     externalTicketId: string;
     description?: string;
@@ -702,7 +707,7 @@ export interface GasStationInfo {
     };
 }
 
-export interface PublicKeyResonse {
+export interface PublicKeyResponse {
     status: number;
     algorithm: string;
     derivationPath: number[];
@@ -733,12 +738,12 @@ export interface PagedVaultAccountsRequestFilters {
 
 export interface PagedVaultAccountsResponse {
     accounts: VaultAccountResponse[];
-    paging: {
-        before: string;
-        after: string;
+    paging?: {
+        before?: string;
+        after?: string;
     };
-    previousUrl: string;
-    nextUrl: string;
+    previousUrl?: string;
+    nextUrl?: string;
 }
 
 export interface VaultBalancesFilter {
@@ -791,6 +796,17 @@ export interface OffExchangeEntityResponse {
         };
     };
 }
+
+export interface settleOffExchangeAccountResponse {
+    message: string;
+    code: SettleResponseCode
+}
+
+export enum SettleResponseCode {
+    NONE = 0,
+    NOTHING_TO_SETTLE = 1
+}
+
 
 export interface SetFeePayerConfiguration {
     feePayerAccountId: string;
