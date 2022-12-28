@@ -61,7 +61,7 @@ import {
     TokenWithBalance,
     APIPagedResponse,
     PublicKeyResponse,
-    allocateFundsResponse,
+    AllocateFundsResponse, SettleOffExchangeAccountResponse,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -950,7 +950,7 @@ export class FireblocksSDK {
      * @param args
      * @param requestOptions
      */
-    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest, requestOptions?: RequestOptions): Promise<allocateFundsResponse> {
+    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest, requestOptions?: RequestOptions): Promise<AllocateFundsResponse> {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/lock_allocation`;
         return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
@@ -962,7 +962,7 @@ export class FireblocksSDK {
      * @param args
      * @param requestOptions
      */
-    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest, requestOptions?: RequestOptions): Promise<allocateFundsResponse> {
+    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest, requestOptions?: RequestOptions): Promise<AllocateFundsResponse> {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/release_allocation`;
         return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
@@ -1120,7 +1120,7 @@ export class FireblocksSDK {
      * @param id the ID of the off exchange
      * @param requestOptions
      */
-    public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<void> {
+    public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<SettleOffExchangeAccountResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
     }
 

@@ -622,7 +622,7 @@ export interface DeallocateFundsRequest {
     amount: string;
 }
 
-export interface allocateFundsResponse {
+export interface AllocateFundsResponse {
     id: string;
     status: string;
 }
@@ -797,9 +797,9 @@ export interface OffExchangeEntityResponse {
     };
 }
 
-export interface settleOffExchangeAccountResponse {
+export interface SettleOffExchangeAccountResponse {
     message: string;
-    code: SettleResponseCode
+    code: SettleResponseCode;
 }
 
 export enum SettleResponseCode {
