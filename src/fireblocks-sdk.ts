@@ -1181,14 +1181,14 @@ export class FireblocksSDK {
         pageSize,
         sort,
         filter,
-        desc
+        order
     }: GetWeb3ConnectionsPayload): Promise<APIPagedResponse<Session>> {
         const params = new URLSearchParams({
             ...(pageCursor && { next: pageCursor }),
             ...(pageSize && { pageSize: pageSize.toString() }),
             ...(sort && { sort }),
             ...(filter && { filter: stringify(filter, { delimiter: "," })}),
-            ...(desc && { desc: String(desc) }),
+            ...(order && { order }),
         });
 
         return await this.apiClient.issueGetRequest(`/v1/connections?${params.toString()}`);

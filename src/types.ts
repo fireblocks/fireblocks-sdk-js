@@ -815,7 +815,7 @@ export interface GetWeb3ConnectionsPayload {
     pageSize?: number;
     sort?: string;
     filter?: { [filterProp: string]: string };
-    desc?: boolean;
+    order?: "ASC" | "DESC";
 }
 
 export interface CreateWeb3ConnectionResponse {
