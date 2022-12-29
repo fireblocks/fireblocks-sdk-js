@@ -1160,7 +1160,7 @@ export class FireblocksSDK {
                 return `${basePath}/wc`;
             }
             default: {
-                return basePath;
+                throw new Error(`Invalid Web3 connection type`);
             }
         }
     }
