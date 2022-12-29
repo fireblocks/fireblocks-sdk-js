@@ -1182,7 +1182,7 @@ export class FireblocksSDK {
         sort,
         filter,
         order
-    }: GetWeb3ConnectionsPayload): Promise<APIPagedResponse<Session>> {
+    }: GetWeb3ConnectionsPayload = {}): Promise<APIPagedResponse<Session>> {
         const params = new URLSearchParams({
             ...(pageCursor && { next: pageCursor }),
             ...(pageSize && { pageSize: pageSize.toString() }),
