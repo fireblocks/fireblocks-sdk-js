@@ -48,17 +48,26 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
+    SignerConnectionPayload,
+    CreateConnectionResponse,
+    Session,
     NetworkConnectionRoutingPolicy,
     NetworkIdRoutingPolicy,
     NetworkIdResponse,
     TimePeriod,
     AuditsResponse,
+    NFTOwnershipFilter,
+    Token,
+    TokenWithBalance,
+    APIPagedResponse,
 } from "./types";
+import { AxiosProxyConfig } from "axios";
 
 export * from "./types";
 
 export interface SDKOptions {
-    timeoutInMs: number;
+    timeoutInMs?: number;
+    proxy?: AxiosProxyConfig | false;
 }
 
 export class FireblocksSDK {
@@ -75,13 +84,13 @@ export class FireblocksSDK {
      * @param sdkOptions
      */
     constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions?: SDKOptions) {
-        this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
+        this.authProvider = !!authProvider ? authProvider : new ApiTokenProvider(privateKey, apiKey);
 
-        if (apiBaseUrl) {
+        if (!!apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
         }
 
-        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, {timeoutInMs: sdkOptions?.timeoutInMs});
+        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, {timeoutInMs: sdkOptions?.timeoutInMs, proxyConf: sdkOptions?.proxy});
     }
 
     /**
@@ -1140,6 +1149,48 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get all signer connections of the current user
+     * @returns Array of sessions
+     */
+    public async getAllSignerConnections(): Promise<Session[]> {
+        return await this.apiClient.issueGetRequest(`/v1/connections`);
+    }
+
+    /**
+     * Initiate a new signer connection
+     * @param payload The required parameters for the connection type
+     * @param requestOptions
+     * @returns The created session's ID and its metadata
+     * @example {
+     *  vaultAccountId: 0
+     *  feeLevel: "MEDIUM"
+     *  connectionType: "WalletConnect"
+     *  uri: "wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"
+     *  chainIds: ["ETH", "ETH_TEST"]
+     * }
+     */
+    public async createSignerConnection(payload: SignerConnectionPayload, requestOptions?: RequestOptions): Promise<CreateConnectionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/connections`, payload, requestOptions);
+    }
+
+    /**
+     * Approve or Reject the initiated connection
+     * @param sessionId The ID of the session
+     * @param approve Whether you approve the connection or not
+     */
+    public async submitSignerConnection(sessionId: string, approve: boolean): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/connections/${sessionId}`, {approve});
+    }
+
+    /**
+     * Remove an existing connection
+     * @param sessionId The ID of the session
+     */
+    public async removeSignerConnection(sessionId: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/connections/${sessionId}`);
+    }
+
+    /**
      * Gets all audits for selected time period
      * @param timePeriod
      */
@@ -1149,5 +1200,71 @@ export class FireblocksSDK {
             url += `?timePeriod=${timePeriod}`;
         }
         return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public async getNFT(id: string): Promise<Token> {
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens/${id}`);
+    }
+
+    /**
+     *
+     * @param ids List of NFT tokens to fetch
+     * @param pageCursor
+     * @param pageSize
+     */
+    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number): Promise<APIPagedResponse<Token>> {
+        const queryParams = {
+            pageCursor,
+            pageSize,
+            ids: ids ? ids.join(",") : undefined,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?${queryString.stringify(queryParams)}`);
+    }
+
+    /**
+     *
+     * Gets a list of owned NFT tokens
+     * @param filter.vaultAccountId The vault account ID
+     * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
+     * @param filter.ids List of token ids to fetch
+     */
+    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
+        let url = "/v1/nfts/ownership/tokens";
+        if (filter) {
+            const { blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize } = filter;
+            const requestFilter = {
+                vaultAccountId,
+                blockchainDescriptor,
+                pageCursor,
+                pageSize,
+                ids: ids ? ids.join(",") : undefined,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public async refreshNFTMetadata(id: string): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
+    }
+
+    /**
+     *
+     * @param vaultAccountId
+     * @param blockchainDescriptor
+     */
+    public async refreshNFTOwnershipByVault(vaultAccountId: string, blockchainDescriptor: string): Promise<void> {
+        return await this.apiClient.issuePutRequest(
+            `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
+            undefined);
     }
 }

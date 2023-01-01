@@ -91,6 +91,7 @@ export interface InternalWalletAsset extends ExternalWalletAsset {
 export interface CreateTransactionResponse {
     id: string;
     status: string;
+    systemMessages?: ISystemMessageInfo[];
 }
 
 export interface EstimateFeeResponse {
@@ -214,6 +215,11 @@ export interface TransactionArguments {
     treatAsGrossAmount?: boolean;
     forceSweep?: boolean;
     feePayerInfo?: TransactionArgumentsFeePayerInfo;
+}
+
+export enum SignerConnectionFeeLevel {
+    HIGH = "HIGH",
+    MEDIUM = "MEDIUM",
 }
 
 export enum FeeLevel {
@@ -422,18 +428,14 @@ export interface DefaultNetworkRoutingDest {
     scheme: NetworkScheme.DEFAULT;
 }
 
-export interface AutoNetworkRoutingDest {
-    scheme: NetworkScheme.AUTO;
-}
-
 export interface NoneNetworkRoutingDest {
     scheme: NetworkScheme.NONE;
 }
 
 export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
 export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | AutoNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | NoneNetworkRoutingDest;
+export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | NoneNetworkRoutingDest;
 
 export interface NetworkConnectionRoutingPolicy {
     crypto?: NetworkConnectionCryptoRoutingDest;
@@ -454,7 +456,6 @@ export interface NetworkIdRoutingPolicy {
 export enum NetworkScheme {
     DEFAULT = "DEFAULT",
     CUSTOM = "CUSTOM",
-    AUTO = "AUTO",
     NONE = "NONE",
 }
 
@@ -476,6 +477,52 @@ export interface TransactionFilter {
     destType?: PeerType;
     sourceId?: string;
     destId?: string;
+}
+
+export interface NFTOwnershipFilter {
+    blockchainDescriptor?: string;
+    vaultAccountId?: string;
+    ids?: string[];
+    pageCursor?: string;
+    pageSize?: number;
+}
+
+
+class MediaEntity {
+    url: string;
+    contentType: string;
+}
+
+interface NFTCollection {
+    id: string;
+    name: string;
+    symbol: string;
+}
+
+export interface Paging {
+    next: string;
+}
+
+export interface APIPagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
+export interface Token {
+    id: string;
+    tokenId: string;
+    standard: string;
+    blockchainDescriptor: string;
+    description: string;
+    name: string;
+    media: MediaEntity[];
+    metadataURI: string;
+    collection?: NFTCollection;
+}
+
+export interface TokenWithBalance extends Token {
+    balance: number;
+    vaultAccountId: string;
 }
 
 export interface TransactionPageFilter {
@@ -552,6 +599,16 @@ export enum TransactionOperation {
     RAW = "RAW",
     CONTRACT_CALL = "CONTRACT_CALL",
     TYPED_MESSAGE = "TYPED_MESSAGE",
+}
+
+export enum SignerConnectionType {
+    WALLET_CONNECT = "WalletConnect"
+}
+
+export enum SignerConnectionMethod {
+    MOBILE = "MOBILE",
+    DESKTOP = "DESKTOP",
+    API = "API"
 }
 
 export interface AllocateFundsRequest {
@@ -688,6 +745,7 @@ export interface VaultBalancesFilter {
     accountNamePrefix?: string;
     accountNameSuffix?: string;
 }
+
 export interface RequestOptions {
     idempotencyKey: string;
 }
@@ -742,6 +800,47 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
+export interface SignerConnectionPayload {
+    vaultAccountId: number;
+    feeLevel: SignerConnectionFeeLevel;
+    connectionType: SignerConnectionType;
+}
+
+export interface WalletConnectPayload extends SignerConnectionPayload {
+    connectionType: SignerConnectionType.WALLET_CONNECT;
+    uri: string;
+    chainIds: string[];
+}
+
+export interface CreateConnectionResponse {
+    id: string;
+    sessionMetadata: {
+      appIcon?: string,
+      appId?: string,
+      appName?: string,
+      appUrl?: string,
+      appDescription?: string
+    };
+}
+
+export interface SessionMetadata {
+    appIcon?: string;
+    appId?: string;
+    appName?: string;
+    appUrl?: string;
+    appDescription?: string;
+  }
+
+export interface Session {
+    id: string;
+    vaultAccountId: number;
+    chainIds?: string[];
+    feeLevel: SignerConnectionFeeLevel;
+    creationDate: Date;
+    connectionType: SignerConnectionType;
+    connectionMethod?: SignerConnectionMethod;
+    sessionMetadata?: SessionMetadata;
+  }
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"
@@ -817,4 +916,9 @@ export interface Audit {
 export interface AuditsResponse {
     data: Audit[];
     total: number;
+}
+
+export interface ISystemMessageInfo {
+    type: string;
+    message: string;
 }
