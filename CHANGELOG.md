@@ -2,11 +2,36 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v2.5.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.2...v2.5.3)
+#### [v2.5.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.5.3...v2.5.4)
+
+> 1 January 2023
+
+- [Snyk] Security upgrade jsonwebtoken from 8.5.1 to 9.0.0 [`#132`](https://github.com/fireblocks/fireblocks-sdk-js/pull/132)
+
+#### [v2.5.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.5.2...v2.5.3)
 
 > 8 December 2022
 
 - Fireblocks SDK DOS vulnerability - bump query-string version [`#126`](https://github.com/fireblocks/fireblocks-sdk-js/pull/126)
+
+#### [v2.5.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.5.1...v2.5.2)
+
+> 5 December 2022
+
+- Feat/web3 api phase a [`#109`](https://github.com/fireblocks/fireblocks-sdk-js/pull/109)
+
+#### [v2.5.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.5.0...v2.5.1)
+
+> 30 November 2022
+
+- add nft endpoints and entities [`#119`](https://github.com/fireblocks/fireblocks-sdk-js/pull/119)
+
+#### [v2.5.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.2...v2.5.0)
+
+> 30 November 2022
+
+- Network-connection: remove AUTO scheme from network Id policy [`#124`](https://github.com/fireblocks/fireblocks-sdk-js/pull/124)
+- Make SDKOptions fields optional [`#123`](https://github.com/fireblocks/fireblocks-sdk-js/pull/123)
 
 #### [v2.4.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.4.1...v2.4.2)
 
