@@ -21,19 +21,27 @@ or
 
 #### Importing Fireblocks SDK
 JavaScript:
-```
+```javascript
 const FireblocksSDK = require("fireblocks-sdk").FireblocksSDK;
 const fireblocks = new FireblocksSDK(privateKey, apiKey);
 ```
 
 TypeScript:
-```
+```typescript
 import { FireblocksSDK } from "fireblocks-sdk";
 const fireblocks = new FireblocksSDK(privateKey, apiKey);
 ```
 
-You can also specify timeout for the http requests:
+You can also pass additional options:
+```typescript
+const baseUrl = "https://api.fireblocks.io";
+const fireblocks = new FireblocksSDK(privateKey, apiKey, baseUrl, options);
 ```
-import { FireblocksSDK } from "fireblocks-sdk";
-const fireblocks = new FireblocksSDK(privateKey, apiKey, undefined, {timeoutInMs: 4000});
+The `options` argument has the following structure:
+```typescript
+interface SDKOptions {
+    timeoutInMs?: number;               // HTTP request timeout
+    proxy?: AxiosProxyConfig | false;   // Proxy configuration
+    anonymousPlatform?: boolean;        // Whether to remove platform from User-Agent header
+}
 ```
