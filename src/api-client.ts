@@ -12,7 +12,8 @@ export class ApiClient {
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: SDKOptions) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl,
-            proxy: this.options?.proxy
+            proxy: this.options?.proxy,
+            timeout: this.options?.timeoutInMs
         });
         this.userAgent = this.getUserAgent();
     }
@@ -33,7 +34,6 @@ export class ApiClient {
                 "Authorization": `Bearer ${token}`,
                 "User-Agent": this.userAgent
             },
-            timeout: this.options?.timeoutInMs
         });
 
         if (pageMode) {
@@ -63,10 +63,7 @@ export class ApiClient {
             headers["Idempotency-Key"] = idempotencyKey;
         }
 
-        return (await this.axiosInstance.post(path, body, {
-            headers,
-            timeout: this.options?.timeoutInMs
-        })).data;
+        return (await this.axiosInstance.post(path, body, {headers})).data;
     }
 
     public async issuePutRequest(path: string, body: any) {
@@ -77,8 +74,7 @@ export class ApiClient {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`,
                 "User-Agent": this.userAgent
-            },
-            timeout: this.options?.timeoutInMs
+            }
         })).data;
     }
 
@@ -91,10 +87,7 @@ export class ApiClient {
             "User-Agent": this.userAgent
         };
 
-        return (await this.axiosInstance.patch(path, body, {
-            headers,
-            timeout: this.options?.timeoutInMs
-        })).data;
+        return (await this.axiosInstance.patch(path, body, {headers})).data;
     }
 
     public async issueDeleteRequest(path: string) {
@@ -105,8 +98,7 @@ export class ApiClient {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`,
                 "User-Agent": this.userAgent
-            },
-            timeout: this.options?.timeoutInMs
+            }
         })).data;
     }
 }
