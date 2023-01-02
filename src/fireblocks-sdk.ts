@@ -48,12 +48,26 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
+    SignerConnectionPayload,
+    CreateConnectionResponse,
+    Session,
+    NetworkConnectionRoutingPolicy,
+    NetworkIdRoutingPolicy,
+    NetworkIdResponse,
+    TimePeriod,
+    AuditsResponse,
+    NFTOwnershipFilter,
+    Token,
+    TokenWithBalance,
+    APIPagedResponse,
 } from "./types";
+import { AxiosProxyConfig } from "axios";
 
 export * from "./types";
 
 export interface SDKOptions {
     timeoutInMs?: number;
+    proxy?: AxiosProxyConfig | false;
     anonymousPlatform?: boolean;
 }
 
@@ -70,10 +84,10 @@ export class FireblocksSDK {
      * @param authProvider
      * @param sdkOptions
      */
-    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions: SDKOptions = {}) {
-        this.authProvider = authProvider ?? new ApiTokenProvider(privateKey, apiKey);
+    constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions?: SDKOptions) {
+        this.authProvider = !!authProvider ? authProvider : new ApiTokenProvider(privateKey, apiKey);
 
-        if (apiBaseUrl) {
+        if (!!apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
         }
 
@@ -194,16 +208,100 @@ export class FireblocksSDK {
 
     /**
      * Gets all network connections
+     * @returns NetworkConnectionResponse
      */
     public async getNetworkConnections(): Promise<NetworkConnectionResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/network_connections");
     }
 
     /**
-     * Gets a single network connection by id
+     * Creates a network connection
+     * @param localNetworkId The local netowrk profile's id
+     * @param remoteNetworkId The remote network profile's id
+     * @param routingPolicy The desired routing policy for the connection
+     * @returns NetworkConnectionResponse
+     */
+    public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: NetworkConnectionRoutingPolicy): Promise<NetworkConnectionResponse> {
+        const body = {localNetworkId, remoteNetworkId, routingPolicy};
+        return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
+    }
+
+    /**
+     * Gets a single network connection
+     * @param connectionId The network connection's id
+     * @returns NetworkConnectionResponse
      */
     public async getNetworkConnectionById(connectionId: string): Promise<NetworkConnectionResponse> {
         return await this.apiClient.issueGetRequest(`/v1/network_connections/${connectionId}`);
+    }
+
+    /**
+     * Removes a network connection
+     * @param connectionId The network connection's id
+     * @returns OperationSuccessResponse
+     */
+    public async removeNetworkConnection(connectionId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/network_connections/${connectionId}`);
+    }
+
+    /**
+     * Sets routing policy for a network connection
+     * @param connectionId The network connection's id
+     * @param routingPolicy The desired routing policy
+     */
+    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy) {
+        const body = {routingPolicy};
+        return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
+    }
+
+    /**
+     * Gets all discoverable network profiles
+     * @returns NetworkIdResponse
+     */
+    public async getDiscoverableNetworkIds(): Promise<NetworkIdResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/network_ids`);
+    }
+
+    /**
+     * Creates a new network profile
+     * @param name A name for the new network profile
+     * @param routingPolicy The desired routing policy for the network
+     * @returns NetworkConnectionResponse
+     */
+    public async createNetworkId(name: string, routingPolicy?: NetworkIdRoutingPolicy): Promise<NetworkIdResponse> {
+        const body = {name, routingPolicy};
+        return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
+    }
+
+    /**
+     * Gets a single network profile
+     * @param networkId The network profile's id
+     * @returns NetworkIdResponse
+     */
+    public async getNetworkId(networkId: string): Promise<NetworkIdResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/network_ids/${networkId}`);
+    }
+
+    /**
+     * Sets discoverability for network profile
+     * @param networkId The network profile's id
+     * @param isDiscoverable The desired discoverability to set
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean): Promise<OperationSuccessResponse> {
+        const body = {isDiscoverable};
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
+    }
+
+    /**
+     * Sets routing policy for network profile
+     * @param networkId The network profile's id
+     * @param routingPolicy The desired routing policy
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy: NetworkIdRoutingPolicy) {
+        const body = {routingPolicy};
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
 
     /**
@@ -355,7 +453,7 @@ export class FireblocksSDK {
             return await this.apiClient.issueGetRequest(path, true);
         }
 
-        return {transactions: [], pageDetails: { prevPage:  "", nextPage: "" }};
+        return {transactions: [], pageDetails: {prevPage: "", nextPage: ""}};
     }
 
     /**
@@ -534,7 +632,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async activateVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {} , requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {}, requestOptions);
     }
 
     /**
@@ -571,7 +669,7 @@ export class FireblocksSDK {
      * Creates a new contract wallet
      * @param name A name for the new contract wallet
      */
-     public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+    public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         const body = {
             name,
         };
@@ -622,7 +720,7 @@ export class FireblocksSDK {
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
      */
-     public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
+    public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
         const path = `/v1/contracts/${walletId}/${assetId}`;
 
         const body = {
@@ -743,7 +841,7 @@ export class FireblocksSDK {
      * Deletes a single contract wallet
      * @param walletId The contract wallet ID
      */
-     public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
+    public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/contracts/${walletId}`);
     }
 
@@ -989,8 +1087,8 @@ export class FireblocksSDK {
      * @param resendStatusUpdated If true a webhook will be sent for the status of the transaction
      * @param requestOptions
      */
-     public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
-        const body = { resendCreated, resendStatusUpdated };
+    public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
+        const body = {resendCreated, resendStatusUpdated};
         return await this.apiClient.issuePostRequest(`/v1/webhooks/resend/${txId}`, body, requestOptions);
     }
 
@@ -1049,5 +1147,125 @@ export class FireblocksSDK {
      */
     public async removeFeePayerConfiguration(baseAsset: string): Promise<void> {
         return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
+    }
+
+    /**
+     * Get all signer connections of the current user
+     * @returns Array of sessions
+     */
+    public async getAllSignerConnections(): Promise<Session[]> {
+        return await this.apiClient.issueGetRequest(`/v1/connections`);
+    }
+
+    /**
+     * Initiate a new signer connection
+     * @param payload The required parameters for the connection type
+     * @param requestOptions
+     * @returns The created session's ID and its metadata
+     * @example {
+     *  vaultAccountId: 0
+     *  feeLevel: "MEDIUM"
+     *  connectionType: "WalletConnect"
+     *  uri: "wc:77752975-906f-48f5-b59f-047826ee947e@1?bridge=https%3A%2F%2F0.bridge.walletconnect.org&key=64be99adc6086b7a729b0ec8c7e1f174927ab92e84f5c6f9527050225344a637"
+     *  chainIds: ["ETH", "ETH_TEST"]
+     * }
+     */
+    public async createSignerConnection(payload: SignerConnectionPayload, requestOptions?: RequestOptions): Promise<CreateConnectionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/connections`, payload, requestOptions);
+    }
+
+    /**
+     * Approve or Reject the initiated connection
+     * @param sessionId The ID of the session
+     * @param approve Whether you approve the connection or not
+     */
+    public async submitSignerConnection(sessionId: string, approve: boolean): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/connections/${sessionId}`, {approve});
+    }
+
+    /**
+     * Remove an existing connection
+     * @param sessionId The ID of the session
+     */
+    public async removeSignerConnection(sessionId: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/connections/${sessionId}`);
+    }
+
+    /**
+     * Gets all audits for selected time period
+     * @param timePeriod
+     */
+    public async getAudits(timePeriod?: TimePeriod): Promise<AuditsResponse> {
+        let url = `/v1/audits`;
+        if (timePeriod) {
+            url += `?timePeriod=${timePeriod}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public async getNFT(id: string): Promise<Token> {
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens/${id}`);
+    }
+
+    /**
+     *
+     * @param ids List of NFT tokens to fetch
+     * @param pageCursor
+     * @param pageSize
+     */
+    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number): Promise<APIPagedResponse<Token>> {
+        const queryParams = {
+            pageCursor,
+            pageSize,
+            ids: ids ? ids.join(",") : undefined,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?${queryString.stringify(queryParams)}`);
+    }
+
+    /**
+     *
+     * Gets a list of owned NFT tokens
+     * @param filter.vaultAccountId The vault account ID
+     * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
+     * @param filter.ids List of token ids to fetch
+     */
+    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
+        let url = "/v1/nfts/ownership/tokens";
+        if (filter) {
+            const {blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize} = filter;
+            const requestFilter = {
+                vaultAccountId,
+                blockchainDescriptor,
+                pageCursor,
+                pageSize,
+                ids: ids ? ids.join(",") : undefined,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public async refreshNFTMetadata(id: string): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
+    }
+
+    /**
+     *
+     * @param vaultAccountId
+     * @param blockchainDescriptor
+     */
+    public async refreshNFTOwnershipByVault(vaultAccountId: string, blockchainDescriptor: string): Promise<void> {
+        return await this.apiClient.issuePutRequest(
+            `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
+            undefined);
     }
 }

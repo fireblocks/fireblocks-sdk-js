@@ -11,14 +11,15 @@ export class ApiClient {
 
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: SDKOptions) {
         this.axiosInstance = axios.create({
-            baseURL: this.apiBaseUrl
+            baseURL: this.apiBaseUrl,
+            proxy: this.options?.proxy
         });
         this.userAgent = this.getUserAgent();
     }
 
     private getUserAgent(): string {
         let userAgent = `fireblocks-sdk-js/${SDK_VERSION}`;
-        if (!this.options.anonymousPlatform) {
+        if (!this.options?.anonymousPlatform) {
             userAgent += ` (${os.type()}; ${os.platform()} ${os.release()}; ${os.arch()})`;
         }
         return userAgent;
@@ -32,7 +33,7 @@ export class ApiClient {
                 "Authorization": `Bearer ${token}`,
                 "User-Agent": this.userAgent
             },
-            timeout: this.options.timeoutInMs
+            timeout: this.options?.timeoutInMs
         });
 
         if (pageMode) {
@@ -64,7 +65,7 @@ export class ApiClient {
 
         return (await this.axiosInstance.post(path, body, {
             headers,
-            timeout: this.options.timeoutInMs
+            timeout: this.options?.timeoutInMs
         })).data;
     }
 
@@ -77,7 +78,22 @@ export class ApiClient {
                 "Authorization": `Bearer ${token}`,
                 "User-Agent": this.userAgent
             },
-            timeout: this.options.timeoutInMs
+            timeout: this.options?.timeoutInMs
+        })).data;
+    }
+
+    public async issuePatchRequest(path: string, body: any) {
+        const token = this.authProvider.signJwt(path, body);
+
+        const headers: any = {
+            "X-API-Key": this.authProvider.getApiKey(),
+            "Authorization": `Bearer ${token}`,
+            "User-Agent": this.userAgent
+        };
+
+        return (await this.axiosInstance.patch(path, body, {
+            headers,
+            timeout: this.options?.timeoutInMs
         })).data;
     }
 
@@ -90,7 +106,7 @@ export class ApiClient {
                 "Authorization": `Bearer ${token}`,
                 "User-Agent": this.userAgent
             },
-            timeout: this.options.timeoutInMs
+            timeout: this.options?.timeoutInMs
         })).data;
     }
 }
