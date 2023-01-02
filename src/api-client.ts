@@ -1,23 +1,27 @@
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions } from "./types";
+import { SDKOptions } from "./fireblocks-sdk";
 import axios, { AxiosInstance } from "axios";
 import { version as SDK_VERSION } from "../package.json";
 import os from "os";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
+    private readonly userAgent: string;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: { timeoutInMs?: number, userAgent?: string }) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: SDKOptions) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl
         });
+        this.userAgent = this.getUserAgent();
     }
 
-    public getUserAgent(): string {
-        const SDK_PACKAGE = "fireblocks-sdk-js";
-        const SDK_PLATFORM = `${os.type()}; ${os.platform()} ${os.release()}; ${os.arch()}`;
-
-        return `${SDK_PACKAGE}/${SDK_VERSION} (${SDK_PLATFORM})${this.options.userAgent ? ` ${this.options.userAgent}` : ""}`;
+    private getUserAgent(): string {
+        let userAgent = `fireblocks-sdk-js/${SDK_VERSION}`;
+        if (!this.options.anonymousPlatform) {
+            userAgent += ` (${os.type()}; ${os.platform()} ${os.release()}; ${os.arch()})`;
+        }
+        return userAgent;
     }
 
     public async issueGetRequest(path: string, pageMode: boolean = false) {
@@ -26,7 +30,7 @@ export class ApiClient {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "Authorization": `Bearer ${token}`,
-                "User-Agent": this.getUserAgent(),
+                "User-Agent": this.userAgent
             },
             timeout: this.options.timeoutInMs
         });
@@ -51,7 +55,7 @@ export class ApiClient {
         const headers: any = {
             "X-API-Key": this.authProvider.getApiKey(),
             "Authorization": `Bearer ${token}`,
-            "User-Agent": this.getUserAgent(),
+            "User-Agent": this.userAgent
         };
 
         if (idempotencyKey) {
@@ -70,7 +74,8 @@ export class ApiClient {
         return (await this.axiosInstance.put(path, body, {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
+                "User-Agent": this.userAgent
             },
             timeout: this.options.timeoutInMs
         })).data;
@@ -82,7 +87,8 @@ export class ApiClient {
         return (await this.axiosInstance.delete(path, {
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
+                "User-Agent": this.userAgent
             },
             timeout: this.options.timeoutInMs
         })).data;

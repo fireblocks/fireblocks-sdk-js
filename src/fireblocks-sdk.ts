@@ -54,7 +54,7 @@ export * from "./types";
 
 export interface SDKOptions {
     timeoutInMs?: number;
-    userAgent?: string;
+    anonymousPlatform?: boolean;
 }
 
 export class FireblocksSDK {
