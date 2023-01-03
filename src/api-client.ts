@@ -1,9 +1,10 @@
+import os from "os";
+import platform from "platform";
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions } from "./types";
 import { SDKOptions } from "./fireblocks-sdk";
 import axios, { AxiosInstance } from "axios";
 import { version as SDK_VERSION } from "../package.json";
-import os from "os";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
@@ -21,7 +22,7 @@ export class ApiClient {
     private getUserAgent(): string {
         let userAgent = `fireblocks-sdk-js/${SDK_VERSION}`;
         if (!this.options?.anonymousPlatform) {
-            userAgent += ` (${os.type()}; ${os.platform()} ${os.release()}; ${os.arch()})`;
+            userAgent += ` (${os.type()} ${os.release()}; ${platform.name} ${platform.version}; ${os.arch()})`;
         }
         return userAgent;
     }

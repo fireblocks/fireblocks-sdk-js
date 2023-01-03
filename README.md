@@ -35,7 +35,8 @@ const fireblocks = new FireblocksSDK(privateKey, apiKey);
 You can also pass additional options:
 ```typescript
 const baseUrl = "https://api.fireblocks.io";
-const fireblocks = new FireblocksSDK(privateKey, apiKey, baseUrl, options);
+const authProvider: IAuthProvider = { /* Custom implementation */ };
+const fireblocks = new FireblocksSDK(privateKey, apiKey, baseUrl, authProvider, options);
 ```
 The `options` argument has the following structure:
 ```typescript
