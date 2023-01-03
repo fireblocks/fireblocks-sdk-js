@@ -8,15 +8,17 @@ import { version as SDK_VERSION } from "../package.json";
 
 export class ApiClient {
     private axiosInstance: AxiosInstance;
-    private readonly userAgent: string;
 
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: SDKOptions) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl,
             proxy: this.options?.proxy,
-            timeout: this.options?.timeoutInMs
+            timeout: this.options?.timeoutInMs,
+            headers: {
+                "X-API-Key": this.authProvider.getApiKey(),
+                "User-Agent": this.getUserAgent()
+            }
         });
-        this.userAgent = this.getUserAgent();
     }
 
     private getUserAgent(): string {
@@ -30,13 +32,8 @@ export class ApiClient {
     public async issueGetRequest(path: string, pageMode: boolean = false) {
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
-            headers: {
-                "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`,
-                "User-Agent": this.userAgent
-            },
+            headers: {"Authorization": `Bearer ${token}`}
         });
-
         if (pageMode) {
             return {
                 transactions: res.data,
@@ -46,60 +43,37 @@ export class ApiClient {
                 }
             };
         }
-
         return res.data;
     }
 
     public async issuePostRequest(path: string, body: any, requestOptions?: RequestOptions) {
         const token = this.authProvider.signJwt(path, body);
-
+        const headers: any = {"Authorization": `Bearer ${token}`};
         const idempotencyKey = requestOptions?.idempotencyKey;
-        const headers: any = {
-            "X-API-Key": this.authProvider.getApiKey(),
-            "Authorization": `Bearer ${token}`,
-            "User-Agent": this.userAgent
-        };
-
         if (idempotencyKey) {
             headers["Idempotency-Key"] = idempotencyKey;
         }
-
         return (await this.axiosInstance.post(path, body, {headers})).data;
     }
 
     public async issuePutRequest(path: string, body: any) {
         const token = this.authProvider.signJwt(path, body);
-
         return (await this.axiosInstance.put(path, body, {
-            headers: {
-                "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`,
-                "User-Agent": this.userAgent
-            }
+            headers: {"Authorization": `Bearer ${token}`}
         })).data;
     }
 
     public async issuePatchRequest(path: string, body: any) {
         const token = this.authProvider.signJwt(path, body);
-
-        const headers: any = {
-            "X-API-Key": this.authProvider.getApiKey(),
-            "Authorization": `Bearer ${token}`,
-            "User-Agent": this.userAgent
-        };
-
-        return (await this.axiosInstance.patch(path, body, {headers})).data;
+        return (await this.axiosInstance.patch(path, body, {
+            headers: {"Authorization": `Bearer ${token}`}
+        })).data;
     }
 
     public async issueDeleteRequest(path: string) {
         const token = this.authProvider.signJwt(path);
-
         return (await this.axiosInstance.delete(path, {
-            headers: {
-                "X-API-Key": this.authProvider.getApiKey(),
-                "Authorization": `Bearer ${token}`,
-                "User-Agent": this.userAgent
-            }
+            headers: {"Authorization": `Bearer ${token}`}
         })).data;
     }
 }
