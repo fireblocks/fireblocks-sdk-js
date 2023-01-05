@@ -64,6 +64,9 @@ import {
     CreateWalletConnectPayload,
     Web3ConnectionType,
     GetWeb3ConnectionsPayload,
+    PublicKeyResponse,
+    AllocateFundsResponse, 
+    SettleOffExchangeAccountResponse,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -198,7 +201,7 @@ export class FireblocksSDK {
      * @param tag The XRP tag, or EOS memo, for which to set the description
      * @param description The description to set
      */
-    public async setAddressDescription(vaultAccountId: string, assetId: string, address: string, tag?: string, description?: string): Promise<GenerateAddressResponse> {
+    public async setAddressDescription(vaultAccountId: string, assetId: string, address: string, tag?: string, description?: string): Promise<OperationSuccessResponse> {
         let addressId = address;
         if (tag && tag.length > 0) {
             addressId = `${address}:${tag}`;
@@ -336,7 +339,7 @@ export class FireblocksSDK {
      * @param exchangeAccountId The exchange account ID
      * @param assetId The ID of the asset
      */
-    public async getExchangeAsset(exchangeAccountId: string, assetId: string): Promise<ExchangeResponse> {
+    public async getExchangeAsset(exchangeAccountId: string, assetId: string): Promise<AssetResponse> {
         return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}`);
     }
 
@@ -952,7 +955,7 @@ export class FireblocksSDK {
      * @param args
      * @param requestOptions
      */
-    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest, requestOptions?: RequestOptions) {
+    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest, requestOptions?: RequestOptions): Promise<AllocateFundsResponse> {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/lock_allocation`;
         return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
@@ -964,7 +967,7 @@ export class FireblocksSDK {
      * @param args
      * @param requestOptions
      */
-    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest, requestOptions?: RequestOptions) {
+    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest, requestOptions?: RequestOptions): Promise<AllocateFundsResponse> {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/release_allocation`;
         return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
@@ -973,7 +976,7 @@ export class FireblocksSDK {
      * Get the public key information for a vault account
      * @param args
      */
-    public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs) {
+    public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs): Promise<PublicKeyResponse> {
         let url = `/v1/vault/accounts/${args.vaultAccountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
         if (args.compressed) {
             url += `?compressed=${args.compressed}`;
@@ -1122,7 +1125,7 @@ export class FireblocksSDK {
      * @param id the ID of the off exchange
      * @param requestOptions
      */
-    public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<void> {
+    public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<SettleOffExchangeAccountResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
     }
 
