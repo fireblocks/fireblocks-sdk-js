@@ -65,7 +65,7 @@ import {
     Web3ConnectionType,
     GetWeb3ConnectionsPayload,
     PublicKeyResponse,
-    AllocateFundsResponse, 
+    AllocateFundsResponse,
     SettleOffExchangeAccountResponse,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
