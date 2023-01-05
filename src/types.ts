@@ -217,7 +217,7 @@ export interface TransactionArguments {
     feePayerInfo?: TransactionArgumentsFeePayerInfo;
 }
 
-export enum SignerConnectionFeeLevel {
+export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",
 }
@@ -601,11 +601,11 @@ export enum TransactionOperation {
     TYPED_MESSAGE = "TYPED_MESSAGE",
 }
 
-export enum SignerConnectionType {
+export enum Web3ConnectionType {
     WALLET_CONNECT = "WalletConnect"
 }
 
-export enum SignerConnectionMethod {
+export enum Web3ConnectionMethod {
     MOBILE = "MOBILE",
     DESKTOP = "DESKTOP",
     API = "API"
@@ -816,19 +816,25 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
-export interface SignerConnectionPayload {
+export interface CreateWeb3ConnectionPayload {
     vaultAccountId: number;
-    feeLevel: SignerConnectionFeeLevel;
-    connectionType: SignerConnectionType;
+    feeLevel: Web3ConnectionFeeLevel;
 }
 
-export interface WalletConnectPayload extends SignerConnectionPayload {
-    connectionType: SignerConnectionType.WALLET_CONNECT;
+export interface CreateWalletConnectPayload extends CreateWeb3ConnectionPayload {
     uri: string;
     chainIds: string[];
 }
 
-export interface CreateConnectionResponse {
+export interface GetWeb3ConnectionsPayload {
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: string;
+    filter?: { [filterProp: string]: string };
+    order?: "ASC" | "DESC";
+}
+
+export interface CreateWeb3ConnectionResponse {
     id: string;
     sessionMetadata: {
       appIcon?: string,
@@ -851,10 +857,10 @@ export interface Session {
     id: string;
     vaultAccountId: number;
     chainIds?: string[];
-    feeLevel: SignerConnectionFeeLevel;
+    feeLevel: Web3ConnectionFeeLevel;
     creationDate: Date;
-    connectionType: SignerConnectionType;
-    connectionMethod?: SignerConnectionMethod;
+    connectionType: Web3ConnectionType;
+    connectionMethod?: Web3ConnectionMethod;
     sessionMetadata?: SessionMetadata;
   }
 export enum TimePeriod {
