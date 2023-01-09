@@ -2,6 +2,7 @@ import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
 import queryString from "query-string";
+import { stringify } from "qs";
 import {
     AllocateFundsRequest,
     AssetResponse,
@@ -48,8 +49,8 @@ import {
     WalletContainerResponse,
     SetFeePayerConfiguration,
     FeePayerConfiguration,
-    SignerConnectionPayload,
-    CreateConnectionResponse,
+    CreateWeb3ConnectionPayload,
+    CreateWeb3ConnectionResponse,
     Session,
     NetworkConnectionRoutingPolicy,
     NetworkIdRoutingPolicy,
@@ -60,6 +61,12 @@ import {
     Token,
     TokenWithBalance,
     APIPagedResponse,
+    CreateWalletConnectPayload,
+    Web3ConnectionType,
+    GetWeb3ConnectionsPayload,
+    PublicKeyResponse,
+    AllocateFundsResponse,
+    SettleOffExchangeAccountResponse,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -195,7 +202,7 @@ export class FireblocksSDK {
      * @param tag The XRP tag, or EOS memo, for which to set the description
      * @param description The description to set
      */
-    public async setAddressDescription(vaultAccountId: string, assetId: string, address: string, tag?: string, description?: string): Promise<GenerateAddressResponse> {
+    public async setAddressDescription(vaultAccountId: string, assetId: string, address: string, tag?: string, description?: string): Promise<OperationSuccessResponse> {
         let addressId = address;
         if (tag && tag.length > 0) {
             addressId = `${address}:${tag}`;
@@ -333,7 +340,7 @@ export class FireblocksSDK {
      * @param exchangeAccountId The exchange account ID
      * @param assetId The ID of the asset
      */
-    public async getExchangeAsset(exchangeAccountId: string, assetId: string): Promise<ExchangeResponse> {
+    public async getExchangeAsset(exchangeAccountId: string, assetId: string): Promise<AssetResponse> {
         return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}`);
     }
 
@@ -949,7 +956,7 @@ export class FireblocksSDK {
      * @param args
      * @param requestOptions
      */
-    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest, requestOptions?: RequestOptions) {
+    public async allocateFundsToPrivateLedger(vaultAccountId: string, asset: string, args: AllocateFundsRequest, requestOptions?: RequestOptions): Promise<AllocateFundsResponse> {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/lock_allocation`;
         return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
@@ -961,7 +968,7 @@ export class FireblocksSDK {
      * @param args
      * @param requestOptions
      */
-    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest, requestOptions?: RequestOptions) {
+    public async deallocateFundsFromPrivateLedger(vaultAccountId: string, asset: string, args: DeallocateFundsRequest, requestOptions?: RequestOptions): Promise<AllocateFundsResponse> {
         const url = `/v1/vault/accounts/${vaultAccountId}/${asset}/release_allocation`;
         return await this.apiClient.issuePostRequest(url, args, requestOptions);
     }
@@ -970,7 +977,7 @@ export class FireblocksSDK {
      * Get the public key information for a vault account
      * @param args
      */
-    public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs) {
+    public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs): Promise<PublicKeyResponse> {
         let url = `/v1/vault/accounts/${args.vaultAccountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
         if (args.compressed) {
             url += `?compressed=${args.compressed}`;
@@ -1119,7 +1126,7 @@ export class FireblocksSDK {
      * @param id the ID of the off exchange
      * @param requestOptions
      */
-    public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<void> {
+    public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<SettleOffExchangeAccountResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
     }
 
@@ -1149,19 +1156,58 @@ export class FireblocksSDK {
         return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
     }
 
-    /**
-     * Get all signer connections of the current user
-     * @returns Array of sessions
-     */
-    public async getAllSignerConnections(): Promise<Session[]> {
-        return await this.apiClient.issueGetRequest(`/v1/connections`);
+    private getWeb3ConnectionPath(type: Web3ConnectionType) {
+        const basePath = `/v1/connections`;
+
+        switch (type) {
+            case(Web3ConnectionType.WALLET_CONNECT): {
+                return `${basePath}/wc`;
+            }
+            default: {
+                throw new Error(`Invalid Web3 connection type`);
+            }
+        }
     }
 
     /**
-     * Initiate a new signer connection
-     * @param payload The required parameters for the connection type
-     * @param requestOptions
-     * @returns The created session's ID and its metadata
+     * Get all signer connections of the current tenant
+     * @param {Object} payload The payload for getting the current tenant's sessions
+     * @param payload.pageCursor The cursor for the next page
+     * @param payload.pageSize The amount of results to return on the next page
+     * @param payload.sort The property to sort the results by
+     * @param payload.filter The filter object, containing properties as keys and the values to filter by as values
+     * @param payload.desc Should the results be ordered in ascending order (false) or descending (true)
+     *
+     * @returns An object containing the data returned and the cursor for the next page
+     */
+    public async getWeb3Connections({
+        pageCursor,
+        pageSize,
+        sort,
+        filter,
+        order
+    }: GetWeb3ConnectionsPayload = {}): Promise<APIPagedResponse<Session>> {
+        const params = new URLSearchParams({
+            ...(pageCursor && { next: pageCursor }),
+            ...(pageSize && { pageSize: pageSize.toString() }),
+            ...(sort && { sort }),
+            ...(filter && { filter: stringify(filter, { delimiter: "," })}),
+            ...(order && { order }),
+        });
+
+        return await this.apiClient.issueGetRequest(`/v1/connections?${params.toString()}`);
+    }
+
+    /**
+     * Initiate a new web3 connection
+     * @param type The type of the connection
+     * @param payload The payload for creating a new web3 connection
+     * @param payload.vaultAccountId The vault account to link with the dapp
+     * @param payload.feeLevel The fee level for the connection
+     * @param payload.uri The WalletConnect URI, as provided by the dapp
+     * @param payload.chainIds Array of the approved chains for the connection
+     *
+     * @returns The created session's ID and it's metadata
      * @example {
      *  vaultAccountId: 0
      *  feeLevel: "MEDIUM"
@@ -1170,25 +1216,36 @@ export class FireblocksSDK {
      *  chainIds: ["ETH", "ETH_TEST"]
      * }
      */
-    public async createSignerConnection(payload: SignerConnectionPayload, requestOptions?: RequestOptions): Promise<CreateConnectionResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/connections`, payload, requestOptions);
+    public async createWeb3Connection(type: Web3ConnectionType.WALLET_CONNECT, payload: CreateWalletConnectPayload, requestOptions?: RequestOptions): Promise<CreateWeb3ConnectionResponse>;
+    public async createWeb3Connection(type: Web3ConnectionType, payload: CreateWeb3ConnectionPayload, requestOptions?: RequestOptions): Promise<CreateWeb3ConnectionResponse> {
+        const path = this.getWeb3ConnectionPath(type);
+
+        return await this.apiClient.issuePostRequest(path, payload, requestOptions);
     }
 
     /**
      * Approve or Reject the initiated connection
+     * @param type The type of the connection
      * @param sessionId The ID of the session
      * @param approve Whether you approve the connection or not
      */
-    public async submitSignerConnection(sessionId: string, approve: boolean): Promise<void> {
-        return await this.apiClient.issuePutRequest(`/v1/connections/${sessionId}`, {approve});
+    public async submitWeb3Connection(type: Web3ConnectionType.WALLET_CONNECT, sessionId: string, approve: boolean): Promise<void>;
+    public async submitWeb3Connection(type: Web3ConnectionType, sessionId: string, approve: boolean): Promise<void> {
+        const path = this.getWeb3ConnectionPath(type);
+
+        return await this.apiClient.issuePutRequest(`${path}/${sessionId}`, {approve});
     }
 
     /**
      * Remove an existing connection
+     * @param type The type of the connection
      * @param sessionId The ID of the session
      */
-    public async removeSignerConnection(sessionId: string): Promise<void> {
-        return await this.apiClient.issueDeleteRequest(`/v1/connections/${sessionId}`);
+    public async removeWeb3Connection(type: Web3ConnectionType.WALLET_CONNECT, sessionId: string): Promise<void>;
+    public async removeWeb3Connection(type: Web3ConnectionType, sessionId: string): Promise<void> {
+        const path = this.getWeb3ConnectionPath(type);
+
+        return await this.apiClient.issueDeleteRequest(`${path}/${sessionId}`);
     }
 
     /**

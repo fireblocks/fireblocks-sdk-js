@@ -1,10 +1,10 @@
 export interface VaultAccountResponse {
     id: string;
     name: string;
-    hiddenOnUI: boolean;
-    assets: AssetResponse[];
+    hiddenOnUI?: boolean;
+    assets?: AssetResponse[];
     customerRefId?: string;
-    autoFuel: boolean;
+    autoFuel?: boolean;
 }
 
 export enum VirtualAffiliation {
@@ -24,8 +24,8 @@ export interface AssetResponse {
      */
     balance?: string;
     lockedAmount?: string;
-    available: string;
-    pending: string;
+    available?: string;
+    pending?: string;
     selfStakedCPU?: string;
     selfStakedNetwork?: string;
     pendingRefundCPU?: string;
@@ -58,7 +58,7 @@ export interface VaultAssetResponse {
     legacyAddress: string;
     enterpriseAddress?: string;
     tag: string;
-    eosAccountName: string;
+    eosAccountName?: string;
     status?: VaultAssetActivationStatus;
     activationTxId?: string;
 }
@@ -79,8 +79,8 @@ export interface WalletContainerResponse<WalletAssetType> {
 export interface ExternalWalletAsset {
     id: string;
     status: string;
-    address: string;
-    tag: string;
+    address?: string;
+    tag?: string;
     activationTime?: string;
 }
 
@@ -145,13 +145,13 @@ export interface IOneTimeAddress {
 }
 
 export interface DepositAddressResponse {
-    assetId: string;
+    assetId?: string;
     address: string;
     tag?: string;
     description?: string;
-    type: string;
+    type?: string;
     customerRefId?: string;
-    addressFormat: string;
+    addressFormat?: string;
     legacyAddress?: string;
     enterpriseAddress?: string;
 }
@@ -217,7 +217,7 @@ export interface TransactionArguments {
     feePayerInfo?: TransactionArgumentsFeePayerInfo;
 }
 
-export enum SignerConnectionFeeLevel {
+export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",
 }
@@ -601,11 +601,11 @@ export enum TransactionOperation {
     TYPED_MESSAGE = "TYPED_MESSAGE",
 }
 
-export enum SignerConnectionType {
+export enum Web3ConnectionType {
     WALLET_CONNECT = "WalletConnect"
 }
 
-export enum SignerConnectionMethod {
+export enum Web3ConnectionMethod {
     MOBILE = "MOBILE",
     DESKTOP = "DESKTOP",
     API = "API"
@@ -620,6 +620,11 @@ export interface AllocateFundsRequest {
 export interface DeallocateFundsRequest {
     allocationId: string;
     amount: string;
+}
+
+export interface AllocateFundsResponse {
+    id: string;
+    status: string;
 }
 
 export interface CreateTransferTicketArgs {
@@ -702,7 +707,7 @@ export interface GasStationInfo {
     };
 }
 
-export interface PublicKeyResonse {
+export interface PublicKeyResponse {
     status: number;
     algorithm: string;
     derivationPath: number[];
@@ -733,12 +738,12 @@ export interface PagedVaultAccountsRequestFilters {
 
 export interface PagedVaultAccountsResponse {
     accounts: VaultAccountResponse[];
-    paging: {
-        before: string;
-        after: string;
+    paging?: {
+        before?: string;
+        after?: string;
     };
-    previousUrl: string;
-    nextUrl: string;
+    previousUrl?: string;
+    nextUrl?: string;
 }
 
 export interface VaultBalancesFilter {
@@ -792,6 +797,17 @@ export interface OffExchangeEntityResponse {
     };
 }
 
+export interface SettleOffExchangeAccountResponse {
+    message: string;
+    code: SettleResponseCode;
+}
+
+export enum SettleResponseCode {
+    NONE = 0,
+    NOTHING_TO_SETTLE = 1
+}
+
+
 export interface SetFeePayerConfiguration {
     feePayerAccountId: string;
 }
@@ -800,19 +816,25 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
-export interface SignerConnectionPayload {
+export interface CreateWeb3ConnectionPayload {
     vaultAccountId: number;
-    feeLevel: SignerConnectionFeeLevel;
-    connectionType: SignerConnectionType;
+    feeLevel: Web3ConnectionFeeLevel;
 }
 
-export interface WalletConnectPayload extends SignerConnectionPayload {
-    connectionType: SignerConnectionType.WALLET_CONNECT;
+export interface CreateWalletConnectPayload extends CreateWeb3ConnectionPayload {
     uri: string;
     chainIds: string[];
 }
 
-export interface CreateConnectionResponse {
+export interface GetWeb3ConnectionsPayload {
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: string;
+    filter?: { [filterProp: string]: string };
+    order?: "ASC" | "DESC";
+}
+
+export interface CreateWeb3ConnectionResponse {
     id: string;
     sessionMetadata: {
       appIcon?: string,
@@ -835,10 +857,10 @@ export interface Session {
     id: string;
     vaultAccountId: number;
     chainIds?: string[];
-    feeLevel: SignerConnectionFeeLevel;
+    feeLevel: Web3ConnectionFeeLevel;
     creationDate: Date;
-    connectionType: SignerConnectionType;
-    connectionMethod?: SignerConnectionMethod;
+    connectionType: Web3ConnectionType;
+    connectionMethod?: Web3ConnectionMethod;
     sessionMetadata?: SessionMetadata;
   }
 export enum TimePeriod {
