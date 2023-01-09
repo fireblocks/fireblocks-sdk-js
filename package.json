@@ -1,8 +1,8 @@
 {
   "name": "fireblocks-sdk",
   "version": "2.5.4",
-  "main": "dist/fireblocks-sdk.js",
-  "types": "dist/fireblocks-sdk.d.ts",
+  "main": "dist/src/fireblocks-sdk.js",
+  "types": "dist/src/fireblocks-sdk.d.ts",
   "scripts": {
     "build": "tsc && npm run tslint",
     "tslint": "tslint -c tslint.json -p tsconfig.json --fix",
