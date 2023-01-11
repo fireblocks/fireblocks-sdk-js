@@ -858,7 +858,7 @@ export interface Session {
     vaultAccountId: number;
     chainIds?: string[];
     feeLevel: Web3ConnectionFeeLevel;
-    creationDate: Date;
+    creationDate: string;
     connectionType: Web3ConnectionType;
     connectionMethod?: Web3ConnectionMethod;
     sessionMetadata?: SessionMetadata;
