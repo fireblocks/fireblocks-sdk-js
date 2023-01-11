@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v3.0.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.0.0...v3.0.1)
+
+> 11 January 2023
+
+- fix: change type of creation date [`#136`](https://github.com/fireblocks/fireblocks-sdk-js/pull/136)
+
 ### [v3.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.5.4...v3.0.0)
 
 > 5 January 2023
 
 - Feat/web3 api phase B [`#130`](https://github.com/fireblocks/fireblocks-sdk-js/pull/130)
+- fix incorrect interfaces [`#134`](https://github.com/fireblocks/fireblocks-sdk-js/pull/134)
 
 #### [v2.5.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v2.5.3...v2.5.4)
 
