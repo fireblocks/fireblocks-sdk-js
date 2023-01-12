@@ -75,6 +75,7 @@ export * from "./types";
 export interface SDKOptions {
     timeoutInMs?: number;
     proxy?: AxiosProxyConfig | false;
+    anonymousPlatform?: boolean;
 }
 
 export class FireblocksSDK {
@@ -97,7 +98,7 @@ export class FireblocksSDK {
             this.apiBaseUrl = apiBaseUrl;
         }
 
-        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, {timeoutInMs: sdkOptions?.timeoutInMs, proxyConf: sdkOptions?.proxy});
+        this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
     }
 
     /**
