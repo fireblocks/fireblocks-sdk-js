@@ -229,7 +229,7 @@ export class FireblocksSDK {
      * @returns NetworkConnectionResponse
      */
     public async createNetworkConnection(localNetworkId: string, remoteNetworkId: string, routingPolicy?: NetworkConnectionRoutingPolicy): Promise<NetworkConnectionResponse> {
-        const body = {localNetworkId, remoteNetworkId, routingPolicy};
+        const body = { localNetworkId, remoteNetworkId, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_connections`, body);
     }
 
@@ -257,7 +257,7 @@ export class FireblocksSDK {
      * @param routingPolicy The desired routing policy
      */
     public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy) {
-        const body = {routingPolicy};
+        const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
     }
 
@@ -276,7 +276,7 @@ export class FireblocksSDK {
      * @returns NetworkConnectionResponse
      */
     public async createNetworkId(name: string, routingPolicy?: NetworkIdRoutingPolicy): Promise<NetworkIdResponse> {
-        const body = {name, routingPolicy};
+        const body = { name, routingPolicy };
         return await this.apiClient.issuePostRequest(`/v1/network_ids`, body);
     }
 
@@ -296,7 +296,7 @@ export class FireblocksSDK {
      * @returns OperationSuccessResponse
      */
     public async setNetworkIdDiscoverability(networkId: string, isDiscoverable: boolean): Promise<OperationSuccessResponse> {
-        const body = {isDiscoverable};
+        const body = { isDiscoverable };
         return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_discoverability`, body);
     }
 
@@ -307,7 +307,7 @@ export class FireblocksSDK {
      * @returns OperationSuccessResponse
      */
     public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy: NetworkIdRoutingPolicy) {
-        const body = {routingPolicy};
+        const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
 
@@ -460,7 +460,7 @@ export class FireblocksSDK {
             return await this.apiClient.issueGetRequest(path, true);
         }
 
-        return {transactions: [], pageDetails: {prevPage: "", nextPage: ""}};
+        return {transactions: [], pageDetails: { prevPage:  "", nextPage: "" }};
     }
 
     /**
@@ -639,7 +639,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async activateVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {} , requestOptions);
     }
 
     /**
@@ -676,7 +676,7 @@ export class FireblocksSDK {
      * Creates a new contract wallet
      * @param name A name for the new contract wallet
      */
-    public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+     public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         const body = {
             name,
         };
@@ -727,7 +727,7 @@ export class FireblocksSDK {
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
      */
-    public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
+     public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
         const path = `/v1/contracts/${walletId}/${assetId}`;
 
         const body = {
@@ -848,7 +848,7 @@ export class FireblocksSDK {
      * Deletes a single contract wallet
      * @param walletId The contract wallet ID
      */
-    public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
+     public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/contracts/${walletId}`);
     }
 
@@ -1094,8 +1094,8 @@ export class FireblocksSDK {
      * @param resendStatusUpdated If true a webhook will be sent for the status of the transaction
      * @param requestOptions
      */
-    public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
-        const body = {resendCreated, resendStatusUpdated};
+     public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
+        const body = { resendCreated, resendStatusUpdated };
         return await this.apiClient.issuePostRequest(`/v1/webhooks/resend/${txId}`, body, requestOptions);
     }
 
@@ -1294,7 +1294,7 @@ export class FireblocksSDK {
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const {blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize} = filter;
+            const { blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize } = filter;
             const requestFilter = {
                 vaultAccountId,
                 blockchainDescriptor,
