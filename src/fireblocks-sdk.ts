@@ -76,6 +76,7 @@ export interface SDKOptions {
     timeoutInMs?: number;
     proxy?: AxiosProxyConfig | false;
     anonymousPlatform?: boolean;
+    userAgent?: string;
 }
 
 export class FireblocksSDK {

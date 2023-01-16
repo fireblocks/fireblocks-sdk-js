@@ -44,5 +44,6 @@ interface SDKOptions {
     timeoutInMs?: number;               // HTTP request timeout
     proxy?: AxiosProxyConfig | false;   // Proxy configuration
     anonymousPlatform?: boolean;        // Whether to remove platform from User-Agent header
+    userAgent?: string;                 // Extra data to be passed in the User-Agent header
 }
 ```

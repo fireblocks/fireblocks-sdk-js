@@ -26,6 +26,9 @@ export class ApiClient {
         if (!this.options?.anonymousPlatform) {
             userAgent += ` (${os.type()} ${os.release()}; ${platform.name} ${platform.version}; ${os.arch()})`;
         }
+        if (this.options?.userAgent) {
+            userAgent += `/${this.options.userAgent}`;
+        }
         return userAgent;
     }
 
