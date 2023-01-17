@@ -27,7 +27,7 @@ export class ApiClient {
             userAgent += ` (${os.type()} ${os.release()}; ${platform.name} ${platform.version}; ${os.arch()})`;
         }
         if (this.options?.userAgent) {
-            userAgent += `/${this.options.userAgent}`;
+            userAgent = `${this.options.userAgent} ${userAgent}`;
         }
         return userAgent;
     }
