@@ -73,10 +73,10 @@ import { AxiosProxyConfig } from "axios";
 export * from "./types";
 
 export interface SDKOptions {
-    timeoutInMs?: number;
-    proxy?: AxiosProxyConfig | false;
-    anonymousPlatform?: boolean;
-    userAgent?: string;
+    timeoutInMs?: number;               // HTTP request timeout
+    proxy?: AxiosProxyConfig | false;   // Proxy configuration
+    anonymousPlatform?: boolean;        // Whether to remove platform from User-Agent header
+    userAgent?: string;                 // Additional product identifier to be prepended to the User-Agent header
 }
 
 export class FireblocksSDK {
