@@ -1,3 +1,15 @@
+import { AxiosResponseHeaders } from "axios";
+
+export interface Web3PagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
+export interface APIResponse<T> {
+    data: T;
+    headers?: AxiosResponseHeaders;
+}
+
 export interface VaultAccountResponse {
     id: string;
     name: string;
@@ -487,7 +499,6 @@ export interface NFTOwnershipFilter {
     pageSize?: number;
 }
 
-
 class MediaEntity {
     url: string;
     contentType: string;
@@ -501,11 +512,6 @@ interface NFTCollection {
 
 export interface Paging {
     next: string;
-}
-
-export interface APIPagedResponse<T> {
-    data: T[];
-    paging?: Paging;
 }
 
 export interface Token {
@@ -712,6 +718,17 @@ export interface PublicKeyResponse {
     algorithm: string;
     derivationPath: number[];
     publicKey: string;
+}
+
+export interface PublicKeyInformation {
+    algorithm: string;
+    derivationPath: number[];
+    publicKey: String;
+}
+
+export interface DropTransactionResponse {
+    success: boolean;
+    transactions?: string[];
 }
 
 export interface MaxSpendableAmountResponse {

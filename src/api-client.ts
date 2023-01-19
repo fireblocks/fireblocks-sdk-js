@@ -1,7 +1,7 @@
 import os from "os";
 import platform from "platform";
 import { IAuthProvider } from "./iauth-provider";
-import { RequestOptions } from "./types";
+import { APIResponse, RequestOptions, TransactionPageResponse } from "./types";
 import { SDKOptions } from "./fireblocks-sdk";
 import axios, { AxiosInstance } from "axios";
 
@@ -28,51 +28,78 @@ export class ApiClient {
         return userAgent;
     }
 
-    public async issueGetRequest(path: string, pageMode: boolean = false) {
+    public async issueGetRequestForTransactionPages(path: string): Promise<APIResponse<TransactionPageResponse>> {
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
         });
-        if (pageMode) {
-            return {
+        return {
+            data: {
                 transactions: res.data,
                 pageDetails: {
                     prevPage: res.headers["prev-page"] ? res.headers["prev-page"].toString() : "",
                     nextPage: res.headers["next-page"] ? res.headers["next-page"].toString() : "",
                 }
-            };
-        }
-        return res.data;
+            },
+            headers: res.headers
+        };
     }
 
-    public async issuePostRequest(path: string, body: any, requestOptions?: RequestOptions) {
+    public async issueGetRequest<T>(path: string): Promise<APIResponse<T>> {
+        const token = this.authProvider.signJwt(path);
+        const res = await this.axiosInstance.get(path, {
+            headers: {"Authorization": `Bearer ${token}`}
+        });
+        return {
+            data: res.data,
+            headers: res.headers
+        };
+    }
+
+    public async issuePostRequest<T>(path: string, body: any, requestOptions?: RequestOptions): Promise<APIResponse<T>> {
         const token = this.authProvider.signJwt(path, body);
         const headers: any = {"Authorization": `Bearer ${token}`};
         const idempotencyKey = requestOptions?.idempotencyKey;
         if (idempotencyKey) {
             headers["Idempotency-Key"] = idempotencyKey;
         }
-        return (await this.axiosInstance.post(path, body, {headers})).data;
+        const response = await this.axiosInstance.post(path, body, {headers});
+        return {
+            data: response.data,
+            headers: response.headers
+        };
     }
 
-    public async issuePutRequest(path: string, body: any) {
+    public async issuePutRequest<T>(path: string, body: any): Promise<APIResponse<T>> {
         const token = this.authProvider.signJwt(path, body);
-        return (await this.axiosInstance.put(path, body, {
+        const res = (await this.axiosInstance.put(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
-        })).data;
+        }));
+        return {
+            data: res.data,
+            headers: res.headers,
+        };
     }
 
-    public async issuePatchRequest(path: string, body: any) {
+    public async issuePatchRequest<T>(path: string, body: any): Promise<APIResponse<T>> {
         const token = this.authProvider.signJwt(path, body);
-        return (await this.axiosInstance.patch(path, body, {
+        const res = (await this.axiosInstance.patch(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
-        })).data;
+        }));
+        return {
+            data: res.data,
+            headers: res.headers
+        };
     }
 
-    public async issueDeleteRequest(path: string) {
+    public async issueDeleteRequest<T>(path: string): Promise<APIResponse<T>> {
         const token = this.authProvider.signJwt(path);
-        return (await this.axiosInstance.delete(path, {
+        const res = (await this.axiosInstance.delete(path, {
             headers: {"Authorization": `Bearer ${token}`}
-        })).data;
+        }));
+        return {
+            data: res.data,
+            headers: res.headers
+        };
     }
 }
