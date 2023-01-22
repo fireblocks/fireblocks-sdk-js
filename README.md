@@ -41,8 +41,16 @@ const fireblocks = new FireblocksSDK(privateKey, apiKey, baseUrl, authProvider, 
 The `options` argument has the following structure:
 ```typescript
 interface SDKOptions {
-    timeoutInMs?: number;               // HTTP request timeout
-    proxy?: AxiosProxyConfig | false;   // Proxy configuration
-    anonymousPlatform?: boolean;        // Whether to remove platform from User-Agent header
+    /** HTTP request timeout */
+    timeoutInMs?: number;
+
+    /** Proxy configurations */
+    proxy?: AxiosProxyConfig | false;
+
+    /** Whether to remove platform from User-Agent header */
+    anonymousPlatform?: boolean;
+    
+    /** Additional product identifier to be prepended to the User-Agent header */
+    userAgent?: string;
 }
 ```
