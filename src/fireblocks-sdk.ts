@@ -81,7 +81,7 @@ export interface SDKOptions {
 
     /** Whether to remove platform from User-Agent header */
     anonymousPlatform?: boolean;
-    
+
     /** Additional product identifier to be prepended to the User-Agent header */
     userAgent?: string;
 }
