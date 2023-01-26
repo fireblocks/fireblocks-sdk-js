@@ -358,6 +358,7 @@ export class FireblocksSDK {
      * @param srcAsset The source asset to convert from
      * @param destAsset The destination asset to convert to
      * @param amount The amount to convert
+     * @param requestOptions
      */
     public async convertExchangeAsset(exchangeAccountId: string, srcAsset: string, destAsset: string, amount: number, requestOptions?: RequestOptions): Promise<ConvertExchangeAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/convert`, {
@@ -683,6 +684,7 @@ export class FireblocksSDK {
     /**
      * Creates a new contract wallet
      * @param name A name for the new contract wallet
+     * @param requestOptions
      */
      public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         const body = {
@@ -734,6 +736,7 @@ export class FireblocksSDK {
      * @param assetId The asset to add
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
+     * @param requestOptions
      */
      public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
         const path = `/v1/contracts/${walletId}/${assetId}`;
@@ -1184,7 +1187,7 @@ export class FireblocksSDK {
      * @param payload.pageSize The amount of results to return on the next page
      * @param payload.sort The property to sort the results by
      * @param payload.filter The filter object, containing properties as keys and the values to filter by as values
-     * @param payload.desc Should the results be ordered in ascending order (false) or descending (true)
+     * @param payload.order Should the results be ordered in ascending order (false) or descending (true)
      *
      * @returns An object containing the data returned and the cursor for the next page
      */
@@ -1210,6 +1213,7 @@ export class FireblocksSDK {
      * Initiate a new web3 connection
      * @param type The type of the connection
      * @param payload The payload for creating a new web3 connection
+     * @param requestOptions
      * @param payload.vaultAccountId The vault account to link with the dapp
      * @param payload.feeLevel The fee level for the connection
      * @param payload.uri The WalletConnect URI, as provided by the dapp
@@ -1281,12 +1285,16 @@ export class FireblocksSDK {
      * @param ids List of NFT tokens to fetch
      * @param pageCursor
      * @param pageSize
+     * @param sort
+     * @param order
      */
-    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number): Promise<APIPagedResponse<Token>> {
+    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number, sort?: string, order?: string): Promise<APIPagedResponse<Token>> {
         const queryParams = {
             pageCursor,
             pageSize,
             ids: ids ? ids.join(",") : undefined,
+            sort,
+            order,
         };
 
         return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?${queryString.stringify(queryParams)}`);
@@ -1295,20 +1303,26 @@ export class FireblocksSDK {
     /**
      *
      * Gets a list of owned NFT tokens
-     * @param filter.vaultAccountId The vault account ID
+     * @param filter.vaultAccountIds List of vault account IDs
      * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
+     * @param filter.collectionIds List of collection IDs
      * @param filter.ids List of token ids to fetch
+     * @param filter.sort Sort by value
+     * @param filter.order Order value
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order } = filter;
             const requestFilter = {
-                vaultAccountId,
+                vaultAccountIds: vaultAccountIds ? vaultAccountIds.join(",") : undefined,
                 blockchainDescriptor,
+                collectionIds: collectionIds ? collectionIds.join(",") : undefined,
                 pageCursor,
                 pageSize,
                 ids: ids ? ids.join(",") : undefined,
+                sort,
+                order,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }

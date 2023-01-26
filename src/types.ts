@@ -481,10 +481,13 @@ export interface TransactionFilter {
 
 export interface NFTOwnershipFilter {
     blockchainDescriptor?: string;
-    vaultAccountId?: string;
+    vaultAccountIds?: string[];
+    collectionIds?: string[];
     ids?: string[];
     pageCursor?: string;
     pageSize?: number;
+    sort?: string;
+    order?: string;
 }
 
 
