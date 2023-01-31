@@ -807,6 +807,10 @@ export enum SettleResponseCode {
     NOTHING_TO_SETTLE = 1
 }
 
+export interface CollateralTransactionRequest {
+    transactionRequest: TransactionArguments,
+    mainExchangeAccountId: string 
+}
 
 export interface SetFeePayerConfiguration {
     feePayerAccountId: string;

@@ -67,6 +67,7 @@ import {
     PublicKeyResponse,
     AllocateFundsResponse,
     SettleOffExchangeAccountResponse,
+    CollateralTransactionRequest,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -1136,6 +1137,26 @@ export class FireblocksSDK {
      */
     public async settleOffExchangeAccountById(id: string, requestOptions?: RequestOptions): Promise<SettleOffExchangeAccountResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
+    }
+
+    /**
+     * Add collateral account, create deposit request
+     * @param depositRequest 
+     * @param requestOptions 
+     * @returns 
+     */
+    public async addCollateral(depositRequest: CollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/add`, depositRequest, requestOptions);
+    }
+
+    /**
+     * Remove collateral account, create withdraw request
+     * @param withdrawRequest
+     * @param requestOptions
+     * @returns 
+     */
+    public async removeCollateral(withdrawRequest: CollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/remove`, withdrawRequest, requestOptions);
     }
 
     /**
