@@ -486,8 +486,8 @@ export interface NFTOwnershipFilter {
     ids?: string[];
     pageCursor?: string;
     pageSize?: number;
-    sort?: string;
-    order?: string;
+    sort?: GetOwnedNFTsSortValues[];
+    order?: OrderValues;
 }
 
 
@@ -946,4 +946,15 @@ export interface AuditsResponse {
 export interface ISystemMessageInfo {
     type: string;
     message: string;
+}
+
+export enum GetOwnedNFTsSortValues {
+    "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
+}
+
+export enum GetNFTsSortValues {}
+
+export enum OrderValues {
+    "ASC" = "ASC",
+    "DESC" = "DESC",
 }

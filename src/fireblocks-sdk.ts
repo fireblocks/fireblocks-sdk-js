@@ -67,6 +67,8 @@ import {
     PublicKeyResponse,
     AllocateFundsResponse,
     SettleOffExchangeAccountResponse,
+    GetNFTsSortValues,
+    OrderValues,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -1288,12 +1290,12 @@ export class FireblocksSDK {
      * @param sort
      * @param order
      */
-    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number, sort?: string, order?: string): Promise<APIPagedResponse<Token>> {
+    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number, sort?: GetNFTsSortValues[], order?: OrderValues): Promise<APIPagedResponse<Token>> {
         const queryParams = {
             pageCursor,
             pageSize,
             ids: ids ? ids.join(",") : undefined,
-            sort,
+            sort: sort ? sort.join(",") : undefined,
             order,
         };
 
@@ -1321,7 +1323,7 @@ export class FireblocksSDK {
                 pageCursor,
                 pageSize,
                 ids: ids ? ids.join(",") : undefined,
-                sort,
+                sort: sort ? sort.join(",") : undefined,
                 order,
             };
             url += `?${queryString.stringify(requestFilter)}`;
