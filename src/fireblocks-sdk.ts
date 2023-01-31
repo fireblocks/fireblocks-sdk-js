@@ -360,7 +360,6 @@ export class FireblocksSDK {
      * @param srcAsset The source asset to convert from
      * @param destAsset The destination asset to convert to
      * @param amount The amount to convert
-     * @param requestOptions
      */
     public async convertExchangeAsset(exchangeAccountId: string, srcAsset: string, destAsset: string, amount: number, requestOptions?: RequestOptions): Promise<ConvertExchangeAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/convert`, {
@@ -686,7 +685,6 @@ export class FireblocksSDK {
     /**
      * Creates a new contract wallet
      * @param name A name for the new contract wallet
-     * @param requestOptions
      */
      public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         const body = {
@@ -738,7 +736,6 @@ export class FireblocksSDK {
      * @param assetId The asset to add
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
-     * @param requestOptions
      */
      public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
         const path = `/v1/contracts/${walletId}/${assetId}`;
@@ -1215,7 +1212,6 @@ export class FireblocksSDK {
      * Initiate a new web3 connection
      * @param type The type of the connection
      * @param payload The payload for creating a new web3 connection
-     * @param requestOptions
      * @param payload.vaultAccountId The vault account to link with the dapp
      * @param payload.feeLevel The fee level for the connection
      * @param payload.uri The WalletConnect URI, as provided by the dapp
