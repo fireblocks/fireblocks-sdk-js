@@ -481,10 +481,20 @@ export interface TransactionFilter {
 
 export interface NFTOwnershipFilter {
     blockchainDescriptor?: string;
-    vaultAccountId?: string;
+    vaultAccountIds?: string[];
+    collectionIds?: string[];
     ids?: string[];
     pageCursor?: string;
     pageSize?: number;
+    sort?: GetOwnedNFTsSortValues[];
+    order?: OrderValues;
+}
+
+export interface GetNFTsFilter {
+    ids: string[];
+    pageCursor?: string;
+    pageSize?: number;
+    order?: OrderValues;
 }
 
 
@@ -523,6 +533,8 @@ export interface Token {
 export interface TokenWithBalance extends Token {
     balance: number;
     vaultAccountId: string;
+    ownershipStartTime: number;
+    ownershipLastUpdateTime: number;
 }
 
 export interface TransactionPageFilter {
@@ -943,4 +955,13 @@ export interface AuditsResponse {
 export interface ISystemMessageInfo {
     type: string;
     message: string;
+}
+
+export enum GetOwnedNFTsSortValues {
+    "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
+}
+
+export enum OrderValues {
+    "ASC" = "ASC",
+    "DESC" = "DESC",
 }
