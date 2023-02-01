@@ -490,6 +490,14 @@ export interface NFTOwnershipFilter {
     order?: OrderValues;
 }
 
+export interface GetNFTsFilter {
+    ids: string[];
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: GetNFTsSortValues[];
+    order?: OrderValues;
+}
+
 
 class MediaEntity {
     url: string;
@@ -526,6 +534,8 @@ export interface Token {
 export interface TokenWithBalance extends Token {
     balance: number;
     vaultAccountId: string;
+    ownershipStartTime: number;
+    ownershipLastUpdateTime: number;
 }
 
 export interface TransactionPageFilter {

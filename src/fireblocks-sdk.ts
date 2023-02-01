@@ -67,8 +67,7 @@ import {
     PublicKeyResponse,
     AllocateFundsResponse,
     SettleOffExchangeAccountResponse,
-    GetNFTsSortValues,
-    OrderValues,
+    GetNFTsFilter,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -1280,18 +1279,19 @@ export class FireblocksSDK {
 
     /**
      *
-     * @param ids List of NFT tokens to fetch
-     * @param pageCursor
-     * @param pageSize
-     * @param sort
-     * @param order
+     * @param filter.pageCursor
+     * @param filter.pageSize
+     * @param filter.ids
+     * @param filter.sort
+     * @param filter.order
      */
-    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number, sort?: GetNFTsSortValues[], order?: OrderValues): Promise<APIPagedResponse<Token>> {
+    public async getNFTs(filter: GetNFTsFilter): Promise<APIPagedResponse<Token>> {
+        const { pageCursor, pageSize, ids, sort, order } = filter;
         const queryParams = {
             pageCursor,
             pageSize,
-            ids: ids ? ids.join(",") : undefined,
-            sort: sort ? sort.join(",") : undefined,
+            ids: this.getCommaSeparatedList(ids),
+            sort: this.getCommaSeparatedList(sort as any),
             order,
         };
 
@@ -1313,13 +1313,13 @@ export class FireblocksSDK {
         if (filter) {
             const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order } = filter;
             const requestFilter = {
-                vaultAccountIds: vaultAccountIds ? vaultAccountIds.join(",") : undefined,
+                vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
-                collectionIds: collectionIds ? collectionIds.join(",") : undefined,
+                collectionIds: this.getCommaSeparatedList(collectionIds),
                 pageCursor,
                 pageSize,
-                ids: ids ? ids.join(",") : undefined,
-                sort: sort ? sort.join(",") : undefined,
+                ids: this.getCommaSeparatedList(ids),
+                sort: this.getCommaSeparatedList(sort),
                 order,
             };
             url += `?${queryString.stringify(requestFilter)}`;
@@ -1344,5 +1344,9 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    private getCommaSeparatedList(items: Array<string>): string | undefined {
+        return items ? items.join(",") : undefined;
     }
 }
