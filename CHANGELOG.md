@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v3.1.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.1.3...v3.1.4)
+
+> 1 February 2023
+
+- Update fireblocks-sdk [`#142`](https://github.com/fireblocks/fireblocks-sdk-js/pull/142)
+
 #### [v3.1.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.1.2...v3.1.3)
 
 > 22 January 2023
