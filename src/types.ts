@@ -807,9 +807,62 @@ export enum SettleResponseCode {
     NOTHING_TO_SETTLE = 1
 }
 
+export interface GetSettlementTransactionsResponse {
+    toExchange: SettlementInstructions[];
+    toCollateral: SettlementInstructions[];
+}
+
+export interface SettlementInstructions {
+    sourceTenantId: string;
+    sourceAccountId: string;
+    transactions: ToExchangeTransaction[] | ToCollateralTransaction[];
+};
+
+export interface ToExchangeTransaction {
+    asset: string,
+    amount: string,
+    dstAddress: string,
+    dstTag: string
+}
+
+export interface ToCollateralTransaction {
+    asset: string,
+    amount: string,
+    fee?: string;
+    srcAddress?: string;
+    srcTag?: string;
+}
+
+// TODO shir consider to create 2 different transaction type (one with no dest and one with no source)
 export interface CollateralTransactionRequest {
     transactionRequest: TransactionArguments,
     mainExchangeAccountId: string 
+}
+
+export interface SettlementRequest {
+    mainExchangeAccountId: string
+}
+
+enum InitiatorType {
+    EXCHANGE = "EXCHANGE",
+    TRADER = "TRADER"
+}
+
+export interface InitiatedTransactions {
+    toExchange: SettlementTransactionResponse[];
+    toCollateral: SettlementTransactionResponse[];
+}
+
+export interface SettlementTransactionResponse {
+    txId: string,
+    status: TransactionStatus
+}
+
+export interface SettlementResponse {
+    id: string;
+    initiator: InitiatorType;
+    fireblocksInitiatedTransactions?: InitiatedTransactions;
+    exchangeRequestedTransactions?: GetSettlementTransactionsResponse;
 }
 
 export interface SetFeePayerConfiguration {
