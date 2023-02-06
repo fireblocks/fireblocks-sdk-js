@@ -66,6 +66,7 @@ import {
     GetWeb3ConnectionsPayload,
     PublicKeyResponse,
     AllocateFundsResponse,
+    GetNFTsFilter,
     SettleOffExchangeAccountResponse, APIResponse, PublicKeyInformation, DropTransactionResponse,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
@@ -73,9 +74,17 @@ import { AxiosProxyConfig } from "axios";
 export * from "./types";
 
 export interface SDKOptions {
+    /** HTTP request timeout */
     timeoutInMs?: number;
+
+    /** Proxy configurations */
     proxy?: AxiosProxyConfig | false;
+
+    /** Whether to remove platform from User-Agent header */
     anonymousPlatform?: boolean;
+
+    /** Additional product identifier to be prepended to the User-Agent header */
+    userAgent?: string;
 }
 
 export class FireblocksSDK {
@@ -1126,7 +1135,7 @@ export class FireblocksSDK {
      * @param payload.pageSize The amount of results to return on the next page
      * @param payload.sort The property to sort the results by
      * @param payload.filter The filter object, containing properties as keys and the values to filter by as values
-     * @param payload.desc Should the results be ordered in ascending order (false) or descending (true)
+     * @param payload.order Should the results be ordered in ascending order (false) or descending (true)
      *
      * @returns An object containing the data returned and the cursor for the next page
      */
@@ -1221,15 +1230,18 @@ export class FireblocksSDK {
 
     /**
      *
-     * @param ids List of NFT tokens to fetch
-     * @param pageCursor
-     * @param pageSize
+     * @param filter.pageCursor
+     * @param filter.pageSize
+     * @param filter.ids
+     * @param filter.order
      */
-    public async getNFTs(ids: string[], pageCursor?: string, pageSize?: number): Promise<APIResponse<Web3PagedResponse<Token>>> {
+    public async getNFTs(filter: GetNFTsFilter): Promise<APIResponse<Web3PagedResponse<Token>>> {
+        const { pageCursor, pageSize, ids, order } = filter;
         const queryParams = {
             pageCursor,
             pageSize,
-            ids: ids ? ids.join(",") : undefined,
+            ids: this.getCommaSeparatedList(ids),
+            order,
         };
 
         return await this.apiClient.issueGetRequest(`/v1/nfts/tokens?${queryString.stringify(queryParams)}`);
@@ -1238,20 +1250,26 @@ export class FireblocksSDK {
     /**
      *
      * Gets a list of owned NFT tokens
-     * @param filter.vaultAccountId The vault account ID
+     * @param filter.vaultAccountIds List of vault account IDs
      * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
+     * @param filter.collectionIds List of collection IDs
      * @param filter.ids List of token ids to fetch
+     * @param filter.sort Sort by value
+     * @param filter.order Order value
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<APIResponse<TokenWithBalance>>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountId, ids, pageCursor, pageSize } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order } = filter;
             const requestFilter = {
-                vaultAccountId,
+                vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
+                collectionIds: this.getCommaSeparatedList(collectionIds),
                 pageCursor,
                 pageSize,
-                ids: ids ? ids.join(",") : undefined,
+                ids: this.getCommaSeparatedList(ids),
+                sort: this.getCommaSeparatedList(sort),
+                order,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
@@ -1275,5 +1293,9 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    private getCommaSeparatedList(items: Array<string>): string | undefined {
+        return items ? items.join(",") : undefined;
     }
 }
