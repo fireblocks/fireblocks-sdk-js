@@ -5,9 +5,11 @@ export interface Web3PagedResponse<T> {
     paging?: Paging;
 }
 
+export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+
 export interface APIResponse<T> {
     data: T;
-    headers?: AxiosResponseHeaders;
+    headers?: APIResponseHeaders;
 }
 
 export interface VaultAccountResponse {

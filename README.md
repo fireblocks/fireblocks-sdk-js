@@ -5,6 +5,30 @@
 This repository contains the official Javascript & Typescript SDK for Fireblocks API.
 For the complete API reference, go to [API reference](https://docs.fireblocks.com/api/swagger-ui/).
 
+## V4 Migration
+In v4 we changed all the sdk response types to return the `APIResponse` object, which is defined as:
+```ts
+export interface APIResponse<T> {
+    data: T; // http response body
+    headers?: AxiosResponseHeaders; // http response headers
+}
+```
+
+This means that if you previously fetched data in the following way:
+```ts
+const exchangeAccounts: ExchangeResponse = await sdk.getExchangeAccount(exchangeAccountId);
+```
+
+It should be transformed to:
+```ts
+const {data: exchangeAccounts, responseHeaders: headers} = (await sdk.getExchangeAccount(exchangeAccountId));
+```
+
+### `X-REQUEST-ID` Response Header
+Using v4 you can now use the response header `x-request-id` which correlates the request to the Fireblocks operation.
+
+You can provide the value of this header in case you have support tickets related to an API operation, or a Github issue.
+
 ## Usage
 #### Before You Begin
 Make sure you have the credentials for Fireblocks API Services. Otherwise, please contact Fireblocks support for further instructions on how to obtain your API credentials.
