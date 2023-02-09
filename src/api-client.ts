@@ -56,7 +56,8 @@ export class ApiClient {
         });
         return {
             data: res.data,
-            headers: res.headers
+            headers: res.headers,
+            status: res.status,
         };
     }
 
@@ -70,7 +71,8 @@ export class ApiClient {
         const response = await this.axiosInstance.post(path, body, {headers});
         return {
             data: response.data,
-            headers: response.headers
+            headers: response.headers,
+            status: response.status,
         };
     }
 
@@ -82,6 +84,7 @@ export class ApiClient {
         return {
             data: res.data,
             headers: res.headers,
+            status: res.status,
         };
     }
 
@@ -92,7 +95,8 @@ export class ApiClient {
         }));
         return {
             data: res.data,
-            headers: res.headers
+            headers: res.headers,
+            status: res.status,
         };
     }
 
@@ -103,7 +107,8 @@ export class ApiClient {
         }));
         return {
             data: res.data,
-            headers: res.headers
+            headers: res.headers,
+            status: res.status,
         };
     }
 }

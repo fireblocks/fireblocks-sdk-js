@@ -9,6 +9,7 @@ export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string
 
 export interface APIResponse<T> {
     data: T;
+    status?: number;
     headers?: APIResponseHeaders;
 }
 
