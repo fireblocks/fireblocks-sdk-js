@@ -10,6 +10,7 @@ In v4 we changed all the sdk response types to return the `APIResponse` object, 
 ```ts
 export interface APIResponse<T> {
     data: T; // http response body
+    status?: number; // http status code
     headers?: AxiosResponseHeaders; // http response headers
 }
 ```
