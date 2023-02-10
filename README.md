@@ -40,7 +40,7 @@ You can provide the value of this header in case you have support tickets relate
 Make sure you have the credentials for Fireblocks API Services. Otherwise, please contact Fireblocks support for further instructions on how to obtain your API credentials.
 
 #### Requirements
-- [node.js](https://nodejs.org) v6.3.1 or newer
+- [node.js](https://nodejs.org) v12 or newer
 
 #### Installation
 `npm install fireblocks-sdk --save`
