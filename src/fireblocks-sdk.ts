@@ -116,16 +116,6 @@ export class FireblocksSDK {
     public async getSupportedAssets(): Promise<APIResponse<AssetTypeResponse[]>> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
-
-    /**
-     * @deprecated this method is deprecated and will be removed in the future. Please use getVaultAccountsWithPageInfo instead.
-     * Gets all vault accounts for your tenant
-     */
-    public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<APIResponse<VaultAccountResponse[]>> {
-        const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
-        return await this.apiClient.issueGetRequest(url);
-    }
-
     /**
      * Gets a list of vault accounts per page matching the given filter or path
      * @param pagedVaultAccountsRequestFilters Filters for the first request
@@ -133,16 +123,6 @@ export class FireblocksSDK {
     public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<APIResponse<PagedVaultAccountsResponse>> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
     }
-
-    /**
-     * @deprecated Replaced by getVaultAccountById.
-     * Gets a single vault account
-     * @param vaultAccountId The vault account ID
-     */
-    public async getVaultAccount(vaultAccountId: string): Promise<APIResponse<VaultAccountResponse>> {
-        return await this.getVaultAccountById(vaultAccountId);
-    }
-
     /**
      * Gets a single vault account
      * @param vaultAccountId The vault account ID
@@ -327,14 +307,6 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest("/v1/exchange_accounts");
     }
 
-    /**
-     * @deprecated Replaced by getExchangeAccountById
-     * Gets a single exchange account by ID
-     * @param exchangeAccountId The exchange account ID
-     */
-    public async getExchangeAccount(exchangeAccountId: string): Promise<APIResponse<ExchangeResponse>> {
-        return await this.getExchangeAccount(exchangeAccountId);
-    }
 
     /**
      * Gets a single exchange account by ID
