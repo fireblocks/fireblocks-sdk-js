@@ -22,7 +22,7 @@ const exchangeAccounts: ExchangeResponse = await sdk.getExchangeAccount(exchange
 
 It should be transformed to:
 ```ts
-const {data: exchangeAccounts, responseHeaders: headers} = (await sdk.getExchangeAccount(exchangeAccountId));
+const {data: exchangeAccounts, headers} = (await sdk.getExchangeAccount(exchangeAccountId));
 ```
 
 ### `X-REQUEST-ID` Response Header
