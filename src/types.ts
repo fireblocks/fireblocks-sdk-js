@@ -7,12 +7,6 @@ export interface Web3PagedResponse<T> {
 
 export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
 
-export interface APIResponse<T> {
-    data: T;
-    status?: number;
-    headers?: APIResponseHeaders;
-}
-
 export interface VaultAccountResponse {
     id: string;
     name: string;
