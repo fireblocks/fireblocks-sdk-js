@@ -67,7 +67,7 @@ import {
     PublicKeyResponse,
     AllocateFundsResponse,
     SettleOffExchangeAccountResponse,
-    GetNFTsFilter,
+    GetNFTsFilter, TokenLink, TokenLinkPermissionEntry,
 } from "./types";
 import { AxiosProxyConfig } from "axios";
 
@@ -1342,6 +1342,30 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    public async getLinkedTokens(): Promise<TokenLink> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/token-links`);
+    }
+
+    public async getLinkedToken(linkId: string): Promise<TokenLink> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/token-links/${linkId}`);
+    }
+
+    public async linkToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/token-links`, { assetId });
+    }
+
+    public async unlinkToken(linkId: string): Promise<TokenLink> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/token-links/${linkId}`);
+    }
+
+    public async addLinkedTokenPermissions(linkId: string, permissions: TokenLinkPermissionEntry[]): Promise<TokenLink> {
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/token-links/${linkId}`, { permissions });
+    }
+
+    public async removeLinkedTokenPermissions(linkId: string, permission: TokenLinkPermissionEntry): Promise<TokenLink> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/token-links/${linkId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {

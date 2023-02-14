@@ -965,3 +965,18 @@ export enum OrderValues {
     "ASC" = "ASC",
     "DESC" = "DESC",
 }
+
+export enum TokenLinkPermission {
+    MINT = "MINT",
+    BURN = "BURN",
+}
+
+export interface TokenLinkPermissionEntry {
+    permission: TokenLinkPermission;
+    vaultAccountId: string;
+}
+export interface TokenLink {
+    id: string;
+    assetId: string;
+    permissions: TokenLinkPermissionEntry[];
+}
