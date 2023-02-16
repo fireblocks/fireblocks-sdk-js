@@ -79,5 +79,17 @@ new FireblocksSDK(privateKey, userId, serverAddress, undefined, {
 });
 ```
 
+#### Error Handling
+The SDK throws `AxiosError` upon http errors for API requests.
+
+You can read more about axios error handling [here](https://axios-http.com/docs/handling_errors).
+
+You can get more data on the Fireblocks error using the following fields:
+
+- `error.response.data.code`: The Fireblocks error code, should be provided on support tickets
+- `error.response.data.message`: Explanation of the Fireblocks error
+- `error.response.headers['x-request-id']`: The request ID correlated to the API request, should be provided on support tickets / Github issues
+
+
 
 
