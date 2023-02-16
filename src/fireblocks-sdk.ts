@@ -1344,6 +1344,30 @@ export class FireblocksSDK {
             undefined);
     }
 
+    public async createWallet(): Promise<{ walletId: string, enabled: boolean }> {
+        return await this.apiClient.issuePostRequest(
+            `/v1/wallets`,
+            {});
+    }
+
+    public async getWallet(walletId: string): Promise<{ walletId: string, enabled: boolean }> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}`,
+            undefined);
+    }
+
+    public async enableWallet(walletId: string, enabled: boolean): Promise<void> {
+        return await this.apiClient.issuePutRequest(
+            `/v1/wallets/${walletId}/enable`,
+            { enabled });
+    }
+
+    public async invokeWalletRpc(walletId: string, deviceId: string, payload: string): Promise<{ result: string } | { error: string }> {
+        return await this.apiClient.issuePostRequest(
+            `/v1/wallets/${walletId}/devices/${deviceId}/invoke`,
+            { payload });
+    }
+
     private getCommaSeparatedList(items: Array<string>): string | undefined {
         return items ? items.join(",") : undefined;
     }
