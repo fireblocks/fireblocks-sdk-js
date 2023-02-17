@@ -14,11 +14,19 @@ export class ApiClient {
             baseURL: this.apiBaseUrl,
             proxy: this.options?.proxy,
             timeout: this.options?.timeoutInMs,
-            headers: {
-                "X-API-Key": this.authProvider.getApiKey(),
+            headers: !options.useAsyncAuthProvider ? {
+                "X-API-Key": this.authProvider.getApiKey() as string,
                 "User-Agent": this.getUserAgent()
-            }
+            } : undefined
         });
+
+        if (options.useAsyncAuthProvider) {
+            this.axiosInstance.interceptors.request.use(async (config: any) => {
+                config.headers.common["X-API-Key"] = await this.authProvider.getApiKey();
+                config.headers.common["User-Agent"] = this.getUserAgent();
+                return config;
+            });
+        }
 
         if (options.customAxiosOptions?.interceptors?.response) {
             this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);
@@ -37,7 +45,7 @@ export class ApiClient {
     }
 
     public async issueGetRequestForTransactionPages(path: string): Promise<TransactionPageResponse> {
-        const token = this.authProvider.signJwt(path);
+        const token = await this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
         });
@@ -51,7 +59,7 @@ export class ApiClient {
     }
 
     public async issueGetRequest<T>(path: string): Promise<T> {
-        const token = this.authProvider.signJwt(path);
+        const token = await this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
         });
@@ -59,7 +67,7 @@ export class ApiClient {
     }
 
     public async issuePostRequest<T>(path: string, body: any, requestOptions?: RequestOptions): Promise<T> {
-        const token = this.authProvider.signJwt(path, body);
+        const token = await this.authProvider.signJwt(path, body);
         const headers: any = {"Authorization": `Bearer ${token}`};
         const idempotencyKey = requestOptions?.idempotencyKey;
         if (idempotencyKey) {
@@ -70,7 +78,7 @@ export class ApiClient {
     }
 
     public async issuePutRequest<T>(path: string, body: any): Promise<T> {
-        const token = this.authProvider.signJwt(path, body);
+        const token = await this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.put<T>(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
         }));
@@ -78,7 +86,7 @@ export class ApiClient {
     }
 
     public async issuePatchRequest<T>(path: string, body: any): Promise<T> {
-        const token = this.authProvider.signJwt(path, body);
+        const token = await this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.patch<T>(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
         }));
@@ -86,7 +94,7 @@ export class ApiClient {
     }
 
     public async issueDeleteRequest<T>(path: string): Promise<T> {
-        const token = this.authProvider.signJwt(path);
+        const token = await this.authProvider.signJwt(path);
         const res = (await this.axiosInstance.delete<T>(path, {
             headers: {"Authorization": `Bearer ${token}`}
         }));

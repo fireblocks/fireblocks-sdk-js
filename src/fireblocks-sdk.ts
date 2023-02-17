@@ -91,6 +91,7 @@ export interface SDKOptions {
           };
       }
     };
+    useAsyncAuthProvider?: boolean;
 }
 
 export class FireblocksSDK {
