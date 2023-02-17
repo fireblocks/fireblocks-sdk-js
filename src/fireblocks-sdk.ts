@@ -63,7 +63,7 @@ import {
     GetNFTsFilter,
     SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
 } from "./types";
-import { AxiosInterceptorOptions, AxiosProxyConfig, AxiosResponse } from "axios";
+import { AxiosInstance, AxiosInterceptorOptions, AxiosProxyConfig, AxiosResponse } from "axios";
 
 export * from "./types";
 
@@ -89,7 +89,12 @@ export interface SDKOptions {
               onFulfilled: (value: AxiosResponse<any, any>) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
               onRejected: (error: any) => any;
           };
-      }
+      };
+        /**
+         * Providing a custom axios instance
+         * it will override all other Axios Related configurations
+         */
+      axiosInstance?: AxiosInstance;
     };
 }
 
