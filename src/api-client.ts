@@ -10,18 +10,24 @@ export class ApiClient {
     private axiosInstance: AxiosInstance;
 
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: SDKOptions) {
-        this.axiosInstance = axios.create({
-            baseURL: this.apiBaseUrl,
-            proxy: this.options?.proxy,
-            timeout: this.options?.timeoutInMs,
-            headers: {
-                "X-API-Key": this.authProvider.getApiKey(),
-                "User-Agent": this.getUserAgent()
-            }
-        });
+        if (options.customAxiosOptions?.axiosInstance) {
+            this.axiosInstance = options.customAxiosOptions.axiosInstance;
+            this.axiosInstance.defaults.headers.common["User-Agent"] = this.getUserAgent();
+            this.axiosInstance.defaults.headers.common["X-API-Key"] = this.authProvider.getApiKey();
+        } else {
+            this.axiosInstance = axios.create({
+                baseURL: this.apiBaseUrl,
+                proxy: this.options?.proxy,
+                timeout: this.options?.timeoutInMs,
+                headers: {
+                    "X-API-Key": this.authProvider.getApiKey(),
+                    "User-Agent": this.getUserAgent()
+                }
+            });
 
-        if (options.customAxiosOptions?.interceptors?.response) {
-            this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);
+            if (options.customAxiosOptions?.interceptors?.response) {
+                this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);
+            }
         }
     }
 
