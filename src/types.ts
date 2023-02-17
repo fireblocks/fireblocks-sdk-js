@@ -383,7 +383,7 @@ export interface BlockInfo {
 export interface SignedMessageResponse {
     content: string;
     algorithm: string;
-    derivationPath: string;
+    derivationPath: number[];
     signature: {
         fullSig: string;
         r?: string;
@@ -701,7 +701,7 @@ export interface CreateTransferTicketResponse {
 
 export interface PublicKeyInfoArgs {
     algorithm?: string;
-    derivationPath?: string;
+    derivationPath?: number[];
     compressed?: boolean;
 }
 

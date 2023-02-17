@@ -876,7 +876,7 @@ export class FireblocksSDK {
             url += `?algorithm=${args.algorithm}`;
         }
         if (args.derivationPath) {
-            url += `&derivationPath=${args.derivationPath}`;
+            url += `&derivationPath=${JSON.stringify(args.derivationPath)}`;
         }
         if (args.compressed) {
             url += `&compressed=${args.compressed}`;
