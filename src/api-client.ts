@@ -14,19 +14,13 @@ export class ApiClient {
             baseURL: this.apiBaseUrl,
             proxy: this.options?.proxy,
             timeout: this.options?.timeoutInMs,
-            headers: !options.useAsyncAuthProvider ? {
-                "X-API-Key": this.authProvider.getApiKey() as string,
-                "User-Agent": this.getUserAgent()
-            } : undefined
         });
 
-        if (options.useAsyncAuthProvider) {
-            this.axiosInstance.interceptors.request.use(async (config: any) => {
-                config.headers.common["X-API-Key"] = await this.authProvider.getApiKey();
-                config.headers.common["User-Agent"] = this.getUserAgent();
-                return config;
-            });
-        }
+        this.axiosInstance.interceptors.request.use(async (config: any) => {
+            config.headers.common["X-API-Key"] = await this.authProvider.getApiKey();
+            config.headers.common["User-Agent"] = this.getUserAgent();
+            return config;
+        });
 
         if (options.customAxiosOptions?.interceptors?.response) {
             this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);

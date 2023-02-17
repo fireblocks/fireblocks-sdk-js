@@ -90,21 +90,14 @@ You can get more data on the Fireblocks error using the following fields:
 - `error.response.data.message`: Explanation of the Fireblocks error
 - `error.response.headers['x-request-id']`: The request ID correlated to the API request, should be provided on support tickets / Github issues
 
-#### Async Auth Provider
-You can supply an async auth provider instance with the following interface:
+#### Auth Provider
+You can supply an async auth provider instance that implements the following interface:
 ```ts
 export interface IAuthProvider {
-    signJwt(path: string, bodyJson?: any): Promise<string>;
+    signJwt(path: string, bodyJson?: any): string | Promise<string>;
 
-    getApiKey(): Promise<string>;
+    getApiKey(): string | Promise<string>;
 }
 ```
 
-But you need to make sure to provide sdkOptions to the constructor, with `useAsyncAuthProvider: true`
-
-For example:
-```ts
-new FireblocksSDK(privateKey, userId, serverAddress, asyncAuthProvider, {
-    useAsyncAuthProvider: true
-});
-```
+Methods can be async.
