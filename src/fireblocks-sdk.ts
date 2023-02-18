@@ -63,7 +63,7 @@ import {
     GetNFTsFilter,
     SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
 } from "./types";
-import { AxiosInterceptorOptions, AxiosProxyConfig, AxiosResponse } from "axios";
+import { AxiosProxyConfig, AxiosResponse } from "axios";
 
 export * from "./types";
 
@@ -96,7 +96,7 @@ export interface SDKOptions {
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
-    private apiClient: ApiClient;
+    private readonly apiClient: ApiClient;
 
     /**
      * Creates a new Fireblocks API Client
@@ -114,6 +114,13 @@ export class FireblocksSDK {
         }
 
         this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
+    }
+
+    /**
+     * Get the instance of ApiClient used by the FireblocksSDK
+     */
+    public getApiClient(): ApiClient {
+        return this.apiClient;
     }
 
     /**
