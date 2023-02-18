@@ -9,7 +9,7 @@ import { version as SDK_VERSION } from "../package.json";
 export class ApiClient {
     private axiosInstance: AxiosInstance;
 
-    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options: SDKOptions) {
+    constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options?: SDKOptions) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl,
             proxy: this.options?.proxy,
@@ -20,7 +20,7 @@ export class ApiClient {
             }
         });
 
-        if (options.customAxiosOptions?.interceptors?.response) {
+        if (options?.customAxiosOptions?.interceptors?.response) {
             this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);
         }
     }
