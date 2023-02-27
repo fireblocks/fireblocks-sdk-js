@@ -10,14 +10,11 @@ import {
     CancelTransactionResponse,
     ConvertExchangeAssetResponse,
     CreateTransactionResponse,
-    CreateTransferTicketArgs,
-    CreateTransferTicketResponse,
     DeallocateFundsRequest,
     DepositAddressResponse,
     EstimateFeeResponse,
     EstimateTransactionFeeResponse,
     ExchangeResponse,
-    ExecuteTermArgs,
     ExternalWalletAsset,
     FiatAccountResponse,
     GasStationInfo,
@@ -33,17 +30,14 @@ import {
     PublicKeyInfoForVaultAccountArgs,
     RequestOptions,
     ResendWebhooksResponse,
-    TermResponse,
     TransactionArguments,
     TransactionFilter,
     TransactionPageFilter,
     TransactionPageResponse,
     TransactionResponse,
-    TransferTicketResponse,
     User,
     ValidateAddressResponse,
     VaultAccountResponse,
-    VaultAccountsFilter,
     VaultAssetResponse,
     VaultBalancesFilter,
     WalletContainerResponse,
@@ -60,16 +54,16 @@ import {
     NFTOwnershipFilter,
     Token,
     TokenWithBalance,
-    APIPagedResponse,
+    Web3PagedResponse,
     CreateWalletConnectPayload,
     Web3ConnectionType,
     GetWeb3ConnectionsPayload,
     PublicKeyResponse,
     AllocateFundsResponse,
-    SettleOffExchangeAccountResponse,
     GetNFTsFilter,
+    SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
 } from "./types";
-import { AxiosProxyConfig } from "axios";
+import { AxiosProxyConfig, AxiosResponse } from "axios";
 
 export * from "./types";
 
@@ -85,12 +79,24 @@ export interface SDKOptions {
 
     /** Additional product identifier to be prepended to the User-Agent header */
     userAgent?: string;
+
+    /**
+     * Providing custom axios options including a response interceptor (https://axios-http.com/docs/interceptors)
+     */
+    customAxiosOptions?: {
+      interceptors?: {
+          response?: {
+              onFulfilled: (value: AxiosResponse<any, any>) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
+              onRejected: (error: any) => any;
+          };
+      }
+    };
 }
 
 export class FireblocksSDK {
-    private authProvider: IAuthProvider;
-    private apiBaseUrl: string;
-    private apiClient: ApiClient;
+    private readonly authProvider: IAuthProvider;
+    private readonly apiBaseUrl: string;
+    private readonly apiClient: ApiClient;
 
     /**
      * Creates a new Fireblocks API Client
@@ -111,21 +117,18 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get the instance of ApiClient used by the FireblocksSDK
+     */
+    public getApiClient(): ApiClient {
+        return this.apiClient;
+    }
+
+    /**
      * Gets all assets that are currently supported by Fireblocks
      */
     public async getSupportedAssets(): Promise<AssetTypeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
-
-    /**
-     * @deprecated this method is deprecated and will be removed in the future. Please use getVaultAccountsWithPageInfo instead.
-     * Gets all vault accounts for your tenant
-     */
-    public async getVaultAccounts(filter?: VaultAccountsFilter): Promise<VaultAccountResponse[]> {
-        const url = `/v1/vault/accounts?${queryString.stringify(filter)}`;
-        return await this.apiClient.issueGetRequest(url);
-    }
-
     /**
      * Gets a list of vault accounts per page matching the given filter or path
      * @param pagedVaultAccountsRequestFilters Filters for the first request
@@ -133,16 +136,6 @@ export class FireblocksSDK {
     public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
     }
-
-    /**
-     * @deprecated Replaced by getVaultAccountById.
-     * Gets a single vault account
-     * @param vaultAccountId The vault account ID
-     */
-    public async getVaultAccount(vaultAccountId: string): Promise<VaultAccountResponse> {
-        return await this.getVaultAccountById(vaultAccountId);
-    }
-
     /**
      * Gets a single vault account
      * @param vaultAccountId The vault account ID
@@ -265,7 +258,7 @@ export class FireblocksSDK {
      * @param connectionId The network connection's id
      * @param routingPolicy The desired routing policy
      */
-    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy) {
+    public async setNetworkConnectionRoutingPolicy(connectionId: string, routingPolicy: NetworkConnectionRoutingPolicy): Promise<void> {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_connections/${connectionId}/set_routing_policy`, body);
     }
@@ -315,7 +308,7 @@ export class FireblocksSDK {
      * @param routingPolicy The desired routing policy
      * @returns OperationSuccessResponse
      */
-    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy: NetworkIdRoutingPolicy) {
+    public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy: NetworkIdRoutingPolicy): Promise<void> {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
     }
@@ -327,14 +320,6 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest("/v1/exchange_accounts");
     }
 
-    /**
-     * @deprecated Replaced by getExchangeAccountById
-     * Gets a single exchange account by ID
-     * @param exchangeAccountId The exchange account ID
-     */
-    public async getExchangeAccount(exchangeAccountId: string): Promise<ExchangeResponse> {
-        return await this.getExchangeAccount(exchangeAccountId);
-    }
 
     /**
      * Gets a single exchange account by ID
@@ -462,14 +447,16 @@ export class FireblocksSDK {
      */
     public async getTransactionsWithPageInfo(pageFilter?: TransactionPageFilter, nextOrPreviousPath?: string): Promise<TransactionPageResponse> {
         if (pageFilter) {
-            return await this.apiClient.issueGetRequest(`/v1/transactions?${queryString.stringify(pageFilter)}`, true);
+            return await this.apiClient.issueGetRequestForTransactionPages(`/v1/transactions?${queryString.stringify(pageFilter)}`);
         } else if (nextOrPreviousPath) {
             const index = nextOrPreviousPath.indexOf("/v1/");
             const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
-            return await this.apiClient.issueGetRequest(path, true);
+            return await this.apiClient.issueGetRequestForTransactionPages(path);
         }
 
-        return {transactions: [], pageDetails: { prevPage:  "", nextPage: "" }};
+        return {
+            transactions: [], pageDetails: { prevPage:  "", nextPage: "" },
+        };
     }
 
     /**
@@ -768,58 +755,6 @@ export class FireblocksSDK {
     }
 
     /**
-     * Creates a new transfer ticket
-     */
-    public async createTransferTicket(options: CreateTransferTicketArgs, requestOptions?: RequestOptions): Promise<CreateTransferTicketResponse> {
-        return await this.apiClient.issuePostRequest("/v1/transfer_tickets", options, requestOptions);
-    }
-
-    /**
-     * Gets all transfer tickets
-     */
-    public async getTransferTickets(): Promise<TransferTicketResponse[]> {
-        return await this.apiClient.issueGetRequest("/v1/transfer_tickets");
-    }
-
-    /**
-     * Get a transfer ticket by ticket ID
-     * @param ticketId
-     */
-    public async getTransferTicketById(ticketId: string): Promise<TransferTicketResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/transfer_tickets/${ticketId}`);
-    }
-
-    /**
-     * Get a term of transfer ticket
-     * @param ticketId
-     * @param termId
-     */
-    public async getTransferTicketTerm(ticketId: string, termId: string): Promise<TermResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/transfer_tickets/${ticketId}/${termId}`);
-    }
-
-    /**
-     * Cancel the transfer ticket
-     * @param ticketId
-     * @param requestOptions
-     */
-    public async cancelTransferTicket(ticketId: string, requestOptions?: RequestOptions) {
-        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/cancel`, {}, requestOptions);
-    }
-
-    /**
-     * Executes a transaction for a single term of a transfer ticket
-     * @param ticketId
-     * @param termId
-     * @param options
-     * @param requestOptions
-     */
-    public async executeTransferTicketTerm(ticketId: string, termId: string, options: ExecuteTermArgs, requestOptions?: RequestOptions) {
-        return await this.apiClient.issuePostRequest(`/v1/transfer_tickets/${ticketId}/${termId}/transfer`,
-            options, requestOptions);
-    }
-
-    /**
      * Deletes a single internal wallet
      * @param walletId The internal wallet ID
      */
@@ -942,13 +877,13 @@ export class FireblocksSDK {
      * Get the public key information
      * @param args
      */
-    public async getPublicKeyInfo(args: PublicKeyInfoArgs) {
+    public async getPublicKeyInfo(args: PublicKeyInfoArgs): Promise<PublicKeyInformation> {
         let url = `/v1/vault/public_key_info`;
         if (args.algorithm) {
             url += `?algorithm=${args.algorithm}`;
         }
         if (args.derivationPath) {
-            url += `&derivationPath=${args.derivationPath}`;
+            url += `&derivationPath=${JSON.stringify(args.derivationPath)}`;
         }
         if (args.compressed) {
             url += `&compressed=${args.compressed}`;
@@ -1025,7 +960,7 @@ export class FireblocksSDK {
     /**
      * Drop an ETH based transaction
      */
-    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string, requestOptions?: RequestOptions) {
+    public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string, requestOptions?: RequestOptions): Promise<DropTransactionResponse> {
         const url = `/v1/transactions/${txId}/drop`;
 
         const body = {feeLevel, requestedFee};
@@ -1165,7 +1100,7 @@ export class FireblocksSDK {
         return await this.apiClient.issueDeleteRequest(`/v1/fee_payer/${baseAsset}`);
     }
 
-    private getWeb3ConnectionPath(type: Web3ConnectionType) {
+    private getWeb3ConnectionPath(type: Web3ConnectionType): string {
         const basePath = `/v1/connections`;
 
         switch (type) {
@@ -1195,7 +1130,7 @@ export class FireblocksSDK {
         sort,
         filter,
         order
-    }: GetWeb3ConnectionsPayload = {}): Promise<APIPagedResponse<Session>> {
+    }: GetWeb3ConnectionsPayload = {}): Promise<Web3PagedResponse<Session>> {
         const params = new URLSearchParams({
             ...(pageCursor && { next: pageCursor }),
             ...(pageSize && { pageSize: pageSize.toString() }),
@@ -1211,6 +1146,7 @@ export class FireblocksSDK {
      * Initiate a new web3 connection
      * @param type The type of the connection
      * @param payload The payload for creating a new web3 connection
+     * @param requestOptions
      * @param payload.vaultAccountId The vault account to link with the dapp
      * @param payload.feeLevel The fee level for the connection
      * @param payload.uri The WalletConnect URI, as provided by the dapp
@@ -1284,7 +1220,7 @@ export class FireblocksSDK {
      * @param filter.ids
      * @param filter.order
      */
-    public async getNFTs(filter: GetNFTsFilter): Promise<APIPagedResponse<Token>> {
+    public async getNFTs(filter: GetNFTsFilter): Promise<Web3PagedResponse<Token>> {
         const { pageCursor, pageSize, ids, order } = filter;
         const queryParams = {
             pageCursor,
@@ -1306,7 +1242,7 @@ export class FireblocksSDK {
      * @param filter.sort Sort by value
      * @param filter.order Order value
      */
-    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<APIPagedResponse<TokenWithBalance>> {
+    public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
             const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order } = filter;
