@@ -833,14 +833,18 @@ export interface ToCollateralTransaction {
     srcTag?: string;
 }
 
-// TODO shir consider to create 2 different transaction type (one with no dest and one with no source)
-export interface CollateralTransactionRequest {
-    transactionRequest: TransactionArguments,
-    mainExchangeAccountId: string 
+export interface AddCollateralTransactionRequest {
+    transactionRequest: TransactionArguments;
+    isSrcCollateral?: boolean;
+}
+
+export interface RemoveCollateralTransactionRequest {
+    transactionRequest: TransactionArguments;
+    isDstCollateral?: boolean;
 }
 
 export interface SettlementRequest {
-    mainExchangeAccountId: string
+    mainExchangeAccountId: string;
 }
 
 enum InitiatorType {

@@ -67,7 +67,8 @@ import {
     PublicKeyResponse,
     AllocateFundsResponse,
     SettleOffExchangeAccountResponse,
-    CollateralTransactionRequest,
+    AddCollateralTransactionRequest,
+    RemoveCollateralTransactionRequest,
     GetSettlementTransactionsResponse,
     SettlementRequest,
     SettlementResponse,
@@ -1147,7 +1148,7 @@ export class FireblocksSDK {
      * @param depositRequest 
      * @param requestOptions 
      */
-    public async addCollateral(depositRequest: CollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+    public async addCollateral(depositRequest: AddCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange/add`, depositRequest, requestOptions);
     }
 
@@ -1156,7 +1157,7 @@ export class FireblocksSDK {
      * @param withdrawRequest
      * @param requestOptions
      */
-    public async removeCollateral(withdrawRequest: CollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+    public async removeCollateral(withdrawRequest: RemoveCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange/remove`, withdrawRequest, requestOptions);
     }
 
