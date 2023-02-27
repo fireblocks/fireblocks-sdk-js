@@ -7,48 +7,59 @@ import {
   Web3ConnectionFeeLevel,
   Web3ConnectionType,
   NFTOwnershipFilter,
+  RequestOptions,
+  TransactionArguments,
 } from 'fireblocks-sdk';
 import * as fs from 'fs';
 import { transferPayload, contractPayload } from './payloads';
 
-const apiSecret = fs.readFileSync(process.env.API_SECRET_PATH_STAKING!, 'utf-8');
-const apiKeyAdmin = process.env.API_EDITOR_STAKING!;
+const apiSecret = fs.readFileSync(process.env.API_SECRET_PATH!, 'utf-8');
+const apiKey = process.env.API_ADMIN_COMMUNED!;
 
-const fireblocks = new FireblocksSDK(apiSecret, apiKeyAdmin);
+const fireblocks = new FireblocksSDK(apiSecret, apiKey);
 
 async function getFeeForAsset(assetId: string) {
   const feeResult = await fireblocks.getFeeForAsset(assetId);
   return console.log(feeResult);
 }
+// getFeeForAsset('ETH_TEST3');
 
-// getFeeForAsset('BNB_TEST');
+const estimateTransactionFee = async (payload: any) => {
+  const estimationFee = await fireblocks.estimateFeeForTransaction(payload);
+  console.log('estimationFee', estimationFee);
+};
+// estimateTransactionFee(transferPayload);
 
 const getOwnedNFTs = async (filters?: NFTOwnershipFilter) => {
   const nftData = await fireblocks.getOwnedNFTs(filters);
   return console.log(`nftData`, nftData.data);
 };
 
-// getOwnedNFTs({ vaultAccountId: '10' });
+// getOwnedNFTs({ vaultAccountIds: ['0'] });
 
 const refreshNFTMetadata = async (assetId: string) => {
   const refreshNFTMetadata = await fireblocks.refreshNFTMetadata(assetId);
   return console.log(`refreshNFTMetadata`, refreshNFTMetadata);
 };
-// refreshNFTMetadata('NFT-58137147060240427bc07eaeeb1324fee717e947');
+// refreshNFTMetadata('NFT-ff41843e3f4d5fb4a04d27c96cff0fc739076176');
 //NFT-b7483faa1a431ef83a32c3b7a84952ff6f145d32'
 
 const refreshNFTOwnershipByVault = async (
   vaultAccountId: string,
   blockchainDescriptor: string
 ) => {
-  const refreshAllMetaData = await fireblocks.refreshNFTOwnershipByVault(
-    vaultAccountId,
-    blockchainDescriptor
-  );
-  return console.log('refreshAllMetaData', refreshAllMetaData);
+  try {
+    const refreshAllMetaData = await fireblocks.refreshNFTOwnershipByVault(
+      vaultAccountId,
+      blockchainDescriptor
+    );
+    return console.log('refreshAllMetaData', refreshAllMetaData);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-// refreshNFTOwnershipByVault('1', 'ETH');
+// refreshNFTOwnershipByVault('0', 'MATIC_POLYGON');
 
 const getNFT = async (assetId: string) => {
   const dataNFT = await fireblocks.getNFT(assetId);
@@ -56,12 +67,30 @@ const getNFT = async (assetId: string) => {
 };
 // getNFT('NFT-58137147060240427bc07eaeeb1324fee717e947');
 
-const createContractCall = async (payload: any) => {
-  const txData = await fireblocks.createTransaction(payload);
-  console.log(`txData`, txData);
+const createTransaction = async (payload: any, idempotencyKey?: RequestOptions) => {
+  try {
+    const txData = await fireblocks.createTransaction(payload, idempotencyKey);
+    return console.log(`txData`, txData);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-// createContractCall(contractPayload);
+// createTransaction(transferPayload, { idempotencyKey: 'FoieringFoiering' });
+// createTransaction(transferPayload);
+
+const createVaultAsset = async (vaultAccountId: string, assetId: string) => {
+  try {
+    const createVaultAssetResponse = await fireblocks.createVaultAsset(
+      vaultAccountId,
+      assetId
+    );
+    return console.log('createVaultAssetResponse', createVaultAssetResponse);
+  } catch (error) {
+    console.error(error);
+  }
+};
+// createVaultAsset('7', 'BNB_BSC');
 
 const getVaultById = async (id: string) => {
   const vault = await fireblocks.getVaultAccountById(id);
@@ -79,79 +108,29 @@ const hideVault = async (vaultAccountId: string) => {
   const vaultAsset = await fireblocks.hideVaultAccount(vaultAccountId);
   console.log('vaultAsset', vaultAsset);
 };
-// hideVault('0');
+// hideVault('7');
 
 const unhideVault = async (vaultAccountId: string) => {
   const vaultAsset = await fireblocks.unhideVaultAccount(vaultAccountId);
   console.log('vaultAsset', vaultAsset);
 };
-// unhideVault('0');
+// unhideVault('7');
 
-const estimateFee = async (payload: any) => {
-  const estimationFee = await fireblocks.estimateFeeForTransaction(payload);
-  console.log('estimationFee', estimationFee);
+const getTransactionById = async (txId: string) => {
+  const getTransaction = await fireblocks.getTransactionById(txId);
+  return console.log(getTransaction);
 };
-// estimateFee(transferPayload);
+// getTransactionById('fb0a4b49-95f7-4fb0-bf5b-06908dd1ac78');
 
-const walletConnection = async (
-  type: Web3ConnectionType,
-  payload: CreateWalletConnectPayload
-) => {
-  const WalletConnectData = await fireblocks.createWeb3Connection(type, payload);
-  return WalletConnectData.id;
+const getAddresses = async (vaultAccountId: string, assetId: string) => {
+  const addresses = await fireblocks.getDepositAddresses(vaultAccountId, assetId);
+  console.log('addresses:', addresses);
 };
+// getAddresses('0', 'ADA_TEST');
 
-// walletConnection(Web3ConnectionType.WALLET_CONNECT, walletConnectPayload);
-
-const submitWeb3Connection = async (
-  type: Web3ConnectionType,
-  sessionId: string,
-  approve: boolean
-) => {
-  const web3Connection = await fireblocks.submitWeb3Connection(
-    type,
-    sessionId,
-    approve
-  );
-  console.log('web3Connection', web3Connection);
+const getExchange = async () => {
+  const exchangeData = await fireblocks.getExchangeAccounts();
+  return console.log(exchangeData);
 };
 
-const main = async () => {
-  const walletConnectPayload = {
-    vaultAccountId: 0,
-    feeLevel: Web3ConnectionFeeLevel.MEDIUM,
-    uri: 'wc:beeabbcc-48ca-4bae-8f4d-88d4b17973fb@1?bridge=https%3A%2F%2F5.bridge.walletconnect.org&key=ff2a757eafb613133e7512e6f9c6da6cd3421b2992319150b77111db0b8871dc',
-    chainIds: ['MATIC_POLYGON_MUMBAI'],
-  };
-
-  const walletConnectionId = await walletConnection(
-    Web3ConnectionType.WALLET_CONNECT,
-    walletConnectPayload
-  );
-
-  await submitWeb3Connection(
-    Web3ConnectionType.WALLET_CONNECT,
-    walletConnectionId,
-    true
-  );
-};
-// main();
-
-const getWeb3Connections = async () => {
-  const web3Connections = await fireblocks.getWeb3Connections();
-  console.log('web3ConnectionsApproval -->', web3Connections);
-};
-// getWeb3Connections();
-
-const removeWeb3Connection = async (type: Web3ConnectionType, sessionId: string) => {
-  const removedWeb3Connection = await fireblocks.removeWeb3Connection(
-    type,
-    sessionId
-  );
-  console.log('removedWeb3Connection', removedWeb3Connection);
-};
-
-// removeWeb3Connection(
-//   Web3ConnectionType.WALLET_CONNECT,
-//   '766cc819-ecd0-4462-b3cb-df324e448fd2'
-// );
+// getExchange();
