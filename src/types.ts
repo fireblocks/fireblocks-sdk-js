@@ -5,7 +5,7 @@ export interface Web3PagedResponse<T> {
     paging?: Paging;
 }
 
-export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+export type APIResponseHeaders = AxiosResponseHeaders & { "x-request-id"?: string };
 
 export interface VaultAccountResponse {
     id: string;
@@ -763,12 +763,12 @@ export interface PagedVaultAccountsRequestFilters {
 }
 
 export interface ExportWalletFilters {
-	date?: string;
-	assetId?: string;
-	minAmountThreshold?: string;
+    date?: string;
+    assetId?: string;
+    minAmountThreshold?: string;
     orderBy?: "ASC" | "DESC";
-	limit?: number;
-	encodedPageNum?: string
+    limit?: number;
+    encodedPageNum?: string;
 }
 
 export interface PagedVaultAccountsResponse {
@@ -882,11 +882,11 @@ export interface GetWeb3ConnectionsPayload {
 export interface CreateWeb3ConnectionResponse {
     id: string;
     sessionMetadata: {
-      appIcon?: string,
-      appId?: string,
-      appName?: string,
-      appUrl?: string,
-      appDescription?: string
+        appIcon?: string,
+        appId?: string,
+        appName?: string,
+        appUrl?: string,
+        appDescription?: string
     };
 }
 
@@ -896,7 +896,7 @@ export interface SessionMetadata {
     appName?: string;
     appUrl?: string;
     appDescription?: string;
-  }
+}
 
 export interface Session {
     id: string;
@@ -907,7 +907,7 @@ export interface Session {
     connectionType: Web3ConnectionType;
     connectionMethod?: Web3ConnectionMethod;
     sessionMetadata?: SessionMetadata;
-  }
+}
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"
