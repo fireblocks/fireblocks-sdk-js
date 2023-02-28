@@ -816,18 +816,18 @@ export interface SettlementInstructions {
     sourceTenantId: string;
     sourceAccountId: string;
     transactions: ToExchangeTransaction[] | ToCollateralTransaction[];
-};
+}
 
 export interface ToExchangeTransaction {
-    asset: string,
-    amount: string,
-    dstAddress: string,
-    dstTag: string
+    asset: string;
+    amount: string;
+    dstAddress: string;
+    dstTag: string;
 }
 
 export interface ToCollateralTransaction {
-    asset: string,
-    amount: string,
+    asset: string;
+    amount: string;
     fee?: string;
     srcAddress?: string;
     srcTag?: string;
@@ -858,8 +858,8 @@ export interface InitiatedTransactions {
 }
 
 export interface SettlementTransactionResponse {
-    txId: string,
-    status: TransactionStatus
+    txId: string;
+    status: TransactionStatus;
 }
 
 export interface SettlementResponse {

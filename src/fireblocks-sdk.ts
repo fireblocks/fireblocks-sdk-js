@@ -1145,8 +1145,8 @@ export class FireblocksSDK {
 
     /**
      * Add collateral account, create deposit request
-     * @param depositRequest 
-     * @param requestOptions 
+     * @param depositRequest
+     * @param requestOptions
      */
     public async addCollateral(depositRequest: AddCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange/add`, depositRequest, requestOptions);
@@ -1162,17 +1162,17 @@ export class FireblocksSDK {
     }
 
     /**
-     * 
-     * @param requestOptions 
+     *
+     * @param requestOptions
      */
     public async getSettlementTransactions(settlementRequest: SettlementRequest): Promise<GetSettlementTransactionsResponse> {
         return await this.apiClient.issueGetRequest(`/v1/off_exchange/settlements/transactions?mainExchangeAccountId=${settlementRequest.mainExchangeAccountId}`);
     }
 
     /**
-     * 
-     * @param settlementRequest 
-     * @param requestOptions 
+     *
+     * @param settlementRequest
+     * @param requestOptions
      */
     public async settlement(settlementRequest: SettlementRequest, requestOptions?: RequestOptions): Promise<SettlementResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange/settlements/trader`, settlementRequest, requestOptions);
