@@ -138,11 +138,11 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets a list of vault accounts per page matching the given filter or path
-     * @param pagedVaultAccountsRequestFilters Filters for the first request
+     * Gets a list of asset wallets per page matching the given filter or path
+     * @param pagedAssetWalletsRequestFilters Filters for the first request
      */
-    public async getVaultWallets(pagedVaultAccountsRequestFilters: ExportWalletFilters): Promise<PagedVaultAccountsResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/vault/asset_wallet?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
+    public async getVaultWallets(pagedAssetWalletsRequestFilters: ExportWalletFilters): Promise<PagedVaultAccountsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/asset_wallet?${queryString.stringify(pagedAssetWalletsRequestFilters)}`);
     }
     /**
      * Gets a single vault account
