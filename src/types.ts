@@ -1,3 +1,12 @@
+import { AxiosResponseHeaders } from "axios";
+
+export interface Web3PagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
+export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+
 export interface VaultAccountResponse {
     id: string;
     name: string;
@@ -374,7 +383,7 @@ export interface BlockInfo {
 export interface SignedMessageResponse {
     content: string;
     algorithm: string;
-    derivationPath: string;
+    derivationPath: number[];
     signature: {
         fullSig: string;
         r?: string;
@@ -481,12 +490,21 @@ export interface TransactionFilter {
 
 export interface NFTOwnershipFilter {
     blockchainDescriptor?: string;
-    vaultAccountId?: string;
+    vaultAccountIds?: string[];
+    collectionIds?: string[];
     ids?: string[];
     pageCursor?: string;
     pageSize?: number;
+    sort?: GetOwnedNFTsSortValues[];
+    order?: OrderValues;
 }
 
+export interface GetNFTsFilter {
+    ids: string[];
+    pageCursor?: string;
+    pageSize?: number;
+    order?: OrderValues;
+}
 
 class MediaEntity {
     url: string;
@@ -501,11 +519,6 @@ interface NFTCollection {
 
 export interface Paging {
     next: string;
-}
-
-export interface APIPagedResponse<T> {
-    data: T[];
-    paging?: Paging;
 }
 
 export interface Token {
@@ -523,6 +536,8 @@ export interface Token {
 export interface TokenWithBalance extends Token {
     balance: number;
     vaultAccountId: string;
+    ownershipStartTime: number;
+    ownershipLastUpdateTime: number;
 }
 
 export interface TransactionPageFilter {
@@ -686,7 +701,7 @@ export interface CreateTransferTicketResponse {
 
 export interface PublicKeyInfoArgs {
     algorithm?: string;
-    derivationPath?: string;
+    derivationPath?: number[];
     compressed?: boolean;
 }
 
@@ -712,6 +727,17 @@ export interface PublicKeyResponse {
     algorithm: string;
     derivationPath: number[];
     publicKey: string;
+}
+
+export interface PublicKeyInformation {
+    algorithm: string;
+    derivationPath: number[];
+    publicKey: String;
+}
+
+export interface DropTransactionResponse {
+    success: boolean;
+    transactions?: string[];
 }
 
 export interface MaxSpendableAmountResponse {
@@ -1004,4 +1030,13 @@ export interface AuditsResponse {
 export interface ISystemMessageInfo {
     type: string;
     message: string;
+}
+
+export enum GetOwnedNFTsSortValues {
+    "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
+}
+
+export enum OrderValues {
+    "ASC" = "ASC",
+    "DESC" = "DESC",
 }
