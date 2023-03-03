@@ -206,6 +206,7 @@ export interface TransactionArguments {
     amount?: number | string;
     operation?: TransactionOperation;
     fee?: number | string;
+    networkFee?: number | string;
     feeLevel?: FeeLevel;
     failOnLowFee?: boolean;
     maxFee?: string;
