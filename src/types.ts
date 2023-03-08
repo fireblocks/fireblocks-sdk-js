@@ -764,10 +764,11 @@ export interface PagedVaultAccountsRequestFilters {
 
 export interface GetVaultWalletsFilters {
     assetId?: string;
-    minAmountThreshold?: string;
+    totalAmountLargerThan?: number;
     orderBy?: "ASC" | "DESC";
     limit?: number;
-    encodedPageNum?: string;
+    before?: string;
+    after?: string;
 }
 
 export interface PagedVaultAccountsResponse {
