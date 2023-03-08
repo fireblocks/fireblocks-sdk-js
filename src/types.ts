@@ -762,6 +762,14 @@ export interface PagedVaultAccountsRequestFilters {
     after?: string;
 }
 
+export interface GetVaultWalletsFilters {
+    assetId?: string;
+    minAmountThreshold?: string;
+    orderBy?: "ASC" | "DESC";
+    limit?: number;
+    encodedPageNum?: string;
+}
+
 export interface PagedVaultAccountsResponse {
     accounts: VaultAccountResponse[];
     paging?: {
