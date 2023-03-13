@@ -762,7 +762,7 @@ export interface PagedVaultAccountsRequestFilters {
     after?: string;
 }
 
-export interface GetVaultWalletsFilters {
+export interface GetAssetWalletsFilters {
     assetId?: string;
     totalAmountLargerThan?: number;
     orderBy?: "ASC" | "DESC";
