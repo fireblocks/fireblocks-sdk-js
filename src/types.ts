@@ -782,23 +782,23 @@ export interface PagedVaultAccountsResponse {
 }
 
 export interface AssetWalletsResponse {
-	vaultId: string;
-	assetId: string;
-	available: string;
-	total: string;
-	pending: string;
-	staked: string;
-	frozen: string;
-	lockedAmount: string;
-	blockHeight: string;
-	blockHash: string;
-	creationTime: string;
+    vaultId: string;
+    assetId: string;
+    available: string;
+    total: string;
+    pending: string;
+    staked: string;
+    frozen: string;
+    lockedAmount: string;
+    blockHeight: string;
+    blockHash: string;
+    creationTime: string;
 }
 
 export interface GetAssetWalletsResponse {
-	assetWallets: AssetWalletsResponse[];
-	previousPage: string;
-	nextPage: string;
+    assetWallets: AssetWalletsResponse[];
+    previousPage: string;
+    nextPage: string;
 }
 
 export interface VaultBalancesFilter {
