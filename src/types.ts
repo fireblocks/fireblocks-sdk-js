@@ -797,8 +797,10 @@ export interface AssetWalletsResponse {
 
 export interface GetAssetWalletsResponse {
     assetWallets: AssetWalletsResponse[];
-    previousPage: string;
-    nextPage: string;
+    paging: {
+        after?: string;
+        before?: string;
+    }
 }
 
 export interface VaultBalancesFilter {
