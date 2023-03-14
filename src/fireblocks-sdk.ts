@@ -65,6 +65,7 @@ import {
     PublicKeyInformation,
     DropTransactionResponse,
     GetAssetWalletsFilters,
+    GetAssetWalletsResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -142,9 +143,9 @@ export class FireblocksSDK {
 
     /**
      * Gets a list of asset wallets per page matching the given filter or path
-     * @param pagedAssetWalletsRequestFilters Filters for the first request
+     * @param getVaultWalletsFilters Filters for the first request
      */
-    public async getAssetWallets(getVaultWalletsFilters: GetAssetWalletsFilters): Promise<PagedVaultAccountsResponse> {
+    public async getAssetWallets(getVaultWalletsFilters: GetAssetWalletsFilters): Promise<GetAssetWalletsResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/asset_wallet?${queryString.stringify(getVaultWalletsFilters)}`);
     }
 
