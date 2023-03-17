@@ -292,6 +292,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Deletes a single network profile
+     * @param networkId The network profile's id
+     * @returns NetworkIdResponse
+     */
+    public async deleteNetworkId(networkId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/network_ids/${networkId}`);
+    }
+
+    /**
      * Sets discoverability for network profile
      * @param networkId The network profile's id
      * @param isDiscoverable The desired discoverability to set
