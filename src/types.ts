@@ -529,7 +529,8 @@ export interface Token {
     description: string;
     name: string;
     media: MediaEntity[];
-    metadataURI: string;
+    metadataURI?: string;
+    cachedMetadataURI?: string;
     collection?: NFTCollection;
 }
 
