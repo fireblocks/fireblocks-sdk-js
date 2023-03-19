@@ -1,0 +1,4 @@
+# curl https://eth.llamarpc.com -X POST -H "Content-Type: application/json" --data '{"method":"eth_getTransactionByHash","params":["0xb1fac2cb5074a4eda8296faebe3b5a3c10b48947dd9a738b2fdf859be0e1fbaa"],"id":1,"jsonrpc":"2.0"}'
+
+
+curl http://52.19.46.251:8545 -X POST -H "Content-Type: application/json" --data '{"method":"eth_getTransactionByHash","params":["0xb1fac2cb5074a4eda8296faebe3b5a3c10b48947dd9a738b2fdf859be0e1fbaa"],"id":1,"jsonrpc":"2.0"}'
