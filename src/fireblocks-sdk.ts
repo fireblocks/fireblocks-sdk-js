@@ -62,6 +62,7 @@ import {
     AllocateFundsResponse,
     GetNFTsFilter,
     SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
+    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -1278,6 +1279,71 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    /**
+     * Get all tokens linked to the tenant
+     * @param limit
+     * @param offset
+     */
+    public async getLinkedTokens(limit: number = 100, offset: number = 0): Promise<TokenLink[]> {
+        const requestFilter = {
+            limit,
+            offset
+        };
+        const url = `/v1/tokenization/tokens?${queryString.stringify(requestFilter)}`;
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+
+    /**
+     * Issue a new token and link it to the tenant
+     * @param request
+     */
+    public async issueNewToken(request: IssueTokenRequest): Promise<TokenLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/`, request);
+    }
+
+    /**
+     * Get a token linked to the tenant by asset id
+     * @param assetId
+     */
+    public async getLinkedToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/${assetId}`);
+    }
+
+    /**
+     * Link a token to the tenant
+     * @param assetId
+     */
+    public async linkToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}`, {  });
+    }
+
+    /**
+     * remove a link to a token from the tenant
+     * @param assetId
+     */
+    public async unlinkToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}`);
+    }
+
+    /**
+     * Add permissions to a linked token
+     * @param assetId
+     * @param permissions
+     */
+    public async addLinkedTokenPermissions(assetId: string, permissions: TokenLinkPermissionEntry[]): Promise<TokenLink> {
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/permissions`, { permissions });
+    }
+
+    /**
+     * Remove permissions from a linked token
+     * @param assetId
+     * @param permission
+     */
+    public async removeLinkedTokenPermissions(assetId: string, permission: TokenLinkPermissionEntry): Promise<TokenLink> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {

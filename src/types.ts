@@ -980,3 +980,40 @@ export enum OrderValues {
     "ASC" = "ASC",
     "DESC" = "DESC",
 }
+
+export enum TokenLinkPermission {
+    MINT = "MINT",
+    BURN = "BURN",
+}
+
+export interface TokenLinkPermissionEntry {
+    permission: TokenLinkPermission;
+    vaultAccountId: string;
+}
+
+export interface LinkedTokenMetadata {
+    assetId: string;
+    name?: string;
+    totalSupply?: string;
+    holdersCount?: number;
+    type?: string;
+    contractAddress?: string;
+    issuerAddress?: string;
+    testnet?: boolean;
+    blockchain?: string;
+}
+export interface TokenLink {
+    id: string;
+    assetId: string;
+    assetMetadata?: LinkedTokenMetadata;
+    permissions: TokenLinkPermissionEntry[];
+}
+
+export interface IssueTokenRequest {
+    symbol: string;
+    name: string;
+    blockchainId: string;
+    ethContractAddress?: string;
+    issuerAddress?: string;
+    decimals: number;
+}
