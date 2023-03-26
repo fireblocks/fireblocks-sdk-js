@@ -1,3 +1,12 @@
+import { AxiosResponseHeaders } from "axios";
+
+export interface Web3PagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
+export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+
 export interface VaultAccountResponse {
     id: string;
     name: string;
@@ -374,7 +383,7 @@ export interface BlockInfo {
 export interface SignedMessageResponse {
     content: string;
     algorithm: string;
-    derivationPath: string;
+    derivationPath: number[];
     signature: {
         fullSig: string;
         r?: string;
@@ -497,7 +506,6 @@ export interface GetNFTsFilter {
     order?: OrderValues;
 }
 
-
 class MediaEntity {
     url: string;
     contentType: string;
@@ -513,11 +521,6 @@ export interface Paging {
     next: string;
 }
 
-export interface APIPagedResponse<T> {
-    data: T[];
-    paging?: Paging;
-}
-
 export interface Token {
     id: string;
     tokenId: string;
@@ -526,7 +529,8 @@ export interface Token {
     description: string;
     name: string;
     media: MediaEntity[];
-    metadataURI: string;
+    metadataURI?: string;
+    cachedMetadataURI?: string;
     collection?: NFTCollection;
 }
 
@@ -698,7 +702,7 @@ export interface CreateTransferTicketResponse {
 
 export interface PublicKeyInfoArgs {
     algorithm?: string;
-    derivationPath?: string;
+    derivationPath?: number[];
     compressed?: boolean;
 }
 
@@ -724,6 +728,17 @@ export interface PublicKeyResponse {
     algorithm: string;
     derivationPath: number[];
     publicKey: string;
+}
+
+export interface PublicKeyInformation {
+    algorithm: string;
+    derivationPath: number[];
+    publicKey: String;
+}
+
+export interface DropTransactionResponse {
+    success: boolean;
+    transactions?: string[];
 }
 
 export interface MaxSpendableAmountResponse {
