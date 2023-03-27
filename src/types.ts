@@ -135,6 +135,7 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     address?: string;
@@ -143,6 +144,7 @@ export interface TransferPeerPath {
 export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
@@ -597,7 +599,8 @@ export enum PeerType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
     COMPOUND = "COMPOUND",
     ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS",
-    OEC_PARTNER = "OEC_PARTNER"
+    OEC_PARTNER = "OEC_PARTNER",
+    END_USER_WALLET = "END_USER_WALLET",
 }
 
 export enum VirtualType {
