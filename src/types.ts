@@ -1,3 +1,12 @@
+import { AxiosResponseHeaders } from "axios";
+
+export interface Web3PagedResponse<T> {
+    data: T[];
+    paging?: Paging;
+}
+
+export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+
 export interface VaultAccountResponse {
     id: string;
     name: string;
@@ -126,6 +135,7 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     address?: string;
@@ -134,6 +144,7 @@ export interface TransferPeerPath {
 export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
@@ -374,7 +385,7 @@ export interface BlockInfo {
 export interface SignedMessageResponse {
     content: string;
     algorithm: string;
-    derivationPath: string;
+    derivationPath: number[];
     signature: {
         fullSig: string;
         r?: string;
@@ -497,7 +508,6 @@ export interface GetNFTsFilter {
     order?: OrderValues;
 }
 
-
 class MediaEntity {
     url: string;
     contentType: string;
@@ -513,11 +523,6 @@ export interface Paging {
     next: string;
 }
 
-export interface APIPagedResponse<T> {
-    data: T[];
-    paging?: Paging;
-}
-
 export interface Token {
     id: string;
     tokenId: string;
@@ -526,7 +531,8 @@ export interface Token {
     description: string;
     name: string;
     media: MediaEntity[];
-    metadataURI: string;
+    metadataURI?: string;
+    cachedMetadataURI?: string;
     collection?: NFTCollection;
 }
 
@@ -593,7 +599,8 @@ export enum PeerType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
     COMPOUND = "COMPOUND",
     ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS",
-    OEC_PARTNER = "OEC_PARTNER"
+    OEC_PARTNER = "OEC_PARTNER",
+    END_USER_WALLET = "END_USER_WALLET",
 }
 
 export enum VirtualType {
@@ -698,7 +705,7 @@ export interface CreateTransferTicketResponse {
 
 export interface PublicKeyInfoArgs {
     algorithm?: string;
-    derivationPath?: string;
+    derivationPath?: number[];
     compressed?: boolean;
 }
 
@@ -724,6 +731,17 @@ export interface PublicKeyResponse {
     algorithm: string;
     derivationPath: number[];
     publicKey: string;
+}
+
+export interface PublicKeyInformation {
+    algorithm: string;
+    derivationPath: number[];
+    publicKey: String;
+}
+
+export interface DropTransactionResponse {
+    success: boolean;
+    transactions?: string[];
 }
 
 export interface MaxSpendableAmountResponse {
@@ -964,4 +982,41 @@ export enum GetOwnedNFTsSortValues {
 export enum OrderValues {
     "ASC" = "ASC",
     "DESC" = "DESC",
+}
+
+export enum TokenLinkPermission {
+    MINT = "MINT",
+    BURN = "BURN",
+}
+
+export interface TokenLinkPermissionEntry {
+    permission: TokenLinkPermission;
+    vaultAccountId: string;
+}
+
+export interface LinkedTokenMetadata {
+    assetId: string;
+    name?: string;
+    totalSupply?: string;
+    holdersCount?: number;
+    type?: string;
+    contractAddress?: string;
+    issuerAddress?: string;
+    testnet?: boolean;
+    blockchain?: string;
+}
+export interface TokenLink {
+    id: string;
+    assetId: string;
+    assetMetadata?: LinkedTokenMetadata;
+    permissions: TokenLinkPermissionEntry[];
+}
+
+export interface IssueTokenRequest {
+    symbol: string;
+    name: string;
+    blockchainId: string;
+    ethContractAddress?: string;
+    issuerAddress?: string;
+    decimals: number;
 }
