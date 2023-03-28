@@ -1298,7 +1298,7 @@ export class FireblocksSDK {
             { enabled });
     }
 
-    public async invokeWalletRpc(walletId: string, deviceId: string, payload: string): Promise<{ result: string } | { error: string }> {
+    public async invokeWalletRpc(walletId: string, deviceId: string, payload: string): Promise<{ result: string } | { error: { message: string, code?: number } }> {
         return await this.apiClient.issuePostRequest(
             `/v1/wallets/${walletId}/devices/${deviceId}/invoke`,
             { payload });
