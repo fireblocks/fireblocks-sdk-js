@@ -835,25 +835,19 @@ export enum SettleResponseCode {
 }
 
 export interface GetSettlementTransactionsResponse {
-    toExchange: SettlementInstructions[];
-    toCollateral: SettlementInstructions[];
-}
-
-export interface SettlementInstructions {
-    sourceTenantId: string;
-    sourceAccountId: string;
-    transactions: ToExchangeTransaction[] | ToCollateralTransaction[];
+    toExchange: ToExchangeTransaction[];
+    toCollateral: ToCollateralTransaction[];
 }
 
 export interface ToExchangeTransaction {
-    asset: string;
+    assetId: string;
     amount: string;
     dstAddress: string;
     dstTag: string;
 }
 
 export interface ToCollateralTransaction {
-    asset: string;
+    assetId: string;
     amount: string;
     fee?: string;
     srcAddress?: string;
@@ -889,9 +883,16 @@ export interface SettlementTransactionResponse {
     status: TransactionStatus;
 }
 
+export enum ExchangeReply {
+    REJECTED = "REJECTED",
+    NOT_NEEDED = "NOT_NEEDED",
+    FAILED = "FAILED"
+}
+
 export interface SettlementResponse {
     id: string;
     initiator: InitiatorType;
+    exchangeReply?: ExchangeReply;
     fireblocksInitiatedTransactions?: InitiatedTransactions;
     exchangeRequestedTransactions?: GetSettlementTransactionsResponse;
 }
