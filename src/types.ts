@@ -834,6 +834,68 @@ export enum SettleResponseCode {
     NOTHING_TO_SETTLE = 1
 }
 
+export interface GetSettlementTransactionsResponse {
+    toExchange: ToExchangeTransaction[];
+    toCollateral: ToCollateralTransaction[];
+}
+
+export interface ToExchangeTransaction {
+    assetId: string;
+    amount: string;
+    dstAddress: string;
+    dstTag: string;
+}
+
+export interface ToCollateralTransaction {
+    assetId: string;
+    amount: string;
+    fee?: string;
+    srcAddress?: string;
+    srcTag?: string;
+}
+
+export interface AddCollateralTransactionRequest {
+    transactionRequest: TransactionArguments;
+    isSrcCollateral?: boolean;
+}
+
+export interface RemoveCollateralTransactionRequest {
+    transactionRequest: TransactionArguments;
+    isDstCollateral?: boolean;
+}
+
+export interface SettlementRequest {
+    mainExchangeAccountId: string;
+}
+
+enum InitiatorType {
+    EXCHANGE = "EXCHANGE",
+    TRADER = "TRADER"
+}
+
+export interface InitiatedTransactions {
+    toExchange: SettlementTransactionResponse[];
+    toCollateral: SettlementTransactionResponse[];
+}
+
+export interface SettlementTransactionResponse {
+    txId: string;
+    status: TransactionStatus;
+}
+
+export enum ExchangeReply {
+    REJECTED = "REJECTED",
+    NOT_NEEDED = "NOT_NEEDED",
+    FAILED = "FAILED"
+}
+
+export interface SettlementResponse {
+    id: string;
+    initiator: InitiatorType;
+    exchangeReply?: ExchangeReply;
+    fireblocksInitiatedTransactions?: InitiatedTransactions;
+    exchangeRequestedTransactions?: GetSettlementTransactionsResponse;
+}
 
 export interface SetFeePayerConfiguration {
     feePayerAccountId: string;

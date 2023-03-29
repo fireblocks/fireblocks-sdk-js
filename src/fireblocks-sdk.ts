@@ -60,9 +60,18 @@ import {
     GetWeb3ConnectionsPayload,
     PublicKeyResponse,
     AllocateFundsResponse,
+    SettleOffExchangeAccountResponse,
+    AddCollateralTransactionRequest,
+    RemoveCollateralTransactionRequest,
+    GetSettlementTransactionsResponse,
+    SettlementRequest,
+    SettlementResponse,
     GetNFTsFilter,
-    SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
-    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest,
+    PublicKeyInformation,
+    DropTransactionResponse,
+    TokenLink, 
+    TokenLinkPermissionEntry, 
+    IssueTokenRequest,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -1075,6 +1084,40 @@ export class FireblocksSDK {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
     }
 
+    /**
+     * Add collateral account, create deposit request
+     * @param depositRequest
+     * @param requestOptions
+     */
+    public async addCollateral(depositRequest: AddCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/add`, depositRequest, requestOptions);
+    }
+
+    /**
+     * Remove collateral account, create withdraw request
+     * @param withdrawRequest
+     * @param requestOptions
+     */
+    public async removeCollateral(withdrawRequest: RemoveCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/remove`, withdrawRequest, requestOptions);
+    }
+
+    /**
+     *
+     * @param requestOptions
+     */
+    public async getSettlementTransactions(settlementRequest: SettlementRequest): Promise<GetSettlementTransactionsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange/settlements/transactions?mainExchangeAccountId=${settlementRequest.mainExchangeAccountId}`);
+    }
+
+    /**
+     *
+     * @param settlementRequest
+     * @param requestOptions
+     */
+    public async settlement(settlementRequest: SettlementRequest, requestOptions?: RequestOptions): Promise<SettlementResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/settlements/trader`, settlementRequest, requestOptions);
+    }
     /**
      * Set Fee Payer configuration
      * @param feePayerConfiguration
