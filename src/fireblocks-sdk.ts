@@ -69,11 +69,13 @@ import {
     GetNFTsFilter,
     PublicKeyInformation,
     DropTransactionResponse,
-    TokenLink, 
-    TokenLinkPermissionEntry, 
-    IssueTokenRequest,
+    TokenLink,
+    TokenLinkPermissionEntry,
+    IssueTokenRequest, TravelRuleOptions,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
+import { PIIEncryption } from "./pii-client";
+import util from "util";
 
 export * from "./types";
 
@@ -101,12 +103,18 @@ export interface SDKOptions {
           };
       }
     };
+
+    /**
+     * TravelRule Provider options to initialize PII Client for PII encryption
+     */
+    travelRuleOptions: TravelRuleOptions;
 }
 
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
+    private piiClient: PIIEncryption;
 
     /**
      * Creates a new Fireblocks API Client
@@ -124,6 +132,10 @@ export class FireblocksSDK {
         }
 
         this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
+
+        if (sdkOptions?.travelRuleOptions) {
+            this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions)
+        }
     }
 
     /**
@@ -747,6 +759,11 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        if (transactionArguments?.travelRuleMessage) {
+            const transactionArgumentsPiiData = this.piiClient.hybridEncode(transactionArguments)
+            return await this.apiClient.issuePostRequest("/v1/transactions", transactionArgumentsPiiData, requestOptions);
+        }
+
         return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
     }
 

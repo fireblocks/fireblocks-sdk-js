@@ -224,8 +224,31 @@ export interface TransactionArguments {
     treatAsGrossAmount?: boolean;
     forceSweep?: boolean;
     feePayerInfo?: TransactionArgumentsFeePayerInfo;
+    travelRuleMessage?: TravelRule;
 }
 
+export interface TravelRule {
+    originatorVASPdid: string;
+    beneficiaryVASPdid: string;
+    originator?: any;
+    beneficiary?: any;
+    pii?: any;
+}
+
+export interface TravelRuleOptions {
+    clientId: string;
+    clientSecret: string;
+    authURL?: string;
+    audience?: string;
+    audiencePII?: string;
+
+    baseURL?: string;
+    baseURLPII?: string;
+
+    kmsSecretKey?: string;
+    jsonDidKey?: string;
+    jsonBeneficiaryDidKey?: string;
+}
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",
