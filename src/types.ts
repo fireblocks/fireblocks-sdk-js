@@ -1043,6 +1043,11 @@ export enum OrderValues {
     "DESC" = "DESC",
 }
 
+export enum NFTOwnershipStatus {
+    "LISTED" = "LISTED",
+    "ARCHIVED" = "ARCHIVED",
+}
+
 export enum TokenLinkPermission {
     MINT = "MINT",
     BURN = "BURN",

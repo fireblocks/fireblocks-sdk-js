@@ -69,9 +69,10 @@ import {
     GetNFTsFilter,
     PublicKeyInformation,
     DropTransactionResponse,
-    TokenLink, 
-    TokenLinkPermissionEntry, 
+    TokenLink,
+    TokenLinkPermissionEntry,
     IssueTokenRequest,
+    NFTOwnershipStatus,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -1311,6 +1312,16 @@ export class FireblocksSDK {
      */
     public async refreshNFTMetadata(id: string): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
+    }
+
+    /**
+     *
+     * Update NFT ownership status for specific token.
+     * @param id
+     * @param status
+     */
+    public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
     }
 
     /**
