@@ -75,7 +75,6 @@ import {
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
-import util from "util";
 
 export * from "./types";
 
@@ -760,7 +759,7 @@ export class FireblocksSDK {
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
         if (transactionArguments?.travelRuleMessage) {
-            const transactionArgumentsPiiData = this.piiClient.hybridEncode(transactionArguments)
+            const transactionArgumentsPiiData = await this.piiClient.hybridEncode(transactionArguments)
             return await this.apiClient.issuePostRequest("/v1/transactions", transactionArgumentsPiiData, requestOptions);
         }
 
