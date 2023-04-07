@@ -1316,9 +1316,9 @@ export class FireblocksSDK {
 
     /**
      *
-     * Update NFT ownership status for specific token.
-     * @param id
-     * @param status
+     * Update NFT ownership status for specific token
+     * @param id NFT asset id
+     * @param status Status for update
      */
     public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
