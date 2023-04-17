@@ -362,6 +362,7 @@ export interface TransferPeerPathResponse {
     subType?: string;
     virtualType?: VirtualType;
     virtualId?: string;
+    walletId?: string;
 }
 
 export interface AuthorizationInfo {
