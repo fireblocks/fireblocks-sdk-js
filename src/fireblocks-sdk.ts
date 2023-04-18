@@ -325,6 +325,17 @@ export class FireblocksSDK {
     }
 
     /**
+     * Sets network profile name
+     * @param networkId The network profile's id
+     * @param name The desired network profile's name
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdName(networkId: string, name: string): Promise<void> {
+        const body = { name };
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_name`, body);
+    }
+
+    /**
      * Gets all exchange accounts for your tenant
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
