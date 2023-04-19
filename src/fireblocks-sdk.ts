@@ -1272,14 +1272,16 @@ export class FireblocksSDK {
      * @param filter.pageCursor
      * @param filter.pageSize
      * @param filter.ids
+     * @param filter.sort
      * @param filter.order
      */
     public async getNFTs(filter: GetNFTsFilter): Promise<Web3PagedResponse<Token>> {
-        const { pageCursor, pageSize, ids, order } = filter;
+        const { pageCursor, pageSize, ids, sort, order } = filter;
         const queryParams = {
             pageCursor,
             pageSize,
             ids: this.getCommaSeparatedList(ids),
+            sort: this.getCommaSeparatedList(sort),
             order,
         };
 

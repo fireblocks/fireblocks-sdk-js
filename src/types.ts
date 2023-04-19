@@ -503,6 +503,7 @@ export interface GetNFTsFilter {
     ids: string[];
     pageCursor?: string;
     pageSize?: number;
+    sort?: GetNFTsSortValues[];
     order?: OrderValues;
 }
 
@@ -1039,8 +1040,15 @@ export interface ISystemMessageInfo {
     message: string;
 }
 
+export enum GetNFTsSortValues {
+    "collection.name" = "collection.name",
+    "name" = "name",
+}
+
 export enum GetOwnedNFTsSortValues {
     "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
+    "name" = "name",
+    "collection.name" = "collection.name",
 }
 
 export enum OrderValues {
