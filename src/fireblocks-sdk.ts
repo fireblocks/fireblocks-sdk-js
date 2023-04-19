@@ -133,7 +133,7 @@ export class FireblocksSDK {
         this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
 
         if (sdkOptions?.travelRuleOptions) {
-            this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions)
+            this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
         }
     }
 
