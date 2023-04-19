@@ -838,6 +838,11 @@ export interface MaxSpendableAmountResponse {
     maxSpendableAmount: string;
 }
 
+export interface MaxBip44IndexUsedResponse {
+    maxBip44AddressIndexUsed?: number;
+    maxBip44ChangeAddressIndexUsed?: number;
+}
+
 export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;

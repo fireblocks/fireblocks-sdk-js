@@ -21,6 +21,7 @@ import {
     GenerateAddressResponse,
     InternalWalletAsset,
     MaxSpendableAmountResponse,
+    MaxBip44IndexUsedResponse,
     NetworkConnectionResponse,
     OffExchangeEntityResponse,
     OperationSuccessResponse,
@@ -1008,6 +1009,15 @@ export class FireblocksSDK {
         if (manualSigning) {
             url += `?manualSigning=${manualSigning}`;
         }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Get maximum BIP44 index used in deriving addresses or in change addresses
+     */
+    public async getMaxBip44IndexUsed(vaultAccountId: string, assetId: string): Promise<MaxBip44IndexUsedResponse> {
+        const url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_bip44_index_used`;
 
         return await this.apiClient.issueGetRequest(url);
     }
