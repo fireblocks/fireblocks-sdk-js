@@ -1420,18 +1420,33 @@ export class FireblocksSDK {
         return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
     }
 
-    public async validateTravelRuleTransaction(travelRuleMessage: ValidateTravelRuleVaspInfo): Promise<any> {
-        return await this.apiClient.issuePostRequest(`/v1//screening/travel_rule/transaction/validate`, travelRuleMessage);
+    /**
+     * Validate VASP details for travel rule compliance
+     * @param travelRuleMessageVaspInfo
+     */
+    public async validateTravelRuleTransaction(travelRuleMessageVaspInfo: ValidateTravelRuleVaspInfo): Promise<any> {
+        return await this.apiClient.issuePostRequest(`/v1//screening/travel_rule/transaction/validate`, travelRuleMessageVaspInfo);
     }
 
+    /**
+     * Validate Travel Rule transaction and PII data
+     * @param travelRuleMessage
+     */
     public async validateFullTravelRuleTransaction(travelRuleMessage: ValidateCreateTravelRuleTransaction): Promise<any> {
         return await this.apiClient.issuePostRequest(`/v1//screening/travel_rule/transaction/validate/full`, travelRuleMessage);
     }
 
+    /**
+     * Get VASP details for travel rule compliance
+     * @param did
+     */
     public async getTravelRuleVASPDetails(did: string): Promise<any> {
         return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp/${did}`);
     }
 
+    /**
+     * Get VASP library for travel rule compliance
+     */
     public async getAllTravelRuleVASPs(): Promise<any> {
         return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp`);
     }
