@@ -227,6 +227,76 @@ export interface TransactionArguments {
     travelRuleMessage?: TravelRule;
 }
 
+type OwnershipProof = {
+    type: string;
+    proof: string;
+};
+
+enum AddressTypeCode {
+    HOME = "HOME",
+    BIZZ = "BIZZ",
+    GEOG = "GEOG"
+}
+
+type Address = {
+    addressType?: AddressTypeCode;
+    department?: string;
+    subDepartment?: string;
+    streetName?: string;
+    buildingNumber?: string;
+    buildingName?: string;
+    floor?: string;
+    postBox?: string;
+    room?: string;
+    postCode?: string;
+    townName?: string;
+    townLocationName?: string;
+    districtName?: string;
+    countrySubDivision?: string;
+    addressLine?: string[];
+    country?: string;
+};
+
+export interface ValidateTravelRuleVaspInfo {
+    transactionAsset: string;
+    destination: string;
+    transactionAmount: string;
+    originatorVASPdid: string;
+    originatorEqualsBeneficiary: boolean;
+    beneficiaryVASPdid?: string;
+    beneficiaryVASPname?: string;
+    beneficiaryName?: string;
+    beneficiaryAccountNumber?: string;
+    beneficiaryAddress?: Address;
+    beneficiaryProof?: OwnershipProof;
+    travelRuleBehavior?: boolean;
+}
+
+export interface ValidateCreateTravelRuleTransaction {
+    transactionAsset: string;
+    transactionAmount: string;
+    originatorDid?: string;
+    beneficiaryDid?: string;
+    originatorVASPdid: string;
+    beneficiaryVASPdid?: string;
+    beneficiaryVASPname?: string;
+    transactionBlockchainInfo?: {
+        origin?: string;
+        destination?: string;
+        txHash?: string;
+    };
+    originator?: any;
+    beneficiary?: any;
+    pii?: any;
+    pii_url?: string;
+    protocol?: ["TRLight", "TRP", "OpenVASP"];
+    notificationEmail?: string;
+    originatorProof?: OwnershipProof;
+    beneficiaryProof?: OwnershipProof;
+    skipBeneficiaryDataValidation?: boolean;
+}
+
+
 export interface TravelRule {
     originatorVASPdid: string;
     beneficiaryVASPdid: string;
@@ -247,7 +317,7 @@ export interface TravelRuleOptions {
 
     kmsSecretKey?: string;
     jsonDidKey?: string;
-    jsonBeneficiaryDidKey?: string;
+    beneficiaryDidKey?: string;
 }
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",

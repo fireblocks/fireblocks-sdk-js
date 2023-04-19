@@ -46,8 +46,8 @@ export class PIIEncryption {
             originator: travelRuleMessage.originator,
             beneficiary: travelRuleMessage.beneficiary,
         };
-        const { jsonBeneficiaryDidKey, jsonDidKey, kmsSecretKey } = this.config;
-        const counterpartyDIDKey = jsonBeneficiaryDidKey || undefined;
+        const { beneficiaryDidKey, jsonDidKey, kmsSecretKey } = this.config;
+        const counterpartyDIDKey = beneficiaryDidKey || undefined;
 
         let piiIvms;
         let agent;
