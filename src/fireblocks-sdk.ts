@@ -553,8 +553,8 @@ export class FireblocksSDK {
      * @param txId The transaction id to cancel
      * @param requestOptions
      */
-    public async cancelTransactionById(txId: string, requestOptions?: RequestOptions): Promise<CancelTransactionResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, {}, requestOptions);
+    public async cancelTransactionById(txId: string, requestOptions?: RequestOptions, walletId?: string): Promise<CancelTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, { walletId }, requestOptions);
     }
 
     /**
