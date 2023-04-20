@@ -21,6 +21,7 @@ import {
     GenerateAddressResponse,
     InternalWalletAsset,
     MaxSpendableAmountResponse,
+    MaxBip44IndexUsedResponse,
     NetworkConnectionResponse,
     OffExchangeEntityResponse,
     OperationSuccessResponse,
@@ -72,6 +73,7 @@ import {
     TokenLink,
     TokenLinkPermissionEntry,
     IssueTokenRequest,
+    NFTOwnershipStatus,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -992,6 +994,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get maximum BIP44 index used in deriving addresses or in change addresses
+     */
+    public async getMaxBip44IndexUsed(vaultAccountId: string, assetId: string): Promise<MaxBip44IndexUsedResponse> {
+        const url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_bip44_index_used`;
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
      * Get all vault assets balance overview
      */
     public async getVaultAssetsBalance(filter: VaultBalancesFilter): Promise<AssetResponse[]> {
@@ -1312,6 +1323,16 @@ export class FireblocksSDK {
      */
     public async refreshNFTMetadata(id: string): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
+    }
+
+    /**
+     *
+     * Update NFT ownership status for specific token
+     * @param id NFT asset id
+     * @param status Status for update
+     */
+    public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
     }
 
     /**

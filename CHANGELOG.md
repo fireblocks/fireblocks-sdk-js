@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v4.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.0.0...v4.1.0)
+
+> 16 April 2023
+
+- added getMaxBip44IndexUsed [`#161`](https://github.com/fireblocks/fireblocks-sdk-js/pull/161)
+
 ### [v4.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.1.4...v4.0.0)
 
 > 18 February 2023
 
-- fix bug - options is optional in ApiClient [`92d8ce6`](https://github.com/fireblocks/fireblocks-sdk-js/commit/92d8ce6611e3d6d0a6e4d7e4c21c3794438317eb)
+- Correcting derivation path type [`#108`](https://github.com/fireblocks/fireblocks-sdk-js/pull/108)
+- feat: add support for axios response interceptor, remove deprecated methods [`#141`](https://github.com/fireblocks/fireblocks-sdk-js/pull/141)
 
 #### [v3.1.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.1.3...v3.1.4)
 
