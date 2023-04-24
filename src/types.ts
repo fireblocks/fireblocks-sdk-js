@@ -232,14 +232,14 @@ export type OwnershipProof = {
     proof: string;
 };
 
-export enum TravekRuleAddressTypeCode {
+export enum TravelRuleAddressTypeCode {
     HOME = "HOME",
     BIZZ = "BIZZ",
     GEOG = "GEOG"
 }
 
 type TravelRulePersonAddress = {
-    addressType?: TravekRuleAddressTypeCode;
+    addressType?: TravelRuleAddressTypeCode;
     department?: string;
     subDepartment?: string;
     streetName?: string;
