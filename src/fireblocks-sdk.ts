@@ -74,10 +74,8 @@ import {
     TokenLinkPermissionEntry,
     IssueTokenRequest,
     TravelRuleOptions,
-    TravelRule,
-    ValidateTravelRuleTransaction,
     ValidateTravelRuleVaspInfo,
-    ValidateCreateTravelRuleTransaction,
+    ValidateCreateTravelRuleTransaction, TravelRuleVasp, ValidateTravelRuleResult, ValidateFullTravelRuleResult,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -765,8 +763,7 @@ export class FireblocksSDK {
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
         if (transactionArguments?.travelRuleMessage) {
-            const transactionArgumentsPiiData = await this.piiClient.hybridEncode(transactionArguments);
-            return await this.apiClient.issuePostRequest("/v1/transactions", transactionArgumentsPiiData, requestOptions);
+            transactionArguments = await this.piiClient.hybridEncode(transactionArguments);
         }
 
         return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
@@ -1424,30 +1421,30 @@ export class FireblocksSDK {
      * Validate VASP details for travel rule compliance
      * @param travelRuleMessageVaspInfo
      */
-    public async validateTravelRuleTransaction(travelRuleMessageVaspInfo: ValidateTravelRuleVaspInfo): Promise<any> {
-        return await this.apiClient.issuePostRequest(`/v1//screening/travel_rule/transaction/validate`, travelRuleMessageVaspInfo);
+    public async validateTravelRuleTransaction(travelRuleMessageVaspInfo: ValidateTravelRuleVaspInfo): Promise<ValidateTravelRuleResult> {
+        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate`, travelRuleMessageVaspInfo);
     }
 
     /**
      * Validate Travel Rule transaction and PII data
      * @param travelRuleMessage
      */
-    public async validateFullTravelRuleTransaction(travelRuleMessage: ValidateCreateTravelRuleTransaction): Promise<any> {
-        return await this.apiClient.issuePostRequest(`/v1//screening/travel_rule/transaction/validate/full`, travelRuleMessage);
+    public async validateFullTravelRuleTransaction(travelRuleMessage: ValidateCreateTravelRuleTransaction): Promise<ValidateFullTravelRuleResult> {
+        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate/full`, travelRuleMessage);
     }
 
     /**
      * Get VASP details for travel rule compliance
      * @param did
      */
-    public async getTravelRuleVASPDetails(did: string): Promise<any> {
+    public async getTravelRuleVASPDetails(did: string): Promise<TravelRuleVasp> {
         return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp/${did}`);
     }
 
     /**
      * Get VASP library for travel rule compliance
      */
-    public async getAllTravelRuleVASPs(): Promise<any> {
+    public async getAllTravelRuleVASPs(): Promise<TravelRuleVasp[]> {
         return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp`);
     }
 
