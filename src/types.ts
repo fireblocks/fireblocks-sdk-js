@@ -536,7 +536,7 @@ export interface Token {
 }
 
 export interface TokenWithBalance extends Token {
-    balance: number;
+    balance: string;
     vaultAccountId: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
