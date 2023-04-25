@@ -73,6 +73,7 @@ import {
     TokenLink,
     TokenLinkPermissionEntry,
     IssueTokenRequest,
+    NFTOwnershipStatus,
     TravelRuleOptions,
     ValidateTravelRuleVaspInfo,
     ValidateCreateTravelRuleTransaction, TravelRuleVasp, ValidateTravelRuleResult, ValidateFullTravelRuleResult,
@@ -1317,7 +1318,7 @@ export class FireblocksSDK {
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status } = filter;
             const requestFilter = {
                 vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
@@ -1327,6 +1328,7 @@ export class FireblocksSDK {
                 ids: this.getCommaSeparatedList(ids),
                 sort: this.getCommaSeparatedList(sort),
                 order,
+                status,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
@@ -1339,6 +1341,16 @@ export class FireblocksSDK {
      */
     public async refreshNFTMetadata(id: string): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
+    }
+
+    /**
+     *
+     * Update NFT ownership status for specific token
+     * @param id NFT asset id
+     * @param status Status for update
+     */
+    public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
     }
 
     /**

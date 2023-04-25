@@ -756,6 +756,7 @@ export interface NFTOwnershipFilter {
     pageSize?: number;
     sort?: GetOwnedNFTsSortValues[];
     order?: OrderValues;
+    status?: NFTOwnershipStatus;
 }
 
 export interface GetNFTsFilter {
@@ -794,7 +795,7 @@ export interface Token {
 }
 
 export interface TokenWithBalance extends Token {
-    balance: number;
+    balance: string;
     vaultAccountId: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
@@ -1305,6 +1306,11 @@ export enum GetOwnedNFTsSortValues {
 export enum OrderValues {
     "ASC" = "ASC",
     "DESC" = "DESC",
+}
+
+export enum NFTOwnershipStatus {
+    "LISTED" = "LISTED",
+    "ARCHIVED" = "ARCHIVED",
 }
 
 export enum TokenLinkPermission {
