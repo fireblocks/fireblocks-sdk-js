@@ -1041,14 +1041,14 @@ export interface ISystemMessageInfo {
 }
 
 export enum GetNFTsSortValues {
-    "collection.name" = "collection.name",
+    "collectionName" = "collection.name",
     "name" = "name",
 }
 
 export enum GetOwnedNFTsSortValues {
     "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
     "name" = "name",
-    "collection.name" = "collection.name",
+    "collectionName" = "collection.name",
 }
 
 export enum OrderValues {
