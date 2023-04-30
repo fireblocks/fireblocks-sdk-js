@@ -1304,6 +1304,51 @@ export class FireblocksSDK {
             { payload });
     }
 
+    public async createWalletAccount(walletId: string): Promise<{
+        walletId: string;
+        id: number;
+    }> {
+        return await this.apiClient.issuePostRequest(
+            `/v1/wallets/${walletId}/accounts`,
+            {});
+    }
+
+    public async getWalletAccounts(walletId: string): Promise<{
+        walletId: string;
+        id: number;
+    }[]> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}/accounts`);
+    }
+
+    public async getWalletAccount(walletId: string, accountId: number): Promise<{
+        walletId: string;
+        id: number;
+    }> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}/accounts/${accountId}`);
+    }
+
+    public async getWalletAssets(walletId: string, accountId: number): Promise<AssetResponse[]> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets`);
+    }
+
+    public async getWalletAsset(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}`);
+    }
+
+    public async activateWalletAsset(walletId: string, accountId: number, assetId: string): Promise<DepositAddressResponse> {
+        return await this.apiClient.issuePostRequest(
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}`, {});
+    }
+
+    public async getWalletAssetAddresses(walletId: string, accountId: number, assetId: string): Promise<DepositAddressResponse[]> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}/addresses`);
+    }
+
     /**
      * Get all tokens linked to the tenant
      * @param limit
