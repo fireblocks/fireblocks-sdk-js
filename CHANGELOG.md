@@ -2,11 +2,20 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v4.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.1.0...v4.2.0)
+
+> 27 April 2023
+
+- Add NFT collection and token name sorting [`#163`](https://github.com/fireblocks/fireblocks-sdk-js/pull/163)
+
 #### [v4.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.0.0...v4.1.0)
 
 > 16 April 2023
 
 - added getMaxBip44IndexUsed [`#161`](https://github.com/fireblocks/fireblocks-sdk-js/pull/161)
+- Off exchange v2 [`#154`](https://github.com/fireblocks/fireblocks-sdk-js/pull/154)
+- add tokenization endpoints [`#145`](https://github.com/fireblocks/fireblocks-sdk-js/pull/145)
+- Add cachedMetadataURI to tokens endpoint response [`#151`](https://github.com/fireblocks/fireblocks-sdk-js/pull/151)
 
 ### [v4.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.1.4...v4.0.0)
 
