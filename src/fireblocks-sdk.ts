@@ -111,7 +111,7 @@ export interface SDKOptions {
     /**
      * TravelRule Provider options to initialize PII Client for PII encryption
      */
-    travelRuleOptions: TravelRuleOptions;
+    travelRuleOptions?: TravelRuleOptions;
 }
 
 export class FireblocksSDK {

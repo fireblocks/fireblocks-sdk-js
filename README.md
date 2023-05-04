@@ -62,7 +62,7 @@ interface SDKOptions {
     userAgent?: string;
     
     /** TravelRule Provider options to initialize PII Client for PII encryption */
-    travelRuleOptions: TravelRuleOptions;
+    travelRuleOptions?: TravelRuleOptions;
 }
 ```
 
