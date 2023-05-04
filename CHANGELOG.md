@@ -2,11 +2,20 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+### [v5.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.2.0...v5.0.0)
+
+> 4 May 2023
+
+- Add Travel Rule message to Transaction request and PII Encryption [`#157`](https://github.com/fireblocks/fireblocks-sdk-js/pull/157)
+
 #### [v4.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.1.0...v4.2.0)
 
 > 27 April 2023
 
 - Add NFT collection and token name sorting [`#163`](https://github.com/fireblocks/fireblocks-sdk-js/pull/163)
+- Change balance to string in nft token ownership api [`#155`](https://github.com/fireblocks/fireblocks-sdk-js/pull/155)
+- add status filter to getOwnedNFTs [`#159`](https://github.com/fireblocks/fireblocks-sdk-js/pull/159)
+- Add update NFT ownership status endpoint [`#158`](https://github.com/fireblocks/fireblocks-sdk-js/pull/158)
 
 #### [v4.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.0.0...v4.1.0)
 
