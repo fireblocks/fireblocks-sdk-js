@@ -1,4 +1,4 @@
-## V4 Migration
+## v4 Migration
 ### `X-REQUEST-ID` Response Header
 Using v4 you can now use the response header `x-request-id` which correlates the request to the Fireblocks operation.
 

@@ -1,19 +1,24 @@
 ## The Official Javascript & Typescript SDK for Fireblocks API
 [![npm version](https://badge.fury.io/js/fireblocks-sdk.svg)](https://badge.fury.io/js/fireblocks-sdk)
 
+> The current version of the SDK has changed the minimum supported Node.js version from v12 to v16.
+> 
+> Versions older than v16 are no longer maintained by the Node.js community and are considered EOL.
+
+
 ### About
 This repository contains the official Javascript & Typescript SDK for Fireblocks API.
 For the complete API reference, go to [API reference](https://docs.fireblocks.com/api/swagger-ui/).
 
-## V4 Migration
-Please read the [following](./docs/V4-MIGRATION.md) guide for migration
+## v4 Migration
+Please read the [following guide](./docs/V4-MIGRATION.md) for migration.
 
 ## Usage
 #### Before You Begin
 Make sure you have the credentials for Fireblocks API Services. Otherwise, please contact Fireblocks support for further instructions on how to obtain your API credentials.
 
 #### Requirements
-- [node.js](https://nodejs.org) v12 or newer
+- [Node.js](https://nodejs.org) v16 or higher.
 
 #### Installation
 `npm install fireblocks-sdk --save`
@@ -55,6 +60,9 @@ interface SDKOptions {
     
     /** Additional product identifier to be prepended to the User-Agent header */
     userAgent?: string;
+    
+    /** TravelRule Provider options to initialize PII Client for PII encryption */
+    travelRuleOptions: TravelRuleOptions;
 }
 ```
 
