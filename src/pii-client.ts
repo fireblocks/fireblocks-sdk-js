@@ -3,7 +3,7 @@ import PIIsdk, {
     initAgent,
     PIIEncryptionMethod,
 } from "@notabene/pii-sdk";
-import { TransactionArguments, TravelRuleOptions } from "./types";
+import { TransactionArguments, TravelRule, TravelRuleOptions } from "./types";
 import * as util from "util";
 
 const requiredFields = [
@@ -71,11 +71,20 @@ export class PIIEncryption {
             throw new Error(`Failed to generate PII fields error: ${errorMessage}. Details: ${errorDetails}`);
         }
 
+        transaction.travelRuleMessage = this.travelRuleMessageHandler(travelRuleMessage, piiIvms);
+
+        return transaction;
+    }
+
+    private travelRuleMessageHandler(travelRuleMessage: TravelRule, piiIvms: any): TravelRule {
         travelRuleMessage.beneficiary = piiIvms.beneficiary;
         travelRuleMessage.originator = piiIvms.originator;
 
-        transaction.travelRuleMessage = travelRuleMessage;
+        travelRuleMessage.beneficiary = {
+            originatorPersons: piiIvms.beneficiary.beneficairyPersons,
+            accountNumber: piiIvms.beneficiary.accountNumber,
+        };
 
-        return transaction;
+        return travelRuleMessage;
     }
 }

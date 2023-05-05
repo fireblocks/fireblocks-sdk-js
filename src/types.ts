@@ -313,6 +313,7 @@ interface PII {
 }
 
 interface TROriginator {
+    beneficairyPersons?: TROriginatorPerson[];
     originatorPersons?: TROriginatorPerson[];
     accountNumber?: string[];
 }
