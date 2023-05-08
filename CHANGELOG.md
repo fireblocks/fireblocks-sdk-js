@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.0.1...v5.1.0)
+
+> 8 May 2023
+
+- Remove Travel Rule feature [`#167`](https://github.com/fireblocks/fireblocks-sdk-js/pull/167)
+
 #### [v5.0.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.0.0...v5.0.1)
 
 > 4 May 2023
