@@ -146,7 +146,7 @@ export class FireblocksSDK {
      * @param getVaultWalletsFilters Filters for the first request
      */
     public async getAssetWallets(getVaultWalletsFilters: GetAssetWalletsFilters): Promise<GetAssetWalletsResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/vault/asset_wallet?${queryString.stringify(getVaultWalletsFilters)}`);
+        return await this.apiClient.issueGetRequest(`/v1/vault/asset_wallets?${queryString.stringify(getVaultWalletsFilters)}`);
     }
 
     /**
