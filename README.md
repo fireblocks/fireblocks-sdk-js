@@ -60,6 +60,9 @@ interface SDKOptions {
     
     /** Additional product identifier to be prepended to the User-Agent header */
     userAgent?: string;
+
+    /** TravelRule Provider options to initialize PII Client for PII encryption */
+    travelRuleOptions?: TravelRuleOptions;
 }
 ```
 

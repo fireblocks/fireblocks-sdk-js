@@ -14,7 +14,9 @@
     "url": "https://github.com/fireblocks/fireblocks-sdk-js.git"
   },
   "license": "MIT",
+  "type": "module",
   "dependencies": {
+    "@notabene/pii-sdk": "^1.15.2",
     "axios": "^0.27.2",
     "jsonwebtoken": "9.0.0",
     "platform": "^1.3.6",
@@ -23,9 +25,9 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/platform": "^1.3.4",
     "@types/jsonwebtoken": "8.5.0",
     "@types/node": "^16.18.25",
+    "@types/platform": "^1.3.4",
     "@types/qs": "^6.9.7",
     "@types/uuid": "^8.3.1",
     "tslint": "6.1.3",
