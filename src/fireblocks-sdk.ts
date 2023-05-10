@@ -1355,7 +1355,7 @@ export class FireblocksSDK {
     }
 
     public async refreshWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
-        return await this.apiClient.issuePostRequest(
+        return await this.apiClient.issuePutRequest(
             `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}/balance`,
             {});
     }
