@@ -1349,6 +1349,17 @@ export class FireblocksSDK {
             `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}/addresses`);
     }
 
+    public async getWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}/balance`);
+    }
+
+    public async refreshWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
+        return await this.apiClient.issuePostRequest(
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}/balance`,
+            {});
+    }
+
     /**
      * Get all tokens linked to the tenant
      * @param limit
