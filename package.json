@@ -3,6 +3,7 @@
   "version": "5.1.0",
   "main": "dist/src/fireblocks-sdk.js",
   "types": "dist/src/fireblocks-sdk.d.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc && npm run tslint",
     "tslint": "tslint -c tslint.json -p tsconfig.json --fix",
@@ -14,7 +15,6 @@
     "url": "https://github.com/fireblocks/fireblocks-sdk-js.git"
   },
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "@notabene/pii-sdk": "^1.15.2",
     "axios": "^0.27.2",
