@@ -1,10 +1,5 @@
-import PIIsdk, {
-    AgentType,
-    initAgent,
-    PIIEncryptionMethod,
-} from "@notabene/pii-sdk";
+import { dynamicImport } from "tsimportlib";
 import { TransactionArguments, TravelRule, TravelRuleOptions } from "./types";
-import * as util from "util";
 
 const requiredFields = [
     "kmsSecretKey",
@@ -17,9 +12,19 @@ const requiredFields = [
 ];
 
 export class PIIEncryption {
-    public toolset: PIIsdk;
+    public toolset: any;
+    private static PIIsdk: any;
+
+    async init() {
+        PIIEncryption.PIIsdk = await dynamicImport("@notabene/pii-sdk", module) as typeof import("@notabene/pii-sdk");
+    }
 
     constructor(private readonly config: TravelRuleOptions) {
+        this.init();
+        while (!PIIEncryption.PIIsdk) {
+            console.info("waiting for init");
+        }
+
         this.config = config;
         const missingFields = requiredFields.filter(
             (field) => !(field in this.config)
@@ -31,7 +36,7 @@ export class PIIEncryption {
             );
         }
 
-        this.toolset = new PIIsdk({
+        this.toolset = new PIIEncryption.PIIsdk.default({
             kmsSecretKey: config.kmsSecretKey,
             piiURL: config.baseURLPII,
             audience: config.audiencePII,
@@ -54,7 +59,7 @@ export class PIIEncryption {
         let agent;
 
         try {
-            agent = initAgent({ KMS_SECRET_KEY: kmsSecretKey }).agent as AgentType;
+            agent = PIIEncryption.PIIsdk.initAgent({ KMS_SECRET_KEY: kmsSecretKey }).agent as any;
             await agent.didManagerImport(JSON.parse(jsonDidKey));
             piiIvms = await this.toolset.generatePIIField({
                 pii,
@@ -63,7 +68,7 @@ export class PIIEncryption {
                 counterpartyDIDKey,
                 agent,
                 senderDIDKey: JSON.parse(jsonDidKey).did,
-                encryptionMethod: PIIEncryptionMethod.HYBRID,
+                encryptionMethod: PIIEncryption.PIIsdk.PIIEncryptionMethod.HYBRID,
             });
         } catch (error) {
             const errorMessage = error.message || error.toString();
