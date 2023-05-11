@@ -1470,7 +1470,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get VASP library for travel rule compliance
+     * Update VASP for travel rule compliance
      */
     public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
         return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
