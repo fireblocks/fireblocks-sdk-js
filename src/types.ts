@@ -498,6 +498,7 @@ export interface NFTOwnershipFilter {
     sort?: GetOwnedNFTsSortValues[];
     order?: OrderValues;
     status?: NFTOwnershipStatus;
+    search?: string;
 }
 
 export interface NFTOwnedCollectionsFilter {
