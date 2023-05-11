@@ -74,6 +74,8 @@ import {
     TokenLinkPermissionEntry,
     IssueTokenRequest,
     NFTOwnershipStatus,
+    NFTOwnedCollectionsFilter,
+    CollectionOwnership,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -1316,6 +1318,32 @@ export class FireblocksSDK {
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param filter.search Search by value
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
+     * @param filter.sort Sort by value
+     * @param filter.order Order by value
+     */
+    public async listOwnedCollections(filter?: NFTOwnedCollectionsFilter): Promise<Web3PagedResponse<CollectionOwnership>> {
+        let url = "/v1/nfts/ownership/collections";
+        if (filter) {
+            const { search, pageCursor, pageSize, sort, order } = filter;
+
+            const requestFilter = {
+                search,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
         return await this.apiClient.issueGetRequest(url);
     }
 
