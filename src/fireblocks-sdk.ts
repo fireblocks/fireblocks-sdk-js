@@ -766,6 +766,10 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        if (transactionArguments?.travelRuleMessage) {
+            transactionArguments = await this.piiClient.hybridEncode(transactionArguments);
+        }
+
         return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
     }
 
@@ -1463,6 +1467,13 @@ export class FireblocksSDK {
      */
     public async getAllTravelRuleVASPs(): Promise<TravelRuleVasp[]> {
         return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp`);
+    }
+
+    /**
+     * Get VASP library for travel rule compliance
+     */
+    public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {

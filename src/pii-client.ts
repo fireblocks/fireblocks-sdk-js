@@ -1,8 +1,4 @@
-import PIIsdk, {
-    AgentType,
-    initAgent,
-    PIIEncryptionMethod,
-} from "@notabene/pii-sdk";
+import { dynamicImport } from "tsimportlib";
 import { TransactionArguments, TravelRule, TravelRuleOptions } from "./types";
 import * as util from "util";
 
@@ -17,7 +13,14 @@ const requiredFields = [
 ];
 
 export class PIIEncryption {
-    public toolset: PIIsdk;
+    public toolset: any;
+    private static PIIsdk: any;
+
+    async init() {
+        if (!PIIEncryption.PIIsdk) {
+            PIIEncryption.PIIsdk = await dynamicImport("@notabene/pii-sdk", module) as typeof import("@notabene/pii-sdk");
+        }
+    }
 
     constructor(private readonly config: TravelRuleOptions) {
         this.config = config;
@@ -30,18 +33,9 @@ export class PIIEncryption {
                 `Missing PII configuration fields: ${missingFields.join(", ")}`
             );
         }
-
-        this.toolset = new PIIsdk({
-            kmsSecretKey: config.kmsSecretKey,
-            piiURL: config.baseURLPII,
-            audience: config.audiencePII,
-            clientId: config.clientId,
-            clientSecret: config.clientSecret,
-            authURL: config.authURL,
-        });
     }
 
-    async hybridEncode(transaction: TransactionArguments) {
+    async hybridEncode(transaction: any) {
         const { travelRuleMessage } = transaction;
         const pii = travelRuleMessage.pii || {
             originator: travelRuleMessage.originator,
@@ -51,19 +45,17 @@ export class PIIEncryption {
         const counterpartyDIDKey = beneficiaryDidKey || undefined;
 
         let piiIvms;
-        let agent;
 
         try {
-            agent = initAgent({ KMS_SECRET_KEY: kmsSecretKey }).agent as AgentType;
-            await agent.didManagerImport(JSON.parse(jsonDidKey));
-            piiIvms = await this.toolset.generatePIIField({
+            const {toolset, agent} = await this.initializePiiClient(jsonDidKey, kmsSecretKey);
+            piiIvms = await toolset.generatePIIField({
                 pii,
                 originatorVASPdid: travelRuleMessage.originatorVASPdid,
                 beneficiaryVASPdid: travelRuleMessage.beneficiaryVASPdid,
                 counterpartyDIDKey,
                 agent,
                 senderDIDKey: JSON.parse(jsonDidKey).did,
-                encryptionMethod: PIIEncryptionMethod.HYBRID,
+                encryptionMethod: PIIEncryption.PIIsdk.PIIEncryptionMethod.HYBRID,
             });
         } catch (error) {
             const errorMessage = error.message || error.toString();
@@ -74,6 +66,25 @@ export class PIIEncryption {
         transaction.travelRuleMessage = this.travelRuleMessageHandler(travelRuleMessage, piiIvms);
 
         return transaction;
+    }
+
+    async initializePiiClient(jsonDidKey: string, kmsSecretKey: string) {
+        await this.init();
+        let agent;
+
+        agent = PIIEncryption.PIIsdk.initAgent({ KMS_SECRET_KEY: kmsSecretKey }).agent;
+        await agent.didManagerImport(JSON.parse(jsonDidKey));
+
+        const toolset = new PIIEncryption.PIIsdk.default({
+            kmsSecretKey: this.config.kmsSecretKey,
+            piiURL: this.config.baseURLPII,
+            audience: this.config.audiencePII,
+            clientId: this.config.clientId,
+            clientSecret: this.config.clientSecret,
+            authURL: this.config.authURL,
+        });
+
+        return { toolset, agent } ;
     }
 
     private travelRuleMessageHandler(travelRuleMessage: TravelRule, piiIvms: any): TravelRule {

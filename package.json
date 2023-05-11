@@ -21,6 +21,7 @@
     "platform": "^1.3.6",
     "qs": "^6.11.0",
     "query-string": "^7.1.3",
+    "tsimportlib": "^0.0.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
