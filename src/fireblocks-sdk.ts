@@ -80,6 +80,7 @@ import {
     ValidateCreateTravelRuleTransaction,
     ValidateFullTravelRuleResult,
     TravelRuleVasp,
+    TravelRuleVaspFilter,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1465,8 +1466,23 @@ export class FireblocksSDK {
     /**
      * Get VASP library for travel rule compliance
      */
-    public async getAllTravelRuleVASPs(): Promise<TravelRuleVasp[]> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp`);
+    public async getAllTravelRuleVASPs(filter?: TravelRuleVaspFilter): Promise<TravelRuleVasp[]> {
+        let url = `/v1/screening/travel_rule/vasp`;
+
+        if (filter) {
+            const { q, fields, page, per_page, order } = filter;
+            const queryParameters = {
+                q,
+                fields: this.getCommaSeparatedList(fields),
+                page,
+                per_page,
+                order,
+            };
+
+            url += `?${queryString.stringify(queryParameters)}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
     }
 
     /**

@@ -487,6 +487,14 @@ export interface ValidateTravelRuleResult {
     warnings: string[];
 }
 
+export interface TravelRuleVaspFilter {
+    q?: string;
+    fields?: string[];
+    page?: number;
+    per_page?: number;
+    order?: string;
+}
+
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",
