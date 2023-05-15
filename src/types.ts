@@ -289,7 +289,7 @@ export interface ValidateCreateTravelRuleTransaction {
     beneficiary?: TROriginator;
     pii?: PII;
     pii_url?: string;
-    protocol?: ["TRLight", "TRP", "OpenVASP"];
+    protocol?: string;
     notificationEmail?: string;
     originatorProof?: OwnershipProof;
     beneficiaryProof?: OwnershipProof;
