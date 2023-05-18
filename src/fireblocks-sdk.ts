@@ -74,16 +74,8 @@ import {
     TokenLinkPermissionEntry,
     IssueTokenRequest,
     NFTOwnershipStatus,
-    TravelRuleOptions,
-    ValidateTravelRuleVaspInfo,
-    ValidateTravelRuleResult,
-    ValidateCreateTravelRuleTransaction,
-    ValidateFullTravelRuleResult,
-    TravelRuleVasp,
-    TravelRuleVaspFilter,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
-import { PIIEncryption } from "./pii-client";
 
 export * from "./types";
 
@@ -111,18 +103,12 @@ export interface SDKOptions {
           };
       }
     };
-
-    /**
-     * TravelRule Provider options to initialize PII Client for PII encryption
-     */
-    travelRuleOptions?: TravelRuleOptions;
 }
 
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
-    private piiClient: PIIEncryption;
 
     /**
      * Creates a new Fireblocks API Client
@@ -140,10 +126,6 @@ export class FireblocksSDK {
         }
 
         this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
-
-        if (sdkOptions?.travelRuleOptions) {
-            this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
-        }
     }
 
     /**
@@ -767,10 +749,6 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
-        if (transactionArguments?.travelRuleMessage) {
-            transactionArguments = await this.piiClient.hybridEncode(transactionArguments);
-        }
-
         return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
     }
 
@@ -778,10 +756,6 @@ export class FireblocksSDK {
      * Estimates the fee for a transaction request
      */
     public async estimateFeeForTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<EstimateTransactionFeeResponse> {
-        if (transactionArguments?.travelRuleMessage) {
-            transactionArguments = await this.piiClient.hybridEncode(transactionArguments);
-        }
-
         return await this.apiClient.issuePostRequest("/v1/transactions/estimate_fee", transactionArguments, requestOptions);
     }
 
@@ -1437,59 +1411,6 @@ export class FireblocksSDK {
      */
     public async removeLinkedTokenPermissions(assetId: string, permission: TokenLinkPermissionEntry): Promise<TokenLink> {
         return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
-    }
-
-    /**
-     * Validate VASP details for travel rule compliance
-     * @param travelRuleMessageVaspInfo
-     */
-    public async validateTravelRuleTransaction(travelRuleMessageVaspInfo: ValidateTravelRuleVaspInfo): Promise<ValidateTravelRuleResult> {
-        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate`, travelRuleMessageVaspInfo);
-    }
-
-    /**
-     * Validate Travel Rule transaction and PII data
-     * @param travelRuleMessage
-     */
-    public async validateFullTravelRuleTransaction(travelRuleMessage: ValidateCreateTravelRuleTransaction): Promise<ValidateFullTravelRuleResult> {
-        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate/full`, travelRuleMessage);
-    }
-
-    /**
-     * Get VASP details for travel rule compliance
-     * @param did
-     */
-    public async getTravelRuleVASPDetails(did: string): Promise<TravelRuleVasp> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp/${did}`);
-    }
-
-    /**
-     * Get VASP library for travel rule compliance
-     */
-    public async getAllTravelRuleVASPs(filter?: TravelRuleVaspFilter): Promise<TravelRuleVasp[]> {
-        let url = `/v1/screening/travel_rule/vasp`;
-
-        if (filter) {
-            const { q, fields, page, per_page, order } = filter;
-            const queryParameters = {
-                q,
-                fields: this.getCommaSeparatedList(fields),
-                page,
-                per_page,
-                order,
-            };
-
-            url += `?${queryString.stringify(queryParameters)}`;
-        }
-
-        return await this.apiClient.issueGetRequest(url);
-    }
-
-    /**
-     * Update VASP for travel rule compliance
-     */
-    public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
-        return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
