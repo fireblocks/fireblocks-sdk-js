@@ -15,7 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@notabene/pii-sdk": "^1.15.3",
+    "@notabene/pii-sdk": "^1.16.0",
     "axios": "^0.27.2",
     "jsonwebtoken": "9.0.0",
     "platform": "^1.3.6",

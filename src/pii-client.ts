@@ -1,8 +1,4 @@
-import PIIsdk, {
-    AgentType,
-    initAgent,
-    PIIEncryptionMethod,
-} from "@notabene/pii-sdk";
+import PIIsdk, { PIIEncryptionMethod } from "@notabene/pii-sdk";
 import { TransactionArguments, TravelRule, TravelRuleOptions } from "./types";
 import * as util from "util";
 
@@ -32,7 +28,6 @@ export class PIIEncryption {
         }
 
         this.toolset = new PIIsdk({
-            kmsSecretKey: config.kmsSecretKey,
             piiURL: config.baseURLPII,
             audience: config.audiencePII,
             clientId: config.clientId,
@@ -51,17 +46,14 @@ export class PIIEncryption {
         const counterpartyDIDKey = beneficiaryDidKey || undefined;
 
         let piiIvms;
-        let agent;
 
         try {
-            agent = (await initAgent({ KMS_SECRET_KEY: kmsSecretKey })).agent as AgentType;
-            await agent.didManagerImport(JSON.parse(jsonDidKey));
             piiIvms = await this.toolset.generatePIIField({
                 pii,
                 originatorVASPdid: travelRuleMessage.originatorVASPdid,
                 beneficiaryVASPdid: travelRuleMessage.beneficiaryVASPdid,
                 counterpartyDIDKey,
-                agent,
+                keypair: JSON.parse(jsonDidKey),
                 senderDIDKey: JSON.parse(jsonDidKey).did,
                 encryptionMethod: PIIEncryptionMethod.HYBRID,
             });
