@@ -1384,7 +1384,7 @@ export class FireblocksSDK {
      * @param assetId
      */
     public async linkToken(assetId: string): Promise<TokenLink> {
-        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}`, {  });
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {  });
     }
 
     /**
