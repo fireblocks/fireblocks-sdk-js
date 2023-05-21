@@ -386,7 +386,6 @@ export interface TravelRuleOptions {
     baseURL?: string;
     baseURLPII?: string;
 
-    kmsSecretKey?: string;
     jsonDidKey?: string;
     beneficiaryDidKey?: string;
     travelRuleMessage?: TravelRule;

@@ -3,7 +3,6 @@ import { TransactionArguments, TravelRule, TravelRuleOptions } from "./types";
 import * as util from "util";
 
 const requiredFields = [
-    "kmsSecretKey",
     "baseURLPII",
     "audiencePII",
     "clientId",
@@ -42,7 +41,7 @@ export class PIIEncryption {
             originator: travelRuleMessage.originator,
             beneficiary: travelRuleMessage.beneficiary,
         };
-        const { beneficiaryDidKey, jsonDidKey, kmsSecretKey } = this.config;
+        const { beneficiaryDidKey, jsonDidKey } = this.config;
         const counterpartyDIDKey = beneficiaryDidKey || undefined;
 
         let piiIvms;
