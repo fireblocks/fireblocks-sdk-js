@@ -504,7 +504,7 @@ export interface NFTOwnershipFilter {
 export interface NFTOwnedCollectionsFilter {
     search?: string;
     pageCursor?: string;
-    pageSize?: string;
+    pageSize?: number;
     sort?: GetOwnedCollectionsSortValues[];
     order?: OrderValues;
 }
