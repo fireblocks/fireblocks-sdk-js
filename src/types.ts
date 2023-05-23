@@ -553,9 +553,9 @@ export interface TokenWithBalance extends Token {
 }
 
 export interface CollectionOwnership extends NFTCollection {
-    standard: string;
+    standard?: string;
     blockchainDescriptor: string;
-    contractAddress: string;
+    contractAddress?: string;
 }
 
 export interface TransactionPageFilter {
