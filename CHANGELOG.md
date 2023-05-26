@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.1.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.0...v5.1.2)
+
+> 24 May 2023
+
+- New travel rule feature (upgraded Notabene dependency) [`#173`](https://github.com/fireblocks/fireblocks-sdk-js/pull/173)
+
 #### [v5.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.0.1...v5.1.0)
 
 > 8 May 2023
