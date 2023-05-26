@@ -1298,8 +1298,12 @@ export class FireblocksSDK {
      * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
      * @param filter.collectionIds List of collection IDs
      * @param filter.ids List of token ids to fetch
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
      * @param filter.sort Sort by value
      * @param filter.order Order value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.search Search filter
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
