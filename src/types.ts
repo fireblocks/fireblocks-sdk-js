@@ -273,18 +273,11 @@ export interface ValidateTravelRuleVaspInfo {
 }
 
 export interface ValidateCreateTravelRuleTransaction {
-    transactionAsset: string;
-    transactionAmount: string;
     originatorDid?: string;
     beneficiaryDid?: string;
     originatorVASPdid: string;
     beneficiaryVASPdid?: string;
     beneficiaryVASPname?: string;
-    transactionBlockchainInfo?: {
-        origin?: string;
-        destination?: string;
-        txHash?: string;
-    };
     originator?: TROriginator;
     beneficiary?: TROriginator;
     pii?: PII;
@@ -296,57 +289,53 @@ export interface ValidateCreateTravelRuleTransaction {
     skipBeneficiaryDataValidation?: boolean;
 }
 
-
 export interface TravelRule {
+    transactionAsset?: string;
+    transactionAmount?: string;
+    originatorRef?: string;
+    beneficiaryRef?: string;
+    transactionBlockchainInfo?: {
+        txHash?: string;
+        origin?: string;
+        destination?: string;
+    };
     originatorVASPdid: string;
+    travelRuleBehavior?: boolean;
     beneficiaryVASPdid: string;
-    originator?: TROriginator;
-    beneficiary?: TROriginator;
+    beneficiaryVASPname?: string;
+    originator: TROriginator;
+    beneficiary: TRBeneficiary;
     pii?: PII;
     jsonDidKey?: string;
 }
 
-
-interface PII {
-    originator?: TROriginator;
-    beneficiary?: TROriginator;
-}
-
-interface TROriginator {
+export interface TROriginator {
     originatorPersons?: TROriginatorPerson[];
-    beneficiaryPersons?: TROriginatorPerson[];
     accountNumber?: string[];
 }
 
-interface TROriginatorPersons extends Array<TROriginatorPerson> {}
-
-interface TROriginatorPerson {
+export interface TROriginatorPerson {
     naturalPerson?: TRNaturalPerson;
     legalPerson?: TRNaturalPerson;
 }
 
-interface TRNaturalPerson {
-    name?: TRName;
-    geographicAddress?: TRGeographicAddress;
+export interface TRNaturalPerson {
+    name: TRName[];
+    geographicAddress?: TRGeographicAddress[];
     nationalIdentification?: TRNationalIdentification;
     dateAndPlaceOfBirth?: TRDateAndPlaceOfBirth;
 }
 
-interface TRName extends Array<TRPersonNameIdentifier> {}
-
-interface TRPersonNameIdentifier {
-    nameIdentifier?: TRNameIdentifier;
+export interface TRName {
+    nameIdentifier?: TRNameIdentifier[];
 }
 
-interface TRNameIdentifier {
+export interface TRNameIdentifier {
     primaryIdentifier?: string;
     secondaryIdentifier?: string;
-    nameIdentifierType?: string;
 }
 
-interface TRGeographicAddress extends Array<TRGeographicAddressData> {}
-
-interface TRGeographicAddressData {
+export interface TRGeographicAddress {
     streetName?: string;
     townName?: string;
     country?: string;
@@ -365,15 +354,31 @@ interface TRGeographicAddressData {
     addressLine?: string;
 }
 
-interface TRNationalIdentification {
-    countryOfIssue?: string;
+export interface TRNationalIdentification {
     nationalIdentifier?: string;
     nationalIdentifierType?: string;
+    registrationAuthority?: string;
+    countryOfIssue?: string;
 }
 
-interface TRDateAndPlaceOfBirth {
+export interface TRDateAndPlaceOfBirth {
     dateOfBirth?: string;
     placeOfBirth?: string;
+}
+
+export interface TRBeneficiary {
+    beneficiaryPersons?: TRBeneficiaryPerson[];
+    originatorPersons?: TROriginatorPerson[];
+    accountNumber?: string[];
+}
+
+export interface TRBeneficiaryPerson {
+    naturalPerson?: TRNaturalPerson;
+}
+
+interface PII {
+    originator?: TROriginator;
+    beneficiary?: TRBeneficiary;
 }
 
 export interface TravelRuleOptions {
@@ -382,10 +387,8 @@ export interface TravelRuleOptions {
     authURL?: string;
     audience?: string;
     audiencePII?: string;
-
     baseURL?: string;
     baseURLPII?: string;
-
     jsonDidKey?: string;
     beneficiaryDidKey?: string;
     travelRuleMessage?: TravelRule;
