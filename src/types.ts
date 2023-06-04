@@ -273,11 +273,18 @@ export interface ValidateTravelRuleVaspInfo {
 }
 
 export interface ValidateCreateTravelRuleTransaction {
+    transactionAsset: string;
+    transactionAmount: string;
     originatorDid?: string;
     beneficiaryDid?: string;
     originatorVASPdid: string;
     beneficiaryVASPdid?: string;
     beneficiaryVASPname?: string;
+    transactionBlockchainInfo?: {
+        origin?: string;
+        destination?: string;
+        txHash?: string;
+    };
     originator?: TROriginator;
     beneficiary?: TROriginator;
     pii?: PII;
@@ -290,15 +297,8 @@ export interface ValidateCreateTravelRuleTransaction {
 }
 
 export interface TravelRule {
-    transactionAsset?: string;
-    transactionAmount?: string;
     originatorRef?: string;
     beneficiaryRef?: string;
-    transactionBlockchainInfo?: {
-        txHash?: string;
-        origin?: string;
-        destination?: string;
-    };
     originatorVASPdid: string;
     travelRuleBehavior?: boolean;
     beneficiaryVASPdid: string;
