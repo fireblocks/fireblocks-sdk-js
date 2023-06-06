@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.3...v5.2.0)
+#### [v5.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.4...v5.2.0)
 
 > 24 May 2023
 
@@ -105,6 +105,12 @@ All notable changes to this project will be documented in this file. Dates are d
 - support manual-confirmations [`#5`](https://github.com/fireblocks/fireblocks-sdk-js/pull/5)
 - Transfer assist [`#3`](https://github.com/fireblocks/fireblocks-sdk-js/pull/3)
 - add more types of filters [`#2`](https://github.com/fireblocks/fireblocks-sdk-js/pull/2)
+
+#### [v5.1.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.3...v5.1.4)
+
+> 6 June 2023
+
+- Improve Travel Rule interface with additional fields update existing one [`#176`](https://github.com/fireblocks/fireblocks-sdk-js/pull/176)
 
 #### [v5.1.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.2...v5.1.3)
 
