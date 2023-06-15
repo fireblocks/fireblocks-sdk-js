@@ -80,7 +80,7 @@ import {
     ValidateCreateTravelRuleTransaction,
     ValidateFullTravelRuleResult,
     TravelRuleVasp,
-    TravelRuleVaspFilter, StakingPosition,
+    TravelRuleVaspFilter, StakingPosition, StakingValidator,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1463,6 +1463,9 @@ export class FireblocksSDK {
     }
     public async getStakingPositions(chainDescriptor: string): Promise<StakingPosition[]> {
         return await this.apiClient.issueGetRequest(`/v1/positions/${chainDescriptor}`);
+    }
+    public async getStakingValidatorsByChain(chainDescriptor: string): Promise<StakingValidator[]> {
+        return await this.apiClient.issueGetRequest(`/v1/validators/${chainDescriptor}`);
     }
     /**
      * Validate VASP details for travel rule compliance

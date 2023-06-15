@@ -1454,3 +1454,15 @@ export interface StakingPosition {
 
     availableActions: string[];
 }
+export interface StakingValidator {
+    chainDescriptor: string;
+    providerId: number;
+    validatorId: number;
+    validatorAddress: string;
+    feePercent: number;
+    validatorName: string;
+    providerName: string;
+    iconUrl: string;
+    termsOfServiceUrl: string;
+    isTermsOfServiceApproved: boolean;
+}
