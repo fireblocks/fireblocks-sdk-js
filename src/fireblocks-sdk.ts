@@ -1461,7 +1461,7 @@ export class FireblocksSDK {
     public async executeStakePositionAction(actionId: string, chainDescriptor: string , body: any) {
         return await this.apiClient.issuePostRequest(`/v1/chains/{chainDescriptor}/{actionId}`, body);
     }
-    public async getStakingPositions(chainDescriptor: string): Promise<Web3PagedResponse<StakingPosition>> {
+    public async getStakingPositions(chainDescriptor: string): Promise<StakingPosition[]> {
         return await this.apiClient.issueGetRequest(`/v1/positions/${chainDescriptor}`);
     }
     /**
