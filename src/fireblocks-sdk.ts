@@ -1459,13 +1459,13 @@ export class FireblocksSDK {
         return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
     }
     public async executeStakePositionAction(actionId: string, chainDescriptor: string , body: any) {
-        return await this.apiClient.issuePostRequest(`/v1/chains/{chainDescriptor}/{actionId}`, body);
+        return await this.apiClient.issuePostRequest(`/v1/staking/chains/{chainDescriptor}/{actionId}`, body);
     }
     public async getStakingPositions(chainDescriptor: string): Promise<StakingPosition[]> {
-        return await this.apiClient.issueGetRequest(`/v1/positions/${chainDescriptor}`);
+        return await this.apiClient.issueGetRequest(`/v1/staking/positions/${chainDescriptor}`);
     }
     public async getStakingValidatorsByChain(chainDescriptor: string): Promise<StakingValidator[]> {
-        return await this.apiClient.issueGetRequest(`/v1/validators/${chainDescriptor}`);
+        return await this.apiClient.issueGetRequest(`/v1/staking/validators/${chainDescriptor}`);
     }
     /**
      * Validate VASP details for travel rule compliance
