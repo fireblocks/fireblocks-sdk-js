@@ -80,7 +80,7 @@ import {
     ValidateCreateTravelRuleTransaction,
     ValidateFullTravelRuleResult,
     TravelRuleVasp,
-    TravelRuleVaspFilter,
+    TravelRuleVaspFilter, StakingPosition,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1458,7 +1458,12 @@ export class FireblocksSDK {
     public async removeLinkedTokenPermissions(assetId: string, permission: TokenLinkPermissionEntry): Promise<TokenLink> {
         return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
     }
-
+    public async executeStakePositionAction(actionId: string, chainDescriptor: string , body: any) {
+        return await this.apiClient.issuePostRequest(`/v1/chains/{chainDescriptor}/{actionId}`, body);
+    }
+    public async getStakingPositions(chainDescriptor: string): Promise<Web3PagedResponse<StakingPosition>> {
+        return await this.apiClient.issueGetRequest(`/v1/positions/${chainDescriptor}`);
+    }
     /**
      * Validate VASP details for travel rule compliance
      * @param travelRuleMessageVaspInfo

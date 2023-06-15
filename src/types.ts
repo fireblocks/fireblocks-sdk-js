@@ -1369,3 +1369,88 @@ export interface IssueTokenRequest {
     issuerAddress?: string;
     decimals: number;
 }
+export enum TDelegationState {
+    "error" = "error",
+
+    "activating" = "activating",
+    "activated" = "activated",
+
+    "deactivating" = "deactivating",
+    "deactivated" = "deactivated",
+
+    "withdrawing" = "withdrawing",
+    "withdrawn" = "withdrawn",
+}
+
+interface ISolanaBlockchainData {
+    /**
+     * The stake account address matching the stakeAccountId
+     */
+    stakeAccountAddress: string;
+}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IEthereumBlockchainData {}
+
+export type TBlockchainSpecific = ISolanaBlockchainData | IEthereumBlockchainData;
+
+export interface StakingPosition {
+
+    /**
+     * Delegation request id
+     */
+    delegationRequestId: string;
+
+    /**
+     * The source vault account to stake from
+     */
+    vaultAccountId: string;
+
+    /**
+     * The destination validator address name
+     */
+    validatorName: string;
+    /**
+     * The destination validator provider name
+     */
+    providerName: string;
+
+    /**
+     * The blockchain descriptor to use
+     */
+    chainDescriptor: string;
+
+    /**
+     * Amount of tokens to stake
+     */
+    amount: string;
+
+    /**
+     * Amount of staking rewards
+     */
+    rewardsAmount: string;
+
+    /**
+     * When was the request made (ISO Date)
+     */
+    dateCreated: string;
+
+    /**
+     * The current state.
+     */
+    state: TDelegationState;
+
+    /**
+     * If a request was started but wasn't verified on the blockchain yet.
+     */
+    ongoingRequest?: boolean;
+
+    /**
+     * Additional fields per blockchain - can be empty or missing if not initialized or no additional info exists
+     * The type depends on the chainDescriptor value
+     */
+    blockchainSpecific?: TBlockchainSpecific;
+
+    validatorAddress: string;
+
+    availableActions: string[];
+}
