@@ -80,7 +80,8 @@ import {
     ValidateCreateTravelRuleTransaction,
     ValidateFullTravelRuleResult,
     TravelRuleVasp,
-    TravelRuleVaspFilter, UserGroup, UsersGroup,
+    TravelRuleVaspFilter,
+    UsersGroup,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
