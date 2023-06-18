@@ -1084,6 +1084,13 @@ export interface User {
     role: string;
 }
 
+export interface UsersGroup {
+    id: string;
+    name: string;
+    membersIds: string[];
+    status: string;
+}
+
 export interface ResendWebhooksResponse {
     webhooksCount: number;
 }
