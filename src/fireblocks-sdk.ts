@@ -324,6 +324,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Deletes a single network profile
+     * @param networkId The network profile's id
+     * @returns NetworkIdResponse
+     */
+    public async deleteNetworkId(networkId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/network_ids/${networkId}`);
+    }
+
+    /**
      * Sets discoverability for network profile
      * @param networkId The network profile's id
      * @param isDiscoverable The desired discoverability to set
@@ -343,6 +352,17 @@ export class FireblocksSDK {
     public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy: NetworkIdRoutingPolicy): Promise<void> {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
+    }
+
+    /**
+     * Sets network profile name
+     * @param networkId The network profile's id
+     * @param name The desired network profile's name
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdName(networkId: string, name: string): Promise<void> {
+        const body = { name };
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_name`, body);
     }
 
     /**

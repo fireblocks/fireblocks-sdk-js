@@ -72,7 +72,7 @@ export class PIIEncryption {
         travelRuleMessage.originator = piiIvms.originator;
 
         travelRuleMessage.beneficiary = {
-            originatorPersons: piiIvms.beneficiary.beneficairyPersons,
+            originatorPersons: piiIvms.beneficiary.beneficiaryPersons,
             accountNumber: piiIvms.beneficiary.accountNumber,
         };
 
