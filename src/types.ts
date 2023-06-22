@@ -5,7 +5,7 @@ export interface Web3PagedResponse<T> {
     paging?: Paging;
 }
 
-export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+export type APIResponseHeaders = AxiosResponseHeaders & { "x-request-id"?: string };
 
 export interface VaultAccountResponse {
     id: string;
@@ -133,16 +133,21 @@ export interface EstimatedTransactionFee {
 }
 
 export interface TransferPeerPath {
-    type?: PeerType;
+    type: PeerType;
     id?: string;
+    walletId?: string;
+    name?: string;
+    subType?: string;
     virtualId?: string;
     virtualType?: VirtualType;
-    address?: string;
 }
 
 export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
+    walletId?: string;
+    name?: string;
+    subType?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
@@ -593,6 +598,7 @@ export interface TransactionResponse {
     index?: number;
     rewardInfo?: RewardInfo;
     feePayerInfo?: FeePayerInfo;
+    networkRecords: INetworkRecord[];
 }
 
 export interface AmountInfo {
@@ -631,6 +637,7 @@ export interface TransferPeerPathResponse {
     subType?: string;
     virtualType?: VirtualType;
     virtualId?: string;
+    address?: string;
 }
 
 export interface AuthorizationInfo {
@@ -1204,11 +1211,11 @@ export interface GetWeb3ConnectionsPayload {
 export interface CreateWeb3ConnectionResponse {
     id: string;
     sessionMetadata: {
-      appIcon?: string,
-      appId?: string,
-      appName?: string,
-      appUrl?: string,
-      appDescription?: string
+        appIcon?: string,
+        appId?: string,
+        appName?: string,
+        appUrl?: string,
+        appDescription?: string
     };
 }
 
@@ -1218,7 +1225,7 @@ export interface SessionMetadata {
     appName?: string;
     appUrl?: string;
     appDescription?: string;
-  }
+}
 
 export interface Session {
     id: string;
@@ -1229,7 +1236,7 @@ export interface Session {
     connectionType: Web3ConnectionType;
     connectionMethod?: Web3ConnectionMethod;
     sessionMetadata?: SessionMetadata;
-  }
+}
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"
@@ -1368,4 +1375,25 @@ export interface IssueTokenRequest {
     ethContractAddress?: string;
     issuerAddress?: string;
     decimals: number;
+}
+
+export interface ContractCallDecodedData {
+    contractName: string;
+    functionCalls: object[];
+}
+
+export interface INetworkRecord {
+    source?: TransferPeerPath;
+    destiantion?: TransferPeerPath;
+    txHash?: string;
+    networkFee?: string;
+    assetId?: string;
+    netAmount?: string;
+    isDropped?: boolean;
+    type?: string;
+    destinationAddress?: string;
+    sourceAddress?: string;
+    amountUSD?: string;
+    index?: number;
+    rewardInfo: RewardInfo;
 }
