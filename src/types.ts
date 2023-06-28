@@ -1021,3 +1021,15 @@ export interface IssueTokenRequest {
     issuerAddress?: string;
     decimals: number;
 }
+
+export interface WalletInfo {
+    walletId: string;
+    enabled: boolean;
+}
+
+export interface GetWalletsPayload {
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: string;
+    order?: "ASC" | "DESC";
+}

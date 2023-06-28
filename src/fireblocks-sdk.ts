@@ -62,7 +62,7 @@ import {
     AllocateFundsResponse,
     GetNFTsFilter,
     SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
-    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest,
+    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -1311,6 +1311,17 @@ export class FireblocksSDK {
         return await this.apiClient.issuePostRequest(
             `/v1/wallets/${walletId}/accounts`,
             {});
+    }
+
+    public async getWallets({ pageCursor, pageSize, sort, order }: GetWalletsPayload): Promise<Web3PagedResponse<WalletInfo>> {
+        const params = new URLSearchParams({
+            ...(pageCursor && { next: pageCursor }),
+            ...(pageSize && { pageSize: pageSize.toString() }),
+            ...(sort && { sort }),
+            ...(order && { order }),
+        });
+
+        return await this.apiClient.issueGetRequest(`/v1/wallets?${params.toString()}`);
     }
 
     public async getWalletAccounts(walletId: string): Promise<{
