@@ -1033,3 +1033,24 @@ export interface GetWalletsPayload {
     sort?: string;
     order?: "ASC" | "DESC";
 }
+
+export interface GetWalletAccountsPayload {
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: string;
+    order?: "ASC" | "DESC";
+}
+
+export interface GetWalletAssetsPayload {
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: string;
+    order?: "ASC" | "DESC";
+}
+
+export interface GetWalletAddressesPayload {
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: string;
+    order?: "ASC" | "DESC";
+}

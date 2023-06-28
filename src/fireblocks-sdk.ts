@@ -62,7 +62,7 @@ import {
     AllocateFundsResponse,
     GetNFTsFilter,
     SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
-    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload,
+    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload, GetWalletAssetsPayload, GetWalletAddressesPayload,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -1313,9 +1313,9 @@ export class FireblocksSDK {
             {});
     }
 
-    public async getWallets({ pageCursor, pageSize, sort, order }: GetWalletsPayload): Promise<Web3PagedResponse<WalletInfo>> {
+    public async getWallets({ pageCursor, pageSize, sort, order }: GetWalletsPayload = {}): Promise<Web3PagedResponse<WalletInfo>> {
         const params = new URLSearchParams({
-            ...(pageCursor && { next: pageCursor }),
+            ...(pageCursor && { pageCursor }),
             ...(pageSize && { pageSize: pageSize.toString() }),
             ...(sort && { sort }),
             ...(order && { order }),
@@ -1324,12 +1324,19 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest(`/v1/wallets?${params.toString()}`);
     }
 
-    public async getWalletAccounts(walletId: string): Promise<{
+    public async getWalletAccounts(walletId: string, { pageCursor, pageSize, sort, order }: GetWalletsPayload = {}): Promise<Web3PagedResponse<{
         walletId: string;
         id: number;
-    }[]> {
+    }>> {
+        const params = new URLSearchParams({
+            ...(pageCursor && { pageCursor }),
+            ...(pageSize && { pageSize: pageSize.toString() }),
+            ...(sort && { sort }),
+            ...(order && { order }),
+        });
+
         return await this.apiClient.issueGetRequest(
-            `/v1/wallets/${walletId}/accounts`);
+            `/v1/wallets/${walletId}/accounts?${params.toString()}`);
     }
 
     public async getWalletAccount(walletId: string, accountId: number): Promise<{
@@ -1340,9 +1347,16 @@ export class FireblocksSDK {
             `/v1/wallets/${walletId}/accounts/${accountId}`);
     }
 
-    public async getWalletAssets(walletId: string, accountId: number): Promise<AssetResponse[]> {
+    public async getWalletAssets(walletId: string, accountId: number, { pageCursor, pageSize, sort, order }: GetWalletAssetsPayload = {}): Promise<Web3PagedResponse<AssetResponse>> {
+        const params = new URLSearchParams({
+            ...(pageCursor && { pageCursor }),
+            ...(pageSize && { pageSize: pageSize.toString() }),
+            ...(sort && { sort }),
+            ...(order && { order }),
+        });
+
         return await this.apiClient.issueGetRequest(
-            `/v1/wallets/${walletId}/accounts/${accountId}/assets`);
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets?${params.toString()}`);
     }
 
     public async getWalletAsset(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
@@ -1355,9 +1369,16 @@ export class FireblocksSDK {
             `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}`, {});
     }
 
-    public async getWalletAssetAddresses(walletId: string, accountId: number, assetId: string): Promise<DepositAddressResponse[]> {
+    public async getWalletAssetAddresses(walletId: string, accountId: number, assetId: string, { pageCursor, pageSize, sort, order }: GetWalletAddressesPayload = {}): Promise<Web3PagedResponse<DepositAddressResponse>> {
+        const params = new URLSearchParams({
+            ...(pageCursor && { pageCursor }),
+            ...(pageSize && { pageSize: pageSize.toString() }),
+            ...(sort && { sort }),
+            ...(order && { order }),
+        });
+
         return await this.apiClient.issueGetRequest(
-            `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}/addresses`);
+            `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}/addresses?${params.toString()}`);
     }
 
     public async getWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
