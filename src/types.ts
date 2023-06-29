@@ -390,8 +390,11 @@ export interface TravelRuleOptions {
     baseURL?: string;
     baseURLPII?: string;
     jsonDidKey?: string;
-    beneficiaryDidKey?: string;
-    travelRuleMessage?: TravelRule;
+}
+
+export interface TravelRuleEncryptionOptions {
+    beneficiaryPIIDidKey?: string;
+    sendToProvider?: boolean;
 }
 
 export interface TravelRuleVasp {

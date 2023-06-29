@@ -80,7 +80,7 @@ import {
     ValidateCreateTravelRuleTransaction,
     ValidateFullTravelRuleResult,
     TravelRuleVasp,
-    TravelRuleVaspFilter,
+    TravelRuleVaspFilter, TravelRuleEncryptionOptions,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -786,9 +786,9 @@ export class FireblocksSDK {
     /**
      * Creates a new transaction with the specified options
      */
-    public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+    public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions): Promise<CreateTransactionResponse> {
         if (transactionArguments?.travelRuleMessage) {
-            transactionArguments = await this.piiClient.hybridEncode(transactionArguments);
+            transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
         }
 
         return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
@@ -798,10 +798,6 @@ export class FireblocksSDK {
      * Estimates the fee for a transaction request
      */
     public async estimateFeeForTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<EstimateTransactionFeeResponse> {
-        if (transactionArguments?.travelRuleMessage) {
-            transactionArguments = await this.piiClient.hybridEncode(transactionArguments);
-        }
-
         return await this.apiClient.issuePostRequest("/v1/transactions/estimate_fee", transactionArguments, requestOptions);
     }
 

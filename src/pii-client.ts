@@ -1,5 +1,5 @@
 import PIIsdk, { PIIEncryptionMethod } from "@notabene/pii-sdk";
-import { TransactionArguments, TravelRule, TravelRuleOptions } from "./types";
+import { TransactionArguments, TravelRule, TravelRuleEncryptionOptions, TravelRuleOptions } from "./types";
 import * as util from "util";
 
 const requiredFields = [
@@ -35,14 +35,14 @@ export class PIIEncryption {
         });
     }
 
-    async hybridEncode(transaction: TransactionArguments) {
+    async hybridEncode(transaction: TransactionArguments, TravelRuleEncryptionOptions?: TravelRuleEncryptionOptions) {
         const { travelRuleMessage } = transaction;
         const pii = travelRuleMessage.pii || {
             originator: travelRuleMessage.originator,
             beneficiary: travelRuleMessage.beneficiary,
         };
-        const { beneficiaryDidKey, jsonDidKey } = this.config;
-        const counterpartyDIDKey = beneficiaryDidKey || undefined;
+        const { jsonDidKey } = this.config;
+        const counterpartyDIDKey = TravelRuleEncryptionOptions?.beneficiaryPIIDidKey || undefined;
 
         let piiIvms;
 
@@ -54,7 +54,9 @@ export class PIIEncryption {
                 counterpartyDIDKey,
                 keypair: JSON.parse(jsonDidKey),
                 senderDIDKey: JSON.parse(jsonDidKey).did,
-                encryptionMethod: PIIEncryptionMethod.HYBRID,
+                encryptionMethod: TravelRuleEncryptionOptions?.sendToProvider
+                    ? PIIEncryptionMethod.HYBRID
+                    : PIIEncryptionMethod.END_2_END,
             });
         } catch (error) {
             const errorMessage = error.message || error.toString();
