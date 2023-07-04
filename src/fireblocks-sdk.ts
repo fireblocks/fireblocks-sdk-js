@@ -74,6 +74,8 @@ import {
     TokenLinkPermissionEntry,
     IssueTokenRequest,
     NFTOwnershipStatus,
+    NFTOwnedCollectionsFilter,
+    CollectionOwnership,
     TravelRuleOptions,
     ValidateTravelRuleVaspInfo,
     ValidateTravelRuleResult,
@@ -1342,13 +1344,17 @@ export class FireblocksSDK {
      * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
      * @param filter.collectionIds List of collection IDs
      * @param filter.ids List of token ids to fetch
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
      * @param filter.sort Sort by value
      * @param filter.order Order value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.search Search filter
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search } = filter;
             const requestFilter = {
                 vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
@@ -1359,9 +1365,36 @@ export class FireblocksSDK {
                 sort: this.getCommaSeparatedList(sort),
                 order,
                 status,
+                search,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param filter.search Search by value
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
+     * @param filter.sort Sort by value
+     * @param filter.order Order by value
+     */
+    public async listOwnedCollections(filter?: NFTOwnedCollectionsFilter): Promise<Web3PagedResponse<CollectionOwnership>> {
+        let url = "/v1/nfts/ownership/collections";
+        if (filter) {
+            const { search, pageCursor, pageSize, sort, order } = filter;
+
+            const requestFilter = {
+                search,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
         return await this.apiClient.issueGetRequest(url);
     }
 

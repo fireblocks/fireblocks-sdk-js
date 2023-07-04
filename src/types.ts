@@ -769,6 +769,15 @@ export interface NFTOwnershipFilter {
     sort?: GetOwnedNFTsSortValues[];
     order?: OrderValues;
     status?: NFTOwnershipStatus;
+    search?: string;
+}
+
+export interface NFTOwnedCollectionsFilter {
+    search?: string;
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: GetOwnedCollectionsSortValues[];
+    order?: OrderValues;
 }
 
 export interface GetNFTsFilter {
@@ -812,6 +821,12 @@ export interface TokenWithBalance extends Token {
     vaultAccountId: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
+}
+
+export interface CollectionOwnership extends NFTCollection {
+    standard?: string;
+    blockchainDescriptor: string;
+    contractAddress?: string;
 }
 
 export interface TransactionPageFilter {
@@ -1315,12 +1330,18 @@ export interface ISystemMessageInfo {
 export enum GetNFTsSortValues {
     "collectionName" = "collection.name",
     "name" = "name",
+    "blockchainDescriptor" = "blockchainDescriptor",
 }
 
 export enum GetOwnedNFTsSortValues {
     "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
     "name" = "name",
     "collectionName" = "collection.name",
+    "blockchainDescriptor" = "blockchainDescriptor",
+}
+
+export enum GetOwnedCollectionsSortValues {
+    "name" = "name",
 }
 
 export enum OrderValues {
