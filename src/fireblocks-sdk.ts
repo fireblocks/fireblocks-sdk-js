@@ -83,6 +83,13 @@ import {
     ValidateFullTravelRuleResult,
     TravelRuleVasp,
     TravelRuleVaspFilter,
+    SmartTransfersTicketResponse,
+    SmartTransfersTicketCreatePayload,
+    SmartTransfersTicketsResponse,
+    SmartTransfersTicketsFilters,
+    SmartTransfersTicketTermPayload,
+    SmartTransfersTicketTermFundPayload,
+    SmartTransfersTicketTermResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1543,6 +1550,131 @@ export class FireblocksSDK {
      */
     public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
         return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
+    }
+
+    /**
+     * Creates Smart Transfers ticket
+     * @param data
+     * @param requestOptions
+     */
+    public async createSmartTransferTicket(data: SmartTransfersTicketCreatePayload, requestOptions?: RequestOptions): Promise<SmartTransfersTicketResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/smart-transfers`, data, requestOptions);
+    }
+
+    /**
+     * Get Smart Transfer tickets
+     * @param filters
+     */
+    public getSmartTransferTickets(filters: SmartTransfersTicketsFilters): Promise<SmartTransfersTicketsResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers?${new URLSearchParams(filters as Record<string, string>).toString()}`);
+    }
+
+    /**
+     * Get Smart Transfers ticket by id
+     * @param ticketId
+     */
+    public async getSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}`);
+    }
+
+    /**
+     * Set Smart Transfers ticket expires in
+     * @param ticketId
+     * @param expiresIn
+     */
+    public setSmartTransferTicketExpiresIn(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/expires-in`, {expiresIn});
+    }
+
+    /**
+     * Set Smart Transfer ticket external id
+     * @param ticketId
+     * @param externalId
+     */
+    public setSmartTransferTicketExternalId(ticketId: string, externalId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/external-id`, {externalId});
+    }
+
+    /**
+     * Submit Smart Transfers ticket
+     * @param ticketId
+     * @param expiresIn
+     */
+    public submitSmartTransferTicket(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/submit`, {expiresIn});
+    }
+
+    /**
+     * Fulfill Smart Transfers ticket
+     * @param ticketId
+     */
+    public fulfillSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/fulfill`, {});
+    }
+
+    /**
+     * Cancel Smart Transfers ticket
+     * @param ticketId
+     */
+    public cancelSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/cancel`, {});
+    }
+
+    /**
+     * Create Smart Transfers ticket term
+     * @param ticketId
+     * @param data
+     */
+    public createSmartTransferTicketTerm(ticketId: string, data: SmartTransfersTicketTermPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePostRequest(`/v1/smart-transfers/${ticketId}/terms`, data);
+    }
+
+    /**
+     * Fet Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     */
+    public getSmartTransferTicketTerms(ticketId: string, termId: string): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
+    }
+
+    /**
+     * Update Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param data
+     */
+    public updateSmartTransferTicketTerms(ticketId: string, termId: string, data: SmartTransfersTicketTermPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`, data);
+    }
+
+    /**
+     * Fund Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param data
+     */
+    public fundSmartTransferTicketTerm(ticketId: string, termId: string, data: SmartTransfersTicketTermFundPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/fund`, data);
+    }
+
+    /**
+     * Manually fund Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param txHash
+     */
+    public manuallyFundSmartTransferTicketTerms(ticketId: string, termId: string, txHash: string): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/manually-fund`, { txHash });
+    }
+
+    /**
+     * Delete Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     */
+    public deleteSmartTransferTicketTerms(ticketId: string, termId: string): Promise<void> {
+        return this.apiClient.issueDeleteRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
