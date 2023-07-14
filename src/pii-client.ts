@@ -35,7 +35,7 @@ export class PIIEncryption {
         });
     }
 
-    async hybridEncode(transaction: TransactionArguments, TravelRuleEncryptionOptions?: TravelRuleEncryptionOptions) {
+    async hybridEncode(transaction: TransactionArguments, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions) {
         const { travelRuleMessage } = transaction;
         const pii = travelRuleMessage.pii || {
             originator: travelRuleMessage.originator,
