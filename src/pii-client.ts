@@ -54,7 +54,7 @@ export class PIIEncryption {
                 counterpartyDIDKey,
                 keypair: JSON.parse(jsonDidKey),
                 senderDIDKey: JSON.parse(jsonDidKey).did,
-                encryptionMethod: TravelRuleEncryptionOptions?.sendToProvider
+                encryptionMethod: travelRuleEncryptionOptions?.sendToProvider
                     ? PIIEncryptionMethod.HYBRID
                     : PIIEncryptionMethod.END_2_END,
             });
