@@ -783,7 +783,7 @@ export interface VaultBalancesFilter {
 }
 
 export interface RequestOptions {
-    idempotencyKey: string;
+    idempotencyKey?: string;
     endUserWalletId?: string;
 }
 
