@@ -558,16 +558,6 @@ export class FireblocksSDK {
     }
 
     /**
-     * Cancels the selected wallet transaction
-     * @param txId The transaction id to cancel
-     * @param walletId The wallet id
-     * @param requestOptions
-     */
-    public async cancelEndUserWalletTransactionById(txId: string, walletId: string, requestOptions?: RequestOptions): Promise<CancelTransactionResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/cancel`, { walletId, type: "END_USER_WALLET" }, requestOptions);
-    }
-
-    /**
      * Creates a new vault account
      * @param name A name for the new vault account
      * @param hiddenOnUI If true, the created account and all related transactions will not be shown on Fireblocks console

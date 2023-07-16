@@ -65,6 +65,12 @@ export class ApiClient {
         if (idempotencyKey) {
             headers["Idempotency-Key"] = idempotencyKey;
         }
+
+        const endUserWalletId = requestOptions?.endUserWalletId;
+        if (endUserWalletId) {
+            headers["X-End-User-Wallet-Id"] = endUserWalletId;
+        }
+
         const response = await this.axiosInstance.post<T>(path, body, {headers});
         return response.data;
     }

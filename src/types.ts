@@ -784,6 +784,7 @@ export interface VaultBalancesFilter {
 
 export interface RequestOptions {
     idempotencyKey: string;
+    endUserWalletId?: string;
 }
 
 export interface ValidateAddressResponse {
