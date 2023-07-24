@@ -62,7 +62,7 @@ import {
     AllocateFundsResponse,
     GetNFTsFilter,
     SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
-    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload, GetWalletAssetsPayload, GetWalletAddressesPayload,
+    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload, GetWalletAssetsPayload, GetWalletAddressesPayload, PeerType,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -738,6 +738,12 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        const opts = { ...requestOptions };
+
+        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.endUserWalletId) {
+            opts.endUserWalletId = transactionArguments.source.walletId;
+        }
+
         return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
     }
 
@@ -1306,7 +1312,7 @@ export class FireblocksSDK {
 
     public async createWalletAccount(walletId: string): Promise<{
         walletId: string;
-        id: number;
+        accountId: number;
     }> {
         return await this.apiClient.issuePostRequest(
             `/v1/wallets/${walletId}/accounts`,
@@ -1326,7 +1332,7 @@ export class FireblocksSDK {
 
     public async getWalletAccounts(walletId: string, { pageCursor, pageSize, sort, order }: GetWalletsPayload = {}): Promise<Web3PagedResponse<{
         walletId: string;
-        id: number;
+        accountId: number;
     }>> {
         const params = new URLSearchParams({
             ...(pageCursor && { pageCursor }),
@@ -1341,7 +1347,7 @@ export class FireblocksSDK {
 
     public async getWalletAccount(walletId: string, accountId: number): Promise<{
         walletId: string;
-        id: number;
+        accountId: number;
     }> {
         return await this.apiClient.issueGetRequest(
             `/v1/wallets/${walletId}/accounts/${accountId}`);
