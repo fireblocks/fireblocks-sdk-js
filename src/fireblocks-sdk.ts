@@ -1136,10 +1136,10 @@ export class FireblocksSDK {
     /**
      * Creates a new Users Group
      * @param name The name of the Users Group
-     * @param membersIds The members of the Users Group
+     * @param memberIds The members of the Users Group
      */
-    public async createUserGroup(groupName: string, membersIds?: string[]): Promise<UsersGroup> {
-        const body = { groupName, membersIds };
+    public async createUserGroup(groupName: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
         return await this.apiClient.issuePostRequest("/v1/users_groups", body);
     }
 
@@ -1147,10 +1147,10 @@ export class FireblocksSDK {
      * Updates a Users Group
      * @param id The ID of the Users Group
      * @param name The name of the Users Group
-     * @param membersIds The members of the Users Group
+     * @param memberIds The members of the Users Group
      */
-    public async updateUserGroup(id: string, groupName?: string, membersIds?: string[]): Promise<UsersGroup> {
-        const body = { groupName, membersIds };
+    public async updateUserGroup(id: string, groupName?: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
         return await this.apiClient.issuePutRequest(`/v1/users_groups/${id}`, body);
     }
 
