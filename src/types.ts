@@ -1411,7 +1411,7 @@ export enum SmartTransfersTicketStatus {
     CANCELED = "CANCELED",
 }
 
-enum SmartTransferTicketTermStatus {
+export enum SmartTransferTicketTermStatus {
     CREATED = "CREATED",
     FUNDING = "FUNDING",
     FUNDING_FAILED = "FUNDING_FAILED",
@@ -1504,5 +1504,5 @@ export interface SmartTransfersTicketTermFundPayload {
     srcId: string;
     srcType: string;
     fee?: string;
-    feeLevel?: string;
+    feeLevel?: FeeLevel;
 }

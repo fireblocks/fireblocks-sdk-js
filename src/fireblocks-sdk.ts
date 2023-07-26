@@ -1563,7 +1563,7 @@ export class FireblocksSDK {
      * @param filters
      */
     public getSmartTransferTickets(filters: SmartTransfersTicketsFilters): Promise<SmartTransfersTicketsResponse> {
-        return this.apiClient.issueGetRequest(`/v1/smart-transfers?${new URLSearchParams(filters as Record<string, string>).toString()}`);
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers?${queryString.stringify(filters)}`);
     }
 
     /**
@@ -1571,7 +1571,7 @@ export class FireblocksSDK {
      * @param ticketId
      */
     public async getSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}`);
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}`);
     }
 
     /**
