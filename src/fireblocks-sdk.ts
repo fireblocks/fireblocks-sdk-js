@@ -1570,7 +1570,7 @@ export class FireblocksSDK {
      * Get Smart Transfers ticket by id
      * @param ticketId
      */
-    public async getSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+    public getSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
         return this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}`);
     }
 
