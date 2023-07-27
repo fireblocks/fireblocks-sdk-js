@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.3.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.2.0...v5.3.0)
+
+> 26 July 2023
+
+- Add smart transfers routes [`#184`](https://github.com/fireblocks/fireblocks-sdk-js/pull/184)
+
 #### [v5.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.4...v5.2.0)
 
 > 24 May 2023
@@ -12,11 +18,25 @@ All notable changes to this project will be documented in this file. Dates are d
 
 - Improve Travel Rule interface with additional fields update existing one [`#176`](https://github.com/fireblocks/fireblocks-sdk-js/pull/176)
 
-#### [v5.1.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.0...v5.1.3)
+#### [v5.1.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.2...v5.1.3)
 
 > 1 June 2023
 
 - Travel Rule beneficiary person pii ivms fix wording [`#175`](https://github.com/fireblocks/fireblocks-sdk-js/pull/175)
+
+#### [v5.1.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.1...v5.1.2)
+
+> 24 May 2023
+
+- New travel rule feature (upgraded Notabene dependency) [`#173`](https://github.com/fireblocks/fireblocks-sdk-js/pull/173)
+
+#### [v5.1.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.0...v5.1.1)
+
+> 21 May 2023
+
+- Fix endpoint /v1/tokenization/tokens/${assetId}/link [`#172`](https://github.com/fireblocks/fireblocks-sdk-js/pull/172)
+- Revert "fix: Add Travel Rule message to Transaction request and PII Encryption (#168)" [`#171`](https://github.com/fireblocks/fireblocks-sdk-js/pull/171)
+- fix: Add Travel Rule message to Transaction request and PII Encryption [`#168`](https://github.com/fireblocks/fireblocks-sdk-js/pull/168)
 
 #### [v5.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.0.1...v5.1.0)
 
