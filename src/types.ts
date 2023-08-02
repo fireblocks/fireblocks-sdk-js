@@ -1430,7 +1430,7 @@ export interface SmartTransfersTicketCreatePayload {
     type: string;
     expiresIn?: number;
     terms?: SmartTransfersTicketTermPayload[];
-    externalId?: string;
+    externalRefId?: string;
     note?: string;
     submit?: boolean;
 }
@@ -1464,7 +1464,7 @@ export interface SmartTransfersTicket {
     submittedAt?: Date;
     createdAt: Date;
     updatedAt: Date;
-    externalId?: string;
+    externalRefId?: string;
     note?: string;
     createdByNetworkId: string;
     createdByNetworkIdName: string;
@@ -1488,7 +1488,7 @@ export interface SmartTransfersTicketsFilters {
     q?: string;
     statuses?: SmartTransfersTicketStatus[];
     networkId?: string;
-    externalId?: string;
+    externalRefId?: string;
     after?: string;
     limit?: number;
     createdByMe?: boolean;
