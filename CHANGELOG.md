@@ -2,11 +2,23 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.3.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.0...v5.3.1)
+
+> 2 August 2023
+
+- Change externalId with externalRefId [`#186`](https://github.com/fireblocks/fireblocks-sdk-js/pull/186)
+
 #### [v5.3.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.2.0...v5.3.0)
 
 > 26 July 2023
 
 - Add smart transfers routes [`#184`](https://github.com/fireblocks/fireblocks-sdk-js/pull/184)
+- Improve PII Client and PII encryption module [`#181`](https://github.com/fireblocks/fireblocks-sdk-js/pull/181)
+- Update fireblocks sdk js [`#174`](https://github.com/fireblocks/fireblocks-sdk-js/pull/174)
+- add remove network id route [`#153`](https://github.com/fireblocks/fireblocks-sdk-js/pull/153)
+- add set networkId name route [`#162`](https://github.com/fireblocks/fireblocks-sdk-js/pull/162)
+- Improve Travel Rule interface with additional fields update existing one [`#176`](https://github.com/fireblocks/fireblocks-sdk-js/pull/176)
+- Travel Rule beneficiary person pii ivms fix wording [`#175`](https://github.com/fireblocks/fireblocks-sdk-js/pull/175)
 
 #### [v5.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.4...v5.2.0)
 
