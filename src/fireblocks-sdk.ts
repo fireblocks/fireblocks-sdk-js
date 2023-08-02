@@ -1586,10 +1586,10 @@ export class FireblocksSDK {
     /**
      * Set Smart Transfer ticket external id
      * @param ticketId
-     * @param externalId
+     * @param externalRefId
      */
-    public setSmartTransferTicketExternalId(ticketId: string, externalId: string): Promise<SmartTransfersTicketResponse> {
-        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/external-id`, {externalId});
+    public setSmartTransferTicketExternalId(ticketId: string, externalRefId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/external-id`, {externalRefId});
     }
 
     /**
