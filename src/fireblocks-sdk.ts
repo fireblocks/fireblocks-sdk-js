@@ -80,7 +80,7 @@ import {
     ValidateCreateTravelRuleTransaction,
     ValidateFullTravelRuleResult,
     TravelRuleVasp,
-    TravelRuleVaspFilter,
+    TravelRuleVaspFilter, GetWebhooksResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1069,6 +1069,22 @@ export class FireblocksSDK {
      */
     public async freezeTransactionById(txId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         return this.apiClient.issuePostRequest(`/v1/transactions/${txId}/freeze`, {}, requestOptions);
+    }
+
+    /**
+     * Resend failed webhooks
+     */
+    public async getWebhooks(): Promise<GetWebhooksResponse> {
+        return await this.apiClient.issueGetRequest("/v1/webhooks");
+    }
+
+    /**
+     * Resend failed webhooks
+     */
+    public async setWebhooks(subscriptions: string[]): Promise<void> {
+        return await this.apiClient.issuePutRequest("/v1/webhooks", {
+            subscriptions
+        });
     }
 
     /**
