@@ -1072,6 +1072,22 @@ export class FireblocksSDK {
     }
 
     /**
+     Freezes a Workspace so that ALL operations by ANY user are blocked.
+
+     You should only perform this action when the workspace faces imminent risk, such as when you have a security breach.
+
+     To unfreeze a workspace, the workspace Owner must submit a request to Fireblocks Support.
+
+     **NOTE:**
+     - This operation can only be performed by the workspace Owner
+     - Your workspace continues to receive incoming transfers during this time.
+     */
+    public async freezeWorkspace(): Promise<ValidateAddressResponse> {
+        const url = `/v1/workspace/freeze`;
+        return await this.apiClient.issuePostRequest(url, {});
+    }
+
+    /**
      * Get address validation info
      */
     public async validateAddress(assetId: string, address: string): Promise<ValidateAddressResponse> {
