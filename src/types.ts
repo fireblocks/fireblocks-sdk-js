@@ -1102,6 +1102,26 @@ export interface User {
     role: string;
 }
 
+export interface ConsoleUser {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    enabled: boolean;
+    status: string;
+    role: string;
+    userType: 'CONSOLE';
+}
+
+export interface ApiUser {
+    id: string;
+    name: string;
+    enabled: boolean;
+    status: string;
+    role: string;
+    userType: 'API';
+}
+
 export interface ResendWebhooksResponse {
     webhooksCount: number;
 }
