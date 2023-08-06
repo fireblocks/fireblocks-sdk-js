@@ -500,6 +500,12 @@ export interface TravelRuleVaspFilter {
     order?: string;
 }
 
+export interface ScreeningPolicyConfiguration {
+    bypassScreeningDuringServiceOutages?: boolean;
+    inboundTransactionDelay?: number;
+    outboundTransactionDelay?: number;
+}
+
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",

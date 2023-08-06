@@ -90,7 +90,7 @@ import {
     SmartTransfersTicketsFilters,
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
-    SmartTransfersTicketTermResponse,
+    SmartTransfersTicketTermResponse, ScreeningPolicyConfiguration,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1547,6 +1547,48 @@ export class FireblocksSDK {
      */
     public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
         return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
+    }
+
+    /**
+     * Get PostScreening Policies for travel rule compliance
+     */
+    public async getPostScreeningPolicy(): Promise<TravelRuleVasp> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/post_screening_policy}`);
+    }
+
+    /**
+     * Get Screening Policies for travel rule compliance
+     */
+    public async getScreeningPolicy(): Promise<TravelRuleVasp> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/screening_policy}`);
+    }
+
+    /**
+     * Get Screening Configuration for travel rule compliance
+     */
+    public async getScreeningConfiguration(): Promise<TravelRuleVasp> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/policy_configuration}`);
+    }
+
+    /**
+     * Set Bypass Screening Configuration for travel rule compliance
+     */
+    public async setBypassConfiguration(bypassConfiguration: ScreeningPolicyConfiguration): Promise<TravelRuleVasp> {
+        return await this.apiClient.issuePutRequest(`/api/travel-rule/bypass/configuration}`, bypassConfiguration);
+    }
+
+    /**
+     * Update Inbound Transaction Delay Configuration for travel rule compliance
+     */
+    public async updateInboundDelay(inboundDelay: ScreeningPolicyConfiguration): Promise<TravelRuleVasp> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/inbound_delay}`, inboundDelay);
+    }
+
+    /**
+     * Update Outbound Transaction Delay Configuration for travel rule compliance
+     */
+    public async updateOutboundDelay(outboundDelay: ScreeningPolicyConfiguration): Promise<TravelRuleVasp> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/policy_configuration}`, outboundDelay);
     }
 
     /**
