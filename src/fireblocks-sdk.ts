@@ -92,6 +92,7 @@ import {
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
     ConsoleUser,
+    ApiUser,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1134,7 +1135,7 @@ export class FireblocksSDK {
     /**
      * Gets all Console Users for your tenant
      */
-    public async getApiUsers(): Promise<ConsoleUser[]> {
+    public async getApiUsers(): Promise<ApiUser[]> {
         return await this.apiClient.issueGetRequest("/v1/users/api");
     }
 

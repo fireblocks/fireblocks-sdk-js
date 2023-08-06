@@ -1110,7 +1110,7 @@ export interface ConsoleUser {
     enabled: boolean;
     status: string;
     role: string;
-    userType: 'CONSOLE';
+    userType: "CONSOLE";
 }
 
 export interface ApiUser {
@@ -1119,7 +1119,7 @@ export interface ApiUser {
     enabled: boolean;
     status: string;
     role: string;
-    userType: 'API';
+    userType: "API";
 }
 
 export interface ResendWebhooksResponse {
