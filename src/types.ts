@@ -1400,3 +1400,116 @@ export interface IssueTokenRequest {
     issuerAddress?: string;
     decimals: number;
 }
+
+export enum SmartTransfersTicketDirection {
+    EXCHANGE = "EXCHANGE",
+    SEND = "SEND",
+    RECEIVE = "RECEIVE",
+    INTERMEDIATE = "INTERMEDIATE",
+}
+
+export enum SmartTransfersTicketStatus {
+    DRAFT = "DRAFT",
+    PENDING_APPROVAL = "PENDING_APPROVAL",
+    OPEN = "OPEN",
+    IN_SETTLEMENT = "IN_SETTLEMENT",
+    FULFILLED = "FULFILLED",
+    EXPIRED = "EXPIRED",
+    CANCELED = "CANCELED",
+}
+
+export enum SmartTransferTicketTermStatus {
+    CREATED = "CREATED",
+    FUNDING = "FUNDING",
+    FUNDING_FAILED = "FUNDING_FAILED",
+    FUNDED = "FUNDED",
+    REJECTED = "REJECTED",
+}
+
+export interface SmartTransfersTicketTermPayload {
+    asset: string;
+    amount: string;
+    fromNetworkId: string;
+    toNetworkId: string;
+}
+export interface SmartTransfersTicketCreatePayload {
+    createdByNetworkId: string;
+    type: string;
+    expiresIn?: number;
+    terms?: SmartTransfersTicketTermPayload[];
+    externalRefId?: string;
+    note?: string;
+    submit?: boolean;
+}
+
+export interface SmartTransfersTicketTerm {
+    id: string;
+    asset: string;
+    amount: string;
+    fromNetworkId: string;
+    fromNetworkIdName?: string;
+    toNetworkId: string;
+    toNetworkIdName?: string;
+    txHash?: string;
+    fbTxId?: string;
+    transactionStatus: TransactionStatus;
+    status: SmartTransferTicketTermStatus;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface SmartTransfersTicket {
+    id: string;
+    type: string;
+    direction?: SmartTransfersTicketDirection;
+    canceledByMe?: boolean;
+    createdByMe?: boolean;
+    status: SmartTransfersTicketStatus;
+    terms: SmartTransfersTicketTerm[];
+    expiresIn?: number;
+    expiresAt?: Date;
+    submittedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    externalRefId?: string;
+    note?: string;
+    createdByNetworkId: string;
+    createdByNetworkIdName: string;
+}
+
+export interface SmartTransfersTicketTermResponse {
+    data: SmartTransfersTicketTerm;
+}
+
+export interface SmartTransfersTicketResponse {
+    data: SmartTransfersTicket;
+}
+
+export interface SmartTransfersTicketsResponse {
+    message?: string;
+    after?: string;
+    data: SmartTransfersTicket[];
+}
+
+export interface SmartTransfersTicketsFilters {
+    q?: string;
+    statuses?: SmartTransfersTicketStatus[];
+    networkId?: string;
+    externalRefId?: string;
+    after?: string;
+    limit?: number;
+    createdByMe?: boolean;
+    expiresAfter?: Date;
+    expiresBefore?: Date;
+    type?: string;
+}
+
+export interface SmartTransfersTicketTermFundPayload {
+    asset: string;
+    amount: string;
+    networkConnectionId: string;
+    srcId: string;
+    srcType: string;
+    fee?: string;
+    feeLevel?: FeeLevel;
+}
