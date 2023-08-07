@@ -1133,7 +1133,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets all Console Users for your tenant
+     * Gets all Api Users for your tenant
      */
     public async getApiUsers(): Promise<ApiUser[]> {
         return await this.apiClient.issueGetRequest("/v1/users/api");
