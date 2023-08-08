@@ -1128,14 +1128,14 @@ export class FireblocksSDK {
     /**
      * Gets all Console Users for your tenant
      */
-    public async getConsoleUsers(): Promise<ConsoleUser[]> {
+    public async getConsoleUsers(): Promise<{ users: ConsoleUser[] }> {
         return await this.apiClient.issueGetRequest("/v1/users/console");
     }
 
     /**
      * Gets all Api Users for your tenant
      */
-    public async getApiUsers(): Promise<ApiUser[]> {
+    public async getApiUsers(): Promise<{ users: ApiUser[] }> {
         return await this.apiClient.issueGetRequest("/v1/users/api");
     }
 
