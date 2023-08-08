@@ -62,7 +62,7 @@ import {
     AllocateFundsResponse,
     GetNFTsFilter,
     SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
-    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload, GetWalletAssetsPayload, GetWalletAddressesPayload, PeerType,
+    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload, GetWalletAssetsPayload, GetWalletAddressesPayload, PeerType, WalletAssetResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 
@@ -1353,7 +1353,7 @@ export class FireblocksSDK {
             `/v1/wallets/${walletId}/accounts/${accountId}`);
     }
 
-    public async getWalletAssets(walletId: string, accountId: number, { pageCursor, pageSize, sort, order }: GetWalletAssetsPayload = {}): Promise<Web3PagedResponse<AssetResponse>> {
+    public async getWalletAssets(walletId: string, accountId: number, { pageCursor, pageSize, sort, order }: GetWalletAssetsPayload = {}): Promise<Web3PagedResponse<WalletAssetResponse>> {
         const params = new URLSearchParams({
             ...(pageCursor && { pageCursor }),
             ...(pageSize && { pageSize: pageSize.toString() }),
@@ -1365,7 +1365,7 @@ export class FireblocksSDK {
             `/v1/wallets/${walletId}/accounts/${accountId}/assets?${params.toString()}`);
     }
 
-    public async getWalletAsset(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
+    public async getWalletAsset(walletId: string, accountId: number, assetId: string): Promise<WalletAssetResponse> {
         return await this.apiClient.issueGetRequest(
             `/v1/wallets/${walletId}/accounts/${accountId}/assets/${assetId}`);
     }

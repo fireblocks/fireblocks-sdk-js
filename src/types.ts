@@ -57,6 +57,27 @@ export interface AssetResponse {
     }[];
 }
 
+export interface WalletAssetResponse {
+    id: string;
+    symbol: string;
+    name: string;
+    decimals: number;
+    networkProtocol: string;
+    testnet: boolean;
+    hasFee: boolean;
+    type: string;
+    baseAsset: string;
+    ethNetwork?: number;
+    ethContractAddress?: string;
+    issuerAddress?: string;
+    blockchainSymbol?: string;
+    deprecated?: boolean;
+    coinType: number;
+    blockchain: string;
+    blockchainDisplayName?: string;
+    blockchainId?: string;
+}
+
 export interface UnfreezeTransactionResponse {
     success: boolean;
 }
