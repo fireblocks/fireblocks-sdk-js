@@ -1364,6 +1364,33 @@ export enum NFTOwnershipStatus {
     "ARCHIVED" = "ARCHIVED",
 }
 
+export interface ContractUploadRequest {
+    name: string;
+    description: string;
+    longDescription: string;
+    bytecode: string;
+    sourcecode: string;
+    compilerOutputMetadata?: object;
+    docs?: object;
+    abi?: object[];
+    attributes?: Record<string, string>;
+    vendorId?: string;
+}
+
+export interface ContractTemplateDto {
+    isPublic: boolean;
+    vendor?: object;
+    id: string;
+    name: string;
+    description: string;
+    bytecode: string;
+    sourcecode?: string;
+    owner?: string;
+    compilerOutputMetadata?: object;
+    abi: object[];
+    docs?: object;
+    attributes?: Record<string, string>;
+}
 export enum TokenLinkPermission {
     MINT = "MINT",
     BURN = "BURN",
