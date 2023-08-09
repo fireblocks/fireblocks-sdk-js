@@ -1391,6 +1391,15 @@ export interface TokenLink {
     assetMetadata?: LinkedTokenMetadata;
     permissions: TokenLinkPermissionEntry[];
 }
+export interface PendingTokenLinkDto {
+    id: number;
+    txId?: string;
+    name?: string;
+    symbol?: string;
+    vaultAccountId?: string;
+    blockchainId?: string;
+}
+
 
 export interface IssueTokenRequest {
     symbol: string;
