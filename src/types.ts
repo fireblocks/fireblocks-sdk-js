@@ -1371,15 +1371,50 @@ export interface ContractUploadRequest {
     bytecode: string;
     sourcecode: string;
     compilerOutputMetadata?: object;
-    docs?: object;
-    abi?: object[];
+    docs?: ContractDoc;
+    abi?: AbiFunction[];
     attributes?: Record<string, string>;
     vendorId?: string;
+}
+interface AbiFunction {
+    name?: string;
+    stateMutability?: string;
+    type: "function" | "constructor" | string;
+    inputs: Parameter[];
+    outputs?: Parameter[];
+    description?: string;
+    returns?: Record<string, string>;
+}
+
+interface Parameter {
+    name: string;
+    description?: string;
+    internalType: string;
+    type: string;
+    components?: Parameter[];
+}
+interface ContractDoc {
+    details?: string;
+    events?: string;
+    kind: "dev" | "user" | string;
+    methods: Record<string, FunctionDoc>;
+    version: string | number;
+}
+
+interface FunctionDoc {
+    details?: string;
+    params?: Record<string, string>;
+    returns?: Record<string, string>;
+}
+interface VendorDto {
+    id: string;
+    name: string;
+    attributes: Record<string, string>;
 }
 
 export interface ContractTemplateDto {
     isPublic: boolean;
-    vendor?: object;
+    vendor?: VendorDto;
     id: string;
     name: string;
     description: string;
@@ -1387,8 +1422,8 @@ export interface ContractTemplateDto {
     sourcecode?: string;
     owner?: string;
     compilerOutputMetadata?: object;
-    abi: object[];
-    docs?: object;
+    abi: AbiFunction[];
+    docs?: ContractDoc;
     attributes?: Record<string, string>;
 }
 export enum TokenLinkPermission {
