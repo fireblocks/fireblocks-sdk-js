@@ -91,9 +91,10 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
-    UsersGroup, 
-    ContractUploadRequest, 
+    UsersGroup,
+    ContractUploadRequest,
     ContractTemplateDto,
+    PendingTokenLinkDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
