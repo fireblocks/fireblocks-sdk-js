@@ -1481,7 +1481,7 @@ export class FireblocksSDK {
      * @param request
      */
     public async uploadNewContract(request: ContractUploadRequest): Promise<ContractTemplateDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts/`, request);
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, request);
     }
 
     /**
