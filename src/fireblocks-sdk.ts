@@ -91,7 +91,7 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
-    UsersGroup,
+    UsersGroup, PendingTokenLinkDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1495,8 +1495,8 @@ export class FireblocksSDK {
      * Issue a new token and link it to the tenant
      * @param request
      */
-    public async issueNewToken(request: IssueTokenRequest): Promise<TokenLink> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/`, request);
+    public async issueNewToken(request: IssueTokenRequest): Promise<PendingTokenLinkDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, request);
     }
 
     /**
