@@ -1496,7 +1496,7 @@ export class FireblocksSDK {
      * @param request
      */
     public async issueNewToken(request: IssueTokenRequest): Promise<PendingTokenLinkDto> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/`, request);
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, request);
     }
 
     /**
