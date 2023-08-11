@@ -1572,9 +1572,10 @@ export class FireblocksSDK {
 
     /**
      * Update Bypass Screening Configuration for travel rule compliance
+     * @param screeningPolicyConfiguration
      */
     public async updateTravelRulePolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/bypass/policy_configuration`, bypassConfiguration);
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/bypass/policy_configuration`, screeningPolicyConfiguration);
     }
 
     /**
