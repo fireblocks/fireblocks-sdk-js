@@ -1172,7 +1172,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async resetDeviceRequest(id: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/users/console/${id}/resetDevice`, {}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/users/console/${id}/reset-device`, {}, requestOptions);
     }
 
     /**
