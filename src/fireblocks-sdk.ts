@@ -21,6 +21,7 @@ import {
     GenerateAddressResponse,
     InternalWalletAsset,
     MaxSpendableAmountResponse,
+    MaxBip44IndexUsedResponse,
     NetworkConnectionResponse,
     OffExchangeEntityResponse,
     OperationSuccessResponse,
@@ -60,11 +61,46 @@ import {
     GetWeb3ConnectionsPayload,
     PublicKeyResponse,
     AllocateFundsResponse,
+    SettleOffExchangeAccountResponse,
+    AddCollateralTransactionRequest,
+    RemoveCollateralTransactionRequest,
+    GetSettlementTransactionsResponse,
+    SettlementRequest,
+    SettlementResponse,
     GetNFTsFilter,
-    SettleOffExchangeAccountResponse, PublicKeyInformation, DropTransactionResponse,
-    TokenLink, TokenLinkPermissionEntry, IssueTokenRequest, WalletInfo, GetWalletsPayload, GetWalletAssetsPayload, GetWalletAddressesPayload, PeerType, WalletAssetResponse,
+    WalletInfo,
+    GetWalletsPayload,
+    GetWalletAssetsPayload,
+    GetWalletAddressesPayload,
+    PeerType,
+    WalletAssetResponse,
+    PublicKeyInformation,
+    DropTransactionResponse,
+    TokenLink,
+    TokenLinkPermissionEntry,
+    IssueTokenRequest,
+    NFTOwnershipStatus,
+    NFTOwnedCollectionsFilter,
+    CollectionOwnership,
+    TravelRuleOptions,
+    ValidateTravelRuleVaspInfo,
+    ValidateTravelRuleResult,
+    ValidateCreateTravelRuleTransaction,
+    ValidateFullTravelRuleResult,
+    TravelRuleVasp,
+    TravelRuleVaspFilter,
+    TravelRuleEncryptionOptions,
+    SmartTransfersTicketResponse,
+    SmartTransfersTicketCreatePayload,
+    SmartTransfersTicketsResponse,
+    SmartTransfersTicketsFilters,
+    SmartTransfersTicketTermPayload,
+    SmartTransfersTicketTermFundPayload,
+    SmartTransfersTicketTermResponse,
+    UsersGroup, PendingTokenLinkDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
+import { PIIEncryption } from "./pii-client";
 
 export * from "./types";
 
@@ -92,12 +128,18 @@ export interface SDKOptions {
           };
       }
     };
+
+    /**
+     * TravelRule Provider options to initialize PII Client for PII encryption
+     */
+    travelRuleOptions?: TravelRuleOptions;
 }
 
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
+    private piiClient: PIIEncryption;
 
     /**
      * Creates a new Fireblocks API Client
@@ -115,6 +157,10 @@ export class FireblocksSDK {
         }
 
         this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
+
+        if (sdkOptions?.travelRuleOptions) {
+            this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
+        }
     }
 
     /**
@@ -293,6 +339,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Deletes a single network profile
+     * @param networkId The network profile's id
+     * @returns NetworkIdResponse
+     */
+    public async deleteNetworkId(networkId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/network_ids/${networkId}`);
+    }
+
+    /**
      * Sets discoverability for network profile
      * @param networkId The network profile's id
      * @param isDiscoverable The desired discoverability to set
@@ -312,6 +367,17 @@ export class FireblocksSDK {
     public async setNetworkIdRoutingPolicy(networkId: string, routingPolicy: NetworkIdRoutingPolicy): Promise<void> {
         const body = { routingPolicy };
         return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_routing_policy`, body);
+    }
+
+    /**
+     * Sets network profile name
+     * @param networkId The network profile's id
+     * @param name The desired network profile's name
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdName(networkId: string, name: string): Promise<void> {
+        const body = { name };
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_name`, body);
     }
 
     /**
@@ -737,8 +803,12 @@ export class FireblocksSDK {
     /**
      * Creates a new transaction with the specified options
      */
-    public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+    public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions): Promise<CreateTransactionResponse> {
         const opts = { ...requestOptions };
+
+        if (transactionArguments?.travelRuleMessage) {
+            transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
+        }
 
         if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.endUserWalletId) {
             opts.endUserWalletId = transactionArguments.source.walletId;
@@ -989,6 +1059,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get maximum BIP44 index used in deriving addresses or in change addresses
+     */
+    public async getMaxBip44IndexUsed(vaultAccountId: string, assetId: string): Promise<MaxBip44IndexUsedResponse> {
+        const url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_bip44_index_used`;
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
      * Get all vault assets balance overview
      */
     public async getVaultAssetsBalance(filter: VaultBalancesFilter): Promise<AssetResponse[]> {
@@ -1058,6 +1137,50 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets all Users Groups for your tenant
+     */
+    public async getUsersGroups(): Promise<UsersGroup[]> {
+        return await this.apiClient.issueGetRequest("/v1/users_groups");
+    }
+
+    /**
+     * Gets a Users Group by ID
+     * @param id The ID of the User
+     */
+    public async getUsersGroup(id: string): Promise<UsersGroup> {
+        return await this.apiClient.issueGetRequest(`/v1/users_groups/${id}`);
+    }
+
+    /**
+     * Creates a new Users Group
+     * @param name The name of the Users Group
+     * @param memberIds The members of the Users Group
+     */
+    public async createUserGroup(groupName: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
+        return await this.apiClient.issuePostRequest("/v1/users_groups", body);
+    }
+
+    /**
+     * Updates a Users Group
+     * @param id The ID of the Users Group
+     * @param name The name of the Users Group
+     * @param memberIds The members of the Users Group
+     */
+    public async updateUserGroup(id: string, groupName?: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
+        return await this.apiClient.issuePutRequest(`/v1/users_groups/${id}`, body);
+    }
+
+    /**
+     * Deletes a Users Group
+     * @param id The ID of the Users Group
+     */
+    public async deleteUserGroup(id: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/users_groups/${id}`);
+    }
+
+    /**
      * Get off exchange accounts
      */
     public async getOffExchangeAccounts(): Promise<OffExchangeEntityResponse[]> {
@@ -1081,6 +1204,40 @@ export class FireblocksSDK {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
     }
 
+    /**
+     * Add collateral account, create deposit request
+     * @param depositRequest
+     * @param requestOptions
+     */
+    public async addCollateral(depositRequest: AddCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/add`, depositRequest, requestOptions);
+    }
+
+    /**
+     * Remove collateral account, create withdraw request
+     * @param withdrawRequest
+     * @param requestOptions
+     */
+    public async removeCollateral(withdrawRequest: RemoveCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/remove`, withdrawRequest, requestOptions);
+    }
+
+    /**
+     *
+     * @param requestOptions
+     */
+    public async getSettlementTransactions(settlementRequest: SettlementRequest): Promise<GetSettlementTransactionsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange/settlements/transactions?mainExchangeAccountId=${settlementRequest.mainExchangeAccountId}`);
+    }
+
+    /**
+     *
+     * @param settlementRequest
+     * @param requestOptions
+     */
+    public async settlement(settlementRequest: SettlementRequest, requestOptions?: RequestOptions): Promise<SettlementResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/settlements/trader`, settlementRequest, requestOptions);
+    }
     /**
      * Set Fee Payer configuration
      * @param feePayerConfiguration
@@ -1225,14 +1382,16 @@ export class FireblocksSDK {
      * @param filter.pageCursor
      * @param filter.pageSize
      * @param filter.ids
+     * @param filter.sort
      * @param filter.order
      */
     public async getNFTs(filter: GetNFTsFilter): Promise<Web3PagedResponse<Token>> {
-        const { pageCursor, pageSize, ids, order } = filter;
+        const { pageCursor, pageSize, ids, sort, order } = filter;
         const queryParams = {
             pageCursor,
             pageSize,
             ids: this.getCommaSeparatedList(ids),
+            sort: this.getCommaSeparatedList(sort),
             order,
         };
 
@@ -1246,13 +1405,17 @@ export class FireblocksSDK {
      * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
      * @param filter.collectionIds List of collection IDs
      * @param filter.ids List of token ids to fetch
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
      * @param filter.sort Sort by value
      * @param filter.order Order value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.search Search filter
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search } = filter;
             const requestFilter = {
                 vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
@@ -1262,9 +1425,37 @@ export class FireblocksSDK {
                 ids: this.getCommaSeparatedList(ids),
                 sort: this.getCommaSeparatedList(sort),
                 order,
+                status,
+                search,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * @param filter.search Search by value
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
+     * @param filter.sort Sort by value
+     * @param filter.order Order by value
+     */
+    public async listOwnedCollections(filter?: NFTOwnedCollectionsFilter): Promise<Web3PagedResponse<CollectionOwnership>> {
+        let url = "/v1/nfts/ownership/collections";
+        if (filter) {
+            const { search, pageCursor, pageSize, sort, order } = filter;
+
+            const requestFilter = {
+                search,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
         return await this.apiClient.issueGetRequest(url);
     }
 
@@ -1274,6 +1465,16 @@ export class FireblocksSDK {
      */
     public async refreshNFTMetadata(id: string): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/tokens/${id}`, undefined);
+    }
+
+    /**
+     *
+     * Update NFT ownership status for specific token
+     * @param id NFT asset id
+     * @param status Status for update
+     */
+    public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
     }
 
     /**
@@ -1417,8 +1618,8 @@ export class FireblocksSDK {
      * Issue a new token and link it to the tenant
      * @param request
      */
-    public async issueNewToken(request: IssueTokenRequest): Promise<TokenLink> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/`, request);
+    public async issueNewToken(request: IssueTokenRequest): Promise<PendingTokenLinkDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, request);
     }
 
     /**
@@ -1434,7 +1635,7 @@ export class FireblocksSDK {
      * @param assetId
      */
     public async linkToken(assetId: string): Promise<TokenLink> {
-        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}`, {  });
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {  });
     }
 
     /**
@@ -1461,6 +1662,184 @@ export class FireblocksSDK {
      */
     public async removeLinkedTokenPermissions(assetId: string, permission: TokenLinkPermissionEntry): Promise<TokenLink> {
         return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
+    }
+
+    /**
+     * Validate VASP details for travel rule compliance
+     * @param travelRuleMessageVaspInfo
+     */
+    public async validateTravelRuleTransaction(travelRuleMessageVaspInfo: ValidateTravelRuleVaspInfo): Promise<ValidateTravelRuleResult> {
+        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate`, travelRuleMessageVaspInfo);
+    }
+
+    /**
+     * Validate Travel Rule transaction and PII data
+     * @param travelRuleMessage
+     */
+    public async validateFullTravelRuleTransaction(travelRuleMessage: ValidateCreateTravelRuleTransaction): Promise<ValidateFullTravelRuleResult> {
+        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate/full`, travelRuleMessage);
+    }
+
+    /**
+     * Get VASP details for travel rule compliance
+     * @param did
+     */
+    public async getTravelRuleVASPDetails(did: string): Promise<TravelRuleVasp> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp/${did}`);
+    }
+
+    /**
+     * Get VASP library for travel rule compliance
+     */
+    public async getAllTravelRuleVASPs(filter?: TravelRuleVaspFilter): Promise<TravelRuleVasp[]> {
+        let url = `/v1/screening/travel_rule/vasp`;
+
+        if (filter) {
+            const { q, fields, page, per_page, order } = filter;
+            const queryParameters = {
+                q,
+                fields: this.getCommaSeparatedList(fields),
+                page,
+                per_page,
+                order,
+            };
+
+            url += `?${queryString.stringify(queryParameters)}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Update VASP for travel rule compliance
+     */
+    public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
+    }
+
+    /**
+     * Creates Smart Transfers ticket
+     * @param data
+     * @param requestOptions
+     */
+    public async createSmartTransferTicket(data: SmartTransfersTicketCreatePayload, requestOptions?: RequestOptions): Promise<SmartTransfersTicketResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/smart-transfers`, data, requestOptions);
+    }
+
+    /**
+     * Get Smart Transfer tickets
+     * @param filters
+     */
+    public getSmartTransferTickets(filters: SmartTransfersTicketsFilters): Promise<SmartTransfersTicketsResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers?${queryString.stringify(filters)}`);
+    }
+
+    /**
+     * Get Smart Transfers ticket by id
+     * @param ticketId
+     */
+    public getSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}`);
+    }
+
+    /**
+     * Set Smart Transfers ticket expires in
+     * @param ticketId
+     * @param expiresIn
+     */
+    public setSmartTransferTicketExpiresIn(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/expires-in`, {expiresIn});
+    }
+
+    /**
+     * Set Smart Transfer ticket external id
+     * @param ticketId
+     * @param externalRefId
+     */
+    public setSmartTransferTicketExternalId(ticketId: string, externalRefId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/external-id`, {externalRefId});
+    }
+
+    /**
+     * Submit Smart Transfers ticket
+     * @param ticketId
+     * @param expiresIn
+     */
+    public submitSmartTransferTicket(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/submit`, {expiresIn});
+    }
+
+    /**
+     * Fulfill Smart Transfers ticket
+     * @param ticketId
+     */
+    public fulfillSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/fulfill`, {});
+    }
+
+    /**
+     * Cancel Smart Transfers ticket
+     * @param ticketId
+     */
+    public cancelSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/cancel`, {});
+    }
+
+    /**
+     * Create Smart Transfers ticket term
+     * @param ticketId
+     * @param data
+     */
+    public createSmartTransferTicketTerm(ticketId: string, data: SmartTransfersTicketTermPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePostRequest(`/v1/smart-transfers/${ticketId}/terms`, data);
+    }
+
+    /**
+     * Fet Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     */
+    public getSmartTransferTicketTerms(ticketId: string, termId: string): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
+    }
+
+    /**
+     * Update Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param data
+     */
+    public updateSmartTransferTicketTerms(ticketId: string, termId: string, data: SmartTransfersTicketTermPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`, data);
+    }
+
+    /**
+     * Fund Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param data
+     */
+    public fundSmartTransferTicketTerm(ticketId: string, termId: string, data: SmartTransfersTicketTermFundPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/fund`, data);
+    }
+
+    /**
+     * Manually fund Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param txHash
+     */
+    public manuallyFundSmartTransferTicketTerms(ticketId: string, termId: string, txHash: string): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/manually-fund`, { txHash });
+    }
+
+    /**
+     * Delete Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     */
+    public deleteSmartTransferTicketTerms(ticketId: string, termId: string): Promise<void> {
+        return this.apiClient.issueDeleteRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {

@@ -247,6 +247,280 @@ export interface TransactionArguments {
     treatAsGrossAmount?: boolean;
     forceSweep?: boolean;
     feePayerInfo?: TransactionArgumentsFeePayerInfo;
+    travelRuleMessage?: TravelRule;
+}
+
+export type OwnershipProof = {
+    type: string;
+    proof: string;
+};
+
+export enum TravelRuleAddressTypeCode {
+    HOME = "HOME",
+    BIZZ = "BIZZ",
+    GEOG = "GEOG"
+}
+
+type TravelRulePersonAddress = {
+    addressType?: TravelRuleAddressTypeCode;
+    department?: string;
+    subDepartment?: string;
+    streetName?: string;
+    buildingNumber?: string;
+    buildingName?: string;
+    floor?: string;
+    postBox?: string;
+    room?: string;
+    postCode?: string;
+    townName?: string;
+    townLocationName?: string;
+    districtName?: string;
+    countrySubDivision?: string;
+    addressLine?: string[];
+    country?: string;
+};
+
+export interface ValidateTravelRuleVaspInfo {
+    transactionAsset: string;
+    destination: string;
+    transactionAmount: string;
+    originatorVASPdid: string;
+    originatorEqualsBeneficiary: boolean;
+    beneficiaryVASPdid?: string;
+    beneficiaryVASPname?: string;
+    beneficiaryName?: string;
+    beneficiaryAccountNumber?: string;
+    beneficiaryAddress?: TravelRulePersonAddress;
+    beneficiaryProof?: OwnershipProof;
+    travelRuleBehavior?: boolean;
+}
+
+export interface ValidateCreateTravelRuleTransaction {
+    transactionAsset: string;
+    transactionAmount: string;
+    originatorDid?: string;
+    beneficiaryDid?: string;
+    originatorVASPdid: string;
+    beneficiaryVASPdid?: string;
+    beneficiaryVASPname?: string;
+    transactionBlockchainInfo?: {
+        origin?: string;
+        destination?: string;
+        txHash?: string;
+    };
+    originator?: TROriginator;
+    beneficiary?: TROriginator;
+    pii?: PII;
+    pii_url?: string;
+    protocol?: string;
+    notificationEmail?: string;
+    originatorProof?: OwnershipProof;
+    beneficiaryProof?: OwnershipProof;
+    skipBeneficiaryDataValidation?: boolean;
+}
+
+export interface TravelRule {
+    originatorRef?: string;
+    beneficiaryRef?: string;
+    originatorVASPdid: string;
+    travelRuleBehavior?: boolean;
+    beneficiaryVASPdid: string;
+    beneficiaryVASPname?: string;
+    originator: TROriginator;
+    beneficiary: TRBeneficiary;
+    pii?: PII;
+    jsonDidKey?: string;
+}
+
+export interface TROriginator {
+    originatorPersons?: TROriginatorPerson[];
+    accountNumber?: string[];
+}
+
+export interface TROriginatorPerson {
+    naturalPerson?: TRNaturalPerson;
+    legalPerson?: TRNaturalPerson;
+}
+
+export interface TRNaturalPerson {
+    name: TRName[];
+    geographicAddress?: TRGeographicAddress[];
+    nationalIdentification?: TRNationalIdentification;
+    dateAndPlaceOfBirth?: TRDateAndPlaceOfBirth;
+}
+
+export interface TRName {
+    nameIdentifier?: TRNameIdentifier[];
+}
+
+export interface TRNameIdentifier {
+    primaryIdentifier?: string;
+    secondaryIdentifier?: string;
+}
+
+export interface TRGeographicAddress {
+    streetName?: string;
+    townName?: string;
+    country?: string;
+    buildingNumber?: string;
+    postCode?: string;
+    addressType?: string;
+    department?: string;
+    subDepartment?: string;
+    buildingName?: string;
+    floor?: string;
+    postBox?: string;
+    room?: string;
+    townLocationName?: string;
+    districtName?: string;
+    countrySubDivision?: string;
+    addressLine?: string;
+}
+
+export interface TRNationalIdentification {
+    nationalIdentifier?: string;
+    nationalIdentifierType?: string;
+    registrationAuthority?: string;
+    countryOfIssue?: string;
+}
+
+export interface TRDateAndPlaceOfBirth {
+    dateOfBirth?: string;
+    placeOfBirth?: string;
+}
+
+export interface TRBeneficiary {
+    beneficiaryPersons?: TRBeneficiaryPerson[];
+    originatorPersons?: TROriginatorPerson[];
+    accountNumber?: string[];
+}
+
+export interface TRBeneficiaryPerson {
+    naturalPerson?: TRNaturalPerson;
+}
+
+interface PII {
+    originator?: TROriginator;
+    beneficiary?: TRBeneficiary;
+}
+
+export interface TravelRuleOptions {
+    clientId: string;
+    clientSecret: string;
+    authURL?: string;
+    audience?: string;
+    audiencePII?: string;
+    baseURL?: string;
+    baseURLPII?: string;
+    jsonDidKey?: string;
+}
+
+export interface TravelRuleEncryptionOptions {
+    beneficiaryPIIDidKey?: string;
+    sendToProvider?: boolean;
+}
+
+export interface TravelRuleVasp {
+    did: string;
+    name: string;
+    verificationStatus: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    country: string;
+    emailDomains: string;
+    website: string;
+    logo: string;
+    legalStructure: string;
+    legalName: string;
+    yearFounded: string;
+    incorporationCountry: string;
+    isRegulated: string;
+    otherNames: string;
+    identificationType: string;
+    identificationCountry: string;
+    businessNumber: string;
+    regulatoryAuthorities: string;
+    jurisdictions: string;
+    street: string;
+    number: string;
+    unit: string;
+    postCode: string;
+    state: string;
+    certificates: string;
+    description: string;
+    travelRule_OPENVASP: string;
+    travelRule_SYGNA: string;
+    travelRule_TRISA: string;
+    travelRule_TRLIGHT: string;
+    travelRule_EMAIL: string;
+    travelRule_TRP: string;
+    travelRule_SHYFT: string;
+    travelRule_USTRAVELRULEWG: string;
+    createdAt: string;
+    createdBy: string;
+    updatedAt: string;
+    updatedBy: string;
+    lastSentDate: string;
+    lastReceivedDate: string;
+    documents: string;
+    hasAdmin: boolean;
+    isNotifiable: boolean;
+    issuers: {
+        name: {
+            issuerDid: string;
+        };
+        nonce: {
+            issuerDid: string;
+        };
+    };
+    regulatoryStatus: string;
+    supervisoryAuthority: string;
+    registrationLicenseId: string;
+    statusStartDate: string;
+    statusExpirationDate: string;
+    lastChecked: string;
+    additionalInformation: string;
+    subsidiaryOf: string;
+    chainalysis_clusterName: string;
+    pii_didkey: string;
+    onboardingStatus: string;
+    compliancePhase: number;
+    vaspnetId: string;
+    node: string;
+    node_didkey: string;
+    parentGateway: string;
+    isActiveSender: boolean;
+    isActiveReceiver: boolean;
+    subsidiaries: string[];
+}
+
+export interface ValidateFullTravelRuleResult {
+    isValid: boolean;
+    type: string;
+    beneficiaryAddressType: string;
+    addressSource: string;
+    beneficiaryVASPname: string;
+    beneficiaryVASPdid: string;
+    errors: string[];
+    warnings: string[];
+}
+
+export interface ValidateTravelRuleResult {
+    isValid: boolean;
+    type: string;
+    beneficiaryAddressType: string;
+    addressSource: string;
+    beneficiaryVASPdid: string;
+    warnings: string[];
+}
+
+export interface TravelRuleVaspFilter {
+    q?: string;
+    fields?: string[];
+    page?: number;
+    per_page?: number;
+    order?: string;
 }
 
 export enum Web3ConnectionFeeLevel {
@@ -521,12 +795,23 @@ export interface NFTOwnershipFilter {
     pageSize?: number;
     sort?: GetOwnedNFTsSortValues[];
     order?: OrderValues;
+    status?: NFTOwnershipStatus;
+    search?: string;
+}
+
+export interface NFTOwnedCollectionsFilter {
+    search?: string;
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: GetOwnedCollectionsSortValues[];
+    order?: OrderValues;
 }
 
 export interface GetNFTsFilter {
     ids: string[];
     pageCursor?: string;
     pageSize?: number;
+    sort?: GetNFTsSortValues[];
     order?: OrderValues;
 }
 
@@ -559,10 +844,16 @@ export interface Token {
 }
 
 export interface TokenWithBalance extends Token {
-    balance: number;
+    balance: string;
     vaultAccountId: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
+}
+
+export interface CollectionOwnership extends NFTCollection {
+    standard?: string;
+    blockchainDescriptor: string;
+    contractAddress?: string;
 }
 
 export interface TransactionPageFilter {
@@ -770,6 +1061,11 @@ export interface MaxSpendableAmountResponse {
     maxSpendableAmount: string;
 }
 
+export interface MaxBip44IndexUsedResponse {
+    maxBip44AddressIndexUsed?: number;
+    maxBip44ChangeAddressIndexUsed?: number;
+}
+
 export interface VaultAccountsFilter {
     namePrefix?: string;
     nameSuffix?: string;
@@ -832,6 +1128,13 @@ export interface User {
     role: string;
 }
 
+export interface UsersGroup {
+    id: string;
+    name: string;
+    membersIds: string[];
+    status: string;
+}
+
 export interface ResendWebhooksResponse {
     webhooksCount: number;
 }
@@ -860,6 +1163,68 @@ export enum SettleResponseCode {
     NOTHING_TO_SETTLE = 1
 }
 
+export interface GetSettlementTransactionsResponse {
+    toExchange: ToExchangeTransaction[];
+    toCollateral: ToCollateralTransaction[];
+}
+
+export interface ToExchangeTransaction {
+    assetId: string;
+    amount: string;
+    dstAddress: string;
+    dstTag: string;
+}
+
+export interface ToCollateralTransaction {
+    assetId: string;
+    amount: string;
+    fee?: string;
+    srcAddress?: string;
+    srcTag?: string;
+}
+
+export interface AddCollateralTransactionRequest {
+    transactionRequest: TransactionArguments;
+    isSrcCollateral?: boolean;
+}
+
+export interface RemoveCollateralTransactionRequest {
+    transactionRequest: TransactionArguments;
+    isDstCollateral?: boolean;
+}
+
+export interface SettlementRequest {
+    mainExchangeAccountId: string;
+}
+
+enum InitiatorType {
+    EXCHANGE = "EXCHANGE",
+    TRADER = "TRADER"
+}
+
+export interface InitiatedTransactions {
+    toExchange: SettlementTransactionResponse[];
+    toCollateral: SettlementTransactionResponse[];
+}
+
+export interface SettlementTransactionResponse {
+    txId: string;
+    status: TransactionStatus;
+}
+
+export enum ExchangeReply {
+    REJECTED = "REJECTED",
+    NOT_NEEDED = "NOT_NEEDED",
+    FAILED = "FAILED"
+}
+
+export interface SettlementResponse {
+    id: string;
+    initiator: InitiatorType;
+    exchangeReply?: ExchangeReply;
+    fireblocksInitiatedTransactions?: InitiatedTransactions;
+    exchangeRequestedTransactions?: GetSettlementTransactionsResponse;
+}
 
 export interface SetFeePayerConfiguration {
     feePayerAccountId: string;
@@ -998,13 +1363,31 @@ export interface ISystemMessageInfo {
     message: string;
 }
 
+export enum GetNFTsSortValues {
+    "collectionName" = "collection.name",
+    "name" = "name",
+    "blockchainDescriptor" = "blockchainDescriptor",
+}
+
 export enum GetOwnedNFTsSortValues {
     "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
+    "name" = "name",
+    "collectionName" = "collection.name",
+    "blockchainDescriptor" = "blockchainDescriptor",
+}
+
+export enum GetOwnedCollectionsSortValues {
+    "name" = "name",
 }
 
 export enum OrderValues {
     "ASC" = "ASC",
     "DESC" = "DESC",
+}
+
+export enum NFTOwnershipStatus {
+    "LISTED" = "LISTED",
+    "ARCHIVED" = "ARCHIVED",
 }
 
 export enum TokenLinkPermission {
@@ -1034,12 +1417,25 @@ export interface TokenLink {
     assetMetadata?: LinkedTokenMetadata;
     permissions: TokenLinkPermissionEntry[];
 }
+export interface PendingTokenLinkDto {
+    id: number;
+    txId?: string;
+    name?: string;
+    symbol?: string;
+    vaultAccountId?: string;
+    blockchainId?: string;
+}
+
 
 export interface IssueTokenRequest {
     symbol: string;
     name: string;
     blockchainId: string;
-    ethContractAddress?: string;
+    vaultAccountId: string;
+    createParams: CreateTokenParams;
+}
+type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
+interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
     decimals: number;
 }
@@ -1075,4 +1471,129 @@ export interface GetWalletAddressesPayload {
     pageSize?: number;
     sort?: string;
     order?: "ASC" | "DESC";
+}
+interface ParameterWithValue {
+    internalType: string;
+    name: string;
+    type: string;
+    description?: string;
+    value: any;
+}
+
+interface EVMTokenCreateParamsDto {
+    contractId: string;
+    constructorParams?: Array<ParameterWithValue>;
+}
+
+export enum SmartTransfersTicketDirection {
+    EXCHANGE = "EXCHANGE",
+    SEND = "SEND",
+    RECEIVE = "RECEIVE",
+    INTERMEDIATE = "INTERMEDIATE",
+}
+
+export enum SmartTransfersTicketStatus {
+    DRAFT = "DRAFT",
+    PENDING_APPROVAL = "PENDING_APPROVAL",
+    OPEN = "OPEN",
+    IN_SETTLEMENT = "IN_SETTLEMENT",
+    FULFILLED = "FULFILLED",
+    EXPIRED = "EXPIRED",
+    CANCELED = "CANCELED",
+}
+
+export enum SmartTransferTicketTermStatus {
+    CREATED = "CREATED",
+    FUNDING = "FUNDING",
+    FUNDING_FAILED = "FUNDING_FAILED",
+    FUNDED = "FUNDED",
+    REJECTED = "REJECTED",
+}
+
+export interface SmartTransfersTicketTermPayload {
+    asset: string;
+    amount: string;
+    fromNetworkId: string;
+    toNetworkId: string;
+}
+export interface SmartTransfersTicketCreatePayload {
+    createdByNetworkId: string;
+    type: string;
+    expiresIn?: number;
+    terms?: SmartTransfersTicketTermPayload[];
+    externalRefId?: string;
+    note?: string;
+    submit?: boolean;
+}
+
+export interface SmartTransfersTicketTerm {
+    id: string;
+    asset: string;
+    amount: string;
+    fromNetworkId: string;
+    fromNetworkIdName?: string;
+    toNetworkId: string;
+    toNetworkIdName?: string;
+    txHash?: string;
+    fbTxId?: string;
+    transactionStatus: TransactionStatus;
+    status: SmartTransferTicketTermStatus;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface SmartTransfersTicket {
+    id: string;
+    type: string;
+    direction?: SmartTransfersTicketDirection;
+    canceledByMe?: boolean;
+    createdByMe?: boolean;
+    status: SmartTransfersTicketStatus;
+    terms: SmartTransfersTicketTerm[];
+    expiresIn?: number;
+    expiresAt?: Date;
+    submittedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    externalRefId?: string;
+    note?: string;
+    createdByNetworkId: string;
+    createdByNetworkIdName: string;
+}
+
+export interface SmartTransfersTicketTermResponse {
+    data: SmartTransfersTicketTerm;
+}
+
+export interface SmartTransfersTicketResponse {
+    data: SmartTransfersTicket;
+}
+
+export interface SmartTransfersTicketsResponse {
+    message?: string;
+    after?: string;
+    data: SmartTransfersTicket[];
+}
+
+export interface SmartTransfersTicketsFilters {
+    q?: string;
+    statuses?: SmartTransfersTicketStatus[];
+    networkId?: string;
+    externalRefId?: string;
+    after?: string;
+    limit?: number;
+    createdByMe?: boolean;
+    expiresAfter?: Date;
+    expiresBefore?: Date;
+    type?: string;
+}
+
+export interface SmartTransfersTicketTermFundPayload {
+    asset: string;
+    amount: string;
+    networkConnectionId: string;
+    srcId: string;
+    srcType: string;
+    fee?: string;
+    feeLevel?: FeeLevel;
 }
