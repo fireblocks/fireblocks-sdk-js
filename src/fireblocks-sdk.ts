@@ -1129,14 +1129,14 @@ export class FireblocksSDK {
      * Gets all Console Users for your tenant
      */
     public async getConsoleUsers(): Promise<{ users: ConsoleUser[] }> {
-        return await this.apiClient.issueGetRequest("/v1/users/console");
+        return await this.apiClient.issueGetRequest("/v1/console-users");
     }
 
     /**
      * Gets all Api Users for your tenant
      */
     public async getApiUsers(): Promise<{ users: ApiUser[] }> {
-        return await this.apiClient.issueGetRequest("/v1/users/api");
+        return await this.apiClient.issueGetRequest("/v1/api-users");
     }
 
     /**
@@ -1149,7 +1149,7 @@ export class FireblocksSDK {
      */
     public async createConsoleUser(firstName: string, lastName: string, email: string, role: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = { firstName, lastName, email, role };
-        return await this.apiClient.issuePostRequest("/v1/users/console", body, requestOptions);
+        return await this.apiClient.issuePostRequest("/v1/console-users", body, requestOptions);
     }
 
     /**
@@ -1163,7 +1163,7 @@ export class FireblocksSDK {
      */
     public async createApiUser(name: string, role: string, csrPem: string, coSignerSetup?: string, coSignerSetupIsFirstUser?: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = { name, role, csrPem, coSignerSetup, coSignerSetupIsFirstUser };
-        return await this.apiClient.issuePostRequest("/v1/users/api", body, requestOptions);
+        return await this.apiClient.issuePostRequest("/v1/api-users", body, requestOptions);
     }
 
     /**
@@ -1172,7 +1172,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async resetDeviceRequest(id: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/users/console/${id}/reset-device`, {}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/console-users/${id}/reset-device`, {}, requestOptions);
     }
 
     /**
@@ -1181,29 +1181,8 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async getWhitelistedAddresses(id: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/users/api/${id}/whitelist-ip-addresses`);
+        return await this.apiClient.issueGetRequest(`/v1/api-users/${id}/whitelist-ip-addresses`);
     }
-
-    /**
-     * Sets whitelisted addresses of api user in your tenant
-     * @param id userId of the api user.
-     * @param addresses[] array of IP's,  NOTE: after this operation, only this IP's will be able to use this api user.
-     * @param requestOptions
-     */
-    public async setWhitelistedAddresses(id: string, addresses: string[], requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        const body = { addresses };
-        return await this.apiClient.issuePostRequest(`/v1/users/api/${id}/whitelist-ip-addresses`, body, requestOptions);
-    }
-
-    /**
-     * Deletes whitelisted addresses of api user in your tenant
-     * @param id userId of the user
-     * @param requestOptions
-     */
-    public async deleteWhitelistedAddresses(id: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issueDeleteRequest(`/v1/users/api/${id}/whitelist-ip-addresses`);
-    }
-
 
     /**
      * Get off exchange accounts
