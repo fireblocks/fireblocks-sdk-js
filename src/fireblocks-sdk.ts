@@ -1072,20 +1072,28 @@ export class FireblocksSDK {
     }
 
     /**
-     * Resend failed webhooks
+     * get webhooks, pass an id to get a specific webhook item
      */
-    public async getWebhooks(): Promise<GetWebhooksResponse> {
-        return await this.apiClient.issueGetRequest("/v1/webhooks");
+    public async getWebhooks(id?: number): Promise<GetWebhooksResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/webhooks${id ? `/${id}` : ""}`);
     }
 
     /**
-     * Resend failed webhooks
+     * Create a webhook url
      */
-    public async setWebhooks(subscriptions: string[]): Promise<void> {
-        return await this.apiClient.issuePutRequest("/v1/webhooks", {
-            subscriptions
+    public async addWebhook(url: string): Promise<void> {
+        return await this.apiClient.issuePostRequest("/v1/webhooks", {
+            url
         });
     }
+
+    /**
+     * Delete webhook by id
+     */
+    public async deleteWebhooks(id: number): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/webhooks/${id}`);
+    }
+
 
     /**
      * Resend failed webhooks
