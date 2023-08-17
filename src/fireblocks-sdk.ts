@@ -68,6 +68,7 @@ import {
     SettlementRequest,
     SettlementResponse,
     GetNFTsFilter,
+    PeerType,
     PublicKeyInformation,
     DropTransactionResponse,
     TokenLink,
@@ -95,6 +96,8 @@ import {
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
+import { NcwApiClient } from "./ncw-api-client";
+import { NcwSdk } from "./ncw-sdk";
 
 export * from "./types";
 
@@ -133,6 +136,8 @@ export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
+    private readonly apiNcw: NcwApiClient;
+
     private piiClient: PIIEncryption;
 
     /**
@@ -155,6 +160,18 @@ export class FireblocksSDK {
         if (sdkOptions?.travelRuleOptions) {
             this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
         }
+
+        this.apiNcw = new NcwApiClient(this.apiClient);
+    }
+
+    /**
+     * NCW API Namespace
+     *
+     * @readonly
+     * @type {NcwSdk}
+     */
+    public get NCW(): NcwSdk {
+        return this.apiNcw;
     }
 
     /**
@@ -798,11 +815,18 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions): Promise<CreateTransactionResponse> {
+        const opts = { ...requestOptions };
+
         if (transactionArguments?.travelRuleMessage) {
             transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
         }
 
-        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
+        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.NCW?.walletId) {
+            const { walletId } = transactionArguments.source;
+            opts.NCW = { ...opts.NCW, walletId };
+        }
+
+        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, opts);
     }
 
     /**
