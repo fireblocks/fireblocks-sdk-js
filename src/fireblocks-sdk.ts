@@ -90,7 +90,9 @@ import {
     SmartTransfersTicketsFilters,
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
-    SmartTransfersTicketTermResponse, ScreeningPolicyConfiguration, TravelRulePolicy, TravelRuleRulesConfiguration,
+    ScreeningPolicyConfiguration,
+    TravelRulePolicy,
+    TravelRuleRulesConfiguration,
     SmartTransfersTicketTermResponse,
     UsersGroup, PendingTokenLinkDto,
 } from "./types";
