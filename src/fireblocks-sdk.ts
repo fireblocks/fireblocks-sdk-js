@@ -91,6 +91,8 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse, ScreeningPolicyConfiguration, TravelRulePolicy, TravelRuleRulesConfiguration,
+    SmartTransfersTicketTermResponse,
+    UsersGroup, PendingTokenLinkDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1124,6 +1126,50 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets all Users Groups for your tenant
+     */
+    public async getUsersGroups(): Promise<UsersGroup[]> {
+        return await this.apiClient.issueGetRequest("/v1/users_groups");
+    }
+
+    /**
+     * Gets a Users Group by ID
+     * @param id The ID of the User
+     */
+    public async getUsersGroup(id: string): Promise<UsersGroup> {
+        return await this.apiClient.issueGetRequest(`/v1/users_groups/${id}`);
+    }
+
+    /**
+     * Creates a new Users Group
+     * @param name The name of the Users Group
+     * @param memberIds The members of the Users Group
+     */
+    public async createUserGroup(groupName: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
+        return await this.apiClient.issuePostRequest("/v1/users_groups", body);
+    }
+
+    /**
+     * Updates a Users Group
+     * @param id The ID of the Users Group
+     * @param name The name of the Users Group
+     * @param memberIds The members of the Users Group
+     */
+    public async updateUserGroup(id: string, groupName?: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
+        return await this.apiClient.issuePutRequest(`/v1/users_groups/${id}`, body);
+    }
+
+    /**
+     * Deletes a Users Group
+     * @param id The ID of the Users Group
+     */
+    public async deleteUserGroup(id: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/users_groups/${id}`);
+    }
+
+    /**
      * Get off exchange accounts
      */
     public async getOffExchangeAccounts(): Promise<OffExchangeEntityResponse[]> {
@@ -1450,8 +1496,8 @@ export class FireblocksSDK {
      * Issue a new token and link it to the tenant
      * @param request
      */
-    public async issueNewToken(request: IssueTokenRequest): Promise<TokenLink> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/`, request);
+    public async issueNewToken(request: IssueTokenRequest): Promise<PendingTokenLinkDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, request);
     }
 
     /**

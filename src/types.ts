@@ -1177,6 +1177,13 @@ export interface User {
     role: string;
 }
 
+export interface UsersGroup {
+    id: string;
+    name: string;
+    membersIds: string[];
+    status: string;
+}
+
 export interface ResendWebhooksResponse {
     webhooksCount: number;
 }
@@ -1459,14 +1466,38 @@ export interface TokenLink {
     assetMetadata?: LinkedTokenMetadata;
     permissions: TokenLinkPermissionEntry[];
 }
+export interface PendingTokenLinkDto {
+    id: number;
+    txId?: string;
+    name?: string;
+    symbol?: string;
+    vaultAccountId?: string;
+    blockchainId?: string;
+}
+
 
 export interface IssueTokenRequest {
     symbol: string;
     name: string;
     blockchainId: string;
-    ethContractAddress?: string;
+    vaultAccountId: string;
+    createParams: CreateTokenParams;
+}
+type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
+interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
-    decimals: number;
+}
+interface ParameterWithValue {
+    internalType: string;
+    name: string;
+    type: string;
+    description?: string;
+    value: any;
+}
+
+interface EVMTokenCreateParamsDto {
+    contractId: string;
+    constructorParams?: Array<ParameterWithValue>;
 }
 
 export enum SmartTransfersTicketDirection {

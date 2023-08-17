@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.1...v5.4.0)
+
+> 7 August 2023
+
+- Support users groups crud [`#179`](https://github.com/fireblocks/fireblocks-sdk-js/pull/179)
+
 #### [v5.3.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.0...v5.3.1)
 
 > 2 August 2023
