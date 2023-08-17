@@ -1208,15 +1208,26 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
-export interface CreateWeb3ConnectionPayload {
-    vaultAccountId: number;
+export interface BaseWeb3ConnectionPayload {
     feeLevel: Web3ConnectionFeeLevel;
 }
+export interface WorkspaceWalletIdentifier {
+    vaultAccountId: number;
+}
 
-export interface CreateWalletConnectPayload extends CreateWeb3ConnectionPayload {
+export interface NonCustodialWalletIdentifier {
+    ncwId: string;
+    ncwAccountId: number;
+}
+
+export interface WalletConnectConnectionPayload {
     uri: string;
     chainIds: string[];
 }
+
+export type CreateWeb3ConnectionPayload = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseWeb3ConnectionPayload;
+
+export type CreateWalletConnectPayload = CreateWeb3ConnectionPayload & WalletConnectConnectionPayload;
 
 export interface GetWeb3ConnectionsPayload {
     pageCursor?: string;
@@ -1228,33 +1239,30 @@ export interface GetWeb3ConnectionsPayload {
 
 export interface CreateWeb3ConnectionResponse {
     id: string;
-    sessionMetadata: {
-      appIcon?: string,
-      appId?: string,
-      appName?: string,
-      appUrl?: string,
-      appDescription?: string
-    };
+    sessionMetadata: SessionMetadata;
 }
 
 export interface SessionMetadata {
+    appUrl: string;
     appIcon?: string;
     appId?: string;
     appName?: string;
-    appUrl?: string;
     appDescription?: string;
-  }
+}
 
 export interface Session {
     id: string;
-    vaultAccountId: number;
+    vaultAccountId?: number;
+    ncwId?: string;
+    ncwAccountId?: number;
     chainIds?: string[];
     feeLevel: Web3ConnectionFeeLevel;
     creationDate: string;
     connectionType: Web3ConnectionType;
     connectionMethod?: Web3ConnectionMethod;
     sessionMetadata?: SessionMetadata;
-  }
+}
+
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"
