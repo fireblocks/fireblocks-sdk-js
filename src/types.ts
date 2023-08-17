@@ -1537,3 +1537,9 @@ export interface SmartTransfersTicketTermFundPayload {
     fee?: string;
     feeLevel?: FeeLevel;
 }
+
+export interface TenantConfigurationResponse {
+    tenantId: string;
+    key: string;
+    value: any;
+}

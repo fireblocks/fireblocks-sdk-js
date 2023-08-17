@@ -91,7 +91,7 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
-    UsersGroup, PendingTokenLinkDto,
+    UsersGroup, PendingTokenLinkDto, TenantConfigurationResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -115,12 +115,12 @@ export interface SDKOptions {
      * Providing custom axios options including a response interceptor (https://axios-http.com/docs/interceptors)
      */
     customAxiosOptions?: {
-      interceptors?: {
-          response?: {
-              onFulfilled: (value: AxiosResponse<any, any>) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
-              onRejected: (error: any) => any;
-          };
-      }
+        interceptors?: {
+            response?: {
+                onFulfilled: (value: AxiosResponse<any, any>) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
+                onRejected: (error: any) => any;
+            };
+        }
     };
 
     /**
@@ -253,7 +253,7 @@ export class FireblocksSDK {
 
         return await this.apiClient.issuePutRequest(
             `/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}`,
-            {description: description || ""});
+            { description: description || "" });
     }
 
     /**
@@ -516,7 +516,7 @@ export class FireblocksSDK {
         }
 
         return {
-            transactions: [], pageDetails: { prevPage:  "", nextPage: "" },
+            transactions: [], pageDetails: { prevPage: "", nextPage: "" },
         };
     }
 
@@ -663,7 +663,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async setAutoFuel(vaultAccountId: string, autoFuel: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, {autoFuel}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_auto_fuel`, { autoFuel }, requestOptions);
     }
 
     /**
@@ -696,7 +696,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async activateVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {} , requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/activate`, {}, requestOptions);
     }
 
     /**
@@ -733,7 +733,7 @@ export class FireblocksSDK {
      * Creates a new contract wallet
      * @param name A name for the new contract wallet
      */
-     public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
+    public async createContractWallet(name: string, requestOptions?: RequestOptions): Promise<WalletContainerResponse<ExternalWalletAsset>> {
         const body = {
             name,
         };
@@ -784,7 +784,7 @@ export class FireblocksSDK {
      * @param address The wallet address
      * @param tag (for ripple only) The ripple account tag
      */
-     public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
+    public async createContractWalletAsset(walletId: string, assetId: string, address: string, tag?: string, requestOptions?: RequestOptions): Promise<ExternalWalletAsset> {
         const path = `/v1/contracts/${walletId}/${assetId}`;
 
         const body = {
@@ -857,7 +857,7 @@ export class FireblocksSDK {
      * Deletes a single contract wallet
      * @param walletId The contract wallet ID
      */
-     public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
+    public async deleteContractWallet(walletId: string): Promise<OperationSuccessResponse> {
         return await this.apiClient.issueDeleteRequest(`/v1/contracts/${walletId}`);
     }
 
@@ -877,7 +877,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async setCustomerRefIdForVaultAccount(vaultAccountId: string, customerRefId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_customer_ref_id`, {customerRefId}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/set_customer_ref_id`, { customerRefId }, requestOptions);
     }
 
     /**
@@ -887,7 +887,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async setCustomerRefIdForInternalWallet(walletId: string, customerRefId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_customer_ref_id`, {customerRefId}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/internal_wallets/${walletId}/set_customer_ref_id`, { customerRefId }, requestOptions);
     }
 
     /**
@@ -897,7 +897,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async setCustomerRefIdForExternalWallet(walletId: string, customerRefId: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_customer_ref_id`, {customerRefId}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/external_wallets/${walletId}/set_customer_ref_id`, { customerRefId }, requestOptions);
     }
 
     /**
@@ -915,7 +915,7 @@ export class FireblocksSDK {
             addressId = `${address}:${tag}`;
         }
 
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, {customerRefId}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses/${addressId}/set_customer_ref_id`, { customerRefId }, requestOptions);
     }
 
     /**
@@ -925,7 +925,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async setConfirmationThresholdForTxId(txId: string, requiredConfirmationsNumber: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/transactions/${txId}/set_confirmation_threshold`, { numOfConfirmations: requiredConfirmationsNumber }, requestOptions);
     }
 
     /**
@@ -935,7 +935,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async setConfirmationThresholdForTxHash(txHash: string, requiredConfirmationsNumber: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, {numOfConfirmations: requiredConfirmationsNumber}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/txHash/${txHash}/set_confirmation_threshold`, { numOfConfirmations: requiredConfirmationsNumber }, requestOptions);
     }
 
     /**
@@ -1017,7 +1017,7 @@ export class FireblocksSDK {
             url += `/${assetId}`;
         }
 
-        const body = {gasThreshold, gasCap, maxGasPrice};
+        const body = { gasThreshold, gasCap, maxGasPrice };
 
         return await this.apiClient.issuePutRequest(url, body);
     }
@@ -1028,7 +1028,7 @@ export class FireblocksSDK {
     public async dropTransaction(txId: string, feeLevel?: string, requestedFee?: string, requestOptions?: RequestOptions): Promise<DropTransactionResponse> {
         const url = `/v1/transactions/${txId}/drop`;
 
-        const body = {feeLevel, requestedFee};
+        const body = { feeLevel, requestedFee };
 
         return await this.apiClient.issuePostRequest(url, body, requestOptions);
     }
@@ -1112,7 +1112,7 @@ export class FireblocksSDK {
      * @param resendStatusUpdated If true a webhook will be sent for the status of the transaction
      * @param requestOptions
      */
-     public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
+    public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
         const body = { resendCreated, resendStatusUpdated };
         return await this.apiClient.issuePostRequest(`/v1/webhooks/resend/${txId}`, body, requestOptions);
     }
@@ -1256,7 +1256,7 @@ export class FireblocksSDK {
         const basePath = `/v1/connections`;
 
         switch (type) {
-            case(Web3ConnectionType.WALLET_CONNECT): {
+            case (Web3ConnectionType.WALLET_CONNECT): {
                 return `${basePath}/wc`;
             }
             default: {
@@ -1287,7 +1287,7 @@ export class FireblocksSDK {
             ...(pageCursor && { next: pageCursor }),
             ...(pageSize && { pageSize: pageSize.toString() }),
             ...(sort && { sort }),
-            ...(filter && { filter: stringify(filter, { delimiter: "," })}),
+            ...(filter && { filter: stringify(filter, { delimiter: "," }) }),
             ...(order && { order }),
         });
 
@@ -1330,7 +1330,7 @@ export class FireblocksSDK {
     public async submitWeb3Connection(type: Web3ConnectionType, sessionId: string, approve: boolean): Promise<void> {
         const path = this.getWeb3ConnectionPath(type);
 
-        return await this.apiClient.issuePutRequest(`${path}/${sessionId}`, {approve});
+        return await this.apiClient.issuePutRequest(`${path}/${sessionId}`, { approve });
     }
 
     /**
@@ -1512,7 +1512,7 @@ export class FireblocksSDK {
      * @param assetId
      */
     public async linkToken(assetId: string): Promise<TokenLink> {
-        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {  });
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {});
     }
 
     /**
@@ -1625,7 +1625,7 @@ export class FireblocksSDK {
      * @param expiresIn
      */
     public setSmartTransferTicketExpiresIn(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
-        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/expires-in`, {expiresIn});
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/expires-in`, { expiresIn });
     }
 
     /**
@@ -1634,7 +1634,7 @@ export class FireblocksSDK {
      * @param externalRefId
      */
     public setSmartTransferTicketExternalId(ticketId: string, externalRefId: string): Promise<SmartTransfersTicketResponse> {
-        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/external-id`, {externalRefId});
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/external-id`, { externalRefId });
     }
 
     /**
@@ -1643,7 +1643,7 @@ export class FireblocksSDK {
      * @param expiresIn
      */
     public submitSmartTransferTicket(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
-        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/submit`, {expiresIn});
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/submit`, { expiresIn });
     }
 
     /**
@@ -1717,6 +1717,13 @@ export class FireblocksSDK {
      */
     public deleteSmartTransferTicketTerms(ticketId: string, termId: string): Promise<void> {
         return this.apiClient.issueDeleteRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
+    }
+
+    /**
+     * Gets one time address tenant configuration
+     */
+    public async getTenantConfigurationOneTimeAddress(): Promise<TenantConfigurationResponse> {
+        return await this.apiClient.issueGetRequest("/v1/management/ota");
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
