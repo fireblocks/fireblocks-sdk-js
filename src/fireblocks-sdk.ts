@@ -1058,6 +1058,17 @@ export class FireblocksSDK {
     }
 
     /**
+     * update the threshold of the admin quorum count
+     */
+    public async setAdminQuorumThreshold(adminThreshold: number , requestOptions?: RequestOptions): Promise<DropTransactionResponse> {
+        const url = `/v1/admin_quorum`;
+
+        const body = {adminThreshold};
+
+        return await this.apiClient.issuePutRequest(url, body);
+    }
+
+    /**
      * Get max spendable amount per asset and vault
      */
     public async getMaxSpendableAmount(vaultAccountId: string, assetId: string, manualSigning?: Boolean): Promise<MaxSpendableAmountResponse> {
