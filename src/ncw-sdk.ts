@@ -1,5 +1,5 @@
 import {
-    AssetResponse, DepositAddressResponse, Web3PagedResponse, NCW,
+    AssetResponse, Web3PagedResponse, NCW,
 } from "./types";
 
 export interface NcwSdk {

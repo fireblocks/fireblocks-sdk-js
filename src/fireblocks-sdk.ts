@@ -821,9 +821,9 @@ export class FireblocksSDK {
             transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
         }
 
-        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.NCW?.walletId) {
+        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.ncw?.walletId) {
             const { walletId } = transactionArguments.source;
-            opts.NCW = { ...opts.NCW, walletId };
+            opts.ncw = { ...opts.ncw, walletId };
         }
 
         return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, opts);

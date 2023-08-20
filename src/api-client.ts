@@ -66,7 +66,7 @@ export class ApiClient {
             headers["Idempotency-Key"] = idempotencyKey;
         }
 
-        const ncwWalletId = requestOptions?.NCW?.walletId;
+        const ncwWalletId = requestOptions?.ncw?.walletId;
         if (ncwWalletId) {
             headers["X-End-User-Wallet-Id"] = ncwWalletId;
         }

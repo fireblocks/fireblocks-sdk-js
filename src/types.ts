@@ -1080,9 +1080,9 @@ export interface VaultBalancesFilter {
 
 export interface RequestOptions {
     idempotencyKey?: string;
-    NCW?: {
+    ncw?: {
         walletId?: string;
-    }
+    };
 }
 
 export interface ValidateAddressResponse {
@@ -1547,6 +1547,8 @@ export interface SmartTransfersTicketTermFundPayload {
 }
 
 export namespace NCW {
+    export const WalletIdHeader = "X-End-User-Wallet-Id";
+
     export interface WalletInfo {
         walletId: string;
         enabled: boolean;
@@ -1601,14 +1603,14 @@ export namespace NCW {
         blockchainId?: string;
     }
     export interface WalletAssetAddress {
-        accountName: string,
-        accountId: string,
-        asset: string,
-        address: string,
-        addressType: string,
-        addressDescription?: string,
-        tag?: string,
-        addressIndex?: number,
-        legacyAddress?: string,
+        accountName: string;
+        accountId: string;
+        asset: string;
+        address: string;
+        addressType: string;
+        addressDescription?: string;
+        tag?: string;
+        addressIndex?: number;
+        legacyAddress?: string;
     }
 }
