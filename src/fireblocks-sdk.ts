@@ -68,7 +68,6 @@ import {
     SettlementRequest,
     SettlementResponse,
     GetNFTsFilter,
-    PeerType,
     PublicKeyInformation,
     DropTransactionResponse,
     TokenLink,
@@ -93,11 +92,10 @@ import {
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
     UsersGroup, PendingTokenLinkDto,
+    Task, Job, JobCreatedResponse
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
-import { NcwApiClient } from "./ncw-api-client";
-import { NcwSdk } from "./ncw-sdk";
 
 export * from "./types";
 
@@ -136,8 +134,6 @@ export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
-    private readonly apiNcw: NcwApiClient;
-
     private piiClient: PIIEncryption;
 
     /**
@@ -160,18 +156,6 @@ export class FireblocksSDK {
         if (sdkOptions?.travelRuleOptions) {
             this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
         }
-
-        this.apiNcw = new NcwApiClient(this.apiClient);
-    }
-
-    /**
-     * NCW API Namespace
-     *
-     * @readonly
-     * @type {NcwSdk}
-     */
-    public get NCW(): NcwSdk {
-        return this.apiNcw;
     }
 
     /**
@@ -656,6 +640,19 @@ export class FireblocksSDK {
     }
 
     /**
+     * Creates a new vault account
+     * @param count Number of new vault accounts requested
+     * @param requestOptions
+     */
+    public async createVaultAccountBulk(count: number, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            count
+        };
+
+        return await this.apiClient.issuePostRequest("/v1/vault/accounts/bulk", body, requestOptions);
+    }
+
+    /**
      * Hides a vault account in Fireblocks console
      * @param vaultAccountId The vault account ID
      * @param requestOptions
@@ -704,6 +701,20 @@ export class FireblocksSDK {
      */
     public async createVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {}, requestOptions);
+    }
+
+    /**
+     * Creates a new asset within a list of existing vault accounts
+     * @param assetId The asset to add
+     * @param vaultAccountIdFrom The first of the account ID range
+     * @param vaultAccountIdTo The last of the account ID range
+     * @param requestOptions
+     */
+    public async createVaultAssetBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            assetId, vaultAccountIdFrom, vaultAccountIdTo
+        };
+        return await this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
 
     /**
@@ -815,18 +826,11 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions): Promise<CreateTransactionResponse> {
-        const opts = { ...requestOptions };
-
         if (transactionArguments?.travelRuleMessage) {
             transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
         }
 
-        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.ncw?.walletId) {
-            const { walletId } = transactionArguments.source;
-            opts.ncw = { ...opts.ncw, walletId };
-        }
-
-        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, opts);
+        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
     }
 
     /**
@@ -1745,5 +1749,79 @@ export class FireblocksSDK {
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
         return items ? items.join(",") : undefined;
+    }
+
+    /**
+     * Get list of jobs for current tenant
+     * @param fromTime  beggining of time range in MS since 1970
+     * @param toTime    ending of time range in MS since 1970
+     */
+    public getJobs(fromTime: number, toTime: number): Promise<Job[]> {
+        return this.apiClient.issueGetRequest(`/v1/batch/jobs?fromTime=${fromTime}&toTime=${toTime}`);
+    }
+
+    /**
+     * Get job info by job ID
+     * @param jobId
+     */
+    public getJob(jobId: string): Promise<Job> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}`);
+    }
+
+    /**
+     * Get tasks belonging to given job
+     * @param jobId
+     */
+    public getTasks(jobId: string): Promise<Task> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}/tasks`);
+    }
+
+    /**
+     * Cancel a job by ID
+     * @param jobId
+     */
+    public cancelJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/cancel`, {});
+    }
+
+    /**
+     * Pause a job by ID
+     * @param jobId
+     */
+    public pauseJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/pause`, {});
+    }
+
+    /**
+     * Continue a job by ID
+     * @param jobId
+     */
+    public continueJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/continue`, {});
+    }
+
+    /**
+     * Create multiple vault accounts in one bulk operation
+     * @param count number of vault accounts
+     */
+    public createVaultAccountsBulk(count: number, assetId: string): Promise<JobCreatedResponse> {
+        const body = {
+            count,
+            assetId
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/accounts/bulk`, body);
+    }
+
+    /**
+     * Create multiple vault wallets in one bulk operation
+     * @param count number of vault accounts
+     */
+    public createVaultWalletsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string): Promise<JobCreatedResponse> {
+        const body = {
+            assetId,
+            vaultAccountIdFrom,
+            vaultAccountIdTo
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body);
     }
 }

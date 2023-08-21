@@ -135,7 +135,6 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
-    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     address?: string;
@@ -144,7 +143,6 @@ export interface TransferPeerPath {
 export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
-    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
@@ -636,7 +634,6 @@ export interface TransferPeerPathResponse {
     subType?: string;
     virtualType?: VirtualType;
     virtualId?: string;
-    walletId?: string;
 }
 
 export interface AuthorizationInfo {
@@ -891,8 +888,7 @@ export enum PeerType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
     COMPOUND = "COMPOUND",
     ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS",
-    OEC_PARTNER = "OEC_PARTNER",
-    END_USER_WALLET = "END_USER_WALLET",
+    OEC_PARTNER = "OEC_PARTNER"
 }
 
 export enum VirtualType {
@@ -1079,10 +1075,7 @@ export interface VaultBalancesFilter {
 }
 
 export interface RequestOptions {
-    idempotencyKey?: string;
-    ncw?: {
-        walletId?: string;
-    };
+    idempotencyKey: string;
 }
 
 export interface ValidateAddressResponse {
@@ -1415,11 +1408,48 @@ export interface IssueTokenRequest {
     vaultAccountId: string;
     createParams: CreateTokenParams;
 }
+
+export interface JobCreatedResponse {
+    jobId: string;
+}
+
+export enum Status {
+    NONE = "NONE",
+    CREATED = "CREATED",
+    INPROGRESS = "INPROGRESS",
+    DONE = "DONE",
+    ERROR = "ERROR",
+    CANCELED = "CANCELED",
+    PAUSED = "PAUSED"
+}
+
+export class Job {
+    id: string;
+    tenantId: string;
+    type: string;
+    userId: string;
+    created: number;
+    updated?: number;
+    state: Status;
+    data: string;
+}
+
+export class Task {
+    id: string;
+    jobId: string;
+    type: string;
+    tenantId: string;
+    created: number;
+    updated?: number;
+    state: Status;
+    data?: string;
+    result?: string;
+}
+
 type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
 interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
 }
-
 interface ParameterWithValue {
     internalType: string;
     name: string;
@@ -1544,73 +1574,4 @@ export interface SmartTransfersTicketTermFundPayload {
     srcType: string;
     fee?: string;
     feeLevel?: FeeLevel;
-}
-
-export namespace NCW {
-    export const WalletIdHeader = "X-End-User-Wallet-Id";
-
-    export interface WalletInfo {
-        walletId: string;
-        enabled: boolean;
-    }
-
-    export interface GetWalletsPayload {
-        pageCursor?: string;
-        pageSize?: number;
-        sort?: string;
-        order?: "ASC" | "DESC";
-    }
-
-    export interface GetWalletAccountsPayload {
-        pageCursor?: string;
-        pageSize?: number;
-        sort?: string;
-        order?: "ASC" | "DESC";
-    }
-
-    export interface GetWalletAssetsPayload {
-        pageCursor?: string;
-        pageSize?: number;
-        sort?: string;
-        order?: "ASC" | "DESC";
-    }
-
-    export interface GetWalletAddressesPayload {
-        pageCursor?: string;
-        pageSize?: number;
-        sort?: string;
-        order?: "ASC" | "DESC";
-    }
-
-    export interface WalletAssetResponse {
-        id: string;
-        symbol: string;
-        name: string;
-        decimals: number;
-        networkProtocol: string;
-        testnet: boolean;
-        hasFee: boolean;
-        type: string;
-        baseAsset: string;
-        ethNetwork?: number;
-        ethContractAddress?: string;
-        issuerAddress?: string;
-        blockchainSymbol?: string;
-        deprecated?: boolean;
-        coinType: number;
-        blockchain: string;
-        blockchainDisplayName?: string;
-        blockchainId?: string;
-    }
-    export interface WalletAssetAddress {
-        accountName: string;
-        accountId: string;
-        asset: string;
-        address: string;
-        addressType: string;
-        addressDescription?: string;
-        tag?: string;
-        addressIndex?: number;
-        legacyAddress?: string;
-    }
 }
