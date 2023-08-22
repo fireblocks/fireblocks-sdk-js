@@ -23,6 +23,25 @@ export interface NcwSdk {
      */
     enableWallet(walletId: string, enabled: boolean): Promise<void>;
 
+    
+    /**
+     * Get NCW wallet devices
+     *
+     * @param {string} walletId
+     * @return {*}  {Promise<NCW.Device>}
+     */
+    getWalletDevices(walletId: string): Promise<NCW.Device>;
+
+    /**
+     * Set NCW wallet device's enabled state
+     *
+     * @param {string} walletId
+     * @param {string} deviceId
+     * @param {boolean} enabled
+     * @return {*}  {Promise<void>}
+     */
+    enableWalletDevice(walletId: string, deviceId: string, enabled: boolean): Promise<void>;
+
     /**
      * Invoke NCW wallet RPC call
      *

@@ -1613,4 +1613,9 @@ export namespace NCW {
         addressIndex?: number;
         legacyAddress?: string;
     }
+
+    export interface Device {
+        deviceId: string;
+        enabled: boolean;
+    }
 }

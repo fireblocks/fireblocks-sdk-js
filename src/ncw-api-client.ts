@@ -25,6 +25,17 @@ export class NcwApiClient implements NcwSdk {
             { enabled });
     }
 
+    public async getWalletDevices(walletId: string): Promise<NCW.Device> {
+        return await this.apiClient.issueGetRequest(
+            `/v1/wallets/${walletId}/devices/`);
+    }
+
+    public async enableWalletDevice(walletId: string, deviceId: string, enabled: boolean): Promise<void> {
+        return await this.apiClient.issuePutRequest(
+            `/v1/wallets/${walletId}/devices/${deviceId}/enable`,
+            { enabled });
+    }
+
     public async invokeWalletRpc(walletId: string, deviceId: string, payload: string): Promise<{ result: string; } | { error: { message: string; code?: number; }; }> {
         return await this.apiClient.issuePostRequest(
             `/v1/wallets/${walletId}/devices/${deviceId}/invoke`,
