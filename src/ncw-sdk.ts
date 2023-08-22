@@ -23,7 +23,7 @@ export interface NcwSdk {
      */
     enableWallet(walletId: string, enabled: boolean): Promise<void>;
 
-    
+
     /**
      * Get NCW wallet devices
      *

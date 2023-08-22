@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.5.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.4.0...v5.5.0)
+
+> 22 August 2023
+
+- fix: add NCW methods [`#197`](https://github.com/fireblocks/fireblocks-sdk-js/pull/197)
+
 #### [v5.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.1...v5.4.0)
 
 > 7 August 2023
