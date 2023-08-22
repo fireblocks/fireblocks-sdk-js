@@ -1245,7 +1245,6 @@ export interface CreateWeb3ConnectionResponse {
 export interface SessionMetadata {
     appUrl: string;
     appIcon?: string;
-    appId?: string;
     appName?: string;
     appDescription?: string;
 }
@@ -1255,12 +1254,12 @@ export interface Session {
     vaultAccountId?: number;
     ncwId?: string;
     ncwAccountId?: number;
-    chainIds?: string[];
+    chainIds: string[];
     feeLevel: Web3ConnectionFeeLevel;
     creationDate: string;
     connectionType: Web3ConnectionType;
-    connectionMethod?: Web3ConnectionMethod;
-    sessionMetadata?: SessionMetadata;
+    connectionMethod: Web3ConnectionMethod;
+    sessionMetadata: SessionMetadata;
 }
 
 export enum TimePeriod {
