@@ -90,7 +90,7 @@ import {
     SmartTransfersTicketsFilters,
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
-    SmartTransfersTicketTermResponse,
+    SmartTransfersTicketTermResponse, SetAdminOperationResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1035,7 +1035,7 @@ export class FireblocksSDK {
     /**
      * update the threshold of the admin quorum count
      */
-    public async setAdminQuorumThreshold(adminThreshold: number , requestOptions?: RequestOptions): Promise<DropTransactionResponse> {
+    public async setAdminQuorumThreshold(adminThreshold: number , requestOptions?: RequestOptions): Promise<void> {
         const url = `/v1/admin_quorum`;
 
         const body = {adminThreshold};
