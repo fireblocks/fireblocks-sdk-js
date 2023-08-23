@@ -5,7 +5,7 @@ export interface Web3PagedResponse<T> {
     paging?: Paging;
 }
 
-export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+export type APIResponseHeaders = AxiosResponseHeaders & { "x-request-id"?: string };
 
 export interface VaultAccountResponse {
     id: string;
@@ -318,7 +318,8 @@ interface TROriginator {
     accountNumber?: string[];
 }
 
-interface TROriginatorPersons extends Array<TROriginatorPerson> {}
+interface TROriginatorPersons extends Array<TROriginatorPerson> {
+}
 
 interface TROriginatorPerson {
     naturalPerson?: TRNaturalPerson;
@@ -332,7 +333,8 @@ interface TRNaturalPerson {
     dateAndPlaceOfBirth?: TRDateAndPlaceOfBirth;
 }
 
-interface TRName extends Array<TRPersonNameIdentifier> {}
+interface TRName extends Array<TRPersonNameIdentifier> {
+}
 
 interface TRPersonNameIdentifier {
     nameIdentifier?: TRNameIdentifier;
@@ -344,7 +346,8 @@ interface TRNameIdentifier {
     nameIdentifierType?: string;
 }
 
-interface TRGeographicAddress extends Array<TRGeographicAddressData> {}
+interface TRGeographicAddress extends Array<TRGeographicAddressData> {
+}
 
 interface TRGeographicAddressData {
     streetName?: string;
@@ -709,8 +712,14 @@ export interface NoneNetworkRoutingDest {
     scheme: NetworkScheme.NONE;
 }
 
-export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionCryptoRoutingDest =
+    CustomCryptoRoutingDest
+    | DefaultNetworkRoutingDest
+    | NoneNetworkRoutingDest;
+export type NetworkConnectionFiatRoutingDest =
+    CustomFiatRoutingDest
+    | DefaultNetworkRoutingDest
+    | NoneNetworkRoutingDest;
 export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | NoneNetworkRoutingDest;
 export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | NoneNetworkRoutingDest;
 
@@ -1086,9 +1095,15 @@ export interface ResendWebhooksResponse {
 }
 
 export interface GetWebhooksResponse {
-    subscriptions: string[];
+    webhooks: Webhook[];
 }
 
+export interface Webhook {
+    id: number;
+    webHookUrl: string;
+    urlType: string;
+    enabled: boolean;
+}
 
 export interface OffExchangeEntityResponse {
     id: string;
@@ -1206,11 +1221,11 @@ export interface GetWeb3ConnectionsPayload {
 export interface CreateWeb3ConnectionResponse {
     id: string;
     sessionMetadata: {
-      appIcon?: string,
-      appId?: string,
-      appName?: string,
-      appUrl?: string,
-      appDescription?: string
+        appIcon?: string,
+        appId?: string,
+        appName?: string,
+        appUrl?: string,
+        appDescription?: string
     };
 }
 
@@ -1220,7 +1235,7 @@ export interface SessionMetadata {
     appName?: string;
     appUrl?: string;
     appDescription?: string;
-  }
+}
 
 export interface Session {
     id: string;
@@ -1231,7 +1246,8 @@ export interface Session {
     connectionType: Web3ConnectionType;
     connectionMethod?: Web3ConnectionMethod;
     sessionMetadata?: SessionMetadata;
-  }
+}
+
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"
@@ -1356,6 +1372,7 @@ export interface LinkedTokenMetadata {
     testnet?: boolean;
     blockchain?: string;
 }
+
 export interface TokenLink {
     id: string;
     assetId: string;
