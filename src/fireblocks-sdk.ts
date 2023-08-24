@@ -92,7 +92,10 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
-    UsersGroup, PendingTokenLinkDto,
+    UsersGroup,
+    ContractUploadRequest,
+    ContractTemplateDto,
+    PendingTokenLinkDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1498,6 +1501,14 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    /**
+     * Upload a new contract. This contract would be private and only your tenant can see it
+     * @param request
+     */
+    public async uploadNewContract(request: ContractUploadRequest): Promise<ContractTemplateDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, request);
     }
 
     /**
