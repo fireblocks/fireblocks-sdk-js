@@ -1598,6 +1598,14 @@ export interface SmartTransfersTicketsFilters {
     type?: string;
 }
 
+export interface SmartTransfersUserGroupsResponse {
+    data: SmartTransfersUserGroups;
+}
+
+export interface SmartTransfersUserGroups {
+    userGroupIds: string[];
+}
+
 export interface SmartTransfersTicketTermFundPayload {
     asset: string;
     amount: string;
