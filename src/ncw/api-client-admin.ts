@@ -1,7 +1,8 @@
 import { ApiClient } from "../api-client";
-import { AssetResponse, INcwAdminApiClient, NCW, Web3PagedResponse } from "../types";
+import { AssetResponse, NCW, Web3PagedResponse } from "../types";
+import { INcwAdminSdk } from "./types";
 
-export class NcwAdminApiClient implements INcwAdminApiClient {
+export class NcwAdminSdk implements INcwAdminSdk {
 
     constructor(private readonly apiClient: ApiClient, private readonly BASE_PATH: string) { }
 

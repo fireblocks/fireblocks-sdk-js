@@ -1,7 +1,8 @@
 import { ApiClient } from "../api-client";
-import { AssetResponse, INcwSignerApiClient, NCW, RequestOptions, Web3PagedResponse } from "../types";
+import { AssetResponse, NCW, RequestOptions, Web3PagedResponse } from "../types";
+import { INcwSignerSdk } from "./types";
 
-export class NcwSignerApiClient implements INcwSignerApiClient {
+export class NcwSignerSdk implements INcwSignerSdk {
 
     constructor(private readonly apiClient: ApiClient, private readonly BASE_PATH: string) { }
 

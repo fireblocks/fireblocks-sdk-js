@@ -102,6 +102,7 @@ import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw/ncw-api-client";
 
 export * from "./types";
+export * from "./ncw/types";
 
 export interface SDKOptions {
     /** HTTP request timeout */

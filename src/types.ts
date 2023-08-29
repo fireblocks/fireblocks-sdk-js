@@ -1,5 +1,4 @@
 import { AxiosResponseHeaders } from "axios";
-import { NcwSdk } from "./ncw/ncw-sdk";
 
 export interface Web3PagedResponse<T> {
     data: T[];
@@ -1682,7 +1681,3 @@ export namespace NCW {
         enabled: boolean;
     }
 }
-
-export interface INcwAdminApiClient extends Omit<NcwSdk, "invokeWalletRpc"> { }
-
-export interface INcwSignerApiClient extends Omit<NcwSdk, "createWallet" | "enableWallet"> { }
