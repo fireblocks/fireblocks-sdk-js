@@ -1083,6 +1083,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get addresses for a vault account for asset with paging
+     */
+        public async getAddressesWithPaging(vaultAccountId: string = "", assetId: string = "",onlyPermanent: boolean = false, after: string = "1", limit: number = 500): Promise<MaxBip44IndexUsedResponse> {
+            const url = `/v1/address?accountId=${vaultAccountId}&assetId=${assetId}&onlyPermanent=${onlyPermanent}&after=${after}&limit=${limit}`
+    
+            return await this.apiClient.issueGetRequest(url);
+        }
+
+    /**
      * Get all vault assets balance overview
      */
     public async getVaultAssetsBalance(filter: VaultBalancesFilter): Promise<AssetResponse[]> {
