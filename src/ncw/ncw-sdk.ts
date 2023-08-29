@@ -1,6 +1,6 @@
 import {
     AssetResponse, Web3PagedResponse, NCW,
-} from "./types";
+} from "../types";
 
 export interface NcwSdk {
     /**
