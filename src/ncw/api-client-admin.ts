@@ -1,8 +1,7 @@
 import { ApiClient } from "../api-client";
-import { AssetResponse, NCW, Web3PagedResponse } from "../types";
-import { NcwSdk } from "./ncw-sdk";
+import { AssetResponse, INcwAdminApiClient, NCW, Web3PagedResponse } from "../types";
 
-export class NcwAdminApiClient implements Omit<NcwSdk, "invokeWalletRpc"> {
+export class NcwAdminApiClient implements INcwAdminApiClient {
 
     constructor(private readonly apiClient: ApiClient, private readonly BASE_PATH: string) { }
 

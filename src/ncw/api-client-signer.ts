@@ -1,8 +1,7 @@
 import { ApiClient } from "../api-client";
-import { AssetResponse, NCW, RequestOptions, Web3PagedResponse } from "../types";
-import { NcwSdk } from "./ncw-sdk";
+import { AssetResponse, INcwSignerApiClient, NCW, RequestOptions, Web3PagedResponse } from "../types";
 
-export class NcwSignerApiClient implements Omit<NcwSdk, "createWallet" | "enableWallet"> {
+export class NcwSignerApiClient implements INcwSignerApiClient {
 
     constructor(private readonly apiClient: ApiClient, private readonly BASE_PATH: string) { }
 
