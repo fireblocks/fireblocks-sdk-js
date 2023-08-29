@@ -1,4 +1,5 @@
 import { AxiosResponseHeaders } from "axios";
+import { Address } from "cluster";
 
 export interface Web3PagedResponse<T> {
     data: T[];
@@ -1043,6 +1044,28 @@ export interface MaxSpendableAmountResponse {
 export interface MaxBip44IndexUsedResponse {
     maxBip44AddressIndexUsed?: number;
     maxBip44ChangeAddressIndexUsed?: number;
+}
+export interface AddressResponse {
+	accountName: string;
+	accountId: string;
+	asset: string;
+	address: string;
+	addressType: string;
+	addressDescription: string;
+	tag: string;
+	addressIndex: number;
+	change: number;
+	coinType: number;
+	customerRefId: string;
+	addressFormat: string;
+	legacyAddress: string;
+	paymentAddress: string;
+	userDefined: boolean;
+}
+
+export interface AddressesWithPagingResponse {
+    addresses: AddressResponse[];
+    after: string| null;
 }
 
 export interface VaultAccountsFilter {
