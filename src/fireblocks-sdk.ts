@@ -96,7 +96,7 @@ import {
     UsersGroup,
     ContractUploadRequest,
     ContractTemplateDto,
-    PendingTokenLinkDto,
+    PendingTokenLinkDto, Web3ConnectionFeeLevel,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1347,7 +1347,7 @@ export class FireblocksSDK {
 
         return await this.apiClient.issuePostRequest(path, payload, requestOptions);
     }
-
+    
     /**
      * Approve or Reject the initiated connection
      * @param type The type of the connection
