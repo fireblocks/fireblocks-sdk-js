@@ -1222,7 +1222,7 @@ export interface NonCustodialWalletIdentifier {
 
 export interface WalletConnectConnectionPayload {
     uri: string;
-    chainIds: string[];
+    chainIds?: string[];
 }
 
 export type CreateWeb3ConnectionPayload = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseWeb3ConnectionPayload;
