@@ -68,6 +68,7 @@ import {
     SettlementRequest,
     SettlementResponse,
     GetNFTsFilter,
+    PeerType,
     PublicKeyInformation,
     DropTransactionResponse,
     TokenLink,
@@ -94,10 +95,16 @@ import {
     TravelRulePolicy,
     TravelRuleRulesConfiguration,
     SmartTransfersTicketTermResponse,
-    UsersGroup, PendingTokenLinkDto,
+    SmartTransfersUserGroupsResponse,
+    UsersGroup,
+    ContractUploadRequest,
+    ContractTemplateDto,
+    PendingTokenLinkDto, Web3ConnectionFeeLevel,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
+import { NcwApiClient } from "./ncw-api-client";
+import { NcwSdk } from "./ncw-sdk";
 
 export * from "./types";
 
@@ -136,6 +143,8 @@ export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
+    private readonly apiNcw: NcwApiClient;
+
     private piiClient: PIIEncryption;
 
     /**
@@ -158,6 +167,18 @@ export class FireblocksSDK {
         if (sdkOptions?.travelRuleOptions) {
             this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
         }
+
+        this.apiNcw = new NcwApiClient(this.apiClient);
+    }
+
+    /**
+     * NCW API Namespace
+     *
+     * @readonly
+     * @type {NcwSdk}
+     */
+    public get NCW(): NcwSdk {
+        return this.apiNcw;
     }
 
     /**
@@ -801,11 +822,18 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions): Promise<CreateTransactionResponse> {
+        const opts = { ...requestOptions };
+
         if (transactionArguments?.travelRuleMessage) {
             transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
         }
 
-        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
+        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.ncw?.walletId) {
+            const { walletId } = transactionArguments.source;
+            opts.ncw = { ...opts.ncw, walletId };
+        }
+
+        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, opts);
     }
 
     /**
@@ -1322,7 +1350,7 @@ export class FireblocksSDK {
 
         return await this.apiClient.issuePostRequest(path, payload, requestOptions);
     }
-
+    
     /**
      * Approve or Reject the initiated connection
      * @param type The type of the connection
@@ -1477,6 +1505,14 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    /**
+     * Upload a new contract. This contract would be private and only your tenant can see it
+     * @param request
+     */
+    public async uploadNewContract(request: ContractUploadRequest): Promise<ContractTemplateDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, request);
     }
 
     /**
@@ -1740,6 +1776,21 @@ export class FireblocksSDK {
      */
     public manuallyFundSmartTransferTicketTerms(ticketId: string, termId: string, txHash: string): Promise<SmartTransfersTicketTermResponse> {
         return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/manually-fund`, { txHash });
+    }
+
+    /**
+     * Set Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     * @param userGroupIds
+     */
+    public setSmartTransferTicketUserGroups(userGroupIds: string[]): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issuePostRequest(`/v1/smart-transfers/settings/user-groups`, { userGroupIds });
+    }
+
+    /**
+     * Get Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     */
+    public getSmartTransferTicketUserGroups(): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/settings/user-groups`);
     }
 
     /**

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.6.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.0...v5.6.0)
+
+> 24 August 2023
+
+- added registry endpoint for uploading contracts [`#190`](https://github.com/fireblocks/fireblocks-sdk-js/pull/190)
+
+#### [v5.5.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.4.0...v5.5.0)
+
+> 22 August 2023
+
+- fix: add NCW methods [`#197`](https://github.com/fireblocks/fireblocks-sdk-js/pull/197)
+- add NCW feature [`#192`](https://github.com/fireblocks/fireblocks-sdk-js/pull/192)
+- changed return type to pending instead of TokenLink [`#188`](https://github.com/fireblocks/fireblocks-sdk-js/pull/188)
+
 #### [v5.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.1...v5.4.0)
 
 > 7 August 2023

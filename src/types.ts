@@ -135,6 +135,7 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     address?: string;
@@ -143,6 +144,7 @@ export interface TransferPeerPath {
 export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
@@ -709,6 +711,7 @@ export interface TransferPeerPathResponse {
     subType?: string;
     virtualType?: VirtualType;
     virtualId?: string;
+    walletId?: string;
 }
 
 export interface AuthorizationInfo {
@@ -963,7 +966,8 @@ export enum PeerType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
     COMPOUND = "COMPOUND",
     ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS",
-    OEC_PARTNER = "OEC_PARTNER"
+    OEC_PARTNER = "OEC_PARTNER",
+    END_USER_WALLET = "END_USER_WALLET",
 }
 
 export enum VirtualType {
@@ -1150,7 +1154,10 @@ export interface VaultBalancesFilter {
 }
 
 export interface RequestOptions {
-    idempotencyKey: string;
+    idempotencyKey?: string;
+    ncw?: {
+        walletId?: string;
+    };
 }
 
 export interface ValidateAddressResponse {
@@ -1283,15 +1290,26 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
-export interface CreateWeb3ConnectionPayload {
-    vaultAccountId: number;
+export interface BaseWeb3ConnectionPayload {
     feeLevel: Web3ConnectionFeeLevel;
 }
-
-export interface CreateWalletConnectPayload extends CreateWeb3ConnectionPayload {
-    uri: string;
-    chainIds: string[];
+export interface WorkspaceWalletIdentifier {
+    vaultAccountId: number;
 }
+
+export interface NonCustodialWalletIdentifier {
+    ncwId: string;
+    ncwAccountId: number;
+}
+
+export interface WalletConnectConnectionPayload {
+    uri: string;
+    chainIds?: string[];
+}
+
+export type CreateWeb3ConnectionPayload = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseWeb3ConnectionPayload;
+
+export type CreateWalletConnectPayload = CreateWeb3ConnectionPayload & WalletConnectConnectionPayload;
 
 export interface GetWeb3ConnectionsPayload {
     pageCursor?: string;
@@ -1303,33 +1321,29 @@ export interface GetWeb3ConnectionsPayload {
 
 export interface CreateWeb3ConnectionResponse {
     id: string;
-    sessionMetadata: {
-      appIcon?: string,
-      appId?: string,
-      appName?: string,
-      appUrl?: string,
-      appDescription?: string
-    };
+    sessionMetadata: SessionMetadata;
 }
 
 export interface SessionMetadata {
+    appUrl: string;
     appIcon?: string;
-    appId?: string;
     appName?: string;
-    appUrl?: string;
     appDescription?: string;
-  }
+}
 
 export interface Session {
     id: string;
-    vaultAccountId: number;
-    chainIds?: string[];
+    vaultAccountId?: number;
+    ncwId?: string;
+    ncwAccountId?: number;
+    chainIds: string[];
     feeLevel: Web3ConnectionFeeLevel;
     creationDate: string;
     connectionType: Web3ConnectionType;
-    connectionMethod?: Web3ConnectionMethod;
-    sessionMetadata?: SessionMetadata;
-  }
+    connectionMethod: Web3ConnectionMethod;
+    sessionMetadata: SessionMetadata;
+}
+
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"
@@ -1439,6 +1453,68 @@ export enum NFTOwnershipStatus {
     "ARCHIVED" = "ARCHIVED",
 }
 
+export interface ContractUploadRequest {
+    name: string;
+    description: string;
+    longDescription: string;
+    bytecode: string;
+    sourcecode: string;
+    compilerOutputMetadata?: object;
+    docs?: ContractDoc;
+    abi?: AbiFunction[];
+    attributes?: Record<string, string>;
+    vendorId?: string;
+}
+interface AbiFunction {
+    name?: string;
+    stateMutability?: string;
+    type: "function" | "constructor" | string;
+    inputs: Parameter[];
+    outputs?: Parameter[];
+    description?: string;
+    returns?: Record<string, string>;
+}
+
+interface Parameter {
+    name: string;
+    description?: string;
+    internalType: string;
+    type: string;
+    components?: Parameter[];
+}
+interface ContractDoc {
+    details?: string;
+    events?: string;
+    kind: "dev" | "user" | string;
+    methods: Record<string, FunctionDoc>;
+    version: string | number;
+}
+
+interface FunctionDoc {
+    details?: string;
+    params?: Record<string, string>;
+    returns?: Record<string, string>;
+}
+interface VendorDto {
+    id: string;
+    name: string;
+    attributes: Record<string, string>;
+}
+
+export interface ContractTemplateDto {
+    isPublic: boolean;
+    vendor?: VendorDto;
+    id: string;
+    name: string;
+    description: string;
+    bytecode: string;
+    sourcecode?: string;
+    owner?: string;
+    compilerOutputMetadata?: object;
+    abi: AbiFunction[];
+    docs?: ContractDoc;
+    attributes?: Record<string, string>;
+}
 export enum TokenLinkPermission {
     MINT = "MINT",
     BURN = "BURN",
@@ -1487,6 +1563,7 @@ type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
 interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
 }
+
 interface ParameterWithValue {
     internalType: string;
     name: string;
@@ -1603,6 +1680,14 @@ export interface SmartTransfersTicketsFilters {
     type?: string;
 }
 
+export interface SmartTransfersUserGroupsResponse {
+    data: SmartTransfersUserGroups;
+}
+
+export interface SmartTransfersUserGroups {
+    userGroupIds: string[];
+}
+
 export interface SmartTransfersTicketTermFundPayload {
     asset: string;
     amount: string;
@@ -1611,4 +1696,78 @@ export interface SmartTransfersTicketTermFundPayload {
     srcType: string;
     fee?: string;
     feeLevel?: FeeLevel;
+}
+
+export namespace NCW {
+    export const WalletIdHeader = "X-End-User-Wallet-Id";
+
+    export interface WalletInfo {
+        walletId: string;
+        enabled: boolean;
+    }
+
+    export interface GetWalletsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface GetWalletAccountsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface GetWalletAssetsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface GetWalletAddressesPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface WalletAssetResponse {
+        id: string;
+        symbol: string;
+        name: string;
+        decimals: number;
+        networkProtocol: string;
+        testnet: boolean;
+        hasFee: boolean;
+        type: string;
+        baseAsset: string;
+        ethNetwork?: number;
+        ethContractAddress?: string;
+        issuerAddress?: string;
+        blockchainSymbol?: string;
+        deprecated?: boolean;
+        coinType: number;
+        blockchain: string;
+        blockchainDisplayName?: string;
+        blockchainId?: string;
+    }
+    export interface WalletAssetAddress {
+        accountName: string;
+        accountId: string;
+        asset: string;
+        address: string;
+        addressType: string;
+        addressDescription?: string;
+        tag?: string;
+        addressIndex?: number;
+        legacyAddress?: string;
+    }
+
+    export interface Device {
+        deviceId: string;
+        enabled: boolean;
+    }
 }
