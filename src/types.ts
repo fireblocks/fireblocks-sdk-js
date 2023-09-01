@@ -784,6 +784,16 @@ export interface NFTOwnedCollectionsFilter {
     pageSize?: number;
     sort?: GetOwnedCollectionsSortValues[];
     order?: OrderValues;
+    status?: NFTOwnershipStatus;
+}
+
+export interface NFTOwnedAssetsFilter {
+    search?: string;
+    pageCursor?: string;
+    pageSize?: number;
+    status?: NFTOwnershipStatus;
+    sort?: GetOwnedAssetsSortValues[];
+    order?: OrderValues;
 }
 
 export interface GetNFTsFilter {
@@ -801,8 +811,8 @@ class MediaEntity {
 
 interface NFTCollection {
     id: string;
-    name: string;
-    symbol: string;
+    name?: string;
+    symbol?: string;
 }
 
 export interface Paging {
@@ -814,9 +824,9 @@ export interface Token {
     tokenId: string;
     standard: string;
     blockchainDescriptor: string;
-    description: string;
-    name: string;
-    media: MediaEntity[];
+    description?: string;
+    name?: string;
+    media?: MediaEntity[];
     metadataURI?: string;
     cachedMetadataURI?: string;
     collection?: NFTCollection;
@@ -1365,6 +1375,10 @@ export enum GetOwnedNFTsSortValues {
 }
 
 export enum GetOwnedCollectionsSortValues {
+    "name" = "name",
+}
+
+export enum GetOwnedAssetsSortValues {
     "name" = "name",
 }
 

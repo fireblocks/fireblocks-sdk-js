@@ -96,7 +96,9 @@ import {
     UsersGroup,
     ContractUploadRequest,
     ContractTemplateDto,
-    PendingTokenLinkDto, Web3ConnectionFeeLevel,
+    PendingTokenLinkDto,
+    Web3ConnectionFeeLevel,
+    NFTOwnedAssetsFilter,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1347,7 +1349,7 @@ export class FireblocksSDK {
 
         return await this.apiClient.issuePostRequest(path, payload, requestOptions);
     }
-    
+
     /**
      * Approve or Reject the initiated connection
      * @param type The type of the connection
@@ -1460,7 +1462,7 @@ export class FireblocksSDK {
     public async listOwnedCollections(filter?: NFTOwnedCollectionsFilter): Promise<Web3PagedResponse<CollectionOwnership>> {
         let url = "/v1/nfts/ownership/collections";
         if (filter) {
-            const { search, pageCursor, pageSize, sort, order } = filter;
+            const { search, pageCursor, pageSize, sort, order, status } = filter;
 
             const requestFilter = {
                 search,
@@ -1468,6 +1470,26 @@ export class FireblocksSDK {
                 pageSize,
                 sort: this.getCommaSeparatedList(sort),
                 order,
+                status
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    public async listOwnedAssets(filter?: NFTOwnedAssetsFilter): Promise<Web3PagedResponse<Token>> {
+        let url = "/v1/nfts/ownership/assets";
+        if (filter) {
+            const { search, pageCursor, pageSize, sort, order, status } = filter;
+
+            const requestFilter = {
+                search,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+                status
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
