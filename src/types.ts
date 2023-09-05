@@ -839,14 +839,13 @@ export interface Token {
     collection?: NFTCollection;
 }
 
-export interface TokenWithBalance extends Token {
+export interface BaseTokenWithBalance extends Token {
     balance: string;
-    vaultAccountId?: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
-    ncwId?: string;
-    ncwAccountId?: string;
 }
+
+export type TokenWithBalance = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseTokenWithBalance;
 
 export interface CollectionOwnership extends NFTCollection {
     standard?: string;
