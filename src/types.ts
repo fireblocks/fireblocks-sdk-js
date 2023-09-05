@@ -776,13 +776,30 @@ export interface NFTOwnershipFilter {
     order?: OrderValues;
     status?: NFTOwnershipStatus;
     search?: string;
+    ncwId?: string;
+    ncwAccountIds?: string[];
+    walletType?: NFTOwnershipWalletType;
 }
 
 export interface NFTOwnedCollectionsFilter {
     search?: string;
+    status?: NFTOwnershipStatus;
+    ncwId?: string;
+    walletType?: NFTOwnershipWalletType;
     pageCursor?: string;
     pageSize?: number;
     sort?: GetOwnedCollectionsSortValues[];
+    order?: OrderValues;
+}
+
+export interface NFTOwnedAssetsFilter {
+    search?: string;
+    status?: NFTOwnershipStatus;
+    ncwId?: string;
+    walletType?: NFTOwnershipWalletType;
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: GetOwnedAssetsSortValues[];
     order?: OrderValues;
 }
 
@@ -822,12 +839,13 @@ export interface Token {
     collection?: NFTCollection;
 }
 
-export interface TokenWithBalance extends Token {
+export interface BaseTokenWithBalance extends Token {
     balance: string;
-    vaultAccountId: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
 }
+
+export type TokenWithBalance = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseTokenWithBalance;
 
 export interface CollectionOwnership extends NFTCollection {
     standard?: string;
@@ -1368,6 +1386,10 @@ export enum GetOwnedCollectionsSortValues {
     "name" = "name",
 }
 
+export enum GetOwnedAssetsSortValues {
+    "name" = "name",
+}
+
 export enum OrderValues {
     "ASC" = "ASC",
     "DESC" = "DESC",
@@ -1376,6 +1398,11 @@ export enum OrderValues {
 export enum NFTOwnershipStatus {
     "LISTED" = "LISTED",
     "ARCHIVED" = "ARCHIVED",
+}
+
+export enum NFTOwnershipWalletType {
+    "VAULT_ACCOUNT" = "VAULT_ACCOUNT",
+    "END_USER_WALLET" = "END_USER_WALLET",
 }
 
 export interface ContractUploadRequest {
