@@ -53,6 +53,7 @@ import {
     TimePeriod,
     AuditsResponse,
     NFTOwnershipFilter,
+    NFTOwnedAssetsFilter,
     Token,
     TokenWithBalance,
     Web3PagedResponse,
@@ -68,6 +69,7 @@ import {
     SettlementRequest,
     SettlementResponse,
     GetNFTsFilter,
+    PeerType,
     PublicKeyInformation,
     DropTransactionResponse,
     TokenLink,
@@ -91,11 +93,17 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
-    UsersGroup, PendingTokenLinkDto,
+    SmartTransfersUserGroupsResponse,
+    UsersGroup,
+    ContractUploadRequest,
+    ContractTemplateDto,
+    PendingTokenLinkDto, Web3ConnectionFeeLevel,
     Task, Job, JobCreatedResponse
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
+import { NcwApiClient } from "./ncw-api-client";
+import { NcwSdk } from "./ncw-sdk";
 
 export * from "./types";
 
@@ -134,6 +142,8 @@ export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
+    private readonly apiNcw: NcwApiClient;
+
     private piiClient: PIIEncryption;
 
     /**
@@ -156,6 +166,18 @@ export class FireblocksSDK {
         if (sdkOptions?.travelRuleOptions) {
             this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
         }
+
+        this.apiNcw = new NcwApiClient(this.apiClient);
+    }
+
+    /**
+     * NCW API Namespace
+     *
+     * @readonly
+     * @type {NcwSdk}
+     */
+    public get NCW(): NcwSdk {
+        return this.apiNcw;
     }
 
     /**
@@ -826,11 +848,18 @@ export class FireblocksSDK {
      * Creates a new transaction with the specified options
      */
     public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions): Promise<CreateTransactionResponse> {
+        const opts = { ...requestOptions };
+
         if (transactionArguments?.travelRuleMessage) {
             transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
         }
 
-        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
+        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.ncw?.walletId) {
+            const { walletId } = transactionArguments.source;
+            opts.ncw = { ...opts.ncw, walletId };
+        }
+
+        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, opts);
     }
 
     /**
@@ -1427,11 +1456,14 @@ export class FireblocksSDK {
      * @param filter.order Order value
      * @param filter.status Status (LISTED, ARCHIVED)
      * @param filter.search Search filter
+     * @param filter.ncwAccountIds List of Non-Custodial wallet account IDs
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search, ncwId, ncwAccountIds, walletType } = filter;
             const requestFilter = {
                 vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
@@ -1443,6 +1475,9 @@ export class FireblocksSDK {
                 order,
                 status,
                 search,
+                ncwId,
+                ncwAccountIds,
+                walletType,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
@@ -1451,7 +1486,11 @@ export class FireblocksSDK {
 
     /**
      *
+     * Get a list of owned NFT collections
      * @param filter.search Search by value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
      * @param filter.pageCursor Page cursor
      * @param filter.pageSize Page size
      * @param filter.sort Sort by value
@@ -1460,10 +1499,46 @@ export class FireblocksSDK {
     public async listOwnedCollections(filter?: NFTOwnedCollectionsFilter): Promise<Web3PagedResponse<CollectionOwnership>> {
         let url = "/v1/nfts/ownership/collections";
         if (filter) {
-            const { search, pageCursor, pageSize, sort, order } = filter;
+            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order } = filter;
 
             const requestFilter = {
                 search,
+                status,
+                ncwId,
+                walletType,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * Get a list of owned tokens
+     * @param filter.search Search by value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
+     * @param filter.sort Sort by value
+     * @param filter.order Order by value
+     */
+    public async listOwnedAssets(filter?: NFTOwnedAssetsFilter): Promise<Web3PagedResponse<Token>> {
+        let url = "/v1/nfts/ownership/assets";
+        if (filter) {
+            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order } = filter;
+
+            const requestFilter = {
+                search,
+                status,
+                ncwId,
+                walletType,
                 pageCursor,
                 pageSize,
                 sort: this.getCommaSeparatedList(sort),
@@ -1502,6 +1577,14 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    /**
+     * Upload a new contract. This contract would be private and only your tenant can see it
+     * @param request
+     */
+    public async uploadNewContract(request: ContractUploadRequest): Promise<ContractTemplateDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, request);
     }
 
     /**
@@ -1736,6 +1819,21 @@ export class FireblocksSDK {
      */
     public manuallyFundSmartTransferTicketTerms(ticketId: string, termId: string, txHash: string): Promise<SmartTransfersTicketTermResponse> {
         return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/manually-fund`, { txHash });
+    }
+
+    /**
+     * Set Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     * @param userGroupIds
+     */
+    public setSmartTransferTicketUserGroups(userGroupIds: string[]): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issuePostRequest(`/v1/smart-transfers/settings/user-groups`, { userGroupIds });
+    }
+
+    /**
+     * Get Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     */
+    public getSmartTransferTicketUserGroups(): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/settings/user-groups`);
     }
 
     /**
