@@ -97,7 +97,9 @@ import {
     UsersGroup,
     ContractUploadRequest,
     ContractTemplateDto,
-    PendingTokenLinkDto, Web3ConnectionFeeLevel,
+    PendingTokenLinkDto,
+    Web3ConnectionFeeLevel,
+    TAP,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1815,6 +1817,44 @@ export class FireblocksSDK {
      */
     public deleteSmartTransferTicketTerms(ticketId: string, termId: string): Promise<void> {
         return this.apiClient.issueDeleteRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
+    }
+
+    /**
+     * Get active policy (TAP) [BETA]
+     */
+    public async getActivePolicy(): Promise<TAP.PolicyAndValidationResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tap/active_policy`);
+    }
+
+    /**
+     * Get draft policy (TAP) [BETA]
+     */
+    public async getDraft(): Promise<TAP.DraftReviewAndValidationResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tap/draft`);
+    }
+
+    /**
+     * Update draft policy (TAP) [BETA]
+     * @param rules
+     */
+    public async updateDraft(rules: TAP.PolicyRule[]): Promise<TAP.DraftReviewAndValidationResponse> {
+        return await this.apiClient.issuePutRequest(`/v1/tap/draft`, { rules });
+    }
+
+    /**
+     * Publish draft policy (TAP) [BETA]
+     * @param draftId
+     */
+    public async publishDraft(draftId: string): Promise<TAP.PublishResult> {
+        return await this.apiClient.issuePostRequest(`/v1/tap/draft`, { draftId });
+    }
+
+    /**
+     * Publish rules (TAP) [BETA]
+     * @param rules
+     */
+    public async publishPolicyRules(rules: TAP.PolicyRule[]): Promise<TAP.PublishResult> {
+        return await this.apiClient.issuePostRequest(`/v1/tap/publish`, { rules });
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
