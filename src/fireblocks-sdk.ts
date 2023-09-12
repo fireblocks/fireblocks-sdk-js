@@ -53,6 +53,7 @@ import {
     TimePeriod,
     AuditsResponse,
     NFTOwnershipFilter,
+    NFTOwnedAssetsFilter,
     Token,
     TokenWithBalance,
     Web3PagedResponse,
@@ -92,10 +93,13 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     SmartTransfersTicketTermResponse,
+    SmartTransfersUserGroupsResponse,
     UsersGroup,
     ContractUploadRequest,
     ContractTemplateDto,
     PendingTokenLinkDto,
+    Web3ConnectionFeeLevel,
+    TAP,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1426,11 +1430,14 @@ export class FireblocksSDK {
      * @param filter.order Order value
      * @param filter.status Status (LISTED, ARCHIVED)
      * @param filter.search Search filter
+     * @param filter.ncwAccountIds List of Non-Custodial wallet account IDs
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search, ncwId, ncwAccountIds, walletType } = filter;
             const requestFilter = {
                 vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
@@ -1442,6 +1449,9 @@ export class FireblocksSDK {
                 order,
                 status,
                 search,
+                ncwId,
+                ncwAccountIds,
+                walletType,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
@@ -1450,7 +1460,11 @@ export class FireblocksSDK {
 
     /**
      *
+     * Get a list of owned NFT collections
      * @param filter.search Search by value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
      * @param filter.pageCursor Page cursor
      * @param filter.pageSize Page size
      * @param filter.sort Sort by value
@@ -1459,10 +1473,46 @@ export class FireblocksSDK {
     public async listOwnedCollections(filter?: NFTOwnedCollectionsFilter): Promise<Web3PagedResponse<CollectionOwnership>> {
         let url = "/v1/nfts/ownership/collections";
         if (filter) {
-            const { search, pageCursor, pageSize, sort, order } = filter;
+            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order } = filter;
 
             const requestFilter = {
                 search,
+                status,
+                ncwId,
+                walletType,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * Get a list of owned tokens
+     * @param filter.search Search by value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
+     * @param filter.sort Sort by value
+     * @param filter.order Order by value
+     */
+    public async listOwnedAssets(filter?: NFTOwnedAssetsFilter): Promise<Web3PagedResponse<Token>> {
+        let url = "/v1/nfts/ownership/assets";
+        if (filter) {
+            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order } = filter;
+
+            const requestFilter = {
+                search,
+                status,
+                ncwId,
+                walletType,
                 pageCursor,
                 pageSize,
                 sort: this.getCommaSeparatedList(sort),
@@ -1746,12 +1796,65 @@ export class FireblocksSDK {
     }
 
     /**
+     * Set Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     * @param userGroupIds
+     */
+    public setSmartTransferTicketUserGroups(userGroupIds: string[]): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issuePostRequest(`/v1/smart-transfers/settings/user-groups`, { userGroupIds });
+    }
+
+    /**
+     * Get Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     */
+    public getSmartTransferTicketUserGroups(): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/settings/user-groups`);
+    }
+
+    /**
      * Delete Smart Transfers ticket term
      * @param ticketId
      * @param termId
      */
     public deleteSmartTransferTicketTerms(ticketId: string, termId: string): Promise<void> {
         return this.apiClient.issueDeleteRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
+    }
+
+    /**
+     * Get active policy (TAP) [BETA]
+     */
+    public async getActivePolicy(): Promise<TAP.PolicyAndValidationResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tap/active_policy`);
+    }
+
+    /**
+     * Get draft policy (TAP) [BETA]
+     */
+    public async getDraft(): Promise<TAP.DraftReviewAndValidationResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tap/draft`);
+    }
+
+    /**
+     * Update draft policy (TAP) [BETA]
+     * @param rules
+     */
+    public async updateDraft(rules: TAP.PolicyRule[]): Promise<TAP.DraftReviewAndValidationResponse> {
+        return await this.apiClient.issuePutRequest(`/v1/tap/draft`, { rules });
+    }
+
+    /**
+     * Publish draft policy (TAP) [BETA]
+     * @param draftId
+     */
+    public async publishDraft(draftId: string): Promise<TAP.PublishResult> {
+        return await this.apiClient.issuePostRequest(`/v1/tap/draft`, { draftId });
+    }
+
+    /**
+     * Publish rules (TAP) [BETA]
+     * @param rules
+     */
+    public async publishPolicyRules(rules: TAP.PolicyRule[]): Promise<TAP.PublishResult> {
+        return await this.apiClient.issuePostRequest(`/v1/tap/publish`, { rules });
     }
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
