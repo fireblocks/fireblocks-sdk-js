@@ -47,17 +47,6 @@ export class NcwSignerSdk implements INcwSignerSdk {
         );
     }
 
-    public async getWallets({ pageCursor, pageSize, sort, order }: NCW.GetWalletsPayload = {}): Promise<Web3PagedResponse<NCW.WalletInfo>> {
-        const params = new URLSearchParams({
-            ...(pageCursor && { pageCursor }),
-            ...(pageSize && { pageSize: pageSize.toString() }),
-            ...(sort && { sort }),
-            ...(order && { order }),
-        });
-
-        return await this.apiClient.issueGetRequest(`${this.BASE_PATH}?${params.toString()}`);
-    }
-
     public async getWalletAccounts(walletId: string, { pageCursor, pageSize, sort, order }: NCW.GetWalletsPayload = {}): Promise<Web3PagedResponse<{
         walletId: string;
         accountId: number;

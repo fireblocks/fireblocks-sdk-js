@@ -39,14 +39,6 @@ interface NcwSdk {
     }>;
 
     /**
-     * Get NCW wallets
-     *
-     * @param {GetWalletsPayload} { pageCursor, pageSize, sort, order }
-     * @return {*}  {Promise<Web3PagedResponse<WalletInfo>>}
-     */
-    getWallets({ pageCursor, pageSize, sort, order }: NCW.GetWalletsPayload): Promise<Web3PagedResponse<NCW.WalletInfo>>;
-
-    /**
      * Get NCW accounts
      *
      * @param {string} walletId
@@ -143,6 +135,15 @@ export interface INcwAdminSdk extends NcwSdk {
      * @param {boolean} enabled
      */
     enableWallet(walletId: string, enabled: boolean): Promise<void>;
+
+    /**
+     * Get NCW wallets
+     *
+     * @param {GetWalletsPayload} { pageCursor, pageSize, sort, order }
+     * @return {*}  {Promise<Web3PagedResponse<WalletInfo>>}
+     */
+    getWallets({ pageCursor, pageSize, sort, order }: NCW.GetWalletsPayload): Promise<Web3PagedResponse<NCW.WalletInfo>>;
+
 }
 
 export interface INcwSignerSdk extends NcwSdk {
