@@ -794,15 +794,6 @@ export interface NFTOwnedCollectionsFilter {
 
 export interface NFTOwnedAssetsFilter {
     search?: string;
-    pageCursor?: string;
-    pageSize?: number;
-    status?: NFTOwnershipStatus;
-    sort?: GetOwnedAssetsSortValues[];
-    order?: OrderValues;
-}
-
-export interface NFTOwnedAssetsFilter {
-    search?: string;
     status?: NFTOwnershipStatus;
     ncwId?: string;
     walletType?: NFTOwnershipWalletType;
