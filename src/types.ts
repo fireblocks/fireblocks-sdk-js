@@ -818,8 +818,8 @@ class MediaEntity {
 
 interface NFTCollection {
     id: string;
-    name: string;
-    symbol: string;
+    name?: string;
+    symbol?: string;
 }
 
 export interface Paging {
@@ -831,9 +831,9 @@ export interface Token {
     tokenId: string;
     standard: string;
     blockchainDescriptor: string;
-    description: string;
-    name: string;
-    media: MediaEntity[];
+    description?: string;
+    name?: string;
+    media?: MediaEntity[];
     metadataURI?: string;
     cachedMetadataURI?: string;
     collection?: NFTCollection;
