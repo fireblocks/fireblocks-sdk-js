@@ -790,7 +790,6 @@ export interface NFTOwnedCollectionsFilter {
     pageSize?: number;
     sort?: GetOwnedCollectionsSortValues[];
     order?: OrderValues;
-    status?: NFTOwnershipStatus;
 }
 
 export interface NFTOwnedAssetsFilter {
