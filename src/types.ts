@@ -776,10 +776,16 @@ export interface NFTOwnershipFilter {
     order?: OrderValues;
     status?: NFTOwnershipStatus;
     search?: string;
+    ncwId?: string;
+    ncwAccountIds?: string[];
+    walletType?: NFTOwnershipWalletType;
 }
 
 export interface NFTOwnedCollectionsFilter {
     search?: string;
+    status?: NFTOwnershipStatus;
+    ncwId?: string;
+    walletType?: NFTOwnershipWalletType;
     pageCursor?: string;
     pageSize?: number;
     sort?: GetOwnedCollectionsSortValues[];
@@ -792,6 +798,17 @@ export interface NFTOwnedAssetsFilter {
     pageCursor?: string;
     pageSize?: number;
     status?: NFTOwnershipStatus;
+    sort?: GetOwnedAssetsSortValues[];
+    order?: OrderValues;
+}
+
+export interface NFTOwnedAssetsFilter {
+    search?: string;
+    status?: NFTOwnershipStatus;
+    ncwId?: string;
+    walletType?: NFTOwnershipWalletType;
+    pageCursor?: string;
+    pageSize?: number;
     sort?: GetOwnedAssetsSortValues[];
     order?: OrderValues;
 }
@@ -832,12 +849,13 @@ export interface Token {
     collection?: NFTCollection;
 }
 
-export interface TokenWithBalance extends Token {
+export interface BaseTokenWithBalance extends Token {
     balance: string;
-    vaultAccountId: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
 }
+
+export type TokenWithBalance = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseTokenWithBalance;
 
 export interface CollectionOwnership extends NFTCollection {
     standard?: string;
@@ -1392,6 +1410,11 @@ export enum NFTOwnershipStatus {
     "ARCHIVED" = "ARCHIVED",
 }
 
+export enum NFTOwnershipWalletType {
+    "VAULT_ACCOUNT" = "VAULT_ACCOUNT",
+    "END_USER_WALLET" = "END_USER_WALLET",
+}
+
 export interface ContractUploadRequest {
     name: string;
     description: string;
@@ -1708,5 +1731,190 @@ export namespace NCW {
     export interface Device {
         deviceId: string;
         enabled: boolean;
+    }
+}
+
+export namespace TAP {
+    type PolicyTransactionType =
+        | "*"
+        | "CONTRACT_CALL"
+        | "RAW"
+        | "TRANSFER"
+        | "APPROVE"
+        | "MINT"
+        | "BURN"
+        | "SUPPLY"
+        | "REDEEM"
+        | "STAKE"
+        | "TYPED_MESSAGE";
+
+    type PolicySrcOrDestType =
+        | "EXCHANGE"
+        | "UNMANAGED"
+        | "VAULT"
+        | "NETWORK_CONNECTION"
+        | "COMPOUND"
+        | "FIAT_ACCOUNT"
+        | "ONE_TIME_ADDRESS"
+        | "*";
+
+    type PolicyType = "TRANSFER";
+
+    type PolicyAction = "ALLOW" | "BLOCK" | "2-TIER";
+
+    type PolicyDestAddressType = "*" | "WHITELISTED" | "ONE_TIME";
+
+    type PolicyAmountScope = "SINGLE_TX" | "TIMEFRAME";
+
+    type PolicySrcOrDestSubType = "*" | "EXTERNAL" | "INTERNAL" | "CONTRACT" | "EXCHANGETEST";
+
+    type PolicySrcOrDestId = string;
+
+    type AuthorizationGroup = {
+        users?: Array<string>;
+        usersGroups?: Array<string>;
+        th: number;
+    };
+
+    interface PolicyAuthorizationGroups {
+        logic: "AND" | "OR";
+        allowOperatorAsAuthorizer?: boolean;
+        groups: Array<AuthorizationGroup>;
+    }
+
+    export interface PolicyRule {
+        operator?: string;
+        operators?: {
+            wildcard?: "*";
+            users?: Array<string>;
+            usersGroups?: Array<string>;
+            services?: Array<string>;
+        };
+        transactionType?: PolicyTransactionType;
+        operatorServices?: Array<string>;
+        designatedSigner?: string;
+        designatedSigners?: {
+            users?: Array<string>;
+            usersGroups?: Array<string>;
+        };
+        type: PolicyType;
+        action: PolicyAction;
+        asset: string;
+        srcType?: PolicySrcOrDestType;
+        srcSubType?: PolicySrcOrDestSubType;
+        srcId?: PolicySrcOrDestId;
+        src?: {
+            ids?: Array<[PolicySrcOrDestId, PolicySrcOrDestType?, PolicySrcOrDestSubType?]>;
+        };
+        dstType?: PolicySrcOrDestType;
+        dstSubType?: PolicySrcOrDestSubType;
+        dstId?: PolicySrcOrDestId;
+        dst?: {
+            ids?: Array<[PolicySrcOrDestId, PolicySrcOrDestType?, PolicySrcOrDestSubType?]>;
+        };
+        dstAddressType?: PolicyDestAddressType;
+        amountCurrency: string;
+        amountScope: PolicyAmountScope;
+        amount: number | string;
+        periodSec: number;
+        authorizers?: Array<string>;
+        authorizersCount?: number;
+        authorizationGroups?: PolicyAuthorizationGroups;
+        amountAggregation?: {
+            operators: string;
+            srcTransferPeers: string;
+            dstTransferPeers: string;
+        };
+        rawMessageSigning?: {
+            derivationPath: {
+                path: Array<number>;
+            };
+            algorithm: string;
+        };
+        applyForApprove?: boolean;
+        applyForTypedMessage?: boolean;
+        externalDescriptor?: string;
+    }
+
+    interface Metadata {
+        editedBy?: string;
+        editedAt?: number;
+        publishedBy?: string;
+        publishedAt?: number;
+    }
+
+    enum PolicyStatus {
+        SUCCESS = "SUCCESS",
+        UNVALIDATED = "UNVALIDATED",
+        INVALID_CONFIGURATION = "INVALID_CONFIGURATION",
+        PENDING = "PENDING",
+        PENDING_CONSOLE_APPROVAL = "PENDING_CONSOLE_APPROVAL",
+        AWAITING_QUORUM = "AWAITING_QUORUM",
+        UNHANDLED_ERROR = "UNHANDLED_ERROR",
+    }
+
+    type PolicyBaseErrorField =
+        | "operator"
+        | "operators"
+        | "authorizationGroups"
+        | "designatedSigner"
+        | "designatedSigners"
+        | "contractMethods"
+        | "amountAggregation"
+        | "src"
+        | "dst"
+        | "";
+
+    interface PolicyRuleError {
+        errorMessage: string;
+        errorCodeName: string;
+        errorField: PolicyBaseErrorField;
+        errorCode: number;
+    }
+
+    interface PolicyRuleCheckResult {
+        index: number;
+        status: "ok" | "failure";
+        errors: Array<PolicyRuleError>;
+    }
+
+    interface PolicyCheckResult {
+        errors: number;
+        results: PolicyRuleCheckResult[];
+    }
+
+    interface PolicyResponse {
+        status?: string;
+        rules?: Array<PolicyRule>;
+        metadata?: Metadata;
+    }
+
+    interface ValidationResponse {
+        status?: PolicyStatus;
+        checkResult?: PolicyCheckResult;
+    }
+
+    interface DraftResponse {
+        draftId: string;
+        status?: PolicyStatus;
+        rules?: Array<PolicyRule>;
+        metadata?: Metadata;
+    }
+
+    export interface DraftReviewAndValidationResponse {
+        draftResponse: DraftResponse;
+        validation: ValidationResponse;
+    }
+
+    export interface PolicyAndValidationResponse {
+        policy: PolicyResponse;
+        validation: ValidationResponse;
+    }
+
+    export interface PublishResult {
+        status?: PolicyStatus;
+        rules?: Array<PolicyRule>;
+        checkResult?: PolicyCheckResult;
+        metadata?: Metadata;
     }
 }
