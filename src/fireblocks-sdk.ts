@@ -1559,7 +1559,7 @@ export class FireblocksSDK {
      * @param limit
      * @param offset
      */
-    public async getTemplateContracts(limit: number = 100, offset: number = 0): Promise<ContractTemplate[]> {
+    public async getTemplateContracts(limit: number = 100, offset: number = 0): Promise<ContractTemplateDto[]> {
         const requestFilter = {
             limit,
             offset
