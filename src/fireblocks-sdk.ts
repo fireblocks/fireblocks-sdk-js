@@ -95,6 +95,7 @@ import {
     SmartTransfersTicketTermResponse,
     SmartTransfersUserGroupsResponse,
     UsersGroup,
+    LeanContractTemplateDto,
     ContractTemplateDto,
     ContractUploadRequest,
     ContractDeployResponse,
@@ -1559,7 +1560,7 @@ export class FireblocksSDK {
      * @param limit
      * @param offset
      */
-    public async getTemplateContracts(limit: number = 100, offset: number = 0): Promise<ContractTemplateDto[]> {
+    public async getTemplateContracts(limit: number = 100, offset: number = 0): Promise<LeanContractTemplateDto[]> {
         const requestFilter = {
             limit,
             offset

@@ -1,5 +1,9 @@
 import { AxiosResponseHeaders } from "axios";
 
+export interface Paging {
+    next: string;
+}
+
 export interface Web3PagedResponse<T> {
     data: T[];
     paging?: Paging;
@@ -811,19 +815,15 @@ export interface GetNFTsFilter {
     order?: OrderValues;
 }
 
-class MediaEntity {
-    url: string;
-    contentType: string;
-}
-
 interface NFTCollection {
     id: string;
     name?: string;
     symbol?: string;
 }
 
-export interface Paging {
-    next: string;
+interface MediaEntity {
+    url: string;
+    contentType: string;
 }
 
 export interface Token {
@@ -1468,19 +1468,29 @@ export interface ContractDeployResponse {
     txId: string;
 }
 
-export interface ContractTemplateDto {
-    isPublic: boolean;
-    vendor?: VendorDto;
+export interface LeanContractTemplateDto {
     id: string;
     name: string;
     description: string;
-    bytecode: string;
-    sourcecode?: string;
+    attributes?: Record<string, string>;
+    isPublic: boolean;
     owner?: string;
+    vendor?: VendorDto;
+}
+
+export interface ContractTemplateDto {
+    id: string;
+    name: string;
+    description: string;
+    sourcecode?: string;
+    bytecode: string;
     compilerOutputMetadata?: object;
     abi: AbiFunction[];
-    docs?: ContractDoc;
     attributes?: Record<string, string>;
+    docs?: ContractDoc;
+    owner?: string;
+    vendor?: VendorDto;
+    isPublic: boolean;
 }
 
 export interface TokenLinkPermissionEntry {
