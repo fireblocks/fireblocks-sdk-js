@@ -1453,6 +1453,21 @@ interface VendorDto {
     attributes: Record<string, string>;
 }
 
+export interface ContractDeployRequest {
+    assetId: string;
+    vaultAccountId: string;
+    constructorParameters: object[];
+}
+
+export interface ContractDeployResponse {
+    assetId: string;
+    vaultAccountId: string;
+    contractId: string;
+    bytecode: string;
+    constructorEncodedParams: string;
+    txId: string;
+}
+
 export interface ContractTemplateDto {
     isPublic: boolean;
     vendor?: VendorDto;
@@ -1467,13 +1482,9 @@ export interface ContractTemplateDto {
     docs?: ContractDoc;
     attributes?: Record<string, string>;
 }
-export enum TokenLinkPermission {
-    MINT = "MINT",
-    BURN = "BURN",
-}
 
 export interface TokenLinkPermissionEntry {
-    permission: TokenLinkPermission;
+    permission: "MINT" | "BURN";
     vaultAccountId: string;
 }
 

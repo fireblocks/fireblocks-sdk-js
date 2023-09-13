@@ -95,10 +95,11 @@ import {
     SmartTransfersTicketTermResponse,
     SmartTransfersUserGroupsResponse,
     UsersGroup,
-    ContractUploadRequest,
     ContractTemplateDto,
+    ContractUploadRequest,
+    ContractDeployResponse,
+    ContractDeployRequest,
     PendingTokenLinkDto,
-    Web3ConnectionFeeLevel,
     TAP,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
@@ -1554,11 +1555,57 @@ export class FireblocksSDK {
     }
 
     /**
-     * Upload a new contract. This contract would be private and only your tenant can see it
-     * @param request
+     * Get all contract templates
+     * @param limit
+     * @param offset
      */
-    public async uploadNewContract(request: ContractUploadRequest): Promise<ContractTemplateDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, request);
+    public async getTemplateContracts(limit: number = 100, offset: number = 0): Promise<ContractTemplate[]> {
+        const requestFilter = {
+            limit,
+            offset
+        };
+        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts?${queryString.stringify(requestFilter)}`);
+    }
+
+    /**
+     * Upload a new contract. This contract would be private and only your tenant can see it
+     * @param payload
+     */
+    public async uploadTemplateContract(payload: ContractUploadRequest): Promise<ContractTemplateDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, payload);
+    }
+
+    /**
+     * Get contract template by id
+     * @param contractId
+     */
+    public async getTemplateContract(contractId: string): Promise<ContractTemplateDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}`);
+    }
+
+    /**
+     * Delete a contract template by id
+     * @param contractId
+     */
+    public async deleteTemplateContract(contractId: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/contract-registry/contracts/${contractId}`);
+    }
+
+    /**
+     * Get contract template constructor by contract id
+     * @param contractId
+     * @param withDocs
+     */
+    public async getTemplateContractConstructor(contractId: string, withDocs: boolean = false): Promise<ContractTemplateDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}/constructor?withDocs=${withDocs}`);
+    }
+
+    /**
+     * Deploy a new contract by contract template id
+     * @param contractId
+     */
+    public async deployContract(contractId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts/${contractId}/deploy`, payload);
     }
 
     /**
