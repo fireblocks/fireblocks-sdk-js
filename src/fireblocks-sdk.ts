@@ -1609,6 +1609,14 @@ export class FireblocksSDK {
     }
 
     /**
+     * Issue a new token and link it to the tenant
+     * @param payload
+     */
+    public async issueNewToken(payload: IssueTokenRequest): Promise<PendingTokenLinkDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, payload);
+    }
+
+    /**
      * Get all tokens linked to the tenant
      * @param limit
      * @param offset
@@ -1618,17 +1626,15 @@ export class FireblocksSDK {
             limit,
             offset
         };
-        const url = `/v1/tokenization/tokens?${queryString.stringify(requestFilter)}`;
-        return await this.apiClient.issueGetRequest(url);
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens?${queryString.stringify(requestFilter)}`);
     }
 
-
     /**
-     * Issue a new token and link it to the tenant
-     * @param request
+     * Link a token to the tenant
+     * @param assetId
      */
-    public async issueNewToken(request: IssueTokenRequest): Promise<PendingTokenLinkDto> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, request);
+    public async linkToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {});
     }
 
     /**
@@ -1640,14 +1646,6 @@ export class FireblocksSDK {
     }
 
     /**
-     * Link a token to the tenant
-     * @param assetId
-     */
-    public async linkToken(assetId: string): Promise<TokenLink> {
-        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {  });
-    }
-
-    /**
      * remove a link to a token from the tenant
      * @param assetId
      */
@@ -1656,21 +1654,10 @@ export class FireblocksSDK {
     }
 
     /**
-     * Add permissions to a linked token
-     * @param assetId
-     * @param permissions
+     * Get all pending tokens linked to the tenant
      */
-    public async addLinkedTokenPermissions(assetId: string, permissions: TokenLinkPermissionEntry[]): Promise<TokenLink> {
-        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/permissions`, { permissions });
-    }
-
-    /**
-     * Remove permissions from a linked token
-     * @param assetId
-     * @param permission
-     */
-    public async removeLinkedTokenPermissions(assetId: string, permission: TokenLinkPermissionEntry): Promise<TokenLink> {
-        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}/permissions?permission=${permission.permission}&vaultAccountId=${permission.vaultAccountId}`);
+    public async getPendingLinkedTokens(): Promise<TokenLink[]> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/pending`);
     }
 
     /**

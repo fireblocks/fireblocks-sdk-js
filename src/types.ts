@@ -1514,6 +1514,7 @@ export interface PendingTokenLinkDto {
     blockchainId?: string;
 }
 
+type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
 
 export interface IssueTokenRequest {
     symbol: string;
@@ -1522,7 +1523,7 @@ export interface IssueTokenRequest {
     vaultAccountId: string;
     createParams: CreateTokenParams;
 }
-type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
+
 interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
 }
