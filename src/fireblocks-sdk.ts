@@ -1619,13 +1619,13 @@ export class FireblocksSDK {
 
     /**
      * Get all tokens linked to the tenant
-     * @param limit
-     * @param offset
+     * @param pageSize
+     * @param pageCursor
      */
-    public async getLinkedTokens(limit: number = 100, offset: number = 0): Promise<TokenLink[]> {
+    public async getLinkedTokens(pageSize?: number, pageCursor?: string): Promise<TokenLink[]> {
         const requestFilter = {
-            limit,
-            offset
+            pageSize,
+            pageCursor
         };
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens?${queryString.stringify(requestFilter)}`);
     }
