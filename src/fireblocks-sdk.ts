@@ -1622,7 +1622,7 @@ export class FireblocksSDK {
      * @param pageSize
      * @param pageCursor
      */
-    public async getLinkedTokens(pageSize?: number, pageCursor?: string): Promise<TokenLink[]> {
+    public async getLinkedTokens(pageSize: number = 100, pageCursor?: string): Promise<Web3PagedResponse<TokenLink>> {
         const requestFilter = {
             pageSize,
             pageCursor
