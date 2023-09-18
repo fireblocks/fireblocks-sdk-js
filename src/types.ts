@@ -1482,8 +1482,6 @@ export interface ContractTemplateDto {
     id: string;
     name: string;
     description: string;
-    sourcecode?: string;
-    bytecode: string;
     compilerOutputMetadata?: object;
     abi: AbiFunction[];
     attributes?: Record<string, string>;
