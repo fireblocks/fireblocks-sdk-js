@@ -502,6 +502,81 @@ export interface TravelRuleVaspFilter {
     order?: string;
 }
 
+export interface ScreeningPolicyConfiguration {
+    bypassScreeningDuringServiceOutages?: boolean;
+    inboundTransactionDelay?: number;
+    outboundTransactionDelay?: number;
+}
+
+export enum TravelRuleAction {
+    screen = "SCREEN",
+    pass = "PASS",
+    freeze = "FREEZE"
+}
+
+export interface TravelRulePolicyRule {
+    sourceType?: string;
+    sourceSubType?: string;
+    destType?: string;
+    destSubType?: string;
+    destAddress?: string;
+    sourceId?: string;
+    destId?: string;
+    asset?: string;
+    baseAsset?: string;
+    amount?: number;
+    amountUSD?: number;
+    networkProtocol?: string;
+    operation?: string;
+    action: TravelRuleAction;
+}
+
+export enum PolicyApprovalStatus {
+    live = "live",
+    processing = "processing"
+}
+
+export enum TransactionDirection {
+    inbound = "INBOUND",
+    outbound = "OUTBOUND"
+}
+
+export enum FbTravelRuleTransactionStatus {
+    completed = "COMPLETED",
+    pending = "PENDING",
+    rejected = "REJECTED",
+    failed = "FAILED",
+    canceled = "CANCELED",
+    blockingTimeExpired = "BLOCKING_TIME_EXPIRED",
+}
+
+export enum TravelRuleVerdict {
+    accept = "ACCEPT",
+    reject = "REJECT",
+    alert = "ALERT",
+    wait = "WAIT",
+    freeze = "FREEZE",
+    cancel = "CANCEL"
+}
+
+export interface TravelRuleRulesConfiguration {
+    direction?: TransactionDirection;
+    status?: FbTravelRuleTransactionStatus;
+    amountUSD?: number;
+    amount?: number;
+    asset?: string;
+    action: TravelRuleVerdict;
+}
+
+export interface TravelRulePolicy {
+    tenantId?: string;
+    policy: TravelRulePolicyRule[];
+    policyStatus?: PolicyApprovalStatus;
+    isDefault: boolean;
+    createDate?: Date;
+    lastUpdate: Date;
+}
+
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",

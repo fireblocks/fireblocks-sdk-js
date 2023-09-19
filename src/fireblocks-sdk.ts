@@ -92,6 +92,9 @@ import {
     SmartTransfersTicketsFilters,
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
+    ScreeningPolicyConfiguration,
+    TravelRulePolicy,
+    TravelRuleRulesConfiguration,
     SmartTransfersTicketTermResponse,
     SmartTransfersUserGroupsResponse,
     UsersGroup,
@@ -1677,6 +1680,35 @@ export class FireblocksSDK {
      */
     public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
         return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
+    }
+
+    /**
+     * Get PostScreening Policies for travel rule compliance
+     */
+    public async getTravelRulePostScreeningPolicy(): Promise<TravelRuleRulesConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/post_screening_policy`);
+    }
+
+    /**
+     * Get Screening Policies for travel rule compliance
+     */
+    public async getTravelRuleScreeningPolicy(): Promise<TravelRulePolicy> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/screening_policy`);
+    }
+
+    /**
+     * Get Screening Configuration for travel rule compliance
+     */
+    public async getTravelRuleScreeningConfiguration(): Promise<ScreeningPolicyConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/policy_configuration`);
+    }
+
+    /**
+     * Update Bypass Screening Configuration for travel rule compliance
+     * @param screeningPolicyConfiguration
+     */
+    public async updateTravelRulePolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/policy_configuration`, screeningPolicyConfiguration);
     }
 
     /**
