@@ -1460,12 +1460,10 @@ export interface ContractDeployRequest {
 }
 
 export interface ContractDeployResponse {
+    txId: string;
     assetId: string;
     vaultAccountId: string;
     contractId: string;
-    bytecode: string;
-    constructorEncodedParams: string;
-    txId: string;
 }
 
 export interface LeanContractTemplateDto {
