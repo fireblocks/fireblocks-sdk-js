@@ -13,6 +13,14 @@ export class NcwSignerSdk implements INcwSignerSdk {
         );
     }
 
+    public async enableWallet(walletId: string, enabled: boolean): Promise<void> {
+        return await this.apiClient.issuePutRequest(
+            `${this.BASE_PATH}/${walletId}/enable`,
+            { enabled },
+            this.getRequestOptions(walletId),
+        );
+    }
+
     public async getWalletDevices(walletId: string): Promise<NCW.Device> {
         return await this.apiClient.issueGetRequest(
             `${this.BASE_PATH}/${walletId}/devices/`,

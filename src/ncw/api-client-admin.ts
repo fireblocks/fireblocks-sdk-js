@@ -19,13 +19,6 @@ export class NcwAdminSdk implements INcwAdminSdk {
         );
     }
 
-    public async enableWallet(walletId: string, enabled: boolean): Promise<void> {
-        return await this.apiClient.issuePutRequest(
-            `${this.BASE_PATH}/${walletId}/enable`,
-            { enabled },
-        );
-    }
-
     public async getWalletDevices(walletId: string): Promise<NCW.Device> {
         return await this.apiClient.issueGetRequest(
             `${this.BASE_PATH}/${walletId}/devices/`,

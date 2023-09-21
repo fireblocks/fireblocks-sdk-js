@@ -129,14 +129,6 @@ export interface INcwAdminSdk extends NcwSdk {
     createWallet(): Promise<{ walletId: string; enabled: boolean; }>;
 
     /**
-     * Enable a NCW wallet
-     *
-     * @param {string} walletId
-     * @param {boolean} enabled
-     */
-    enableWallet(walletId: string, enabled: boolean): Promise<void>;
-
-    /**
      * Get NCW wallets
      *
      * @param {GetWalletsPayload} { pageCursor, pageSize, sort, order }
@@ -147,6 +139,14 @@ export interface INcwAdminSdk extends NcwSdk {
 }
 
 export interface INcwSignerSdk extends NcwSdk {
+    /**
+     * Enable a NCW wallet
+     *
+     * @param {string} walletId
+     * @param {boolean} enabled
+     */
+
+    enableWallet(walletId: string, enabled: boolean): Promise<void>;
     /**
      * Invoke NCW wallet RPC call
      *
