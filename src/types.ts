@@ -838,6 +838,7 @@ export interface TransactionFilter {
     destType?: PeerType;
     sourceId?: string;
     destId?: string;
+    sort?: "ASC" | "DESC";
 }
 
 export interface NFTOwnershipFilter {
@@ -939,6 +940,7 @@ export interface TransactionPageFilter {
     destType?: PeerType;
     sourceId?: string;
     destId?: string;
+    sort?: "ASC" | "DESC";
 }
 
 export enum TransactionOrder {
