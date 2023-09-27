@@ -75,11 +75,20 @@ export class ApiClient {
         return response.data;
     }
 
-    public async issuePutRequest<T>(path: string, body: any): Promise<T> {
+    public async issuePutRequest<T>(path: string, body: any, requestOptions?: RequestOptions): Promise<T> {
         const token = this.authProvider.signJwt(path, body);
-        const res = (await this.axiosInstance.put<T>(path, body, {
-            headers: {"Authorization": `Bearer ${token}`}
-        }));
+        const headers: any = { "Authorization": `Bearer ${token}` }
+        const idempotencyKey = requestOptions?.idempotencyKey;
+        if (idempotencyKey) {
+          headers["Idempotency-Key"] = idempotencyKey;
+        }
+
+        const ncwWalletId = requestOptions?.ncw?.walletId;
+        if (ncwWalletId) {
+            headers["X-End-User-Wallet-Id"] = ncwWalletId;
+        }
+        
+        const res = (await this.axiosInstance.put<T>(path, body, { headers }));
         return res.data;
     }
 
