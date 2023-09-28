@@ -1456,7 +1456,7 @@ interface VendorDto {
 export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
-    constructorParameters: object[];
+    constructorParameters?: object[];
 }
 
 export interface ContractDeployResponse {
