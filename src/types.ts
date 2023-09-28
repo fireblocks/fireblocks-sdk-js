@@ -1,5 +1,9 @@
 import { AxiosResponseHeaders } from "axios";
 
+export interface Paging {
+    next: string;
+}
+
 export interface Web3PagedResponse<T> {
     data: T[];
     paging?: Paging;
@@ -887,19 +891,15 @@ export interface GetNFTsFilter {
     order?: OrderValues;
 }
 
-class MediaEntity {
-    url: string;
-    contentType: string;
-}
-
 interface NFTCollection {
     id: string;
     name?: string;
     symbol?: string;
 }
 
-export interface Paging {
-    next: string;
+interface MediaEntity {
+    url: string;
+    contentType: string;
 }
 
 export interface Token {
@@ -1530,27 +1530,44 @@ interface VendorDto {
     attributes: Record<string, string>;
 }
 
-export interface ContractTemplateDto {
-    isPublic: boolean;
-    vendor?: VendorDto;
+export interface ContractDeployRequest {
+    assetId: string;
+    vaultAccountId: string;
+    constructorParameters?: object[];
+}
+
+export interface ContractDeployResponse {
+    txId: string;
+    assetId: string;
+    vaultAccountId: string;
+    contractId: string;
+}
+
+export interface LeanContractTemplateDto {
     id: string;
     name: string;
     description: string;
-    bytecode: string;
-    sourcecode?: string;
+    attributes?: Record<string, string>;
+    isPublic: boolean;
     owner?: string;
+    vendor?: VendorDto;
+}
+
+export interface ContractTemplateDto {
+    id: string;
+    name: string;
+    description: string;
     compilerOutputMetadata?: object;
     abi: AbiFunction[];
-    docs?: ContractDoc;
     attributes?: Record<string, string>;
-}
-export enum TokenLinkPermission {
-    MINT = "MINT",
-    BURN = "BURN",
+    docs?: ContractDoc;
+    owner?: string;
+    vendor?: VendorDto;
+    isPublic: boolean;
 }
 
 export interface TokenLinkPermissionEntry {
-    permission: TokenLinkPermission;
+    permission: "MINT" | "BURN";
     vaultAccountId: string;
 }
 
@@ -1580,6 +1597,7 @@ export interface PendingTokenLinkDto {
     blockchainId?: string;
 }
 
+type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
 
 export interface IssueTokenRequest {
     symbol: string;
@@ -1588,7 +1606,7 @@ export interface IssueTokenRequest {
     vaultAccountId: string;
     createParams: CreateTokenParams;
 }
-type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
+
 interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
 }
