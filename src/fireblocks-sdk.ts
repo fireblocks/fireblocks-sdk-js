@@ -1647,7 +1647,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * remove a link to a token from the tenant
+     * Unlink a token from the tenant
      * @param assetId
      */
     public async unlinkToken(assetId: string): Promise<TokenLink> {
