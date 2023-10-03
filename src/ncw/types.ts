@@ -1,28 +1,14 @@
 import {
     AssetResponse, Web3PagedResponse, NCW,
-} from "./types";
+} from "../types";
 
-export interface NcwSdk {
-    /**
-     * Create a new NCW wallet
-     */
-    createWallet(): Promise<{ walletId: string; enabled: boolean; }>;
-
+interface NcwSdk {
     /**
      * Get a NCW wallet
      *
      * @param {string} walletId
      */
     getWallet(walletId: string): Promise<{ walletId: string; enabled: boolean; }>;
-
-    /**
-     * Enable a NCW wallet
-     *
-     * @param {string} walletId
-     * @param {boolean} enabled
-     */
-    enableWallet(walletId: string, enabled: boolean): Promise<void>;
-
 
     /**
      * Get NCW wallet devices
@@ -43,16 +29,6 @@ export interface NcwSdk {
     enableWalletDevice(walletId: string, deviceId: string, enabled: boolean): Promise<void>;
 
     /**
-     * Invoke NCW wallet RPC call
-     *
-     * @param {string} walletId
-     * @param {string} deviceId
-     * @param {string} payload
-     * @return {*}  {(Promise<{ result: string } | { error: { message: string, code?: number } }>)}
-     */
-    invokeWalletRpc(walletId: string, deviceId: string, payload: string): Promise<{ result: string; } | { error: { message: string; code?: number; }; }>;
-
-    /**
      * Create a new NCW wallet account
      *
      * @param {string} walletId
@@ -61,14 +37,6 @@ export interface NcwSdk {
         walletId: string;
         accountId: number;
     }>;
-
-    /**
-     * Get NCW wallets
-     *
-     * @param {GetWalletsPayload} { pageCursor, pageSize, sort, order }
-     * @return {*}  {Promise<Web3PagedResponse<WalletInfo>>}
-     */
-    getWallets({ pageCursor, pageSize, sort, order }: NCW.GetWalletsPayload): Promise<Web3PagedResponse<NCW.WalletInfo>>;
 
     /**
      * Get NCW accounts
@@ -153,3 +121,43 @@ export interface NcwSdk {
      */
     refreshWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse>;
 }
+
+export interface INcwAdminSdk extends NcwSdk {
+    /**
+     * Create a new NCW wallet
+     */
+    createWallet(): Promise<{ walletId: string; enabled: boolean; }>;
+
+    /**
+     * Get NCW wallets
+     *
+     * @param {GetWalletsPayload} { pageCursor, pageSize, sort, order }
+     * @return {*}  {Promise<Web3PagedResponse<WalletInfo>>}
+     */
+    getWallets({ pageCursor, pageSize, sort, order }: NCW.GetWalletsPayload): Promise<Web3PagedResponse<NCW.WalletInfo>>;
+
+}
+
+export interface INcwSignerSdk extends NcwSdk {
+    /**
+     * Enable a NCW wallet
+     *
+     * @param {string} walletId
+     * @param {boolean} enabled
+     */
+
+    enableWallet(walletId: string, enabled: boolean): Promise<void>;
+    /**
+     * Invoke NCW wallet RPC call
+     *
+     * @param {string} walletId
+     * @param {string} deviceId
+     * @param {string} payload
+     * @return {*}  {(Promise<{ result: string } | { error: { message: string, code?: number } }>)}
+     */
+    invokeWalletRpc(walletId: string, deviceId: string, payload: string): Promise<{ result: string; } | { error: { message: string; code?: number; }; }>;
+}
+
+export * from "./ncw-api-client";
+export * from "./api-client-admin";
+export * from "./api-client-signer";

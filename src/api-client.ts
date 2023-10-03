@@ -50,35 +50,26 @@ export class ApiClient {
         };
     }
 
-    public async issueGetRequest<T>(path: string): Promise<T> {
+    public async issueGetRequest<T>(path: string, requestOptions?: RequestOptions): Promise<T> {
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
-            headers: {"Authorization": `Bearer ${token}`}
+            headers: this.getHeaders(token, requestOptions)
         });
         return res.data;
     }
 
     public async issuePostRequest<T>(path: string, body: any, requestOptions?: RequestOptions): Promise<T> {
         const token = this.authProvider.signJwt(path, body);
-        const headers: any = {"Authorization": `Bearer ${token}`};
-        const idempotencyKey = requestOptions?.idempotencyKey;
-        if (idempotencyKey) {
-            headers["Idempotency-Key"] = idempotencyKey;
-        }
-
-        const ncwWalletId = requestOptions?.ncw?.walletId;
-        if (ncwWalletId) {
-            headers["X-End-User-Wallet-Id"] = ncwWalletId;
-        }
-
-        const response = await this.axiosInstance.post<T>(path, body, {headers});
+        const response = await this.axiosInstance.post<T>(path, body, {
+            headers: this.getHeaders(token, requestOptions)
+        });
         return response.data;
     }
 
-    public async issuePutRequest<T>(path: string, body: any): Promise<T> {
+    public async issuePutRequest<T>(path: string, body: any, requestOptions?: RequestOptions): Promise<T> {
         const token = this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.put<T>(path, body, {
-            headers: {"Authorization": `Bearer ${token}`}
+            headers: this.getHeaders(token, requestOptions)
         }));
         return res.data;
     }
@@ -86,7 +77,7 @@ export class ApiClient {
     public async issuePatchRequest<T>(path: string, body: any): Promise<T> {
         const token = this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.patch<T>(path, body, {
-            headers: {"Authorization": `Bearer ${token}`}
+            headers: this.getHeaders(token)
         }));
         return res.data;
     }
@@ -94,8 +85,25 @@ export class ApiClient {
     public async issueDeleteRequest<T>(path: string): Promise<T> {
         const token = this.authProvider.signJwt(path);
         const res = (await this.axiosInstance.delete<T>(path, {
-            headers: {"Authorization": `Bearer ${token}`}
+            headers: this.getHeaders(token),
         }));
         return res.data;
+    }
+
+    private getHeaders(token: string, requestOptions?: RequestOptions) {
+        const headers: any = {
+            "Authorization": `Bearer ${token}`,
+        };
+
+        const idempotencyKey = requestOptions?.idempotencyKey;
+        if (idempotencyKey) {
+            headers["Idempotency-Key"] = idempotencyKey;
+        }
+        const ncwWalletId = requestOptions?.ncw?.walletId;
+        if (ncwWalletId) {
+            headers["X-End-User-Wallet-Id"] = ncwWalletId;
+        }
+
+        return headers;
     }
 }

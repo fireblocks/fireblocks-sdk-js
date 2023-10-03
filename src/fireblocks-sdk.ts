@@ -108,10 +108,10 @@ import {
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
-import { NcwApiClient } from "./ncw-api-client";
-import { NcwSdk } from "./ncw-sdk";
+import { NcwApiClient } from "./ncw/ncw-api-client";
 
 export * from "./types";
+export * from "./ncw/types";
 
 export interface SDKOptions {
     /** HTTP request timeout */
@@ -180,9 +180,9 @@ export class FireblocksSDK {
      * NCW API Namespace
      *
      * @readonly
-     * @type {NcwSdk}
+     * @type {NcwApiClient}
      */
-    public get NCW(): NcwSdk {
+    public get NCW(): NcwApiClient {
         return this.apiNcw;
     }
 
