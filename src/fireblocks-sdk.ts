@@ -105,6 +105,8 @@ import {
     ContractDeployRequest,
     PendingTokenLinkDto,
     TAP,
+    ExchangeAccountsPageFilter,
+    PagedExchangeResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -410,6 +412,13 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest("/v1/exchange_accounts");
     }
 
+    /**
+     * Gets all exchange accounts for your tenant
+     * @param filter Get exchange accounts matching pageFilter params
+     */
+    public async getExchangeAccountsPaged(filter: ExchangeAccountsPageFilter): Promise<PagedExchangeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/paged?${queryString.stringify(filter)}`);
+    }
 
     /**
      * Gets a single exchange account by ID
