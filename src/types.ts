@@ -1477,6 +1477,11 @@ export enum NFTOwnershipStatus {
     "ARCHIVED" = "ARCHIVED",
 }
 
+export interface NFTOwnershipStatusUpdatedPayload {
+    assetId: string;
+    status: NFTOwnershipStatus;
+}
+
 export enum NFTOwnershipWalletType {
     "VAULT_ACCOUNT" = "VAULT_ACCOUNT",
     "END_USER_WALLET" = "END_USER_WALLET",
