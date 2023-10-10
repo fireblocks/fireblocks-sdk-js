@@ -1548,13 +1548,15 @@ export class FireblocksSDK {
     }
 
     /**
-     *
-     * @param vaultAccountId
+     * Refresh NFT ownership by vault account or ncw account
      * @param blockchainDescriptor
+     * @param vaultAccountId Required for Non-NCW
+     * @param ncwId Required for NCW
+     * @param ncwAccountId Required for NCW
      */
-    public async refreshNFTOwnershipByVault(vaultAccountId: string, blockchainDescriptor: string): Promise<void> {
+    public async refreshNFTOwnershipByVault(blockchainDescriptor: string, vaultAccountId?: string, ncwId?: string, ncwAccountId?: string): Promise<void> {
         return await this.apiClient.issuePutRequest(
-            `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
+            `/v1/nfts/ownership/tokens?blockchainDescriptor=${blockchainDescriptor}&vaultAccountId=${vaultAccountId}&ncwId=${ncwId}&ncwAccountId=${ncwAccountId}`,
             undefined);
     }
 
