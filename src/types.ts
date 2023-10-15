@@ -1,5 +1,9 @@
 import { AxiosResponseHeaders } from "axios";
 
+export interface Paging {
+    next: string;
+}
+
 export interface Web3PagedResponse<T> {
     data: T[];
     paging?: Paging;
@@ -135,6 +139,7 @@ export interface EstimatedTransactionFee {
 export interface TransferPeerPath {
     type?: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     address?: string;
@@ -143,6 +148,7 @@ export interface TransferPeerPath {
 export interface DestinationTransferPeerPath {
     type: PeerType;
     id?: string;
+    walletId?: string;
     virtualId?: string;
     virtualType?: VirtualType;
     oneTimeAddress?: IOneTimeAddress;
@@ -390,8 +396,11 @@ export interface TravelRuleOptions {
     baseURL?: string;
     baseURLPII?: string;
     jsonDidKey?: string;
-    beneficiaryDidKey?: string;
-    travelRuleMessage?: TravelRule;
+}
+
+export interface TravelRuleEncryptionOptions {
+    beneficiaryPIIDidKey?: string;
+    sendToProvider?: boolean;
 }
 
 export interface TravelRuleVasp {
@@ -495,6 +504,81 @@ export interface TravelRuleVaspFilter {
     page?: number;
     per_page?: number;
     order?: string;
+}
+
+export interface ScreeningPolicyConfiguration {
+    bypassScreeningDuringServiceOutages?: boolean;
+    inboundTransactionDelay?: number;
+    outboundTransactionDelay?: number;
+}
+
+export enum TravelRuleAction {
+    screen = "SCREEN",
+    pass = "PASS",
+    freeze = "FREEZE"
+}
+
+export interface TravelRulePolicyRule {
+    sourceType?: string;
+    sourceSubType?: string;
+    destType?: string;
+    destSubType?: string;
+    destAddress?: string;
+    sourceId?: string;
+    destId?: string;
+    asset?: string;
+    baseAsset?: string;
+    amount?: number;
+    amountUSD?: number;
+    networkProtocol?: string;
+    operation?: string;
+    action: TravelRuleAction;
+}
+
+export enum PolicyApprovalStatus {
+    live = "live",
+    processing = "processing"
+}
+
+export enum TransactionDirection {
+    inbound = "INBOUND",
+    outbound = "OUTBOUND"
+}
+
+export enum FbTravelRuleTransactionStatus {
+    completed = "COMPLETED",
+    pending = "PENDING",
+    rejected = "REJECTED",
+    failed = "FAILED",
+    canceled = "CANCELED",
+    blockingTimeExpired = "BLOCKING_TIME_EXPIRED",
+}
+
+export enum TravelRuleVerdict {
+    accept = "ACCEPT",
+    reject = "REJECT",
+    alert = "ALERT",
+    wait = "WAIT",
+    freeze = "FREEZE",
+    cancel = "CANCEL"
+}
+
+export interface TravelRuleRulesConfiguration {
+    direction?: TransactionDirection;
+    status?: FbTravelRuleTransactionStatus;
+    amountUSD?: number;
+    amount?: number;
+    asset?: string;
+    action: TravelRuleVerdict;
+}
+
+export interface TravelRulePolicy {
+    tenantId?: string;
+    policy: TravelRulePolicyRule[];
+    policyStatus?: PolicyApprovalStatus;
+    isDefault: boolean;
+    createDate?: Date;
+    lastUpdate: Date;
 }
 
 export enum Web3ConnectionFeeLevel {
@@ -631,6 +715,7 @@ export interface TransferPeerPathResponse {
     subType?: string;
     virtualType?: VirtualType;
     virtualId?: string;
+    walletId?: string;
 }
 
 export interface AuthorizationInfo {
@@ -757,6 +842,7 @@ export interface TransactionFilter {
     destType?: PeerType;
     sourceId?: string;
     destId?: string;
+    sort?: "ASC" | "DESC";
 }
 
 export interface NFTOwnershipFilter {
@@ -769,6 +855,32 @@ export interface NFTOwnershipFilter {
     sort?: GetOwnedNFTsSortValues[];
     order?: OrderValues;
     status?: NFTOwnershipStatus;
+    search?: string;
+    ncwId?: string;
+    ncwAccountIds?: string[];
+    walletType?: NFTOwnershipWalletType;
+}
+
+export interface NFTOwnedCollectionsFilter {
+    search?: string;
+    status?: NFTOwnershipStatus;
+    ncwId?: string;
+    walletType?: NFTOwnershipWalletType;
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: GetOwnedCollectionsSortValues[];
+    order?: OrderValues;
+}
+
+export interface NFTOwnedAssetsFilter {
+    search?: string;
+    status?: NFTOwnershipStatus;
+    ncwId?: string;
+    walletType?: NFTOwnershipWalletType;
+    pageCursor?: string;
+    pageSize?: number;
+    sort?: GetOwnedAssetsSortValues[];
+    order?: OrderValues;
 }
 
 export interface GetNFTsFilter {
@@ -779,19 +891,15 @@ export interface GetNFTsFilter {
     order?: OrderValues;
 }
 
-class MediaEntity {
-    url: string;
-    contentType: string;
-}
-
 interface NFTCollection {
     id: string;
-    name: string;
-    symbol: string;
+    name?: string;
+    symbol?: string;
 }
 
-export interface Paging {
-    next: string;
+interface MediaEntity {
+    url: string;
+    contentType: string;
 }
 
 export interface Token {
@@ -799,19 +907,26 @@ export interface Token {
     tokenId: string;
     standard: string;
     blockchainDescriptor: string;
-    description: string;
-    name: string;
-    media: MediaEntity[];
+    description?: string;
+    name?: string;
+    media?: MediaEntity[];
     metadataURI?: string;
     cachedMetadataURI?: string;
     collection?: NFTCollection;
 }
 
-export interface TokenWithBalance extends Token {
+export interface BaseTokenWithBalance extends Token {
     balance: string;
-    vaultAccountId: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
+}
+
+export type TokenWithBalance = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseTokenWithBalance;
+
+export interface CollectionOwnership extends NFTCollection {
+    standard?: string;
+    blockchainDescriptor: string;
+    contractAddress?: string;
 }
 
 export interface TransactionPageFilter {
@@ -825,6 +940,7 @@ export interface TransactionPageFilter {
     destType?: PeerType;
     sourceId?: string;
     destId?: string;
+    sort?: "ASC" | "DESC";
 }
 
 export enum TransactionOrder {
@@ -870,7 +986,8 @@ export enum PeerType {
     FIAT_ACCOUNT = "FIAT_ACCOUNT",
     COMPOUND = "COMPOUND",
     ONE_TIME_ADDRESS = "ONE_TIME_ADDRESS",
-    OEC_PARTNER = "OEC_PARTNER"
+    OEC_PARTNER = "OEC_PARTNER",
+    END_USER_WALLET = "END_USER_WALLET",
 }
 
 export enum VirtualType {
@@ -1057,7 +1174,10 @@ export interface VaultBalancesFilter {
 }
 
 export interface RequestOptions {
-    idempotencyKey: string;
+    idempotencyKey?: string;
+    ncw?: {
+        walletId?: string;
+    };
 }
 
 export interface ValidateAddressResponse {
@@ -1082,6 +1202,13 @@ export interface User {
     email: string;
     enabled: boolean;
     role: string;
+}
+
+export interface UsersGroup {
+    id: string;
+    name: string;
+    membersIds: string[];
+    status: string;
 }
 
 export interface ResendWebhooksResponse {
@@ -1183,15 +1310,26 @@ export interface FeePayerConfiguration {
     feePayerAccountId: string;
 }
 
-export interface CreateWeb3ConnectionPayload {
-    vaultAccountId: number;
+export interface BaseWeb3ConnectionPayload {
     feeLevel: Web3ConnectionFeeLevel;
 }
-
-export interface CreateWalletConnectPayload extends CreateWeb3ConnectionPayload {
-    uri: string;
-    chainIds: string[];
+export interface WorkspaceWalletIdentifier {
+    vaultAccountId: number;
 }
+
+export interface NonCustodialWalletIdentifier {
+    ncwId: string;
+    ncwAccountId: number;
+}
+
+export interface WalletConnectConnectionPayload {
+    uri: string;
+    chainIds?: string[];
+}
+
+export type CreateWeb3ConnectionPayload = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseWeb3ConnectionPayload;
+
+export type CreateWalletConnectPayload = CreateWeb3ConnectionPayload & WalletConnectConnectionPayload;
 
 export interface GetWeb3ConnectionsPayload {
     pageCursor?: string;
@@ -1203,33 +1341,29 @@ export interface GetWeb3ConnectionsPayload {
 
 export interface CreateWeb3ConnectionResponse {
     id: string;
-    sessionMetadata: {
-      appIcon?: string,
-      appId?: string,
-      appName?: string,
-      appUrl?: string,
-      appDescription?: string
-    };
+    sessionMetadata: SessionMetadata;
 }
 
 export interface SessionMetadata {
+    appUrl: string;
     appIcon?: string;
-    appId?: string;
     appName?: string;
-    appUrl?: string;
     appDescription?: string;
-  }
+}
 
 export interface Session {
     id: string;
-    vaultAccountId: number;
-    chainIds?: string[];
+    vaultAccountId?: number;
+    ncwId?: string;
+    ncwAccountId?: number;
+    chainIds: string[];
     feeLevel: Web3ConnectionFeeLevel;
     creationDate: string;
     connectionType: Web3ConnectionType;
-    connectionMethod?: Web3ConnectionMethod;
-    sessionMetadata?: SessionMetadata;
-  }
+    connectionMethod: Web3ConnectionMethod;
+    sessionMetadata: SessionMetadata;
+}
+
 export enum TimePeriod {
     DAY = "DAY",
     WEEK = "WEEK"
@@ -1315,12 +1449,22 @@ export interface ISystemMessageInfo {
 export enum GetNFTsSortValues {
     "collectionName" = "collection.name",
     "name" = "name",
+    "blockchainDescriptor" = "blockchainDescriptor",
 }
 
 export enum GetOwnedNFTsSortValues {
     "ownershipLastUpdateTime" = "ownershipLastUpdateTime",
     "name" = "name",
     "collectionName" = "collection.name",
+    "blockchainDescriptor" = "blockchainDescriptor",
+}
+
+export enum GetOwnedCollectionsSortValues {
+    "name" = "name",
+}
+
+export enum GetOwnedAssetsSortValues {
+    "name" = "name",
 }
 
 export enum OrderValues {
@@ -1333,13 +1477,97 @@ export enum NFTOwnershipStatus {
     "ARCHIVED" = "ARCHIVED",
 }
 
-export enum TokenLinkPermission {
-    MINT = "MINT",
-    BURN = "BURN",
+export enum NFTOwnershipWalletType {
+    "VAULT_ACCOUNT" = "VAULT_ACCOUNT",
+    "END_USER_WALLET" = "END_USER_WALLET",
+}
+
+export interface ContractUploadRequest {
+    name: string;
+    description: string;
+    longDescription: string;
+    bytecode: string;
+    sourcecode: string;
+    compilerOutputMetadata?: object;
+    docs?: ContractDoc;
+    abi?: AbiFunction[];
+    attributes?: Record<string, string>;
+    vendorId?: string;
+}
+interface AbiFunction {
+    name?: string;
+    stateMutability?: string;
+    type: "function" | "constructor" | string;
+    inputs: Parameter[];
+    outputs?: Parameter[];
+    description?: string;
+    returns?: Record<string, string>;
+}
+
+interface Parameter {
+    name: string;
+    description?: string;
+    internalType: string;
+    type: string;
+    components?: Parameter[];
+}
+interface ContractDoc {
+    details?: string;
+    events?: string;
+    kind: "dev" | "user" | string;
+    methods: Record<string, FunctionDoc>;
+    version: string | number;
+}
+
+interface FunctionDoc {
+    details?: string;
+    params?: Record<string, string>;
+    returns?: Record<string, string>;
+}
+interface VendorDto {
+    id: string;
+    name: string;
+    attributes: Record<string, string>;
+}
+
+export interface ContractDeployRequest {
+    assetId: string;
+    vaultAccountId: string;
+    constructorParameters?: object[];
+}
+
+export interface ContractDeployResponse {
+    txId: string;
+    assetId: string;
+    vaultAccountId: string;
+    contractId: string;
+}
+
+export interface LeanContractTemplateDto {
+    id: string;
+    name: string;
+    description: string;
+    attributes?: Record<string, string>;
+    isPublic: boolean;
+    owner?: string;
+    vendor?: VendorDto;
+}
+
+export interface ContractTemplateDto {
+    id: string;
+    name: string;
+    description: string;
+    compilerOutputMetadata?: object;
+    abi: AbiFunction[];
+    attributes?: Record<string, string>;
+    docs?: ContractDoc;
+    owner?: string;
+    vendor?: VendorDto;
+    isPublic: boolean;
 }
 
 export interface TokenLinkPermissionEntry {
-    permission: TokenLinkPermission;
+    permission: "MINT" | "BURN";
     vaultAccountId: string;
 }
 
@@ -1360,14 +1588,420 @@ export interface TokenLink {
     assetMetadata?: LinkedTokenMetadata;
     permissions: TokenLinkPermissionEntry[];
 }
+export interface PendingTokenLinkDto {
+    id: number;
+    txId?: string;
+    name?: string;
+    symbol?: string;
+    vaultAccountId?: string;
+    blockchainId?: string;
+}
+
+type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
 
 export interface IssueTokenRequest {
     symbol: string;
     name: string;
     blockchainId: string;
-    ethContractAddress?: string;
+    vaultAccountId: string;
+    createParams: CreateTokenParams;
+}
+
+interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
-    decimals: number;
+}
+
+interface ParameterWithValue {
+    internalType: string;
+    name: string;
+    type: string;
+    description?: string;
+    value: any;
+}
+
+interface EVMTokenCreateParamsDto {
+    contractId: string;
+    constructorParams?: Array<ParameterWithValue>;
+}
+
+export enum SmartTransfersTicketDirection {
+    EXCHANGE = "EXCHANGE",
+    SEND = "SEND",
+    RECEIVE = "RECEIVE",
+    INTERMEDIATE = "INTERMEDIATE",
+}
+
+export enum SmartTransfersTicketStatus {
+    DRAFT = "DRAFT",
+    PENDING_APPROVAL = "PENDING_APPROVAL",
+    OPEN = "OPEN",
+    IN_SETTLEMENT = "IN_SETTLEMENT",
+    FULFILLED = "FULFILLED",
+    EXPIRED = "EXPIRED",
+    CANCELED = "CANCELED",
+}
+
+export enum SmartTransferTicketTermStatus {
+    CREATED = "CREATED",
+    FUNDING = "FUNDING",
+    FUNDING_FAILED = "FUNDING_FAILED",
+    FUNDED = "FUNDED",
+    REJECTED = "REJECTED",
+}
+
+export interface SmartTransfersTicketTermPayload {
+    asset: string;
+    amount: string;
+    fromNetworkId: string;
+    toNetworkId: string;
+}
+export interface SmartTransfersTicketCreatePayload {
+    createdByNetworkId: string;
+    type: string;
+    expiresIn?: number;
+    terms?: SmartTransfersTicketTermPayload[];
+    externalRefId?: string;
+    note?: string;
+    submit?: boolean;
+}
+
+export interface SmartTransfersTicketTerm {
+    id: string;
+    asset: string;
+    amount: string;
+    fromNetworkId: string;
+    fromNetworkIdName?: string;
+    toNetworkId: string;
+    toNetworkIdName?: string;
+    txHash?: string;
+    fbTxId?: string;
+    transactionStatus: TransactionStatus;
+    status: SmartTransferTicketTermStatus;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface SmartTransfersTicket {
+    id: string;
+    type: string;
+    direction?: SmartTransfersTicketDirection;
+    canceledByMe?: boolean;
+    createdByMe?: boolean;
+    status: SmartTransfersTicketStatus;
+    terms: SmartTransfersTicketTerm[];
+    expiresIn?: number;
+    expiresAt?: Date;
+    submittedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    externalRefId?: string;
+    note?: string;
+    createdByNetworkId: string;
+    createdByNetworkIdName: string;
+}
+
+export interface SmartTransfersTicketTermResponse {
+    data: SmartTransfersTicketTerm;
+}
+
+export interface SmartTransfersTicketResponse {
+    data: SmartTransfersTicket;
+}
+
+export interface SmartTransfersTicketsResponse {
+    message?: string;
+    after?: string;
+    data: SmartTransfersTicket[];
+}
+
+export interface SmartTransfersTicketsFilters {
+    q?: string;
+    statuses?: SmartTransfersTicketStatus[];
+    networkId?: string;
+    externalRefId?: string;
+    after?: string;
+    limit?: number;
+    createdByMe?: boolean;
+    expiresAfter?: Date;
+    expiresBefore?: Date;
+    type?: string;
+}
+
+export interface SmartTransfersUserGroupsResponse {
+    data: SmartTransfersUserGroups;
+}
+
+export interface SmartTransfersUserGroups {
+    userGroupIds: string[];
+}
+
+export interface SmartTransfersTicketTermFundPayload {
+    asset: string;
+    amount: string;
+    networkConnectionId: string;
+    srcId: string;
+    srcType: string;
+    fee?: string;
+    feeLevel?: FeeLevel;
+}
+
+export namespace NCW {
+    export const WalletIdHeader = "X-End-User-Wallet-Id";
+
+    export interface WalletInfo {
+        walletId: string;
+        enabled: boolean;
+    }
+
+    export interface GetWalletsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface GetWalletAccountsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface GetWalletAssetsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface GetWalletAddressesPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        sort?: string;
+        order?: "ASC" | "DESC";
+    }
+
+    export interface WalletAssetResponse {
+        id: string;
+        symbol: string;
+        name: string;
+        decimals: number;
+        networkProtocol: string;
+        testnet: boolean;
+        hasFee: boolean;
+        type: string;
+        baseAsset: string;
+        ethNetwork?: number;
+        ethContractAddress?: string;
+        issuerAddress?: string;
+        blockchainSymbol?: string;
+        deprecated?: boolean;
+        coinType: number;
+        blockchain: string;
+        blockchainDisplayName?: string;
+        blockchainId?: string;
+    }
+    export interface WalletAssetAddress {
+        accountName: string;
+        accountId: string;
+        asset: string;
+        address: string;
+        addressType: string;
+        addressDescription?: string;
+        tag?: string;
+        addressIndex?: number;
+        legacyAddress?: string;
+    }
+
+    export interface Device {
+        deviceId: string;
+        enabled: boolean;
+    }
+}
+
+export namespace TAP {
+    type PolicyTransactionType =
+        | "*"
+        | "CONTRACT_CALL"
+        | "RAW"
+        | "TRANSFER"
+        | "APPROVE"
+        | "MINT"
+        | "BURN"
+        | "SUPPLY"
+        | "REDEEM"
+        | "STAKE"
+        | "TYPED_MESSAGE";
+
+    type PolicySrcOrDestType =
+        | "EXCHANGE"
+        | "UNMANAGED"
+        | "VAULT"
+        | "NETWORK_CONNECTION"
+        | "COMPOUND"
+        | "FIAT_ACCOUNT"
+        | "ONE_TIME_ADDRESS"
+        | "*";
+
+    type PolicyType = "TRANSFER";
+
+    type PolicyAction = "ALLOW" | "BLOCK" | "2-TIER";
+
+    type PolicyDestAddressType = "*" | "WHITELISTED" | "ONE_TIME";
+
+    type PolicyAmountScope = "SINGLE_TX" | "TIMEFRAME";
+
+    type PolicySrcOrDestSubType = "*" | "EXTERNAL" | "INTERNAL" | "CONTRACT" | "EXCHANGETEST";
+
+    type PolicySrcOrDestId = string;
+
+    type AuthorizationGroup = {
+        users?: Array<string>;
+        usersGroups?: Array<string>;
+        th: number;
+    };
+
+    interface PolicyAuthorizationGroups {
+        logic: "AND" | "OR";
+        allowOperatorAsAuthorizer?: boolean;
+        groups: Array<AuthorizationGroup>;
+    }
+
+    export interface PolicyRule {
+        operator?: string;
+        operators?: {
+            wildcard?: "*";
+            users?: Array<string>;
+            usersGroups?: Array<string>;
+            services?: Array<string>;
+        };
+        transactionType?: PolicyTransactionType;
+        operatorServices?: Array<string>;
+        designatedSigner?: string;
+        designatedSigners?: {
+            users?: Array<string>;
+            usersGroups?: Array<string>;
+        };
+        type: PolicyType;
+        action: PolicyAction;
+        asset: string;
+        srcType?: PolicySrcOrDestType;
+        srcSubType?: PolicySrcOrDestSubType;
+        srcId?: PolicySrcOrDestId;
+        src?: {
+            ids?: Array<[PolicySrcOrDestId, PolicySrcOrDestType?, PolicySrcOrDestSubType?]>;
+        };
+        dstType?: PolicySrcOrDestType;
+        dstSubType?: PolicySrcOrDestSubType;
+        dstId?: PolicySrcOrDestId;
+        dst?: {
+            ids?: Array<[PolicySrcOrDestId, PolicySrcOrDestType?, PolicySrcOrDestSubType?]>;
+        };
+        dstAddressType?: PolicyDestAddressType;
+        amountCurrency: string;
+        amountScope: PolicyAmountScope;
+        amount: number | string;
+        periodSec: number;
+        authorizers?: Array<string>;
+        authorizersCount?: number;
+        authorizationGroups?: PolicyAuthorizationGroups;
+        amountAggregation?: {
+            operators: string;
+            srcTransferPeers: string;
+            dstTransferPeers: string;
+        };
+        rawMessageSigning?: {
+            derivationPath: {
+                path: Array<number>;
+            };
+            algorithm: string;
+        };
+        applyForApprove?: boolean;
+        applyForTypedMessage?: boolean;
+        externalDescriptor?: string;
+    }
+
+    interface Metadata {
+        editedBy?: string;
+        editedAt?: number;
+        publishedBy?: string;
+        publishedAt?: number;
+    }
+
+    enum PolicyStatus {
+        SUCCESS = "SUCCESS",
+        UNVALIDATED = "UNVALIDATED",
+        INVALID_CONFIGURATION = "INVALID_CONFIGURATION",
+        PENDING = "PENDING",
+        PENDING_CONSOLE_APPROVAL = "PENDING_CONSOLE_APPROVAL",
+        AWAITING_QUORUM = "AWAITING_QUORUM",
+        UNHANDLED_ERROR = "UNHANDLED_ERROR",
+    }
+
+    type PolicyBaseErrorField =
+        | "operator"
+        | "operators"
+        | "authorizationGroups"
+        | "designatedSigner"
+        | "designatedSigners"
+        | "contractMethods"
+        | "amountAggregation"
+        | "src"
+        | "dst"
+        | "";
+
+    interface PolicyRuleError {
+        errorMessage: string;
+        errorCodeName: string;
+        errorField: PolicyBaseErrorField;
+        errorCode: number;
+    }
+
+    interface PolicyRuleCheckResult {
+        index: number;
+        status: "ok" | "failure";
+        errors: Array<PolicyRuleError>;
+    }
+
+    interface PolicyCheckResult {
+        errors: number;
+        results: PolicyRuleCheckResult[];
+    }
+
+    interface PolicyResponse {
+        status?: string;
+        rules?: Array<PolicyRule>;
+        metadata?: Metadata;
+    }
+
+    interface ValidationResponse {
+        status?: PolicyStatus;
+        checkResult?: PolicyCheckResult;
+    }
+
+    interface DraftResponse {
+        draftId: string;
+        status?: PolicyStatus;
+        rules?: Array<PolicyRule>;
+        metadata?: Metadata;
+    }
+
+    export interface DraftReviewAndValidationResponse {
+        draftResponse: DraftResponse;
+        validation: ValidationResponse;
+    }
+
+    export interface PolicyAndValidationResponse {
+        policy: PolicyResponse;
+        validation: ValidationResponse;
+    }
+
+    export interface PublishResult {
+        status?: PolicyStatus;
+        rules?: Array<PolicyRule>;
+        checkResult?: PolicyCheckResult;
+        metadata?: Metadata;
+    }
 }
 export enum TDelegationState {
     "error" = "error",

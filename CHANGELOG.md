@@ -2,109 +2,74 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.7.0...v5.8.0)
+
+> 28 September 2023
+
+- contract-registry - adding endpoints [`#210`](https://github.com/fireblocks/fireblocks-sdk-js/pull/210)
+
+#### [v5.7.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.1...v5.7.0)
+
+> 19 September 2023
+
+- Travel Rule Configuration and Policy routes [`#187`](https://github.com/fireblocks/fireblocks-sdk-js/pull/187)
+- Change Collection and Token response [`#205`](https://github.com/fireblocks/fireblocks-sdk-js/pull/205)
+- feat: adding tap endpoints [`#207`](https://github.com/fireblocks/fireblocks-sdk-js/pull/207)
+
+#### [v5.6.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.0...v5.6.1)
+
+> 5 September 2023
+
+- Added list owned assets endpoint and NCW for NFTs [`#206`](https://github.com/fireblocks/fireblocks-sdk-js/pull/206)
+- Add Smart Transfers user groups endpoints [`#202`](https://github.com/fireblocks/fireblocks-sdk-js/pull/202)
+
+#### [v5.6.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.1...v5.6.0)
+
+> 24 August 2023
+
+- added registry endpoint for uploading contracts [`#190`](https://github.com/fireblocks/fireblocks-sdk-js/pull/190)
+
+#### [v5.5.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.0...v5.5.1)
+
+> 23 August 2023
+
+- Rename NCW base path [`#198`](https://github.com/fireblocks/fireblocks-sdk-js/pull/198)
+
+#### [v5.5.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.4.0...v5.5.0)
+
+> 22 August 2023
+
+- fix: add NCW methods [`#197`](https://github.com/fireblocks/fireblocks-sdk-js/pull/197)
+- add NCW feature [`#192`](https://github.com/fireblocks/fireblocks-sdk-js/pull/192)
+- changed return type to pending instead of TokenLink [`#188`](https://github.com/fireblocks/fireblocks-sdk-js/pull/188)
+
+#### [v5.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.1...v5.4.0)
+
+> 7 August 2023
+
+- Support users groups crud [`#179`](https://github.com/fireblocks/fireblocks-sdk-js/pull/179)
+
+#### [v5.3.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.0...v5.3.1)
+
+> 2 August 2023
+
+- Change externalId with externalRefId [`#186`](https://github.com/fireblocks/fireblocks-sdk-js/pull/186)
+
+#### [v5.3.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.2.0...v5.3.0)
+
+> 26 July 2023
+
+- Add smart transfers routes [`#184`](https://github.com/fireblocks/fireblocks-sdk-js/pull/184)
+- Improve PII Client and PII encryption module [`#181`](https://github.com/fireblocks/fireblocks-sdk-js/pull/181)
+- Update fireblocks sdk js [`#174`](https://github.com/fireblocks/fireblocks-sdk-js/pull/174)
+- add remove network id route [`#153`](https://github.com/fireblocks/fireblocks-sdk-js/pull/153)
+- add set networkId name route [`#162`](https://github.com/fireblocks/fireblocks-sdk-js/pull/162)
+- Improve Travel Rule interface with additional fields update existing one [`#176`](https://github.com/fireblocks/fireblocks-sdk-js/pull/176)
+- Travel Rule beneficiary person pii ivms fix wording [`#175`](https://github.com/fireblocks/fireblocks-sdk-js/pull/175)
+
 #### [v5.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.4...v5.2.0)
 
 > 24 May 2023
-
-- New travel rule feature (upgraded Notabene dependency) [`#173`](https://github.com/fireblocks/fireblocks-sdk-js/pull/173)
-- Fix endpoint /v1/tokenization/tokens/${assetId}/link [`#172`](https://github.com/fireblocks/fireblocks-sdk-js/pull/172)
-- Revert "fix: Add Travel Rule message to Transaction request and PII Encryption (#168)" [`#171`](https://github.com/fireblocks/fireblocks-sdk-js/pull/171)
-- fix: Add Travel Rule message to Transaction request and PII Encryption [`#168`](https://github.com/fireblocks/fireblocks-sdk-js/pull/168)
-- Remove Travel Rule feature [`#167`](https://github.com/fireblocks/fireblocks-sdk-js/pull/167)
-- Make travelRuleOptions field optional [`#165`](https://github.com/fireblocks/fireblocks-sdk-js/pull/165)
-- Add Travel Rule message to Transaction request and PII Encryption [`#157`](https://github.com/fireblocks/fireblocks-sdk-js/pull/157)
-- Add NFT collection and token name sorting [`#163`](https://github.com/fireblocks/fireblocks-sdk-js/pull/163)
-- Change balance to string in nft token ownership api [`#155`](https://github.com/fireblocks/fireblocks-sdk-js/pull/155)
-- add status filter to getOwnedNFTs [`#159`](https://github.com/fireblocks/fireblocks-sdk-js/pull/159)
-- Add update NFT ownership status endpoint [`#158`](https://github.com/fireblocks/fireblocks-sdk-js/pull/158)
-- added getMaxBip44IndexUsed [`#161`](https://github.com/fireblocks/fireblocks-sdk-js/pull/161)
-- Off exchange v2 [`#154`](https://github.com/fireblocks/fireblocks-sdk-js/pull/154)
-- add tokenization endpoints [`#145`](https://github.com/fireblocks/fireblocks-sdk-js/pull/145)
-- Add cachedMetadataURI to tokens endpoint response [`#151`](https://github.com/fireblocks/fireblocks-sdk-js/pull/151)
-- Correcting derivation path type [`#108`](https://github.com/fireblocks/fireblocks-sdk-js/pull/108)
-- feat: add support for axios response interceptor, remove deprecated methods [`#141`](https://github.com/fireblocks/fireblocks-sdk-js/pull/141)
-- Update fireblocks-sdk [`#142`](https://github.com/fireblocks/fireblocks-sdk-js/pull/142)
-- User agent version [`#140`](https://github.com/fireblocks/fireblocks-sdk-js/pull/140)
-- Add User-Agent HTTP header (no package version) [`#139`](https://github.com/fireblocks/fireblocks-sdk-js/pull/139)
-- Revert #135 [`#138`](https://github.com/fireblocks/fireblocks-sdk-js/pull/138)
-- Add User-Agent HTTP header [`#135`](https://github.com/fireblocks/fireblocks-sdk-js/pull/135)
-- fix: change type of creation date [`#136`](https://github.com/fireblocks/fireblocks-sdk-js/pull/136)
-- Feat/web3 api phase B [`#130`](https://github.com/fireblocks/fireblocks-sdk-js/pull/130)
-- fix incorrect interfaces [`#134`](https://github.com/fireblocks/fireblocks-sdk-js/pull/134)
-- [Snyk] Security upgrade jsonwebtoken from 8.5.1 to 9.0.0 [`#132`](https://github.com/fireblocks/fireblocks-sdk-js/pull/132)
-- Fireblocks SDK DOS vulnerability - bump query-string version [`#126`](https://github.com/fireblocks/fireblocks-sdk-js/pull/126)
-- Feat/web3 api phase a [`#109`](https://github.com/fireblocks/fireblocks-sdk-js/pull/109)
-- add nft endpoints and entities [`#119`](https://github.com/fireblocks/fireblocks-sdk-js/pull/119)
-- Network-connection: remove AUTO scheme from network Id policy [`#124`](https://github.com/fireblocks/fireblocks-sdk-js/pull/124)
-- Make SDKOptions fields optional [`#123`](https://github.com/fireblocks/fireblocks-sdk-js/pull/123)
-- update CreateTransactionResponse [`#122`](https://github.com/fireblocks/fireblocks-sdk-js/pull/122)
-- add proxy support for axios instance [`#116`](https://github.com/fireblocks/fireblocks-sdk-js/pull/116)
-- Add network related functionality [`#101`](https://github.com/fireblocks/fireblocks-sdk-js/pull/101)
-- Added method to get all audits for selected time period [`#114`](https://github.com/fireblocks/fireblocks-sdk-js/pull/114)
-- deprecate getVaultAccounts method [`#100`](https://github.com/fireblocks/fireblocks-sdk-js/pull/100)
-- add source address to TransactionResponse [`#94`](https://github.com/fireblocks/fireblocks-sdk-js/pull/94)
-- Support contract wallet containers [`#88`](https://github.com/fireblocks/fireblocks-sdk-js/pull/88)
-- added convert exchange asset method [`#83`](https://github.com/fireblocks/fireblocks-sdk-js/pull/83)
-- Bump minimist from 1.2.5 to 1.2.6 [`#91`](https://github.com/fireblocks/fireblocks-sdk-js/pull/91)
-- add fee payer endpoints [`#89`](https://github.com/fireblocks/fireblocks-sdk-js/pull/89)
-- Add gasPrice to response when it exists [`#86`](https://github.com/fireblocks/fireblocks-sdk-js/pull/86)
-- feat: added pagination to vault_accounts endpoint [`#79`](https://github.com/fireblocks/fireblocks-sdk-js/pull/79)
-- Refactor network connection response [`#81`](https://github.com/fireblocks/fireblocks-sdk-js/pull/81)
-- Bump minimist from 1.2.5 to 1.2.6 [`#80`](https://github.com/fireblocks/fireblocks-sdk-js/pull/80)
-- Add assetId to gas-station configuration [`#76`](https://github.com/fireblocks/fireblocks-sdk-js/pull/76)
-- added get exchange by asset [`#75`](https://github.com/fireblocks/fireblocks-sdk-js/pull/75)
-- Bump follow-redirects from 1.14.7 to 1.14.8 [`#74`](https://github.com/fireblocks/fireblocks-sdk-js/pull/74)
-- fix typo in README.md [`#72`](https://github.com/fireblocks/fireblocks-sdk-js/pull/72)
-- Bump follow-redirects from 1.14.5 to 1.14.7 [`#73`](https://github.com/fireblocks/fireblocks-sdk-js/pull/73)
-- add refresh balance to js sdk [`#71`](https://github.com/fireblocks/fireblocks-sdk-js/pull/71)
-- Added resend transaction webhooks [`#66`](https://github.com/fireblocks/fireblocks-sdk-js/pull/66)
-- fix: add missing fields to TransactionResponse [`#69`](https://github.com/fireblocks/fireblocks-sdk-js/pull/69)
-- Feat added treat as gross amount flag to allocate funds request [`#63`](https://github.com/fireblocks/fireblocks-sdk-js/pull/63)
-- Add RequestOptions for all post request [`#64`](https://github.com/fireblocks/fireblocks-sdk-js/pull/64)
-- add functionality for activate vault asset [`#62`](https://github.com/fireblocks/fireblocks-sdk-js/pull/62)
-- added typed message [`#48`](https://github.com/fireblocks/fireblocks-sdk-js/pull/48)
-- Update pull_request_template.md [`#61`](https://github.com/fireblocks/fireblocks-sdk-js/pull/61)
-- bugfix: when Idempotency key is undefined, axios fails [`#59`](https://github.com/fireblocks/fireblocks-sdk-js/pull/59)
-- add timeout mechanism [`#58`](https://github.com/fireblocks/fireblocks-sdk-js/pull/58)
-- use axios instead of deprecated request-promise package [`#56`](https://github.com/fireblocks/fireblocks-sdk-js/pull/56)
-- Release drafter [`#55`](https://github.com/fireblocks/fireblocks-sdk-js/pull/55)
-- Create node.js CI configuration [`#54`](https://github.com/fireblocks/fireblocks-sdk-js/pull/54)
-- Update API Reference link in README [`#52`](https://github.com/fireblocks/fireblocks-sdk-js/pull/52)
-- added decimals to assetTypeResponse [`#51`](https://github.com/fireblocks/fireblocks-sdk-js/pull/51)
-- add off exchanges endpoints [`#42`](https://github.com/fireblocks/fireblocks-sdk-js/pull/42)
-- Add forceSweep field to TransactionArguments [`#46`](https://github.com/fireblocks/fireblocks-sdk-js/pull/46)
-- added authorizationInfo field to TransactionResponse interface [`#49`](https://github.com/fireblocks/fireblocks-sdk-js/pull/49)
-- Handle empty value passed to page request [`#47`](https://github.com/fireblocks/fireblocks-sdk-js/pull/47)
-- Get users [`#38`](https://github.com/fireblocks/fireblocks-sdk-js/pull/38)
-- add support for eip-1559 [`#36`](https://github.com/fireblocks/fireblocks-sdk-js/pull/36)
-- Cursor based pagination [`#39`](https://github.com/fireblocks/fireblocks-sdk-js/pull/39)
-- Gross amount flag [`#30`](https://github.com/fireblocks/fireblocks-sdk-js/pull/30)
-- Add london fork fees to response [`#41`](https://github.com/fireblocks/fireblocks-sdk-js/pull/41)
-- Resend webhooks [`#40`](https://github.com/fireblocks/fireblocks-sdk-js/pull/40)
-- Cor 7813 blockheight blockhash in assetresponse [`#45`](https://github.com/fireblocks/fireblocks-sdk-js/pull/45)
-- COR-7812 blockInfo in txn response [`#44`](https://github.com/fireblocks/fireblocks-sdk-js/pull/44)
-- External tx ID [`#35`](https://github.com/fireblocks/fireblocks-sdk-js/pull/35)
-- Add off exchange custody types [`#34`](https://github.com/fireblocks/fireblocks-sdk-js/pull/34)
-- feat(fireblocks-sdk): bring your own auth provider [`#29`](https://github.com/fireblocks/fireblocks-sdk-js/pull/29)
-- Cor 6703 list unstpent txo [`#27`](https://github.com/fireblocks/fireblocks-sdk-js/pull/27)
-- Off exchange [`#26`](https://github.com/fireblocks/fireblocks-sdk-js/pull/26)
-- Add get_vault_balance_by_asset & Update query parameters [`#22`](https://github.com/fireblocks/fireblocks-sdk-js/pull/22)
-- Add address validation [`#23`](https://github.com/fireblocks/fireblocks-sdk-js/pull/23)
-- one time address support [`#19`](https://github.com/fireblocks/fireblocks-sdk-js/pull/19)
-- vault assets balance overview [`#21`](https://github.com/fireblocks/fireblocks-sdk-js/pull/21)
-- Filter vaultAccounts by name [`#18`](https://github.com/fireblocks/fireblocks-sdk-js/pull/18)
-- Unfreeze tx [`#17`](https://github.com/fireblocks/fireblocks-sdk-js/pull/17)
-- Add max spendable amount operation [`#16`](https://github.com/fireblocks/fireblocks-sdk-js/pull/16)
-- Add support for multiple destinations [`#15`](https://github.com/fireblocks/fireblocks-sdk-js/pull/15)
-- Update fireblocks-sdk.ts [`#13`](https://github.com/fireblocks/fireblocks-sdk-js/pull/13)
-- RBF-Drop-Transaction [`#12`](https://github.com/fireblocks/fireblocks-sdk-js/pull/12)
-- support fee level [`#9`](https://github.com/fireblocks/fireblocks-sdk-js/pull/9)
-- Gas station [`#10`](https://github.com/fireblocks/fireblocks-sdk-js/pull/10)
-- add extra params [`#8`](https://github.com/fireblocks/fireblocks-sdk-js/pull/8)
-- Support raw messages [`#7`](https://github.com/fireblocks/fireblocks-sdk-js/pull/7)
-- support manual-confirmations [`#5`](https://github.com/fireblocks/fireblocks-sdk-js/pull/5)
-- Transfer assist [`#3`](https://github.com/fireblocks/fireblocks-sdk-js/pull/3)
-- add more types of filters [`#2`](https://github.com/fireblocks/fireblocks-sdk-js/pull/2)
 
 #### [v5.1.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.3...v5.1.4)
 
