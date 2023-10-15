@@ -106,7 +106,7 @@ import {
     PendingTokenLinkDto,
     TAP,
     StakingPosition,
-    StakingValidator,
+    StakingValidator, StakingAction, StakingChain, CheckTermsOfServiceRequestDto, CheckTermsOfServiceResponseDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1665,15 +1665,45 @@ export class FireblocksSDK {
     public async getPendingLinkedTokens(): Promise<TokenLink[]> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/pending`);
     }
-    public async executeStakePositionAction(actionId: string, chainDescriptor: string , body: any) {
+    /**
+     * Get all staking chains
+     */
+    public async getStakingChains() {
+        return await this.apiClient.issueGetRequest(`/v1/staking/chains`);
+    }
+    /**
+     * Execute staking action on a chain
+     */
+    public async executeStakePositionAction(actionId: StakingAction, chainDescriptor: StakingChain , body: any) {
         return await this.apiClient.issuePostRequest(`/v1/staking/chains/${chainDescriptor}/${actionId}`, body);
     }
-    public async getStakingPositions(chainDescriptor: string): Promise<StakingPosition[]> {
-        return await this.apiClient.issueGetRequest(`/v1/staking/positions/${chainDescriptor}`);
+    /**
+     * Get all staking positions, optionally filtered by chain
+     */
+    public async getStakingPositions(chainDescriptor?: StakingChain): Promise<StakingPosition[]> {
+        const url = `/v1/staking/positions${chainDescriptor ? `?chainDescriptor=${chainDescriptor}` : ""}`;
+        return await this.apiClient.issueGetRequest(url);
     }
-    public async getStakingValidatorsByChain(chainDescriptor: string): Promise<StakingValidator[]> {
+    /**
+     * Get a staking position by id
+     */
+    public async getStakingPosition(positionId?: string): Promise<StakingPosition[]> {
+        const url = `/v1/staking/positions/${positionId}`;
+        return await this.apiClient.issueGetRequest(url);
+    }
+    /**
+     * Get all staking validators, filtered by chain
+     */
+    public async getStakingValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]> {
         return await this.apiClient.issueGetRequest(`/v1/staking/validators/${chainDescriptor}`);
     }
+    /**
+     * Approve staking provider terms of service
+     */
+    public async approveStakingProviderTermsOfService(checkTermsOfServiceRequestDto: CheckTermsOfServiceRequestDto): Promise<CheckTermsOfServiceResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/staking/providers/approveTermsOfService`, checkTermsOfServiceRequestDto);
+    }
+
     /**
      * Validate VASP details for travel rule compliance
      * @param travelRuleMessageVaspInfo
