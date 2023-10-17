@@ -4,6 +4,11 @@ import {
 
 export interface NcwSdk {
     /**
+     * Get NCW supported assets
+     */
+    getSupportedAssets({ pageCursor, pageSize, onlyBaseAssets }: NCW.GetSupportedAssetsPayload): Promise<Web3PagedResponse<NCW.WalletAssetResponse>>;
+
+    /**
      * Create a new NCW wallet
      */
     createWallet(): Promise<{ walletId: string; enabled: boolean; }>;

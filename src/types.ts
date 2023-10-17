@@ -1760,6 +1760,12 @@ export namespace NCW {
         order?: "ASC" | "DESC";
     }
 
+    export interface GetSupportedAssetsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        onlyBaseAssets?: boolean;
+    }
+
     export interface GetWalletAccountsPayload {
         pageCursor?: string;
         pageSize?: number;
