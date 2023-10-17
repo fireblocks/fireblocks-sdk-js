@@ -76,6 +76,7 @@ import {
     TokenLinkPermissionEntry,
     IssueTokenRequest,
     NFTOwnershipStatus,
+    NFTOwnershipStatusUpdatedPayload,
     NFTOwnedCollectionsFilter,
     CollectionOwnership,
     TravelRuleOptions,
@@ -1545,6 +1546,15 @@ export class FireblocksSDK {
      */
     public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
+    }
+
+    /**
+     *
+     * Updates tokens status for a tenant, in all tenant vaults.
+     * @param payload List of assets with status for update
+     */
+    public async updateNFTOwnershipsStatus(payload: NFTOwnershipStatusUpdatedPayload[]): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/status`, payload);
     }
 
     /**
