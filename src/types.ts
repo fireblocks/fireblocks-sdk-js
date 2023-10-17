@@ -601,6 +601,16 @@ export interface ExchangeResponse {
     status: string;
 }
 
+export interface PagedExchangeResponse {
+    exchanges: ExchangeResponse[];
+    paging?: {
+        before?: string;
+        after?: string;
+    };
+    prevUrl?: string;
+    nextUrl?: string;
+}
+
 export interface ConvertExchangeAssetResponse {
     status: boolean;
 }
@@ -941,6 +951,12 @@ export interface TransactionPageFilter {
     sourceId?: string;
     destId?: string;
     sort?: "ASC" | "DESC";
+}
+
+export interface ExchangeAccountsPageFilter {
+    limit: number;
+    before?: string;
+    after?: string;
 }
 
 export enum TransactionOrder {
