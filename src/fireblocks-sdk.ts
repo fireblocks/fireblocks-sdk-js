@@ -76,6 +76,7 @@ import {
     TokenLinkPermissionEntry,
     IssueTokenRequest,
     NFTOwnershipStatus,
+    NFTOwnershipStatusUpdatedPayload,
     NFTOwnedCollectionsFilter,
     CollectionOwnership,
     TravelRuleOptions,
@@ -105,6 +106,8 @@ import {
     ContractDeployRequest,
     PendingTokenLinkDto,
     TAP,
+    ExchangeAccountsPageFilter,
+    PagedExchangeResponse,
     StakingPosition,
     StakingValidator,
     StakingAction,
@@ -415,6 +418,13 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest("/v1/exchange_accounts");
     }
 
+    /**
+     * Gets all exchange accounts for your tenant
+     * @param filter Get exchange accounts matching pageFilter params
+     */
+    public async getExchangeAccountsPaged(filter: ExchangeAccountsPageFilter): Promise<PagedExchangeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/paged?${queryString.stringify(filter)}`);
+    }
 
     /**
      * Gets a single exchange account by ID
@@ -1550,6 +1560,15 @@ export class FireblocksSDK {
      */
     public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
+    }
+
+    /**
+     *
+     * Updates tokens status for a tenant, in all tenant vaults.
+     * @param payload List of assets with status for update
+     */
+    public async updateNFTOwnershipsStatus(payload: NFTOwnershipStatusUpdatedPayload[]): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/status`, payload);
     }
 
     /**

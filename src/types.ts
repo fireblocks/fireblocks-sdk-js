@@ -601,6 +601,16 @@ export interface ExchangeResponse {
     status: string;
 }
 
+export interface PagedExchangeResponse {
+    exchanges: ExchangeResponse[];
+    paging?: {
+        before?: string;
+        after?: string;
+    };
+    prevUrl?: string;
+    nextUrl?: string;
+}
+
 export interface ConvertExchangeAssetResponse {
     status: boolean;
 }
@@ -941,6 +951,12 @@ export interface TransactionPageFilter {
     sourceId?: string;
     destId?: string;
     sort?: "ASC" | "DESC";
+}
+
+export interface ExchangeAccountsPageFilter {
+    limit: number;
+    before?: string;
+    after?: string;
 }
 
 export enum TransactionOrder {
@@ -1477,6 +1493,11 @@ export enum NFTOwnershipStatus {
     "ARCHIVED" = "ARCHIVED",
 }
 
+export interface NFTOwnershipStatusUpdatedPayload {
+    assetId: string;
+    status: NFTOwnershipStatus;
+}
+
 export enum NFTOwnershipWalletType {
     "VAULT_ACCOUNT" = "VAULT_ACCOUNT",
     "END_USER_WALLET" = "END_USER_WALLET",
@@ -1758,6 +1779,12 @@ export namespace NCW {
         pageSize?: number;
         sort?: string;
         order?: "ASC" | "DESC";
+    }
+
+    export interface GetSupportedAssetsPayload {
+        pageCursor?: string;
+        pageSize?: number;
+        onlyBaseAssets?: boolean;
     }
 
     export interface GetWalletAccountsPayload {

@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.8.0...v5.9.0)
+
+> 17 October 2023
+
+- COR-31331: Add support paged exchange account endpoint [`#213`](https://github.com/fireblocks/fireblocks-sdk-js/pull/213)
+
 #### [v5.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.7.0...v5.8.0)
 
 > 28 September 2023
 
 - contract-registry - adding endpoints [`#210`](https://github.com/fireblocks/fireblocks-sdk-js/pull/210)
+- added sort to transaction filter [`#185`](https://github.com/fireblocks/fireblocks-sdk-js/pull/185)
 
 #### [v5.7.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.1...v5.7.0)
 
