@@ -2193,16 +2193,6 @@ export enum StakingChain {
 }
 
 /**
- * Check terms of service request body
- */
-export class CheckTermsOfServiceRequestDto {
-    /**
-     * Validator provider ID
-     */
-    validatorProviderId: number;
-}
-
-/**
  * Check terms of service response
  */
 export class CheckTermsOfServiceResponseDto {

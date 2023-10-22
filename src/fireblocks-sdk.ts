@@ -106,7 +106,10 @@ import {
     PendingTokenLinkDto,
     TAP,
     StakingPosition,
-    StakingValidator, StakingAction, StakingChain, CheckTermsOfServiceRequestDto, CheckTermsOfServiceResponseDto,
+    StakingValidator,
+    StakingAction,
+    StakingChain,
+    CheckTermsOfServiceResponseDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1671,6 +1674,21 @@ export class FireblocksSDK {
     public async getStakingChains() {
         return await this.apiClient.issueGetRequest(`/v1/staking/chains`);
     }
+
+    /**
+     * Get chain info
+     */
+    public async getChainInfo(chainDescriptor: StakingChain) {
+        return await this.apiClient.issueGetRequest(`/v1/staking/${chainDescriptor}/chainInfo`);
+    }
+
+    /**
+     * Get staking positions summary
+     */
+    public async getPositionsSummary() {
+        return await this.apiClient.issueGetRequest(`/v1/staking/positions/summary`);
+    }
+
     /**
      * Execute staking action on a chain
      */
@@ -1700,8 +1718,8 @@ export class FireblocksSDK {
     /**
      * Approve staking provider terms of service
      */
-    public async approveStakingProviderTermsOfService(checkTermsOfServiceRequestDto: CheckTermsOfServiceRequestDto): Promise<CheckTermsOfServiceResponseDto> {
-        return await this.apiClient.issuePostRequest(`/v1/staking/providers/approveTermsOfService`, checkTermsOfServiceRequestDto);
+    public async approveStakingProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/staking/providers/approveTermsOfService`, {validatorProviderId});
     }
 
     /**
