@@ -1698,7 +1698,7 @@ export class FireblocksSDK {
      * Get chain info
      */
     public async getChainInfo(chainDescriptor: StakingChain) {
-        return await this.apiClient.issueGetRequest(`/v1/staking/${chainDescriptor}/chainInfo`);
+        return await this.apiClient.issueGetRequest(`/v1/staking/chains/${chainDescriptor}/chainInfo`);
     }
 
     /**
