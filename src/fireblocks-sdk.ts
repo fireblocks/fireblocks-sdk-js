@@ -108,16 +108,13 @@ import {
     TAP,
     ExchangeAccountsPageFilter,
     PagedExchangeResponse,
-    StakingPosition,
-    StakingValidator,
-    StakingAction,
-    StakingChain,
-    CheckTermsOfServiceResponseDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw-api-client";
 import { NcwSdk } from "./ncw-sdk";
+import { StakingApiClient } from "./staking/staking-api-client";
+import { StakingSDK } from "./staking/staking-sdk";
 
 export * from "./types";
 
@@ -157,6 +154,7 @@ export class FireblocksSDK {
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
     private readonly apiNcw: NcwApiClient;
+    private readonly stakingApiClient: StakingApiClient;
 
     private piiClient: PIIEncryption;
 
@@ -182,6 +180,8 @@ export class FireblocksSDK {
         }
 
         this.apiNcw = new NcwApiClient(this.apiClient);
+
+        this.stakingApiClient = new StakingApiClient(this.apiClient);
     }
 
     /**
@@ -192,6 +192,16 @@ export class FireblocksSDK {
      */
     public get NCW(): NcwSdk {
         return this.apiNcw;
+    }
+
+    /**
+     * Staking API Namespace
+     *
+     * @readonly
+     * @type {StakingSDK}
+     */
+    public get staking(): StakingSDK {
+        return this.stakingApiClient;
     }
 
     /**
@@ -1686,59 +1696,6 @@ export class FireblocksSDK {
      */
     public async getPendingLinkedTokens(): Promise<TokenLink[]> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/pending`);
-    }
-    /**
-     * Get all staking chains
-     */
-    public async getStakingChains() {
-        return await this.apiClient.issueGetRequest(`/v1/staking/chains`);
-    }
-
-    /**
-     * Get chain info
-     */
-    public async getChainInfo(chainDescriptor: StakingChain) {
-        return await this.apiClient.issueGetRequest(`/v1/staking/chains/${chainDescriptor}/chainInfo`);
-    }
-
-    /**
-     * Get staking positions summary
-     */
-    public async getPositionsSummary() {
-        return await this.apiClient.issueGetRequest(`/v1/staking/positions/summary`);
-    }
-
-    /**
-     * Execute staking action on a chain
-     */
-    public async executeStakePositionAction(actionId: StakingAction, chainDescriptor: StakingChain , body: any) {
-        return await this.apiClient.issuePostRequest(`/v1/staking/chains/${chainDescriptor}/${actionId}`, body);
-    }
-    /**
-     * Get all staking positions, optionally filtered by chain
-     */
-    public async getStakingPositions(chainDescriptor?: StakingChain): Promise<StakingPosition[]> {
-        const url = `/v1/staking/positions${chainDescriptor ? `?chainDescriptor=${chainDescriptor}` : ""}`;
-        return await this.apiClient.issueGetRequest(url);
-    }
-    /**
-     * Get a staking position by id
-     */
-    public async getStakingPosition(positionId?: string): Promise<StakingPosition[]> {
-        const url = `/v1/staking/positions/${positionId}`;
-        return await this.apiClient.issueGetRequest(url);
-    }
-    /**
-     * Get all staking validators, filtered by chain
-     */
-    public async getStakingValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]> {
-        return await this.apiClient.issueGetRequest(`/v1/staking/validators/${chainDescriptor}`);
-    }
-    /**
-     * Approve staking provider terms of service
-     */
-    public async approveStakingProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto> {
-        return await this.apiClient.issuePostRequest(`/v1/staking/providers/approveTermsOfService`, {validatorProviderId});
     }
 
     /**
