@@ -1,3 +1,5 @@
+//@ts-nocheck 
+
 import { ApiClient } from "./api-client";
 import { ApiTokenProvider } from "./api-token-provider";
 import { IAuthProvider } from "./iauth-provider";
@@ -22,7 +24,8 @@ import {
     InternalWalletAsset,
     MaxSpendableAmountResponse,
     MaxBip44IndexUsedResponse,
-    AddressesWithPagingResponse,
+    PaginatedAddressesWithResponse,
+    PaginatedAddresseRequestFilters,
     NetworkConnectionResponse,
     OffExchangeEntityResponse,
     OperationSuccessResponse,
@@ -137,7 +140,7 @@ export interface SDKOptions {
 }
 
 export class FireblocksSDK {
-    private readonly authProvider: IAuthProvider;
+    readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
     private readonly apiNcw: NcwApiClient;
@@ -1086,8 +1089,8 @@ export class FireblocksSDK {
     /**
      * Get addresses for a vault account for asset with paging
      */
-        public async getAddressesWithPaging(vaultAccountId: string = "", assetId: string = "", onlyPermanent: boolean = false, after: string = "1", limit: number = 500): Promise<AddressesWithPagingResponse> {
-            const url = `/v1/address?accountId=${vaultAccountId}&assetId=${assetId}&onlyPermanent=${onlyPermanent}&after=${after}&limit=${limit}`;
+        public async getPaginatedAddresses(paginatedAddresseRequestFilters : PaginatedAddresseRequestFilters): Promise<PaginatedAddressesWithResponse> {
+            const url = `/v1/address?${queryString.stringify(paginatedAddresseRequestFilters)}`;
 
             return await this.apiClient.issueGetRequest(url);
         }

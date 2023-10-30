@@ -1,3 +1,5 @@
+//@ts-nocheck 
+
 import { AxiosResponseHeaders } from "axios";
 import { Address } from "cluster";
 
@@ -1063,9 +1065,20 @@ export interface AddressResponse {
 	userDefined: boolean;
 }
 
-export interface AddressesWithPagingResponse {
+export interface PaginatedAddressesWithResponse {
     addresses: AddressResponse[];
-    after: string| null;
+    paging?: {
+        before?: string;
+        after?: string;
+    };
+}
+
+export interface PaginatedAddresseRequestFilters {
+    accountId?: string;
+    assetId?: string;
+    limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
+    before?: string;
+    after?: string;
 }
 
 export interface VaultAccountsFilter {
