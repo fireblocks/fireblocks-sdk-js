@@ -152,7 +152,7 @@ export interface SDKOptions {
 }
 
 export class FireblocksSDK {
-    readonly authProvider: IAuthProvider;
+    private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
     private readonly apiNcw: NcwApiClient;
