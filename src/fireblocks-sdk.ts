@@ -98,7 +98,7 @@ import {
     ContractUploadRequest,
     ContractTemplateDto,
     PendingTokenLinkDto, Web3ConnectionFeeLevel,
-    Task, Job, JobCreatedResponse
+    BatchTask, BatchJob, JobCreatedResponse
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -662,19 +662,6 @@ export class FireblocksSDK {
     }
 
     /**
-     * Creates a new vault account
-     * @param count Number of new vault accounts requested
-     * @param requestOptions
-     */
-    public async createVaultAccountBulk(count: number, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
-        const body = {
-            count
-        };
-
-        return await this.apiClient.issuePostRequest("/v1/vault/accounts/bulk", body, requestOptions);
-    }
-
-    /**
      * Hides a vault account in Fireblocks console
      * @param vaultAccountId The vault account ID
      * @param requestOptions
@@ -707,12 +694,12 @@ export class FireblocksSDK {
      * @param vaultAccountId
      * @param name A new name for the vault account
      */
-    public async updateVaultAccount(vaultAccountId: string, name: string): Promise<VaultAccountResponse> {
+    public async updateVaultAccount(vaultAccountId: string, name: string, requestOptions?: RequestOptions): Promise<VaultAccountResponse> {
         const body = {
             name: name
         };
 
-        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}`, body);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}`, body, requestOptions);
     }
 
     /**
@@ -723,20 +710,6 @@ export class FireblocksSDK {
      */
     public async createVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {}, requestOptions);
-    }
-
-    /**
-     * Creates a new asset within a list of existing vault accounts
-     * @param assetId The asset to add
-     * @param vaultAccountIdFrom The first of the account ID range
-     * @param vaultAccountIdTo The last of the account ID range
-     * @param requestOptions
-     */
-    public async createVaultAssetBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
-        const body = {
-            assetId, vaultAccountIdFrom, vaultAccountIdTo
-        };
-        return await this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
 
     /**
@@ -1851,10 +1824,10 @@ export class FireblocksSDK {
 
     /**
      * Get list of jobs for current tenant
-     * @param fromTime  beggining of time range in MS since 1970
-     * @param toTime    ending of time range in MS since 1970
+     * @param fromTime beggining of time range in Unix Epoch
+     * @param toTime ending of time range in Unix Epoch
      */
-    public getJobs(fromTime: number, toTime: number): Promise<Job[]> {
+    public getJobsForTenant(fromTime: number, toTime: number): Promise<BatchJob[]> {
         return this.apiClient.issueGetRequest(`/v1/batch/jobs?fromTime=${fromTime}&toTime=${toTime}`);
     }
 
@@ -1862,7 +1835,7 @@ export class FireblocksSDK {
      * Get job info by job ID
      * @param jobId
      */
-    public getJob(jobId: string): Promise<Job> {
+    public getJobById(jobId: string): Promise<BatchJob> {
         return this.apiClient.issueGetRequest(`/v1/batch/${jobId}`);
     }
 
@@ -1870,7 +1843,7 @@ export class FireblocksSDK {
      * Get tasks belonging to given job
      * @param jobId
      */
-    public getTasks(jobId: string): Promise<Task> {
+    public getTasksByJobId(jobId: string): Promise<BatchTask> {
         return this.apiClient.issueGetRequest(`/v1/batch/${jobId}/tasks`);
     }
 
@@ -1901,25 +1874,29 @@ export class FireblocksSDK {
     /**
      * Create multiple vault accounts in one bulk operation
      * @param count number of vault accounts
+     * @param assetId optional asset id to create in each new account
+     * @param requestOptions
      */
-    public createVaultAccountsBulk(count: number, assetId: string): Promise<JobCreatedResponse> {
+    public createVaultAccountsBulk(count: number, assetId: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
         const body = {
             count,
             assetId
         };
-        return this.apiClient.issuePostRequest(`/v1/vault/accounts/bulk`, body);
+        return this.apiClient.issuePostRequest(`/v1/vault/accounts/bulk`, body, requestOptions);
     }
 
     /**
-     * Create multiple vault wallets in one bulk operation
-     * @param count number of vault accounts
+     * Creates a new asset within a list of existing vault accounts
+     * @param assetId The asset to add
+     * @param vaultAccountIdFrom The first of the account ID range
+     * @param vaultAccountIdTo The last of the account ID range
+     * @param requestOptions
      */
-    public createVaultWalletsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string): Promise<JobCreatedResponse> {
+    public async createVaultAssetsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
         const body = {
-            assetId,
-            vaultAccountIdFrom,
-            vaultAccountIdTo
+            assetId, vaultAccountIdFrom, vaultAccountIdTo
         };
-        return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body);
+        return await this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
+
 }

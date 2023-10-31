@@ -1516,35 +1516,34 @@ export interface JobCreatedResponse {
     jobId: string;
 }
 
-export enum Status {
-    NONE = "NONE",
+export enum BatchStatus {
     CREATED = "CREATED",
-    INPROGRESS = "INPROGRESS",
+    IN_PROGRESS = "INPROGRESS",
     DONE = "DONE",
     ERROR = "ERROR",
     CANCELED = "CANCELED",
     PAUSED = "PAUSED"
 }
 
-export class Job {
+export class BatchJob {
     id: string;
     tenantId: string;
     type: string;
     userId: string;
     created: number;
     updated?: number;
-    state: Status;
+    state: BatchJob;
     data: string;
 }
 
-export class Task {
+export class BatchTask {
     id: string;
     jobId: string;
     type: string;
     tenantId: string;
     created: number;
     updated?: number;
-    state: Status;
+    state: BatchStatus;
     data?: string;
     result?: string;
 }
