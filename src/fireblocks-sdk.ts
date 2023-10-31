@@ -1106,7 +1106,7 @@ export class FireblocksSDK {
     /**
      * Get addresses for a vault account for asset with paging
      */
-        public async getPaginatedAddresses(paginatedAddresseRequestFilters : PaginatedAddresseRequestFilters): Promise<PaginatedAddressesWithResponse> {
+        public async getPaginatedAddresses(paginatedAddresseRequestFilters: PaginatedAddresseRequestFilters): Promise<PaginatedAddressesWithResponse> {
             const url = `/v1/address?${queryString.stringify(paginatedAddresseRequestFilters)}`;
 
             return await this.apiClient.issueGetRequest(url);
