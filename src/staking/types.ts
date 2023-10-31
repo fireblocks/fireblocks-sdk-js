@@ -21,7 +21,7 @@ interface ISolanaBlockchainData {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IEthereumBlockchainData {}
 
-export type TBlockchainSpecific = ISolanaBlockchainData | IEthereumBlockchainData;
+export type TBlockchainPositionInfo = ISolanaBlockchainData | IEthereumBlockchainData;
 
 interface RelatedTransactionDto {
     /**
@@ -103,7 +103,7 @@ export interface StakingPosition {
      * For Solana (SOL), stake account address.
      * For Ethereum (ETH), an empty object is returned as no specific data is available.
      */
-    blockchainSpecific?: TBlockchainSpecific;
+    blockchainPositionInfo?: TBlockchainPositionInfo;
 
     /**
      * The destination address of the staking transaction.
