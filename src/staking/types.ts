@@ -241,3 +241,79 @@ export class DelegationSummaryDtoByVault {
 export type ExecuteActionResponse = {} | {
     delegationRequestId: string;
 };
+
+export interface StakeRequestDto {
+    /**
+     * The source vault account to stake from
+     */
+    vaultAccountId: string;
+
+    /**
+     * The destination validator address id. The blockchain is used implicitly (it's associated with the address)
+     */
+    validatorAddressId: string;
+
+    /**
+     * Amount of tokens to stake
+     */
+    stakeAmount: string;
+
+    /**
+     * The note to associate with the stake transactions
+     */
+    txNote?: string;
+
+    /**
+     * Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required
+     */
+    fee?: string;
+
+    /**
+     * Represents the fee level for a transaction, which can be set as slow, medium, or fast. Only one of fee/feeLevel is required
+     */
+    feeLevel?: string;
+}
+
+export interface UnstakeRequestDto {
+    /**
+     * id of position to unstake
+     */
+    id: string;
+
+    /**
+     * Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required
+     */
+    fee?: string;
+
+    /**
+     * Represents the fee level for a transaction, which can be set as slow, medium, or fast. Only one of fee/feeLevel is required
+     */
+    feeLevel?: string;
+
+    /**
+     * The note to associate with the transactions
+     */
+    txNote?: string;
+}
+
+export interface WithdrawRequestDto {
+    /**
+     * id of position to withdraw
+     */
+    id: string;
+
+    /**
+     * Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required
+     */
+    fee?: string;
+
+    /**
+     * Represents the fee level for a transaction, which can be set as slow, medium, or fast. Only one of fee/feeLevel is required
+     */
+    feeLevel?: string;
+
+    /**
+     * The note to associate with the transactions
+     */
+    txNote?: string;
+}

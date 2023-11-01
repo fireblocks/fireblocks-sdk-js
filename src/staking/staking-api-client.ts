@@ -3,11 +3,11 @@ import {
     CheckTermsOfServiceResponseDto,
     DelegationSummaryDto,
     DelegationSummaryDtoByVault,
-    ExecuteActionResponse,
+    ExecuteActionResponse, StakeRequestDto,
     StakingAction,
     StakingChain,
     StakingPosition,
-    StakingValidator,
+    StakingValidator, UnstakeRequestDto, WithdrawRequestDto,
 } from "./types";
 import { StakingSDK } from "./staking-sdk";
 import { ApiClient } from "../api-client";
@@ -28,7 +28,7 @@ export class StakingApiClient implements StakingSDK {
     public async executeAction(
         actionId: StakingAction,
         chainDescriptor: StakingChain,
-        body: any,
+        body: StakeRequestDto | UnstakeRequestDto | WithdrawRequestDto,
     ): Promise<ExecuteActionResponse> {
         return await this.apiClient.issuePostRequest(
             `${STAKING_BASE_PATH}/chains/${chainDescriptor}/${actionId}`,
