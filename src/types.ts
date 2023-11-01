@@ -1156,24 +1156,20 @@ export interface MaxBip44IndexUsedResponse {
     maxBip44ChangeAddressIndexUsed?: number;
 }
 export interface AddressResponse {
-    accountName: string;
-    accountId: string;
-    asset: string;
+    assetId: string;
     address: string;
-    addressType: string;
-    addressDescription: string;
+    description?: string;
     tag: string;
-    addressIndex: number;
-    change: number;
-    coinType: number;
-    customerRefId: string;
-    addressFormat: string;
-    legacyAddress: string;
-    paymentAddress: string;
+    type?: number;
+    customerRefId?: number;
+    addressFormat: number;
+    legacyAddress?: string;
+    enterpriseAddress?: string;
+    bip44AddressIndex?: string;
     userDefined: boolean;
 }
 
-export interface PaginatedAddressesWithResponse {
+export interface PaginatedAddressesResponse {
     addresses: AddressResponse[];
     paging?: {
         before?: string;
