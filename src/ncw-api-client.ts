@@ -11,6 +11,16 @@ export class NcwApiClient implements NcwSdk {
 
     constructor(private readonly apiClient: ApiClient) { }
 
+    public async getSupportedAssets({ pageCursor, pageSize, onlyBaseAssets }: NCW.GetSupportedAssetsPayload): Promise<Web3PagedResponse<NCW.WalletAssetResponse>> {
+        const params = new URLSearchParams({
+            ...(pageCursor && { pageCursor }),
+            ...(pageSize && { pageSize: pageSize.toString() }),
+            ...(onlyBaseAssets !== undefined && { onlyBaseAssets: String(onlyBaseAssets) }),
+        });
+
+        return await this.apiClient.issueGetRequest(`${this.NCW_BASE_PATH}/supported_assets?${params.toString()}`);
+    }
+
     public async createWallet(): Promise<{ walletId: string; enabled: boolean; }> {
         return await this.apiClient.issuePostRequest(
             `${this.NCW_BASE_PATH}`,

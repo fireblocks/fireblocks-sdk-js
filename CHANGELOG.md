@@ -2,11 +2,33 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.8.0...v5.9.0)
+
+> 17 October 2023
+
+- COR-31331: Add support paged exchange account endpoint [`#213`](https://github.com/fireblocks/fireblocks-sdk-js/pull/213)
+
+#### [v5.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.7.0...v5.8.0)
+
+> 28 September 2023
+
+- contract-registry - adding endpoints [`#210`](https://github.com/fireblocks/fireblocks-sdk-js/pull/210)
+- added sort to transaction filter [`#185`](https://github.com/fireblocks/fireblocks-sdk-js/pull/185)
+
+#### [v5.7.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.1...v5.7.0)
+
+> 19 September 2023
+
+- Travel Rule Configuration and Policy routes [`#187`](https://github.com/fireblocks/fireblocks-sdk-js/pull/187)
+- Change Collection and Token response [`#205`](https://github.com/fireblocks/fireblocks-sdk-js/pull/205)
+- feat: adding tap endpoints [`#207`](https://github.com/fireblocks/fireblocks-sdk-js/pull/207)
+
 #### [v5.6.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.0...v5.6.1)
 
 > 5 September 2023
 
 - Added list owned assets endpoint and NCW for NFTs [`#206`](https://github.com/fireblocks/fireblocks-sdk-js/pull/206)
+- Add Smart Transfers user groups endpoints [`#202`](https://github.com/fireblocks/fireblocks-sdk-js/pull/202)
 
 #### [v5.6.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.1...v5.6.0)
 
