@@ -113,6 +113,14 @@ import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw-api-client";
 import { NcwSdk } from "./ncw-sdk";
+import { StakingApiClient } from "./staking/staking-api-client";
+import {
+    ChainInfo, CheckTermsOfServiceResponseDto,
+    DelegationSummaryDto,
+    DelegationSummaryDtoByVault,
+    ExecuteActionResponse, StakeRequestDto, StakingAction,
+    StakingChain, StakingPosition, StakingValidator, UnstakeRequestDto, WithdrawRequestDto
+} from "./staking";
 
 export * from "./types";
 
@@ -152,6 +160,7 @@ export class FireblocksSDK {
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
     private readonly apiNcw: NcwApiClient;
+    private readonly stakingApiClient: StakingApiClient;
 
     private piiClient: PIIEncryption;
 
@@ -177,6 +186,8 @@ export class FireblocksSDK {
         }
 
         this.apiNcw = new NcwApiClient(this.apiClient);
+
+        this.stakingApiClient = new StakingApiClient(this.apiClient);
     }
 
     /**
@@ -188,14 +199,60 @@ export class FireblocksSDK {
     public get NCW(): NcwSdk {
         return this.apiNcw;
     }
-
     /**
      * Get the instance of ApiClient used by the FireblocksSDK
      */
     public getApiClient(): ApiClient {
         return this.apiClient;
     }
-
+    /**
+     * Get all staking chains
+     */
+    public async getStakingChains(): Promise<string[]> {
+        return await this.stakingApiClient.getChains();
+    }
+    /**
+     * Get chain info
+     */
+    public async getStakingChainInfo(chainDescriptor: StakingChain): Promise<ChainInfo> {
+        return await this.stakingApiClient.getChainInfo(chainDescriptor);
+    }
+    /**
+     * Get staking positions summary
+     */
+    public async getStakingPositionsSummary(byVault?: boolean): Promise<DelegationSummaryDto | DelegationSummaryDtoByVault> {
+        return await this.stakingApiClient.getPositionsSummary(byVault);
+    }
+    /**
+     * Execute staking action on a chain
+     */
+    public async executeStakingAction(actionId: StakingAction, chainDescriptor: StakingChain, body: StakeRequestDto | UnstakeRequestDto | WithdrawRequestDto): Promise<ExecuteActionResponse> {
+        return await this.stakingApiClient.executeAction(actionId, chainDescriptor, body);
+    }
+    /**
+     * Get all staking positions, optionally filtered by chain
+     */
+    public async getStakingPositions(chainDescriptor?: StakingChain): Promise<StakingPosition[]> {
+        return await this.stakingApiClient.getPositions(chainDescriptor);
+    }
+    /**
+     * Get a staking position by id
+     */
+    public async getStakingPosition(positionId: string): Promise<StakingPosition[]> {
+        return await this.stakingApiClient.getPosition(positionId);
+    }
+    /**
+     * Get all staking validators, filtered by chain
+     */
+    public async getStakingValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]> {
+        return await this.stakingApiClient.getValidatorsByChain(chainDescriptor);
+    }
+    /**
+     * Approve staking provider terms of service
+     */
+    public async approveStakingProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto> {
+        return await this.stakingApiClient.approveProviderTermsOfService(validatorProviderId);
+    }
     /**
      * Gets all assets that are currently supported by Fireblocks
      */
