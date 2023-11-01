@@ -118,8 +118,8 @@ import {
     ChainInfo, CheckTermsOfServiceResponseDto,
     DelegationSummaryDto,
     DelegationSummaryDtoByVault,
-    ExecuteActionResponse, StakingAction,
-    StakingChain, StakingPosition, StakingValidator
+    ExecuteActionResponse, StakeRequestDto, StakingAction,
+    StakingChain, StakingPosition, StakingValidator, UnstakeRequestDto, WithdrawRequestDto
 } from "./staking";
 
 export * from "./types";
@@ -226,7 +226,7 @@ export class FireblocksSDK {
     /**
      * Execute staking action on a chain
      */
-    public async executeStakingAction(actionId: StakingAction, chainDescriptor: StakingChain, body: any): Promise<ExecuteActionResponse> {
+    public async executeStakingAction(actionId: StakingAction, chainDescriptor: StakingChain, body: StakeRequestDto | UnstakeRequestDto | WithdrawRequestDto): Promise<ExecuteActionResponse> {
         return await this.stakingApiClient.executeAction(actionId, chainDescriptor, body);
     }
     /**
