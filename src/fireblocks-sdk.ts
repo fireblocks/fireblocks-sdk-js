@@ -1892,11 +1892,10 @@ export class FireblocksSDK {
      * @param vaultAccountIdTo The last of the account ID range
      * @param requestOptions
      */
-    public async createVaultAssetsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+    public createVaultAssetsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
         const body = {
             assetId, vaultAccountIdFrom, vaultAccountIdTo
         };
-        return await this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
+        return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
-
 }
