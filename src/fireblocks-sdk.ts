@@ -101,8 +101,7 @@ import {
     UsersGroup,
     LeanContractTemplateDto,
     ContractTemplateDto,
-    PendingTokenLinkDto, Web3ConnectionFeeLevel,
-    BatchTask, BatchJob, JobCreatedResponse
+    BatchTask, BatchJob, JobCreatedResponse,
     ContractUploadRequest,
     ContractDeployResponse,
     ContractDeployRequest,
