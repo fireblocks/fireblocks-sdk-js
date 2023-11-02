@@ -1618,8 +1618,6 @@ export interface PendingTokenLinkDto {
     blockchainId?: string;
 }
 
-type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
-
 export interface IssueTokenRequest {
     symbol: string;
     name: string;
@@ -1627,6 +1625,44 @@ export interface IssueTokenRequest {
     vaultAccountId: string;
     createParams: CreateTokenParams;
 }
+
+export interface JobCreatedResponse {
+    jobId: string;
+}
+
+export enum BatchStatus {
+    CREATED = "CREATED",
+    IN_PROGRESS = "INPROGRESS",
+    DONE = "DONE",
+    ERROR = "ERROR",
+    CANCELED = "CANCELED",
+    PAUSED = "PAUSED"
+}
+
+export class BatchJob {
+    id: string;
+    tenantId: string;
+    type: string;
+    userId: string;
+    created: number;
+    updated?: number;
+    state: BatchJob;
+    data: string;
+}
+
+export class BatchTask {
+    id: string;
+    jobId: string;
+    type: string;
+    tenantId: string;
+    created: number;
+    updated?: number;
+    state: BatchStatus;
+    data?: string;
+    result?: string;
+}
+
+type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
 
 interface StellarRippleCreateParamsDto {
     issuerAddress?: string;

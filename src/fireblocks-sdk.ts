@@ -101,6 +101,7 @@ import {
     UsersGroup,
     LeanContractTemplateDto,
     ContractTemplateDto,
+    BatchTask, BatchJob, JobCreatedResponse,
     ContractUploadRequest,
     ContractDeployResponse,
     ContractDeployRequest,
@@ -767,12 +768,12 @@ export class FireblocksSDK {
      * @param vaultAccountId
      * @param name A new name for the vault account
      */
-    public async updateVaultAccount(vaultAccountId: string, name: string): Promise<VaultAccountResponse> {
+    public async updateVaultAccount(vaultAccountId: string, name: string, requestOptions?: RequestOptions): Promise<VaultAccountResponse> {
         const body = {
             name: name
         };
 
-        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}`, body);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}`, body, requestOptions);
     }
 
     /**
@@ -2002,5 +2003,82 @@ export class FireblocksSDK {
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
         return items ? items.join(",") : undefined;
+    }
+
+    /**
+     * Get list of jobs for current tenant
+     * @param fromTime beggining of time range in Unix Epoch
+     * @param toTime ending of time range in Unix Epoch
+     */
+    public getJobsForTenant(fromTime: number, toTime: number): Promise<BatchJob[]> {
+        return this.apiClient.issueGetRequest(`/v1/batch/jobs?fromTime=${fromTime}&toTime=${toTime}`);
+    }
+
+    /**
+     * Get job info by job ID
+     * @param jobId
+     */
+    public getJobById(jobId: string): Promise<BatchJob> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}`);
+    }
+
+    /**
+     * Get tasks belonging to given job
+     * @param jobId
+     */
+    public getTasksByJobId(jobId: string): Promise<BatchTask> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}/tasks`);
+    }
+
+    /**
+     * Cancel a job by ID
+     * @param jobId
+     */
+    public cancelJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/cancel`, {});
+    }
+
+    /**
+     * Pause a job by ID
+     * @param jobId
+     */
+    public pauseJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/pause`, {});
+    }
+
+    /**
+     * Continue a job by ID
+     * @param jobId
+     */
+    public continueJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/continue`, {});
+    }
+
+    /**
+     * Create multiple vault accounts in one bulk operation
+     * @param count number of vault accounts
+     * @param assetId optional asset id to create in each new account
+     * @param requestOptions
+     */
+    public createVaultAccountsBulk(count: number, assetId: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            count,
+            assetId
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/accounts/bulk`, body, requestOptions);
+    }
+
+    /**
+     * Creates a new asset within a list of existing vault accounts
+     * @param assetId The asset to add
+     * @param vaultAccountIdFrom The first of the account ID range
+     * @param vaultAccountIdTo The last of the account ID range
+     * @param requestOptions
+     */
+    public createVaultAssetsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            assetId, vaultAccountIdFrom, vaultAccountIdTo
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
 }
