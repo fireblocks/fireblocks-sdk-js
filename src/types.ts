@@ -1618,8 +1618,6 @@ export interface PendingTokenLinkDto {
     blockchainId?: string;
 }
 
-type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
-
 export interface IssueTokenRequest {
     symbol: string;
     name: string;
