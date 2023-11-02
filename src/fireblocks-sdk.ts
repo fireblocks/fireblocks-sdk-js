@@ -1330,6 +1330,15 @@ export class FireblocksSDK {
     public async settlement(settlementRequest: SettlementRequest, requestOptions?: RequestOptions): Promise<SettlementResponse> {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange/settlements/trader`, settlementRequest, requestOptions);
     }
+
+    /**
+     * Gets a single collateral account by ID
+     * @param mainExchangeAccountId The exchange account ID that connect to the collateral account
+     */
+     public async getCollateralAccountByMainExchangeAccountId(mainExchangeAccountId: string): Promise<ExchangeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange/collateral_accounts/${mainExchangeAccountId}`);
+    }
+
     /**
      * Set Fee Payer configuration
      * @param feePayerConfiguration
