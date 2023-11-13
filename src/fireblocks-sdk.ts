@@ -21,6 +21,7 @@ import {
     GenerateAddressResponse,
     InternalWalletAsset,
     MaxSpendableAmountResponse,
+    MaxBip44IndexUsedResponse,
     NetworkConnectionResponse,
     OffExchangeEntityResponse,
     OperationSuccessResponse,
@@ -52,6 +53,7 @@ import {
     TimePeriod,
     AuditsResponse,
     NFTOwnershipFilter,
+    NFTOwnedAssetsFilter,
     Token,
     TokenWithBalance,
     Web3PagedResponse,
@@ -60,14 +62,68 @@ import {
     GetWeb3ConnectionsPayload,
     PublicKeyResponse,
     AllocateFundsResponse,
+    AddCollateralTransactionRequest,
+    RemoveCollateralTransactionRequest,
+    GetSettlementTransactionsResponse,
+    SettlementRequest,
+    SettlementResponse,
     GetNFTsFilter,
     SettleOffExchangeAccountResponse,
     PublicKeyInformation,
     DropTransactionResponse,
     GetAssetWalletsFilters,
     GetAssetWalletsResponse,
+    PeerType,
+    TokenLink,
+    TokenLinkPermissionEntry,
+    IssueTokenRequest,
+    NFTOwnershipStatus,
+    NFTOwnershipStatusUpdatedPayload,
+    NFTOwnedCollectionsFilter,
+    CollectionOwnership,
+    TravelRuleOptions,
+    ValidateTravelRuleVaspInfo,
+    ValidateTravelRuleResult,
+    ValidateCreateTravelRuleTransaction,
+    ValidateFullTravelRuleResult,
+    TravelRuleVasp,
+    TravelRuleVaspFilter,
+    TravelRuleEncryptionOptions,
+    SmartTransfersTicketResponse,
+    SmartTransfersTicketCreatePayload,
+    SmartTransfersTicketsResponse,
+    SmartTransfersTicketsFilters,
+    SmartTransfersTicketTermPayload,
+    SmartTransfersTicketTermFundPayload,
+    ScreeningPolicyConfiguration,
+    TravelRulePolicy,
+    TravelRuleRulesConfiguration,
+    SmartTransfersTicketTermResponse,
+    SmartTransfersUserGroupsResponse,
+    UsersGroup,
+    LeanContractTemplateDto,
+    ContractTemplateDto,
+    BatchTask, BatchJob, JobCreatedResponse,
+    ContractUploadRequest,
+    ContractDeployResponse,
+    ContractDeployRequest,
+    PendingTokenLinkDto,
+    TAP,
+    ExchangeAccountsPageFilter,
+    PagedExchangeResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
+import { PIIEncryption } from "./pii-client";
+import { NcwApiClient } from "./ncw-api-client";
+import { NcwSdk } from "./ncw-sdk";
+import { StakingApiClient } from "./staking/staking-api-client";
+import {
+    ChainInfo, CheckTermsOfServiceResponseDto,
+    DelegationSummaryDto,
+    DelegationSummaryDtoByVault,
+    ExecuteActionResponse, StakeRequestDto, StakingAction,
+    StakingChain, StakingPosition, StakingValidator, UnstakeRequestDto, WithdrawRequestDto
+} from "./staking";
 
 export * from "./types";
 
@@ -95,12 +151,21 @@ export interface SDKOptions {
           };
       }
     };
+
+    /**
+     * TravelRule Provider options to initialize PII Client for PII encryption
+     */
+    travelRuleOptions?: TravelRuleOptions;
 }
 
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
+    private readonly apiNcw: NcwApiClient;
+    private readonly stakingApiClient: StakingApiClient;
+
+    private piiClient: PIIEncryption;
 
     /**
      * Creates a new Fireblocks API Client
@@ -118,15 +183,79 @@ export class FireblocksSDK {
         }
 
         this.apiClient = new ApiClient(this.authProvider, this.apiBaseUrl, sdkOptions);
+
+        if (sdkOptions?.travelRuleOptions) {
+            this.piiClient = new PIIEncryption(sdkOptions.travelRuleOptions);
+        }
+
+        this.apiNcw = new NcwApiClient(this.apiClient);
+
+        this.stakingApiClient = new StakingApiClient(this.apiClient);
     }
 
+    /**
+     * NCW API Namespace
+     *
+     * @readonly
+     * @type {NcwSdk}
+     */
+    public get NCW(): NcwSdk {
+        return this.apiNcw;
+    }
     /**
      * Get the instance of ApiClient used by the FireblocksSDK
      */
     public getApiClient(): ApiClient {
         return this.apiClient;
     }
-
+    /**
+     * Get all staking chains
+     */
+    public async getStakingChains(): Promise<string[]> {
+        return await this.stakingApiClient.getChains();
+    }
+    /**
+     * Get chain info
+     */
+    public async getStakingChainInfo(chainDescriptor: StakingChain): Promise<ChainInfo> {
+        return await this.stakingApiClient.getChainInfo(chainDescriptor);
+    }
+    /**
+     * Get staking positions summary
+     */
+    public async getStakingPositionsSummary(byVault?: boolean): Promise<DelegationSummaryDto | DelegationSummaryDtoByVault> {
+        return await this.stakingApiClient.getPositionsSummary(byVault);
+    }
+    /**
+     * Execute staking action on a chain
+     */
+    public async executeStakingAction(actionId: StakingAction, chainDescriptor: StakingChain, body: StakeRequestDto | UnstakeRequestDto | WithdrawRequestDto): Promise<ExecuteActionResponse> {
+        return await this.stakingApiClient.executeAction(actionId, chainDescriptor, body);
+    }
+    /**
+     * Get all staking positions, optionally filtered by chain
+     */
+    public async getStakingPositions(chainDescriptor?: StakingChain): Promise<StakingPosition[]> {
+        return await this.stakingApiClient.getPositions(chainDescriptor);
+    }
+    /**
+     * Get a staking position by id
+     */
+    public async getStakingPosition(positionId: string): Promise<StakingPosition[]> {
+        return await this.stakingApiClient.getPosition(positionId);
+    }
+    /**
+     * Get all staking validators, filtered by chain
+     */
+    public async getStakingValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]> {
+        return await this.stakingApiClient.getValidatorsByChain(chainDescriptor);
+    }
+    /**
+     * Approve staking provider terms of service
+     */
+    public async approveStakingProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto> {
+        return await this.stakingApiClient.approveProviderTermsOfService(validatorProviderId);
+    }
     /**
      * Gets all assets that are currently supported by Fireblocks
      */
@@ -305,6 +434,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Deletes a single network profile
+     * @param networkId The network profile's id
+     * @returns NetworkIdResponse
+     */
+    public async deleteNetworkId(networkId: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueDeleteRequest(`/v1/network_ids/${networkId}`);
+    }
+
+    /**
      * Sets discoverability for network profile
      * @param networkId The network profile's id
      * @param isDiscoverable The desired discoverability to set
@@ -327,12 +465,30 @@ export class FireblocksSDK {
     }
 
     /**
+     * Sets network profile name
+     * @param networkId The network profile's id
+     * @param name The desired network profile's name
+     * @returns OperationSuccessResponse
+     */
+    public async setNetworkIdName(networkId: string, name: string): Promise<void> {
+        const body = { name };
+        return await this.apiClient.issuePatchRequest(`/v1/network_ids/${networkId}/set_name`, body);
+    }
+
+    /**
      * Gets all exchange accounts for your tenant
      */
     public async getExchangeAccounts(): Promise<ExchangeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/exchange_accounts");
     }
 
+    /**
+     * Gets all exchange accounts for your tenant
+     * @param filter Get exchange accounts matching pageFilter params
+     */
+    public async getExchangeAccountsPaged(filter: ExchangeAccountsPageFilter): Promise<PagedExchangeResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/exchange_accounts/paged?${queryString.stringify(filter)}`);
+    }
 
     /**
      * Gets a single exchange account by ID
@@ -623,12 +779,12 @@ export class FireblocksSDK {
      * @param vaultAccountId
      * @param name A new name for the vault account
      */
-    public async updateVaultAccount(vaultAccountId: string, name: string): Promise<VaultAccountResponse> {
+    public async updateVaultAccount(vaultAccountId: string, name: string, requestOptions?: RequestOptions): Promise<VaultAccountResponse> {
         const body = {
             name: name
         };
 
-        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}`, body);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}`, body, requestOptions);
     }
 
     /**
@@ -749,8 +905,19 @@ export class FireblocksSDK {
     /**
      * Creates a new transaction with the specified options
      */
-    public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
-        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, requestOptions);
+    public async createTransaction(transactionArguments: TransactionArguments, requestOptions?: RequestOptions, travelRuleEncryptionOptions?: TravelRuleEncryptionOptions): Promise<CreateTransactionResponse> {
+        const opts = { ...requestOptions };
+
+        if (transactionArguments?.travelRuleMessage) {
+            transactionArguments = await this.piiClient.hybridEncode(transactionArguments, travelRuleEncryptionOptions);
+        }
+
+        if (transactionArguments.source?.type === PeerType.END_USER_WALLET && !opts.ncw?.walletId) {
+            const { walletId } = transactionArguments.source;
+            opts.ncw = { ...opts.ncw, walletId };
+        }
+
+        return await this.apiClient.issuePostRequest("/v1/transactions", transactionArguments, opts);
     }
 
     /**
@@ -995,6 +1162,15 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get maximum BIP44 index used in deriving addresses or in change addresses
+     */
+    public async getMaxBip44IndexUsed(vaultAccountId: string, assetId: string): Promise<MaxBip44IndexUsedResponse> {
+        const url = `/v1/vault/accounts/${vaultAccountId}/${assetId}/max_bip44_index_used`;
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
      * Get all vault assets balance overview
      */
     public async getVaultAssetsBalance(filter: VaultBalancesFilter): Promise<AssetResponse[]> {
@@ -1064,6 +1240,50 @@ export class FireblocksSDK {
     }
 
     /**
+     * Gets all Users Groups for your tenant
+     */
+    public async getUsersGroups(): Promise<UsersGroup[]> {
+        return await this.apiClient.issueGetRequest("/v1/users_groups");
+    }
+
+    /**
+     * Gets a Users Group by ID
+     * @param id The ID of the User
+     */
+    public async getUsersGroup(id: string): Promise<UsersGroup> {
+        return await this.apiClient.issueGetRequest(`/v1/users_groups/${id}`);
+    }
+
+    /**
+     * Creates a new Users Group
+     * @param name The name of the Users Group
+     * @param memberIds The members of the Users Group
+     */
+    public async createUserGroup(groupName: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
+        return await this.apiClient.issuePostRequest("/v1/users_groups", body);
+    }
+
+    /**
+     * Updates a Users Group
+     * @param id The ID of the Users Group
+     * @param name The name of the Users Group
+     * @param memberIds The members of the Users Group
+     */
+    public async updateUserGroup(id: string, groupName?: string, memberIds?: string[]): Promise<UsersGroup> {
+        const body = { groupName, memberIds };
+        return await this.apiClient.issuePutRequest(`/v1/users_groups/${id}`, body);
+    }
+
+    /**
+     * Deletes a Users Group
+     * @param id The ID of the Users Group
+     */
+    public async deleteUserGroup(id: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/users_groups/${id}`);
+    }
+
+    /**
      * Get off exchange accounts
      */
     public async getOffExchangeAccounts(): Promise<OffExchangeEntityResponse[]> {
@@ -1087,6 +1307,40 @@ export class FireblocksSDK {
         return await this.apiClient.issuePostRequest(`/v1/off_exchange_accounts/${id}/settle`, {}, requestOptions);
     }
 
+    /**
+     * Add collateral account, create deposit request
+     * @param depositRequest
+     * @param requestOptions
+     */
+    public async addCollateral(depositRequest: AddCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/add`, depositRequest, requestOptions);
+    }
+
+    /**
+     * Remove collateral account, create withdraw request
+     * @param withdrawRequest
+     * @param requestOptions
+     */
+    public async removeCollateral(withdrawRequest: RemoveCollateralTransactionRequest, requestOptions?: RequestOptions): Promise<CreateTransactionResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/remove`, withdrawRequest, requestOptions);
+    }
+
+    /**
+     *
+     * @param requestOptions
+     */
+    public async getSettlementTransactions(settlementRequest: SettlementRequest): Promise<GetSettlementTransactionsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/off_exchange/settlements/transactions?mainExchangeAccountId=${settlementRequest.mainExchangeAccountId}`);
+    }
+
+    /**
+     *
+     * @param settlementRequest
+     * @param requestOptions
+     */
+    public async settlement(settlementRequest: SettlementRequest, requestOptions?: RequestOptions): Promise<SettlementResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/off_exchange/settlements/trader`, settlementRequest, requestOptions);
+    }
     /**
      * Set Fee Payer configuration
      * @param feePayerConfiguration
@@ -1231,14 +1485,16 @@ export class FireblocksSDK {
      * @param filter.pageCursor
      * @param filter.pageSize
      * @param filter.ids
+     * @param filter.sort
      * @param filter.order
      */
     public async getNFTs(filter: GetNFTsFilter): Promise<Web3PagedResponse<Token>> {
-        const { pageCursor, pageSize, ids, order } = filter;
+        const { pageCursor, pageSize, ids, sort, order } = filter;
         const queryParams = {
             pageCursor,
             pageSize,
             ids: this.getCommaSeparatedList(ids),
+            sort: this.getCommaSeparatedList(sort),
             order,
         };
 
@@ -1252,13 +1508,20 @@ export class FireblocksSDK {
      * @param filter.blockchainDescriptor The blockchain descriptor (based on legacy asset)
      * @param filter.collectionIds List of collection IDs
      * @param filter.ids List of token ids to fetch
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
      * @param filter.sort Sort by value
      * @param filter.order Order value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.search Search filter
+     * @param filter.ncwAccountIds List of Non-Custodial wallet account IDs
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search, ncwId, ncwAccountIds, walletType } = filter;
             const requestFilter = {
                 vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
@@ -1268,9 +1531,80 @@ export class FireblocksSDK {
                 ids: this.getCommaSeparatedList(ids),
                 sort: this.getCommaSeparatedList(sort),
                 order,
+                status,
+                search,
+                ncwId,
+                ncwAccountIds,
+                walletType,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * Get a list of owned NFT collections
+     * @param filter.search Search by value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
+     * @param filter.sort Sort by value
+     * @param filter.order Order by value
+     */
+    public async listOwnedCollections(filter?: NFTOwnedCollectionsFilter): Promise<Web3PagedResponse<CollectionOwnership>> {
+        let url = "/v1/nfts/ownership/collections";
+        if (filter) {
+            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order } = filter;
+
+            const requestFilter = {
+                search,
+                status,
+                ncwId,
+                walletType,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     *
+     * Get a list of owned tokens
+     * @param filter.search Search by value
+     * @param filter.status Status (LISTED, ARCHIVED)
+     * @param filter.ncwId Non-Custodial wallet id
+     * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
+     * @param filter.pageCursor Page cursor
+     * @param filter.pageSize Page size
+     * @param filter.sort Sort by value
+     * @param filter.order Order by value
+     */
+    public async listOwnedAssets(filter?: NFTOwnedAssetsFilter): Promise<Web3PagedResponse<Token>> {
+        let url = "/v1/nfts/ownership/assets";
+        if (filter) {
+            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order } = filter;
+
+            const requestFilter = {
+                search,
+                status,
+                ncwId,
+                walletType,
+                pageCursor,
+                pageSize,
+                sort: this.getCommaSeparatedList(sort),
+                order,
+            };
+            url += `?${queryString.stringify(requestFilter)}`;
+        }
+
         return await this.apiClient.issueGetRequest(url);
     }
 
@@ -1284,6 +1618,25 @@ export class FireblocksSDK {
 
     /**
      *
+     * Update NFT ownership status for specific token
+     * @param id NFT asset id
+     * @param status Status for update
+     */
+    public async updateNFTOwnershipStatus(id: string, status: NFTOwnershipStatus): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/${id}/status`, { status });
+    }
+
+    /**
+     *
+     * Updates tokens status for a tenant, in all tenant vaults.
+     * @param payload List of assets with status for update
+     */
+    public async updateNFTOwnershipsStatus(payload: NFTOwnershipStatusUpdatedPayload[]): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/status`, payload);
+    }
+
+    /**
+     *
      * @param vaultAccountId
      * @param blockchainDescriptor
      */
@@ -1293,7 +1646,450 @@ export class FireblocksSDK {
             undefined);
     }
 
+    /**
+     * Get all contract templates
+     * @param limit
+     * @param offset
+     */
+    public async getTemplateContracts(limit: number = 100, offset: number = 0): Promise<LeanContractTemplateDto[]> {
+        const requestFilter = {
+            limit,
+            offset
+        };
+        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts?${queryString.stringify(requestFilter)}`);
+    }
+
+    /**
+     * Upload a new contract. This contract would be private and only your tenant can see it
+     * @param payload
+     */
+    public async uploadTemplateContract(payload: ContractUploadRequest): Promise<ContractTemplateDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, payload);
+    }
+
+    /**
+     * Get contract template by id
+     * @param contractId
+     */
+    public async getTemplateContract(contractId: string): Promise<ContractTemplateDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}`);
+    }
+
+    /**
+     * Delete a contract template by id
+     * @param contractId
+     */
+    public async deleteTemplateContract(contractId: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/contract-registry/contracts/${contractId}`);
+    }
+
+    /**
+     * Get contract template constructor by contract id
+     * @param contractId
+     * @param withDocs
+     */
+    public async getTemplateContractConstructor(contractId: string, withDocs: boolean = false): Promise<ContractTemplateDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}/constructor?withDocs=${withDocs}`);
+    }
+
+    /**
+     * Deploy a new contract by contract template id
+     * @param contractId
+     */
+    public async deployContract(contractId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts/${contractId}/deploy`, payload);
+    }
+
+    /**
+     * Issue a new token and link it to the tenant
+     * @param payload
+     */
+    public async issueNewToken(payload: IssueTokenRequest): Promise<PendingTokenLinkDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, payload);
+    }
+
+    /**
+     * Get all tokens linked to the tenant
+     * @param pageSize
+     * @param pageCursor
+     */
+    public async getLinkedTokens(pageSize: number = 100, pageCursor?: string): Promise<Web3PagedResponse<TokenLink>> {
+        const requestFilter = {
+            pageSize,
+            pageCursor
+        };
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens?${queryString.stringify(requestFilter)}`);
+    }
+
+    /**
+     * Link a token to the tenant
+     * @param assetId
+     */
+    public async linkToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {});
+    }
+
+    /**
+     * Get a token linked to the tenant by asset id
+     * @param assetId
+     */
+    public async getLinkedToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/${assetId}`);
+    }
+
+    /**
+     * Unlink a token from the tenant
+     * @param assetId
+     */
+    public async unlinkToken(assetId: string): Promise<TokenLink> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}`);
+    }
+
+    /**
+     * Get all pending tokens linked to the tenant
+     */
+    public async getPendingLinkedTokens(): Promise<TokenLink[]> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/pending`);
+    }
+
+    /**
+     * Validate VASP details for travel rule compliance
+     * @param travelRuleMessageVaspInfo
+     */
+    public async validateTravelRuleTransaction(travelRuleMessageVaspInfo: ValidateTravelRuleVaspInfo): Promise<ValidateTravelRuleResult> {
+        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate`, travelRuleMessageVaspInfo);
+    }
+
+    /**
+     * Validate Travel Rule transaction and PII data
+     * @param travelRuleMessage
+     */
+    public async validateFullTravelRuleTransaction(travelRuleMessage: ValidateCreateTravelRuleTransaction): Promise<ValidateFullTravelRuleResult> {
+        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/transaction/validate/full`, travelRuleMessage);
+    }
+
+    /**
+     * Get VASP details for travel rule compliance
+     * @param did
+     */
+    public async getTravelRuleVASPDetails(did: string): Promise<TravelRuleVasp> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vasp/${did}`);
+    }
+
+    /**
+     * Get VASP library for travel rule compliance
+     */
+    public async getAllTravelRuleVASPs(filter?: TravelRuleVaspFilter): Promise<TravelRuleVasp[]> {
+        let url = `/v1/screening/travel_rule/vasp`;
+
+        if (filter) {
+            const { q, fields, page, per_page, order } = filter;
+            const queryParameters = {
+                q,
+                fields: this.getCommaSeparatedList(fields),
+                page,
+                per_page,
+                order,
+            };
+
+            url += `?${queryString.stringify(queryParameters)}`;
+        }
+
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Update VASP for travel rule compliance
+     */
+    public async updateVasp(vaspInfo: TravelRuleVasp): Promise<TravelRuleVasp> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel-rule/vasp/update`, vaspInfo);
+    }
+
+    /**
+     * Get PostScreening Policies for travel rule compliance
+     */
+    public async getTravelRulePostScreeningPolicy(): Promise<TravelRuleRulesConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/post_screening_policy`);
+    }
+
+    /**
+     * Get Screening Policies for travel rule compliance
+     */
+    public async getTravelRuleScreeningPolicy(): Promise<TravelRulePolicy> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/screening_policy`);
+    }
+
+    /**
+     * Get Screening Configuration for travel rule compliance
+     */
+    public async getTravelRuleScreeningConfiguration(): Promise<ScreeningPolicyConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/policy_configuration`);
+    }
+
+    /**
+     * Update Bypass Screening Configuration for travel rule compliance
+     * @param screeningPolicyConfiguration
+     */
+    public async updateTravelRulePolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/policy_configuration`, screeningPolicyConfiguration);
+    }
+
+    /**
+     * Creates Smart Transfers ticket
+     * @param data
+     * @param requestOptions
+     */
+    public async createSmartTransferTicket(data: SmartTransfersTicketCreatePayload, requestOptions?: RequestOptions): Promise<SmartTransfersTicketResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/smart-transfers`, data, requestOptions);
+    }
+
+    /**
+     * Get Smart Transfer tickets
+     * @param filters
+     */
+    public getSmartTransferTickets(filters: SmartTransfersTicketsFilters): Promise<SmartTransfersTicketsResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers?${queryString.stringify(filters)}`);
+    }
+
+    /**
+     * Get Smart Transfers ticket by id
+     * @param ticketId
+     */
+    public getSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}`);
+    }
+
+    /**
+     * Set Smart Transfers ticket expires in
+     * @param ticketId
+     * @param expiresIn
+     */
+    public setSmartTransferTicketExpiresIn(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/expires-in`, {expiresIn});
+    }
+
+    /**
+     * Set Smart Transfer ticket external id
+     * @param ticketId
+     * @param externalRefId
+     */
+    public setSmartTransferTicketExternalId(ticketId: string, externalRefId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/external-id`, {externalRefId});
+    }
+
+    /**
+     * Submit Smart Transfers ticket
+     * @param ticketId
+     * @param expiresIn
+     */
+    public submitSmartTransferTicket(ticketId: string, expiresIn: number): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/submit`, {expiresIn});
+    }
+
+    /**
+     * Fulfill Smart Transfers ticket
+     * @param ticketId
+     */
+    public fulfillSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/fulfill`, {});
+    }
+
+    /**
+     * Cancel Smart Transfers ticket
+     * @param ticketId
+     */
+    public cancelSmartTransferTicket(ticketId: string): Promise<SmartTransfersTicketResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/cancel`, {});
+    }
+
+    /**
+     * Create Smart Transfers ticket term
+     * @param ticketId
+     * @param data
+     */
+    public createSmartTransferTicketTerm(ticketId: string, data: SmartTransfersTicketTermPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePostRequest(`/v1/smart-transfers/${ticketId}/terms`, data);
+    }
+
+    /**
+     * Fet Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     */
+    public getSmartTransferTicketTerms(ticketId: string, termId: string): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
+    }
+
+    /**
+     * Update Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param data
+     */
+    public updateSmartTransferTicketTerms(ticketId: string, termId: string, data: SmartTransfersTicketTermPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`, data);
+    }
+
+    /**
+     * Fund Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param data
+     */
+    public fundSmartTransferTicketTerm(ticketId: string, termId: string, data: SmartTransfersTicketTermFundPayload): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/fund`, data);
+    }
+
+    /**
+     * Manually fund Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     * @param txHash
+     */
+    public manuallyFundSmartTransferTicketTerms(ticketId: string, termId: string, txHash: string): Promise<SmartTransfersTicketTermResponse> {
+        return this.apiClient.issuePutRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}/manually-fund`, { txHash });
+    }
+
+    /**
+     * Set Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     * @param userGroupIds
+     */
+    public setSmartTransferTicketUserGroups(userGroupIds: string[]): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issuePostRequest(`/v1/smart-transfers/settings/user-groups`, { userGroupIds });
+    }
+
+    /**
+     * Get Smart Transfers user group ids. User group ids are used for Smart Transfer notifications
+     */
+    public getSmartTransferTicketUserGroups(): Promise<SmartTransfersUserGroupsResponse> {
+        return this.apiClient.issueGetRequest(`/v1/smart-transfers/settings/user-groups`);
+    }
+
+    /**
+     * Delete Smart Transfers ticket term
+     * @param ticketId
+     * @param termId
+     */
+    public deleteSmartTransferTicketTerms(ticketId: string, termId: string): Promise<void> {
+        return this.apiClient.issueDeleteRequest(`/v1/smart-transfers/${ticketId}/terms/${termId}`);
+    }
+
+    /**
+     * Get active policy (TAP) [BETA]
+     */
+    public async getActivePolicy(): Promise<TAP.PolicyAndValidationResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tap/active_policy`);
+    }
+
+    /**
+     * Get draft policy (TAP) [BETA]
+     */
+    public async getDraft(): Promise<TAP.DraftReviewAndValidationResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tap/draft`);
+    }
+
+    /**
+     * Update draft policy (TAP) [BETA]
+     * @param rules
+     */
+    public async updateDraft(rules: TAP.PolicyRule[]): Promise<TAP.DraftReviewAndValidationResponse> {
+        return await this.apiClient.issuePutRequest(`/v1/tap/draft`, { rules });
+    }
+
+    /**
+     * Publish draft policy (TAP) [BETA]
+     * @param draftId
+     */
+    public async publishDraft(draftId: string): Promise<TAP.PublishResult> {
+        return await this.apiClient.issuePostRequest(`/v1/tap/draft`, { draftId });
+    }
+
+    /**
+     * Publish rules (TAP) [BETA]
+     * @param rules
+     */
+    public async publishPolicyRules(rules: TAP.PolicyRule[]): Promise<TAP.PublishResult> {
+        return await this.apiClient.issuePostRequest(`/v1/tap/publish`, { rules });
+    }
+
     private getCommaSeparatedList(items: Array<string>): string | undefined {
         return items ? items.join(",") : undefined;
+    }
+
+    /**
+     * Get list of jobs for current tenant
+     * @param fromTime beggining of time range in Unix Epoch
+     * @param toTime ending of time range in Unix Epoch
+     */
+    public getJobsForTenant(fromTime: number, toTime: number): Promise<BatchJob[]> {
+        return this.apiClient.issueGetRequest(`/v1/batch/jobs?fromTime=${fromTime}&toTime=${toTime}`);
+    }
+
+    /**
+     * Get job info by job ID
+     * @param jobId
+     */
+    public getJobById(jobId: string): Promise<BatchJob> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}`);
+    }
+
+    /**
+     * Get tasks belonging to given job
+     * @param jobId
+     */
+    public getTasksByJobId(jobId: string): Promise<BatchTask> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}/tasks`);
+    }
+
+    /**
+     * Cancel a job by ID
+     * @param jobId
+     */
+    public cancelJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/cancel`, {});
+    }
+
+    /**
+     * Pause a job by ID
+     * @param jobId
+     */
+    public pauseJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/pause`, {});
+    }
+
+    /**
+     * Continue a job by ID
+     * @param jobId
+     */
+    public continueJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/continue`, {});
+    }
+
+    /**
+     * Create multiple vault accounts in one bulk operation
+     * @param count number of vault accounts
+     * @param assetId optional asset id to create in each new account
+     * @param requestOptions
+     */
+    public createVaultAccountsBulk(count: number, assetId: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            count,
+            assetId
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/accounts/bulk`, body, requestOptions);
+    }
+
+    /**
+     * Creates a new asset within a list of existing vault accounts
+     * @param assetId The asset to add
+     * @param vaultAccountIdFrom The first of the account ID range
+     * @param vaultAccountIdTo The last of the account ID range
+     * @param requestOptions
+     */
+    public createVaultAssetsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            assetId, vaultAccountIdFrom, vaultAccountIdTo
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
 }

@@ -2,11 +2,150 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.8.0...v5.9.0)
+
+> 17 October 2023
+
+- COR-31331: Add support paged exchange account endpoint [`#213`](https://github.com/fireblocks/fireblocks-sdk-js/pull/213)
+
+#### [v5.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.7.0...v5.8.0)
+
+> 28 September 2023
+
+- contract-registry - adding endpoints [`#210`](https://github.com/fireblocks/fireblocks-sdk-js/pull/210)
+- added sort to transaction filter [`#185`](https://github.com/fireblocks/fireblocks-sdk-js/pull/185)
+
+#### [v5.7.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.1...v5.7.0)
+
+> 19 September 2023
+
+- Travel Rule Configuration and Policy routes [`#187`](https://github.com/fireblocks/fireblocks-sdk-js/pull/187)
+- Change Collection and Token response [`#205`](https://github.com/fireblocks/fireblocks-sdk-js/pull/205)
+- feat: adding tap endpoints [`#207`](https://github.com/fireblocks/fireblocks-sdk-js/pull/207)
+
+#### [v5.6.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.0...v5.6.1)
+
+> 5 September 2023
+
+- Added list owned assets endpoint and NCW for NFTs [`#206`](https://github.com/fireblocks/fireblocks-sdk-js/pull/206)
+- Add Smart Transfers user groups endpoints [`#202`](https://github.com/fireblocks/fireblocks-sdk-js/pull/202)
+
+#### [v5.6.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.1...v5.6.0)
+
+> 24 August 2023
+
+- added registry endpoint for uploading contracts [`#190`](https://github.com/fireblocks/fireblocks-sdk-js/pull/190)
+
+#### [v5.5.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.0...v5.5.1)
+
+> 23 August 2023
+
+- Rename NCW base path [`#198`](https://github.com/fireblocks/fireblocks-sdk-js/pull/198)
+
+#### [v5.5.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.4.0...v5.5.0)
+
+> 22 August 2023
+
+- fix: add NCW methods [`#197`](https://github.com/fireblocks/fireblocks-sdk-js/pull/197)
+- add NCW feature [`#192`](https://github.com/fireblocks/fireblocks-sdk-js/pull/192)
+- changed return type to pending instead of TokenLink [`#188`](https://github.com/fireblocks/fireblocks-sdk-js/pull/188)
+
+#### [v5.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.1...v5.4.0)
+
+> 7 August 2023
+
+- Support users groups crud [`#179`](https://github.com/fireblocks/fireblocks-sdk-js/pull/179)
+
+#### [v5.3.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.0...v5.3.1)
+
+> 2 August 2023
+
+- Change externalId with externalRefId [`#186`](https://github.com/fireblocks/fireblocks-sdk-js/pull/186)
+
+#### [v5.3.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.2.0...v5.3.0)
+
+> 26 July 2023
+
+- Add smart transfers routes [`#184`](https://github.com/fireblocks/fireblocks-sdk-js/pull/184)
+- Improve PII Client and PII encryption module [`#181`](https://github.com/fireblocks/fireblocks-sdk-js/pull/181)
+- Update fireblocks sdk js [`#174`](https://github.com/fireblocks/fireblocks-sdk-js/pull/174)
+- add remove network id route [`#153`](https://github.com/fireblocks/fireblocks-sdk-js/pull/153)
+- add set networkId name route [`#162`](https://github.com/fireblocks/fireblocks-sdk-js/pull/162)
+- Improve Travel Rule interface with additional fields update existing one [`#176`](https://github.com/fireblocks/fireblocks-sdk-js/pull/176)
+- Travel Rule beneficiary person pii ivms fix wording [`#175`](https://github.com/fireblocks/fireblocks-sdk-js/pull/175)
+
+#### [v5.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.4...v5.2.0)
+
+> 24 May 2023
+
+#### [v5.1.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.3...v5.1.4)
+
+> 6 June 2023
+
+- Improve Travel Rule interface with additional fields update existing one [`#176`](https://github.com/fireblocks/fireblocks-sdk-js/pull/176)
+
+#### [v5.1.3](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.2...v5.1.3)
+
+> 1 June 2023
+
+- Travel Rule beneficiary person pii ivms fix wording [`#175`](https://github.com/fireblocks/fireblocks-sdk-js/pull/175)
+
+#### [v5.1.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.1...v5.1.2)
+
+> 24 May 2023
+
+- New travel rule feature (upgraded Notabene dependency) [`#173`](https://github.com/fireblocks/fireblocks-sdk-js/pull/173)
+
+#### [v5.1.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.1.0...v5.1.1)
+
+> 21 May 2023
+
+- Fix endpoint /v1/tokenization/tokens/${assetId}/link [`#172`](https://github.com/fireblocks/fireblocks-sdk-js/pull/172)
+- Revert "fix: Add Travel Rule message to Transaction request and PII Encryption (#168)" [`#171`](https://github.com/fireblocks/fireblocks-sdk-js/pull/171)
+- fix: Add Travel Rule message to Transaction request and PII Encryption [`#168`](https://github.com/fireblocks/fireblocks-sdk-js/pull/168)
+
+#### [v5.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.0.1...v5.1.0)
+
+> 8 May 2023
+
+- Remove Travel Rule feature [`#167`](https://github.com/fireblocks/fireblocks-sdk-js/pull/167)
+
+#### [v5.0.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.0.0...v5.0.1)
+
+> 4 May 2023
+
+- Make travelRuleOptions field optional [`#165`](https://github.com/fireblocks/fireblocks-sdk-js/pull/165)
+
+### [v5.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.2.0...v5.0.0)
+
+> 4 May 2023
+
+- Add Travel Rule message to Transaction request and PII Encryption [`#157`](https://github.com/fireblocks/fireblocks-sdk-js/pull/157)
+
+#### [v4.2.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.1.0...v4.2.0)
+
+> 27 April 2023
+
+- Add NFT collection and token name sorting [`#163`](https://github.com/fireblocks/fireblocks-sdk-js/pull/163)
+- Change balance to string in nft token ownership api [`#155`](https://github.com/fireblocks/fireblocks-sdk-js/pull/155)
+- add status filter to getOwnedNFTs [`#159`](https://github.com/fireblocks/fireblocks-sdk-js/pull/159)
+- Add update NFT ownership status endpoint [`#158`](https://github.com/fireblocks/fireblocks-sdk-js/pull/158)
+
+#### [v4.1.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v4.0.0...v4.1.0)
+
+> 16 April 2023
+
+- added getMaxBip44IndexUsed [`#161`](https://github.com/fireblocks/fireblocks-sdk-js/pull/161)
+- Off exchange v2 [`#154`](https://github.com/fireblocks/fireblocks-sdk-js/pull/154)
+- add tokenization endpoints [`#145`](https://github.com/fireblocks/fireblocks-sdk-js/pull/145)
+- Add cachedMetadataURI to tokens endpoint response [`#151`](https://github.com/fireblocks/fireblocks-sdk-js/pull/151)
+
 ### [v4.0.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.1.4...v4.0.0)
 
 > 18 February 2023
 
-- fix bug - options is optional in ApiClient [`92d8ce6`](https://github.com/fireblocks/fireblocks-sdk-js/commit/92d8ce6611e3d6d0a6e4d7e4c21c3794438317eb)
+- Correcting derivation path type [`#108`](https://github.com/fireblocks/fireblocks-sdk-js/pull/108)
+- feat: add support for axios response interceptor, remove deprecated methods [`#141`](https://github.com/fireblocks/fireblocks-sdk-js/pull/141)
 
 #### [v3.1.4](https://github.com/fireblocks/fireblocks-sdk-js/compare/v3.1.3...v3.1.4)
 
