@@ -1794,7 +1794,7 @@ export class FireblocksSDK {
     /**
      * Get all pending tokens linked to the tenant
      */
-    public async getPendingLinkedTokens(): Promise<TokenLink[]> {
+    public async getPendingLinkedTokens(): Promise<PendingTokenLinkDto[]> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/pending`);
     }
 
