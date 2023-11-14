@@ -1578,6 +1578,7 @@ export interface ContractTemplateDto {
     id: string;
     name: string;
     description: string;
+    longDescription: string;
     compilerOutputMetadata?: object;
     abi: AbiFunction[];
     attributes?: Record<string, string>;
