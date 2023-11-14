@@ -1618,6 +1618,28 @@ export interface PendingTokenLinkDto {
     blockchainId?: string;
 }
 
+export interface LeanDeployedContractResponseDto {
+    contractAddress: string;
+    blockchainId: string;
+    contractTemplateId: string;
+}
+
+export interface DeployedContractResponseDto extends LeanDeployedContractResponseDto {
+    id: string;
+    vaultAccountId?: string;
+}
+
+type ContractAbi = AbiFunction[];
+
+export interface ContractAbiResponseDto {
+    abi: ContractAbi;
+    implementationAbi?: ContractAbi;
+}
+
+export interface WriteCallFunctionResponseDto {
+    txId: string;
+}
+
 export interface IssueTokenRequest {
     symbol: string;
     name: string;
@@ -1675,6 +1697,8 @@ interface ParameterWithValue {
     description?: string;
     value: any;
 }
+export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueList[];
+
 
 interface EVMTokenCreateParamsDto {
     contractId: string;

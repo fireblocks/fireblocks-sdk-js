@@ -100,7 +100,9 @@ import {
     UsersGroup,
     LeanContractTemplateDto,
     ContractTemplateDto,
-    BatchTask, BatchJob, JobCreatedResponse,
+    BatchTask,
+    BatchJob,
+    JobCreatedResponse,
     ContractUploadRequest,
     ContractDeployResponse,
     ContractDeployRequest,
@@ -110,6 +112,11 @@ import {
     TAP,
     WriteCallFunctionDto,
     ReadCallFunctionDto,
+    WriteCallFunctionResponseDto,
+    ContractAbiResponseDto,
+    DeployedContractResponseDto,
+    LeanDeployedContractResponseDto,
+    ParameterWithValueList,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1695,7 +1702,7 @@ export class FireblocksSDK {
      * @param blockchainId
      * @param templateId
      */
-    public async getContractsByFilter(templateId: string, blockchainId?: string): Promise<object> {
+    public async getContractsByFilter(templateId: string, blockchainId?: string): Promise<LeanDeployedContractResponseDto[]> {
         const requestFilter = {
             templateId,
             blockchainId,
@@ -1708,7 +1715,7 @@ export class FireblocksSDK {
      * @param blockchainId
      * @param templateId
      */
-    public async getContractByAddress(blockchainId: string, contractAddress: string): Promise<object> {
+    public async getContractByAddress(blockchainId: string, contractAddress: string): Promise<DeployedContractResponseDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}`);
     }
 
@@ -1717,7 +1724,7 @@ export class FireblocksSDK {
      * @param blockchainId
      * @param templateId
      */
-    public async getContractAbi(blockchainId: string, contractAddress: string): Promise<object> {
+    public async getContractAbi(blockchainId: string, contractAddress: string): Promise<ContractAbiResponseDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/abi`);
     }
 
@@ -1726,7 +1733,7 @@ export class FireblocksSDK {
      * @param blockchainId
      * @param templateId
      */
-    public async readContractCallFunction(blockchainId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<object> {
+    public async readContractCallFunction(blockchainId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<ParameterWithValueList> {
         return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/read`, payload);
     }
 
@@ -1735,7 +1742,7 @@ export class FireblocksSDK {
      * @param blockchainId
      * @param templateId
      */
-    public async writeContractCallFunction(blockchainId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<object> {
+    public async writeContractCallFunction(blockchainId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<WriteCallFunctionResponseDto> {
         return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/write`, payload);
     }
 
