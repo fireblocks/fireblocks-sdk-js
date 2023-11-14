@@ -103,6 +103,7 @@ import {
     UsersGroup,
     LeanContractTemplateDto,
     ContractTemplateDto,
+    BatchTask, BatchJob, JobCreatedResponse,
     ContractUploadRequest,
     ContractDeployResponse,
     ContractDeployRequest,
@@ -115,6 +116,14 @@ import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw-api-client";
 import { NcwSdk } from "./ncw-sdk";
+import { StakingApiClient } from "./staking/staking-api-client";
+import {
+    ChainInfo, CheckTermsOfServiceResponseDto,
+    DelegationSummaryDto,
+    DelegationSummaryDtoByVault,
+    ExecuteActionResponse, StakeRequestDto, StakingAction,
+    StakingChain, StakingPosition, StakingValidator, UnstakeRequestDto, WithdrawRequestDto
+} from "./staking";
 
 export * from "./types";
 
@@ -154,6 +163,7 @@ export class FireblocksSDK {
     private readonly apiBaseUrl: string;
     private readonly apiClient: ApiClient;
     private readonly apiNcw: NcwApiClient;
+    private readonly stakingApiClient: StakingApiClient;
 
     private piiClient: PIIEncryption;
 
@@ -179,6 +189,8 @@ export class FireblocksSDK {
         }
 
         this.apiNcw = new NcwApiClient(this.apiClient);
+
+        this.stakingApiClient = new StakingApiClient(this.apiClient);
     }
 
     /**
@@ -190,14 +202,60 @@ export class FireblocksSDK {
     public get NCW(): NcwSdk {
         return this.apiNcw;
     }
-
     /**
      * Get the instance of ApiClient used by the FireblocksSDK
      */
     public getApiClient(): ApiClient {
         return this.apiClient;
     }
-
+    /**
+     * Get all staking chains
+     */
+    public async getStakingChains(): Promise<string[]> {
+        return await this.stakingApiClient.getChains();
+    }
+    /**
+     * Get chain info
+     */
+    public async getStakingChainInfo(chainDescriptor: StakingChain): Promise<ChainInfo> {
+        return await this.stakingApiClient.getChainInfo(chainDescriptor);
+    }
+    /**
+     * Get staking positions summary
+     */
+    public async getStakingPositionsSummary(byVault?: boolean): Promise<DelegationSummaryDto | DelegationSummaryDtoByVault> {
+        return await this.stakingApiClient.getPositionsSummary(byVault);
+    }
+    /**
+     * Execute staking action on a chain
+     */
+    public async executeStakingAction(actionId: StakingAction, chainDescriptor: StakingChain, body: StakeRequestDto | UnstakeRequestDto | WithdrawRequestDto): Promise<ExecuteActionResponse> {
+        return await this.stakingApiClient.executeAction(actionId, chainDescriptor, body);
+    }
+    /**
+     * Get all staking positions, optionally filtered by chain
+     */
+    public async getStakingPositions(chainDescriptor?: StakingChain): Promise<StakingPosition[]> {
+        return await this.stakingApiClient.getPositions(chainDescriptor);
+    }
+    /**
+     * Get a staking position by id
+     */
+    public async getStakingPosition(positionId: string): Promise<StakingPosition[]> {
+        return await this.stakingApiClient.getPosition(positionId);
+    }
+    /**
+     * Get all staking validators, filtered by chain
+     */
+    public async getStakingValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]> {
+        return await this.stakingApiClient.getValidatorsByChain(chainDescriptor);
+    }
+    /**
+     * Approve staking provider terms of service
+     */
+    public async approveStakingProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto> {
+        return await this.stakingApiClient.approveProviderTermsOfService(validatorProviderId);
+    }
     /**
      * Gets all assets that are currently supported by Fireblocks
      */
@@ -712,12 +770,12 @@ export class FireblocksSDK {
      * @param vaultAccountId
      * @param name A new name for the vault account
      */
-    public async updateVaultAccount(vaultAccountId: string, name: string): Promise<VaultAccountResponse> {
+    public async updateVaultAccount(vaultAccountId: string, name: string, requestOptions?: RequestOptions): Promise<VaultAccountResponse> {
         const body = {
             name: name
         };
 
-        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}`, body);
+        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}`, body, requestOptions);
     }
 
     /**
@@ -1954,5 +2012,82 @@ export class FireblocksSDK {
 
     private getCommaSeparatedList(items: Array<string>): string | undefined {
         return items ? items.join(",") : undefined;
+    }
+
+    /**
+     * Get list of jobs for current tenant
+     * @param fromTime beggining of time range in Unix Epoch
+     * @param toTime ending of time range in Unix Epoch
+     */
+    public getJobsForTenant(fromTime: number, toTime: number): Promise<BatchJob[]> {
+        return this.apiClient.issueGetRequest(`/v1/batch/jobs?fromTime=${fromTime}&toTime=${toTime}`);
+    }
+
+    /**
+     * Get job info by job ID
+     * @param jobId
+     */
+    public getJobById(jobId: string): Promise<BatchJob> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}`);
+    }
+
+    /**
+     * Get tasks belonging to given job
+     * @param jobId
+     */
+    public getTasksByJobId(jobId: string): Promise<BatchTask> {
+        return this.apiClient.issueGetRequest(`/v1/batch/${jobId}/tasks`);
+    }
+
+    /**
+     * Cancel a job by ID
+     * @param jobId
+     */
+    public cancelJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/cancel`, {});
+    }
+
+    /**
+     * Pause a job by ID
+     * @param jobId
+     */
+    public pauseJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/pause`, {});
+    }
+
+    /**
+     * Continue a job by ID
+     * @param jobId
+     */
+    public continueJob(jobId: string): Promise<void> {
+        return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/continue`, {});
+    }
+
+    /**
+     * Create multiple vault accounts in one bulk operation
+     * @param count number of vault accounts
+     * @param assetId optional asset id to create in each new account
+     * @param requestOptions
+     */
+    public createVaultAccountsBulk(count: number, assetId: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            count,
+            assetId
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/accounts/bulk`, body, requestOptions);
+    }
+
+    /**
+     * Creates a new asset within a list of existing vault accounts
+     * @param assetId The asset to add
+     * @param vaultAccountIdFrom The first of the account ID range
+     * @param vaultAccountIdTo The last of the account ID range
+     * @param requestOptions
+     */
+    public createVaultAssetsBulk(assetId: string, vaultAccountIdFrom: string, vaultAccountIdTo: string, requestOptions?: RequestOptions): Promise<JobCreatedResponse> {
+        const body = {
+            assetId, vaultAccountIdFrom, vaultAccountIdTo
+        };
+        return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
 }
