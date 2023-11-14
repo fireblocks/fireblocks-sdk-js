@@ -73,7 +73,6 @@ import {
     PublicKeyInformation,
     DropTransactionResponse,
     TokenLink,
-    TokenLinkPermissionEntry,
     IssueTokenRequest,
     NFTOwnershipStatus,
     NFTOwnershipStatusUpdatedPayload,
@@ -106,9 +105,11 @@ import {
     ContractDeployResponse,
     ContractDeployRequest,
     PendingTokenLinkDto,
-    TAP,
     ExchangeAccountsPageFilter,
     PagedExchangeResponse,
+    TAP,
+    WriteCallFunctionDto,
+    ReadCallFunctionDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1687,6 +1688,55 @@ export class FireblocksSDK {
      */
     public async deployContract(contractId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
         return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts/${contractId}/deploy`, payload);
+    }
+
+    /**
+     * Get all contracts by blockchain and template
+     * @param blockchainId
+     * @param templateId
+     */
+    public async getContractsByFilter(templateId: string, blockchainId?: string): Promise<object> {
+        const requestFilter = {
+            templateId,
+            blockchainId,
+        };
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract?${queryString.stringify(requestFilter)}`);
+    }
+
+    /**
+     * Get contract by blockchain and address
+     * @param blockchainId
+     * @param templateId
+     */
+    public async getContractByAddress(blockchainId: string, contractAddress: string): Promise<object> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}`);
+    }
+
+    /**
+     * Get contract's ABI by blockchain and address
+     * @param blockchainId
+     * @param templateId
+     */
+    public async getContractAbi(blockchainId: string, contractAddress: string): Promise<object> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/abi`);
+    }
+
+    /**
+     * Call contract read function
+     * @param blockchainId
+     * @param templateId
+     */
+    public async readContractCallFunction(blockchainId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<object> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/read`, payload);
+    }
+
+    /**
+     * Call contract write function
+     * @param blockchainId
+     * @param templateId
+     */
+    public async writeContractCallFunction(blockchainId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<object> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/write`, payload);
     }
 
     /**

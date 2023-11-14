@@ -1681,6 +1681,18 @@ interface EVMTokenCreateParamsDto {
     constructorParams?: Array<ParameterWithValue>;
 }
 
+export interface ReadCallFunctionDto {
+    abiFunction: AbiFunction;
+}
+
+export interface WriteCallFunctionDto {
+    vaultAccountId: string;
+    abiFunction: AbiFunction;
+    amount?: string;
+    feeLevel?: FeeLevel;
+    note?: string;
+}
+
 export enum SmartTransfersTicketDirection {
     EXCHANGE = "EXCHANGE",
     SEND = "SEND",
