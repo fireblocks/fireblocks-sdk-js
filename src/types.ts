@@ -1513,7 +1513,6 @@ export interface ContractUploadRequest {
     docs?: ContractDoc;
     abi?: AbiFunction[];
     attributes?: Record<string, string>;
-    vendorId?: string;
 }
 interface AbiFunction {
     name?: string;
