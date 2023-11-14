@@ -1177,9 +1177,7 @@ export interface PaginatedAddressesResponse {
     };
 }
 
-export interface PaginatedAddresseRequestFilters {
-    accountId?: string;
-    assetId?: string;
+export interface OptionalPaginatedAddresseRequestFilters {
     limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
     before?: string;
     after?: string;

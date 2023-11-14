@@ -23,7 +23,7 @@ import {
     MaxSpendableAmountResponse,
     MaxBip44IndexUsedResponse,
     PaginatedAddressesResponse,
-    PaginatedAddresseRequestFilters,
+    OptionalPaginatedAddresseRequestFilters,
     NetworkConnectionResponse,
     OffExchangeEntityResponse,
     OperationSuccessResponse,
@@ -1106,10 +1106,8 @@ export class FireblocksSDK {
     /**
      * Get addresses for a vault account for asset with paging
      */
-        public async getPaginatedAddresses(paginatedAddresseRequestFilters: PaginatedAddresseRequestFilters): Promise<PaginatedAddressesResponse> {
-            const url = `/v1/address?${queryString.stringify(paginatedAddresseRequestFilters)}`;
-
-            return await this.apiClient.issueGetRequest(url);
+        public async getPaginatedAddresses(accountId: string, assetId: string, paginatedAddresseRequestFilters?: OptionalPaginatedAddresseRequestFilters): Promise<PaginatedAddressesResponse> {
+            return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${accountId}/${assetId}/addresses_paginated?${queryString.stringify(paginatedAddresseRequestFilters)}`);
         }
 
     /**
