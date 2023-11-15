@@ -73,7 +73,6 @@ import {
     PublicKeyInformation,
     DropTransactionResponse,
     TokenLink,
-    TokenLinkPermissionEntry,
     IssueTokenRequest,
     NFTOwnershipStatus,
     NFTOwnershipStatusUpdatedPayload,
@@ -101,14 +100,23 @@ import {
     UsersGroup,
     LeanContractTemplateDto,
     ContractTemplateDto,
-    BatchTask, BatchJob, JobCreatedResponse,
+    BatchTask,
+    BatchJob,
+    JobCreatedResponse,
     ContractUploadRequest,
     ContractDeployResponse,
     ContractDeployRequest,
     PendingTokenLinkDto,
-    TAP,
     ExchangeAccountsPageFilter,
     PagedExchangeResponse,
+    TAP,
+    WriteCallFunctionDto,
+    ReadCallFunctionDto,
+    WriteCallFunctionResponseDto,
+    ContractAbiResponseDto,
+    DeployedContractResponseDto,
+    LeanDeployedContractResponseDto,
+    ParameterWithValueList,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1690,6 +1698,55 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get all contracts by blockchain and template
+     * @param blockchainId
+     * @param templateId
+     */
+    public async getContractsByFilter(templateId: string, blockchainId?: string): Promise<LeanDeployedContractResponseDto[]> {
+        const requestFilter = {
+            templateId,
+            blockchainId,
+        };
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract?${queryString.stringify(requestFilter)}`);
+    }
+
+    /**
+     * Get contract by blockchain and address
+     * @param blockchainId
+     * @param templateId
+     */
+    public async getContractByAddress(blockchainId: string, contractAddress: string): Promise<DeployedContractResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}`);
+    }
+
+    /**
+     * Get contract's ABI by blockchain and address
+     * @param blockchainId
+     * @param templateId
+     */
+    public async getContractAbi(blockchainId: string, contractAddress: string): Promise<ContractAbiResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/abi`);
+    }
+
+    /**
+     * Call contract read function
+     * @param blockchainId
+     * @param templateId
+     */
+    public async readContractCallFunction(blockchainId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<ParameterWithValueList> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/read`, payload);
+    }
+
+    /**
+     * Call contract write function
+     * @param blockchainId
+     * @param templateId
+     */
+    public async writeContractCallFunction(blockchainId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/write`, payload);
+    }
+
+    /**
      * Issue a new token and link it to the tenant
      * @param payload
      */
@@ -1737,7 +1794,7 @@ export class FireblocksSDK {
     /**
      * Get all pending tokens linked to the tenant
      */
-    public async getPendingLinkedTokens(): Promise<TokenLink[]> {
+    public async getPendingLinkedTokens(): Promise<PendingTokenLinkDto[]> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/pending`);
     }
 

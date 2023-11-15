@@ -1513,7 +1513,6 @@ export interface ContractUploadRequest {
     docs?: ContractDoc;
     abi?: AbiFunction[];
     attributes?: Record<string, string>;
-    vendorId?: string;
 }
 interface AbiFunction {
     name?: string;
@@ -1578,6 +1577,7 @@ export interface ContractTemplateDto {
     id: string;
     name: string;
     description: string;
+    longDescription: string;
     compilerOutputMetadata?: object;
     abi: AbiFunction[];
     attributes?: Record<string, string>;
@@ -1587,14 +1587,11 @@ export interface ContractTemplateDto {
     isPublic: boolean;
 }
 
-export interface TokenLinkPermissionEntry {
-    permission: "MINT" | "BURN";
-    vaultAccountId: string;
-}
-
 export interface LinkedTokenMetadata {
     assetId: string;
     name?: string;
+    symbol?: string;
+    networkProtocol?: string;
     totalSupply?: string;
     holdersCount?: number;
     type?: string;
@@ -1602,12 +1599,12 @@ export interface LinkedTokenMetadata {
     issuerAddress?: string;
     testnet?: boolean;
     blockchain?: string;
+    decimals?: number;
+    vaultAccountId?: string;
 }
 export interface TokenLink {
-    id: string;
     assetId: string;
     assetMetadata?: LinkedTokenMetadata;
-    permissions: TokenLinkPermissionEntry[];
 }
 export interface PendingTokenLinkDto {
     id: number;
@@ -1616,6 +1613,28 @@ export interface PendingTokenLinkDto {
     symbol?: string;
     vaultAccountId?: string;
     blockchainId?: string;
+}
+
+export interface LeanDeployedContractResponseDto {
+    contractAddress: string;
+    blockchainId: string;
+    contractTemplateId: string;
+}
+
+export interface DeployedContractResponseDto extends LeanDeployedContractResponseDto {
+    id: string;
+    vaultAccountId?: string;
+}
+
+type ContractAbi = AbiFunction[];
+
+export interface ContractAbiResponseDto {
+    abi: ContractAbi;
+    implementationAbi?: ContractAbi;
+}
+
+export interface WriteCallFunctionResponseDto {
+    txId: string;
 }
 
 export interface IssueTokenRequest {
@@ -1675,10 +1694,24 @@ interface ParameterWithValue {
     description?: string;
     value: any;
 }
+export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueList[];
+
 
 interface EVMTokenCreateParamsDto {
     contractId: string;
     constructorParams?: Array<ParameterWithValue>;
+}
+
+export interface ReadCallFunctionDto {
+    abiFunction: AbiFunction;
+}
+
+export interface WriteCallFunctionDto {
+    vaultAccountId: string;
+    abiFunction: AbiFunction;
+    amount?: string;
+    feeLevel?: FeeLevel;
+    note?: string;
 }
 
 export enum SmartTransfersTicketDirection {
