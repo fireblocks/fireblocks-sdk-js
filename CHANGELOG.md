@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.9.0...v5.10.0)
+
+> 15 November 2023
+
+- contract-service - adding endpoints  [`#221`](https://github.com/fireblocks/fireblocks-sdk-js/pull/221)
+
 #### [v5.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.8.0...v5.9.0)
 
 > 17 October 2023
 
 - COR-31331: Add support paged exchange account endpoint [`#213`](https://github.com/fireblocks/fireblocks-sdk-js/pull/213)
+- feat: added multi nft token status update endpoint [`#214`](https://github.com/fireblocks/fireblocks-sdk-js/pull/214)
+- feat: NCW supported assets [`#215`](https://github.com/fireblocks/fireblocks-sdk-js/pull/215)
 
 #### [v5.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.7.0...v5.8.0)
 
