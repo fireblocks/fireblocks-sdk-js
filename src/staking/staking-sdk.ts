@@ -4,7 +4,7 @@ import {
     DelegationSummaryDtoByVault,
     ExecuteActionResponse,
     StakingAction,
-    StakingChain, StakingPosition, StakingValidator
+    StakingChain, StakingPosition, StakingProvider,
 } from "./types";
 
 export interface StakingSDK {
@@ -21,7 +21,12 @@ export interface StakingSDK {
     /**
      * Get staking positions summary
      */
-    getPositionsSummary(): Promise<DelegationSummaryDto | DelegationSummaryDtoByVault>;
+    getPositionsSummary(): Promise<DelegationSummaryDto>;
+
+    /**
+     * Get staking positions summary by vault
+     */
+    getPositionsSummaryByVault(): Promise<DelegationSummaryDtoByVault>;
 
     /**
      * Execute staking action on a chain
@@ -38,12 +43,12 @@ export interface StakingSDK {
     getPosition(positionId?: string): Promise<StakingPosition[]>;
 
     /**
-     * Get all staking validators, filtered by chain
+     * Get all staking providers
      */
-    getValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]>;
+    getProviders(): Promise<StakingProvider[]>;
 
     /**
      * Approve staking provider terms of service
      */
-    approveProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto>;
+    approveProviderTermsOfService(providerId: string): Promise<CheckTermsOfServiceResponseDto>;
 }

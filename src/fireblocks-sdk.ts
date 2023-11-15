@@ -119,7 +119,7 @@ import {
     DelegationSummaryDto,
     DelegationSummaryDtoByVault,
     ExecuteActionResponse, StakeRequestDto, StakingAction,
-    StakingChain, StakingPosition, StakingValidator, UnstakeRequestDto, WithdrawRequestDto
+    StakingChain, StakingPosition, StakingProvider, UnstakeRequestDto, WithdrawRequestDto
 } from "./staking";
 
 export * from "./types";
@@ -220,8 +220,14 @@ export class FireblocksSDK {
     /**
      * Get staking positions summary
      */
-    public async getStakingPositionsSummary(byVault?: boolean): Promise<DelegationSummaryDto | DelegationSummaryDtoByVault> {
-        return await this.stakingApiClient.getPositionsSummary(byVault);
+    public async getStakingPositionsSummary(): Promise<DelegationSummaryDto> {
+        return await this.stakingApiClient.getPositionsSummary();
+    }
+    /**
+     * Get staking positions summary by vault
+     */
+    public async getStakingPositionsSummaryByVault(): Promise<DelegationSummaryDtoByVault> {
+        return await this.stakingApiClient.getPositionsSummaryByVault();
     }
     /**
      * Execute staking action on a chain
@@ -242,16 +248,16 @@ export class FireblocksSDK {
         return await this.stakingApiClient.getPosition(positionId);
     }
     /**
-     * Get all staking validators, filtered by chain
+     * Get all staking providers
      */
-    public async getStakingValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]> {
-        return await this.stakingApiClient.getValidatorsByChain(chainDescriptor);
+    public async getStakingProviders(): Promise<StakingProvider[]> {
+        return await this.stakingApiClient.getProviders();
     }
     /**
      * Approve staking provider terms of service
      */
-    public async approveStakingProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto> {
-        return await this.stakingApiClient.approveProviderTermsOfService(validatorProviderId);
+    public async approveStakingProviderTermsOfService(providerId: string): Promise<CheckTermsOfServiceResponseDto> {
+        return await this.stakingApiClient.approveProviderTermsOfService(providerId);
     }
     /**
      * Gets all assets that are currently supported by Fireblocks
