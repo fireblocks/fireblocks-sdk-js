@@ -1587,14 +1587,11 @@ export interface ContractTemplateDto {
     isPublic: boolean;
 }
 
-export interface TokenLinkPermissionEntry {
-    permission: "MINT" | "BURN";
-    vaultAccountId: string;
-}
-
 export interface LinkedTokenMetadata {
     assetId: string;
     name?: string;
+    symbol?: string;
+    networkProtocol?: string;
     totalSupply?: string;
     holdersCount?: number;
     type?: string;
@@ -1602,12 +1599,12 @@ export interface LinkedTokenMetadata {
     issuerAddress?: string;
     testnet?: boolean;
     blockchain?: string;
+    decimals?: number;
+    vaultAccountId?: string;
 }
 export interface TokenLink {
-    id: string;
     assetId: string;
     assetMetadata?: LinkedTokenMetadata;
-    permissions: TokenLinkPermissionEntry[];
 }
 export interface PendingTokenLinkDto {
     id: number;
