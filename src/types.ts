@@ -1177,7 +1177,7 @@ export interface PaginatedAddressesResponse {
     };
 }
 
-export interface OptionalPaginatedAddresseRequestFilters {
+export interface OptionalPaginatedAddressesRequestFilters {
     limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
     before?: string;
     after?: string;
