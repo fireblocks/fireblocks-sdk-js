@@ -1162,7 +1162,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get addresses for a vault account for asset with paging
+     * Gets a paginated response of the addresses for a given vault account and asset
      */
         public async getPaginatedAddresses(vaultAccountId: string, assetId: string, paginatedAddressesRequestFilters?: OptionalPaginatedAddressesRequestFilters): Promise<PaginatedAddressesResponse> {
             return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses_paginated?${queryString.stringify(paginatedAddressesRequestFilters)}`);
