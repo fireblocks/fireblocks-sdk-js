@@ -1155,6 +1155,33 @@ export interface MaxBip44IndexUsedResponse {
     maxBip44AddressIndexUsed?: number;
     maxBip44ChangeAddressIndexUsed?: number;
 }
+export interface AddressResponse {
+    assetId: string;
+    address: string;
+    description?: string;
+    tag: string;
+    type?: number;
+    customerRefId?: number;
+    addressFormat: number;
+    legacyAddress?: string;
+    enterpriseAddress?: string;
+    bip44AddressIndex?: string;
+    userDefined: boolean;
+}
+
+export interface PaginatedAddressesResponse {
+    addresses: AddressResponse[];
+    paging?: {
+        before?: string;
+        after?: string;
+    };
+}
+
+export interface OptionalPaginatedAddressesRequestFilters {
+    limit?: number; // for default and max limit values please see: https://docs.fireblocks.com/api/swagger-ui/#/
+    before?: string;
+    after?: string;
+}
 
 export interface VaultAccountsFilter {
     namePrefix?: string;
