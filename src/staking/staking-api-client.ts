@@ -6,8 +6,8 @@ import {
     ExecuteActionResponse, StakeRequestDto,
     StakingAction,
     StakingChain,
-    StakingPosition,
-    StakingValidator, UnstakeRequestDto, WithdrawRequestDto,
+    StakingPosition, StakingProvider,
+    UnstakeRequestDto, WithdrawRequestDto,
 } from "./types";
 import { StakingSDK } from "./staking-sdk";
 import { ApiClient } from "../api-client";
@@ -22,8 +22,11 @@ export class StakingApiClient implements StakingSDK {
     public async getChainInfo(chainDescriptor: StakingChain): Promise<ChainInfo> {
         return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/chains/${chainDescriptor}/chainInfo`);
     }
-    public async getPositionsSummary(byVault?: boolean): Promise<DelegationSummaryDto | DelegationSummaryDtoByVault> {
-        return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/positions/summary${byVault ? "?byVault=true" : "?byVault=false"}`);
+    public async getPositionsSummary(): Promise<DelegationSummaryDto> {
+        return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/positions/summary`);
+    }
+    public async getPositionsSummaryByVault(): Promise<DelegationSummaryDtoByVault> {
+        return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/positions/summary/vaults`);
     }
     public async executeAction(
         actionId: StakingAction,
@@ -42,13 +45,11 @@ export class StakingApiClient implements StakingSDK {
     public async getPosition(positionId: string): Promise<StakingPosition[]> {
         return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/positions/${positionId}`);
     }
-    public async getValidatorsByChain(chainDescriptor: StakingChain): Promise<StakingValidator[]> {
-        return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/validators/${chainDescriptor}`);
+    public async getProviders(): Promise<StakingProvider[]> {
+        return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/providers`);
     }
-    public async approveProviderTermsOfService(validatorProviderId: string): Promise<CheckTermsOfServiceResponseDto> {
-        return await this.apiClient.issuePostRequest(`${STAKING_BASE_PATH}/providers/approveTermsOfService`, {
-            validatorProviderId,
-        });
+    public async approveProviderTermsOfService(providerId: string): Promise<CheckTermsOfServiceResponseDto> {
+        return await this.apiClient.issuePostRequest(`${STAKING_BASE_PATH}/providers/${providerId}/approveTermsOfService`, {});
     }
 }
 

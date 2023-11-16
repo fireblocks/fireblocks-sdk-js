@@ -1,4 +1,4 @@
-export enum PositionState {
+export enum PositionStatus {
     "error" = "error",
 
     "activating" = "activating",
@@ -15,7 +15,7 @@ interface ISolanaBlockchainData {
     /**
      * The stake account address matching the stakeAccountId
      */
-    stakeAccountAddress: string;
+    stakeAccountAddress?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -30,9 +30,9 @@ interface RelatedTransactionDto {
     txId: string;
 
     /**
-     * Is the transaction successful or not
+     * Is the transaction completed or not
      */
-    isSuccessful: boolean;
+    completed: boolean;
 }
 
 export interface StakingPosition {
@@ -40,6 +40,11 @@ export interface StakingPosition {
      * The unique identifier of the staking position
      */
     id: string;
+
+    /**
+     * The unique identifier of the staking provider
+     */
+    providerId: string;
 
     /**
      * The source vault account to stake from.
@@ -76,9 +81,9 @@ export interface StakingPosition {
     dateCreated: string;
 
     /**
-     * The current state.
+     * The current status.
      */
-    state: PositionState;
+    status: PositionStatus;
 
     /**
      * An array of transaction objects related to this position.
@@ -90,12 +95,12 @@ export interface StakingPosition {
     /**
      * Indicates whether there is an ongoing action for this position (true if ongoing, false if not).
      */
-    ongoingRequest?: boolean;
+    inProgress: boolean;
 
     /**
      * The transaction ID of the ongoing request
      */
-    onGoingRequestTxId?: string;
+    inProgressTxId?: string;
 
     /**
      * Additional fields per blockchain - can be empty or missing if not initialized or no additional info exists.
@@ -103,7 +108,7 @@ export interface StakingPosition {
      * For Solana (SOL), stake account address.
      * For Ethereum (ETH), an empty object is returned as no specific data is available.
      */
-    blockchainPositionInfo?: TBlockchainPositionInfo;
+    blockchainPositionInfo: TBlockchainPositionInfo;
 
     /**
      * The destination address of the staking transaction.
@@ -116,52 +121,37 @@ export interface StakingPosition {
     availableActions: string[];
 }
 
-export interface StakingValidator {
+export interface ValidatorDto {
     /**
-     * Blockchain descriptor for the validator
+     * The protocol identifier (e.g. "ETH"/"SOL") of the validator
      */
     chainDescriptor: string;
-
+    /**
+     * The service fee as a percentage out of the earned rewards
+     */
+    feePercent: number;
+}
+export interface StakingProvider {
     /**
      * The ID of the provider
      */
-    providerId: number;
-
-    /**
-     * The ID of the validator
-     */
-    validatorId: number;
-
-    /**
-     * The destination address of the staking transaction
-     */
-    validatorAddress: string;
-
-    /**
-     * Percentage fee charged by the validator
-     */
-    feePercent: number;
-
-    /**
-     * Name of the validator
-     */
-    validatorName: string;
-
+    id: string;
     /**
      * Name of the provider
      */
     providerName: string;
-
+    /**
+     * An array of objects that includes chain descriptors and the corresponding fee percentages for validators supported by the provider
+     */
+    validators: ValidatorDto[];
     /**
      * URL to the validator's icon
      */
     iconUrl: string;
-
     /**
      * URL to the terms of service
      */
     termsOfServiceUrl: string;
-
     /**
      * Indicates whether the terms of service are approved"
      */
@@ -190,12 +180,7 @@ export enum StakingChain {
 /**
  * Check terms of service response
  */
-export interface CheckTermsOfServiceResponseDto {
-    /**
-     * True if the terms and services were previously approved
-     */
-    isPreviouslyApproved: boolean;
-}
+export interface CheckTermsOfServiceResponseDto {}
 
 export interface ChainInfo {
     chainId: string;
@@ -218,9 +203,9 @@ export interface DelegationSummaryDto {
     active: AmountAndChainDescriptor[];
 
     /**
-     * An array of objects containing chain descriptors and associated amounts, representing inActive positions.
+     * An array of objects containing chain descriptors and associated amounts, representing inactive positions.
      */
-    inActive: AmountAndChainDescriptor[];
+    inactive: AmountAndChainDescriptor[];
 
     /**
      * An array of objects containing chain descriptors and associated amounts, representing rewards positions.
@@ -249,9 +234,9 @@ export interface StakeRequestDto {
     vaultAccountId: string;
 
     /**
-     * The destination validator address id. The blockchain is used implicitly (it's associated with the address)
+     * The ID of the provider
      */
-    validatorAddressId: string;
+    providerId: string;
 
     /**
      * Amount of tokens to stake
