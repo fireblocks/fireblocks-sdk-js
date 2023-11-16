@@ -778,12 +778,12 @@ export class FireblocksSDK {
      * @param vaultAccountId
      * @param name A new name for the vault account
      */
-    public async updateVaultAccount(vaultAccountId: string, name: string, requestOptions?: RequestOptions): Promise<VaultAccountResponse> {
+    public async updateVaultAccount(vaultAccountId: string, name: string): Promise<VaultAccountResponse> {
         const body = {
             name: name
         };
 
-        return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}`, body, requestOptions);
+        return await this.apiClient.issuePutRequest(`/v1/vault/accounts/${vaultAccountId}`, body);
     }
 
     /**
