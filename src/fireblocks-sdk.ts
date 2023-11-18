@@ -118,7 +118,7 @@ import {
     ContractAbiResponseDto,
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
-    ParameterWithValueList,
+    ParameterWithValueList, ScreeningTenantConfiguration,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1893,6 +1893,43 @@ export class FireblocksSDK {
      */
     public async updateTravelRulePolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
         return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/policy_configuration`, screeningPolicyConfiguration);
+    }
+
+    /**
+     * Get PostScreening Policies for AML/KYT compliance
+     */
+    public async getTravelAMLScreeningPolicy(): Promise<TravelRuleRulesConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/aml/post_screening_policy`);
+    }
+
+    /**
+     * Get Screening Policies for AML/KYT compliance
+     */
+    public async getAMLScreeningPolicy(): Promise<TravelRulePolicy> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/aml/screening_policy`);
+    }
+
+    /**
+     * Get Screening Configuration for AML/KYT compliance
+     */
+    public async getAMLScreeningConfiguration(): Promise<ScreeningPolicyConfiguration> {
+        return await this.apiClient.issueGetRequest(`/v1/screening/aml/policy_configuration`);
+    }
+
+    /**
+     * Update Bypass Screening Configuration for AML/KYT compliance
+     * @param screeningPolicyConfiguration
+     */
+    public async updateAMLPolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/aml/policy_configuration`, screeningPolicyConfiguration);
+    }
+
+    /**
+     * Update Bypass Screening Configuration for AML/KYT compliance
+     * @param screeningTenantConfiguration
+     */
+    public async updateTenantScreeningConfiguration(screeningTenantConfiguration: ScreeningTenantConfiguration): Promise<ScreeningTenantConfiguration> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/config`, screeningTenantConfiguration);
     }
 
     /**

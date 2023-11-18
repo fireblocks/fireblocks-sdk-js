@@ -512,6 +512,11 @@ export interface ScreeningPolicyConfiguration {
     outboundTransactionDelay?: number;
 }
 
+export interface ScreeningTenantConfiguration {
+    disableBypass: boolean;
+    disableUnfreeze: boolean;
+}
+
 export enum TravelRuleAction {
     screen = "SCREEN",
     pass = "PASS",
