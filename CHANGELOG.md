@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.9.0...v5.10.0)
+#### [v5.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.9.0...v5.11.0)
 
-> 15 November 2023
+> 16 November 2023
 
-- contract-service - adding endpoints  [`#221`](https://github.com/fireblocks/fireblocks-sdk-js/pull/221)
+- staking-sdk: update staking sdk [`#222`](https://github.com/fireblocks/fireblocks-sdk-js/pull/222)
 
 #### [v5.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.8.0...v5.9.0)
 
