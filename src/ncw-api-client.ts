@@ -32,6 +32,11 @@ export class NcwApiClient implements NcwSdk {
             `${this.NCW_BASE_PATH}/${walletId}`);
     }
 
+    public async getLatestBackup(walletId: string): Promise<NCW.LatestBackupResponse> {
+        return await this.apiClient.issueGetRequest(
+            `${this.NCW_BASE_PATH}/${walletId}/backup/latest`);
+    }
+
     public async enableWallet(walletId: string, enabled: boolean): Promise<void> {
         return await this.apiClient.issuePutRequest(
             `${this.NCW_BASE_PATH}/${walletId}/enable`,
