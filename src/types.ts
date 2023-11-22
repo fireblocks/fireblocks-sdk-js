@@ -586,6 +586,8 @@ export interface TravelRulePolicy {
     lastUpdate: Date;
 }
 
+export type ScreeningType = "travel_rule" | "aml";
+
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",

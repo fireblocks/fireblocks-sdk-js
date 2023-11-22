@@ -118,7 +118,7 @@ import {
     ContractAbiResponseDto,
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
-    ParameterWithValueList, ScreeningTenantConfiguration,
+    ParameterWithValueList, ScreeningTenantConfiguration, ScreeningType,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1867,61 +1867,40 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get PostScreening Policies for travel rule compliance
+     * Get PostScreening Policies for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRulePostScreeningPolicy(): Promise<TravelRuleRulesConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/post_screening_policy`);
+    private async getPostScreeningPolicy(screeningType: ScreeningType): Promise<any> {
+        const endpoint = `/v1/screening/${screeningType}/post_screening_policy`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Get Screening Policies for travel rule compliance
+     * Get Screening Policies for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRuleScreeningPolicy(): Promise<TravelRulePolicy> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/screening_policy`);
+    private async getScreeningPolicy(screeningType: ScreeningType): Promise<any> {
+        const endpoint = `/v1/screening/${screeningType}/screening_policy`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Get Screening Configuration for travel rule compliance
+     * Get Screening Configuration for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRuleScreeningConfiguration(): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/policy_configuration`);
+    private async getScreeningConfiguration(screeningType: ScreeningType): Promise<any> {
+        const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Update Bypass Screening Configuration for travel rule compliance
-     * @param screeningPolicyConfiguration
+     * Update Bypass Screening Configuration for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
+     * @param screeningPolicyConfiguration The configuration to update
      */
-    public async updateTravelRulePolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/policy_configuration`, screeningPolicyConfiguration);
-    }
-
-    /**
-     * Get PostScreening Policies for AML/KYT compliance
-     */
-    public async getTravelAMLScreeningPolicy(): Promise<TravelRuleRulesConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/aml/post_screening_policy`);
-    }
-
-    /**
-     * Get Screening Policies for AML/KYT compliance
-     */
-    public async getAMLScreeningPolicy(): Promise<TravelRulePolicy> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/aml/screening_policy`);
-    }
-
-    /**
-     * Get Screening Configuration for AML/KYT compliance
-     */
-    public async getAMLScreeningConfiguration(): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/aml/policy_configuration`);
-    }
-
-    /**
-     * Update Bypass Screening Configuration for AML/KYT compliance
-     * @param screeningPolicyConfiguration
-     */
-    public async updateAMLPolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issuePutRequest(`/v1/screening/aml/policy_configuration`, screeningPolicyConfiguration);
+    private async updatePolicyConfiguration(screeningType: ScreeningType, screeningPolicyConfiguration: any): Promise<any> {
+        const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
+        return await this.apiClient.issuePutRequest(endpoint, screeningPolicyConfiguration);
     }
 
     /**
