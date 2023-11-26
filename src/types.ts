@@ -1201,6 +1201,15 @@ export interface PagedVaultAccountsRequestFilters {
     after?: string;
 }
 
+export interface GetAssetWalletsFilters {
+    assetId?: string;
+    totalAmountLargerThan?: number;
+    orderBy?: "ASC" | "DESC";
+    limit?: number;
+    before?: string;
+    after?: string;
+}
+
 export interface PagedVaultAccountsResponse {
     accounts: VaultAccountResponse[];
     paging?: {
@@ -1209,6 +1218,28 @@ export interface PagedVaultAccountsResponse {
     };
     previousUrl?: string;
     nextUrl?: string;
+}
+
+export interface AssetWalletsResponse {
+    vaultId: string;
+    assetId: string;
+    available: string;
+    total: string;
+    pending: string;
+    staked: string;
+    frozen: string;
+    lockedAmount: string;
+    blockHeight: string;
+    blockHash: string;
+    creationTime: string;
+}
+
+export interface GetAssetWalletsResponse {
+    assetWallets: AssetWalletsResponse[];
+    paging: {
+        after?: string;
+        before?: string;
+    }
 }
 
 export interface VaultBalancesFilter {

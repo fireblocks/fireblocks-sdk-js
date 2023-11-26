@@ -64,16 +64,18 @@ import {
     GetWeb3ConnectionsPayload,
     PublicKeyResponse,
     AllocateFundsResponse,
-    SettleOffExchangeAccountResponse,
     AddCollateralTransactionRequest,
     RemoveCollateralTransactionRequest,
     GetSettlementTransactionsResponse,
     SettlementRequest,
     SettlementResponse,
     GetNFTsFilter,
-    PeerType,
+    SettleOffExchangeAccountResponse,
     PublicKeyInformation,
     DropTransactionResponse,
+    GetAssetWalletsFilters,
+    GetAssetWalletsResponse,
+    PeerType,
     TokenLink,
     IssueTokenRequest,
     NFTOwnershipStatus,
@@ -283,6 +285,15 @@ export class FireblocksSDK {
     public async getVaultAccountsWithPageInfo(pagedVaultAccountsRequestFilters: PagedVaultAccountsRequestFilters): Promise<PagedVaultAccountsResponse> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts_paged?${queryString.stringify(pagedVaultAccountsRequestFilters)}`);
     }
+
+    /**
+     * Gets a list of asset wallets per page matching the given filter or path
+     * @param getVaultWalletsFilters Filters for the first request
+     */
+    public async getAssetWallets(getVaultWalletsFilters: GetAssetWalletsFilters): Promise<GetAssetWalletsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/asset_wallets?${queryString.stringify(getVaultWalletsFilters)}`);
+    }
+
     /**
      * Gets a single vault account
      * @param vaultAccountId The vault account ID
