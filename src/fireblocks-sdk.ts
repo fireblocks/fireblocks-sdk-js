@@ -121,6 +121,7 @@ import {
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
     ParameterWithValueList,
+    UsageResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1253,6 +1254,35 @@ export class FireblocksSDK {
      public async resendTransactionWebhooksById(txId: string, resendCreated?: boolean, resendStatusUpdated?: boolean, requestOptions?: RequestOptions): Promise<ResendWebhooksResponse> {
         const body = { resendCreated, resendStatusUpdated };
         return await this.apiClient.issuePostRequest(`/v1/webhooks/resend/${txId}`, body, requestOptions);
+    }
+
+    /**
+     * Gets the total usage metrics for your tenant
+     * @param metrics
+     */
+    public async getTotalUsage(metrics?: string): Promise<UsageResponse> {
+        let url = "/v1/usage/total";
+        if (metrics) {
+            url += `?metrics=${metrics}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
+    }
+
+    /**
+     * Gets the periodic usage metrics for your tenant
+     * @param from
+     * @param to
+     * @param metrics
+     */
+    public async getPeriodicUsage(from: string, to?: string, metrics?: string): Promise<UsageResponse> {
+        let url = `/v1/usage/periodic?from=${from}`;
+        if (to) {
+            url += `&to=${to}`;
+        }
+        if (metrics) {
+            url += `&metrics=${metrics}`;
+        }
+        return await this.apiClient.issueGetRequest(url);
     }
 
     /**

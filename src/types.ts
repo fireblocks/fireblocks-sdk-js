@@ -1239,7 +1239,7 @@ export interface GetAssetWalletsResponse {
     paging: {
         after?: string;
         before?: string;
-    }
+    };
 }
 
 export interface VaultBalancesFilter {
@@ -1268,6 +1268,8 @@ export interface AssetTypeResponse {
     nativeAsset: string;
     decimals?: number;
 }
+
+export type UsageResponse = Record<string, number>;
 
 export interface User {
     id: string;
