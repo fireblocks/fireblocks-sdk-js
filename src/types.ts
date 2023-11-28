@@ -1239,7 +1239,7 @@ export interface GetAssetWalletsResponse {
     paging: {
         after?: string;
         before?: string;
-    }
+    };
 }
 
 export interface VaultBalancesFilter {
@@ -1561,17 +1561,33 @@ export enum NFTOwnershipWalletType {
     "END_USER_WALLET" = "END_USER_WALLET",
 }
 
+export enum ContractTemplateType {
+    FUNGIBLE_TOKEN = "FUNGIBLE_TOKEN",
+    NON_FUNGIBLE_TOKEN = "NON_FUNGIBLE_TOKEN",
+    NON_TOKEN = "NON_TOKEN",
+    UUPS_PROXY = "UUPS_PROXY",
+}
+
+export enum ContractInitializationPhase {
+    ON_DEPLOYMENT = "ON_DEPLOYMENT",
+    POST_DEPLOYMENT = "POST_DEPLOYMENT",
+}
+
 export interface ContractUploadRequest {
     name: string;
     description: string;
     longDescription: string;
     bytecode: string;
     sourcecode: string;
+    type?: ContractTemplateType;
+    implementationContractId?: string;
+    initializationPhase: ContractInitializationPhase;
     compilerOutputMetadata?: object;
     docs?: ContractDoc;
     abi?: AbiFunction[];
     attributes?: Record<string, string>;
 }
+
 interface AbiFunction {
     name?: string;
     stateMutability?: string;
@@ -1643,6 +1659,10 @@ export interface ContractTemplateDto {
     owner?: string;
     vendor?: VendorDto;
     isPublic: boolean;
+    canDeploy: boolean;
+    type: ContractTemplateType;
+    implementationContractId?: string;
+    initializationPhase: ContractInitializationPhase;
 }
 
 export interface LinkedTokenMetadata {
