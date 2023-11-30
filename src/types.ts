@@ -9,7 +9,7 @@ export interface Web3PagedResponse<T> {
     paging?: Paging;
 }
 
-export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+export type APIResponseHeaders = AxiosResponseHeaders & { "x-request-id"?: string };
 
 export interface VaultAccountResponse {
     id: string;
@@ -807,8 +807,14 @@ export interface NoneNetworkRoutingDest {
     scheme: NetworkScheme.NONE;
 }
 
-export type NetworkConnectionCryptoRoutingDest = CustomCryptoRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
-export type NetworkConnectionFiatRoutingDest = CustomFiatRoutingDest | DefaultNetworkRoutingDest | NoneNetworkRoutingDest;
+export type NetworkConnectionCryptoRoutingDest =
+    CustomCryptoRoutingDest
+    | DefaultNetworkRoutingDest
+    | NoneNetworkRoutingDest;
+export type NetworkConnectionFiatRoutingDest =
+    CustomFiatRoutingDest
+    | DefaultNetworkRoutingDest
+    | NoneNetworkRoutingDest;
 export type NetworkIdCryptoRoutingDest = CustomCryptoRoutingDest | NoneNetworkRoutingDest;
 export type NetworkIdFiatRoutingDest = CustomFiatRoutingDest | NoneNetworkRoutingDest;
 
@@ -1155,6 +1161,7 @@ export interface MaxBip44IndexUsedResponse {
     maxBip44AddressIndexUsed?: number;
     maxBip44ChangeAddressIndexUsed?: number;
 }
+
 export interface AddressResponse {
     assetId: string;
     address: string;
@@ -1387,6 +1394,7 @@ export interface FeePayerConfiguration {
 export interface BaseWeb3ConnectionPayload {
     feeLevel: Web3ConnectionFeeLevel;
 }
+
 export interface WorkspaceWalletIdentifier {
     vaultAccountId: number;
 }
@@ -1401,7 +1409,9 @@ export interface WalletConnectConnectionPayload {
     chainIds?: string[];
 }
 
-export type CreateWeb3ConnectionPayload = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseWeb3ConnectionPayload;
+export type CreateWeb3ConnectionPayload =
+    (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier)
+    & BaseWeb3ConnectionPayload;
 
 export type CreateWalletConnectPayload = CreateWeb3ConnectionPayload & WalletConnectConnectionPayload;
 
@@ -1573,6 +1583,32 @@ export enum ContractInitializationPhase {
     POST_DEPLOYMENT = "POST_DEPLOYMENT",
 }
 
+export enum InputFieldMetadataTypes {
+    EncodedFunctionCallFieldType = "encodedFunctionCall",
+    DeployedContractAddressFieldType = "deployedContractAddress",
+    SupportedAssetAddressFieldType = "supportedAssetAddress",
+}
+
+export class EncodedFunctionCallFieldMetadata {
+    templateId: string;
+    functionSignature: string;
+}
+
+export class DeployedContractAddressFieldMetadata {
+    templateId: string;
+}
+
+
+export class FieldMetadata {
+    type: string | InputFieldMetadataTypes;
+    info: EncodedFunctionCallFieldMetadata | DeployedContractAddressFieldMetadata;
+}
+
+
+export interface InputFieldsMetadata {
+    [contractMethod: string]: Record<string, FieldMetadata>;
+}
+
 export interface ContractUploadRequest {
     name: string;
     description: string;
@@ -1583,6 +1619,7 @@ export interface ContractUploadRequest {
     implementationContractId?: string;
     initializationPhase: ContractInitializationPhase;
     compilerOutputMetadata?: object;
+    inputFieldsMetadata?: InputFieldsMetadata;
     docs?: ContractDoc;
     abi?: AbiFunction[];
     attributes?: Record<string, string>;
@@ -1598,13 +1635,26 @@ interface AbiFunction {
     returns?: Record<string, string>;
 }
 
-interface Parameter {
+export type ValueType = string | number | boolean | ValueType[];
+
+export interface LeanAbiFunction {
+    name?: string;
+    inputs: ParameterWithValue[];
+}
+
+export interface Parameter {
     name: string;
     description?: string;
     internalType: string;
     type: string;
     components?: Parameter[];
 }
+
+interface ParameterWithValue extends Parameter {
+    value?: ValueType | ParameterWithValueList;
+    functionValue?: LeanAbiFunction;
+}
+
 interface ContractDoc {
     details?: string;
     events?: string;
@@ -1618,6 +1668,7 @@ interface FunctionDoc {
     params?: Record<string, string>;
     returns?: Record<string, string>;
 }
+
 interface VendorDto {
     id: string;
     name: string;
@@ -1627,7 +1678,7 @@ interface VendorDto {
 export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
-    constructorParameters?: object[];
+    constructorParameters?: ParameterWithValue[];
 }
 
 export interface ContractDeployResponse {
@@ -1680,10 +1731,12 @@ export interface LinkedTokenMetadata {
     decimals?: number;
     vaultAccountId?: string;
 }
+
 export interface TokenLink {
     assetId: string;
     assetMetadata?: LinkedTokenMetadata;
 }
+
 export interface PendingTokenLinkDto {
     id: number;
     txId?: string;
@@ -1765,13 +1818,7 @@ interface StellarRippleCreateParamsDto {
     issuerAddress?: string;
 }
 
-interface ParameterWithValue {
-    internalType: string;
-    name: string;
-    type: string;
-    description?: string;
-    value: any;
-}
+
 export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueList[];
 
 
@@ -1823,6 +1870,7 @@ export interface SmartTransfersTicketTermPayload {
     fromNetworkId: string;
     toNetworkId: string;
 }
+
 export interface SmartTransfersTicketCreatePayload {
     createdByNetworkId: string;
     type: string;
@@ -1975,6 +2023,7 @@ export namespace NCW {
         blockchainDisplayName?: string;
         blockchainId?: string;
     }
+
     export interface WalletAssetAddress {
         accountName: string;
         accountId: string;
