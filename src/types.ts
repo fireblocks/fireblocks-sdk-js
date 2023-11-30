@@ -1600,7 +1600,7 @@ export interface DeployedContractAddressFieldMetadata {
 
 
 export interface FieldMetadata {
-    type: string | InputFieldMetadataTypes;
+    type: InputFieldMetadataTypes;
     info: EncodedFunctionCallFieldMetadata | DeployedContractAddressFieldMetadata;
 }
 
