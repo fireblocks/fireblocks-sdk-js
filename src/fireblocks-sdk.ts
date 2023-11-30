@@ -1260,10 +1260,10 @@ export class FireblocksSDK {
      * Gets the total usage metrics for your tenant
      * @param metrics
      */
-    public async getTotalUsage(metrics?: string): Promise<UsageResponse> {
+    public async getTotalUsage(metrics?: string[]): Promise<UsageResponse> {
         let url = "/v1/usage/total";
         if (metrics) {
-            url += `?metrics=${metrics}`;
+            url += `?metrics=${metrics.join(",")}`;
         }
         return await this.apiClient.issueGetRequest(url);
     }
@@ -1274,13 +1274,13 @@ export class FireblocksSDK {
      * @param to
      * @param metrics
      */
-    public async getPeriodicUsage(from: string, to?: string, metrics?: string): Promise<UsageResponse> {
+    public async getPeriodicUsage(from: string, to?: string, metrics?: string[]): Promise<UsageResponse> {
         let url = `/v1/usage/periodic?from=${from}`;
         if (to) {
             url += `&to=${to}`;
         }
         if (metrics) {
-            url += `&metrics=${metrics}`;
+            url += `&metrics=${metrics.join(",")}`;
         }
         return await this.apiClient.issueGetRequest(url);
     }
