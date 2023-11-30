@@ -1589,17 +1589,17 @@ export enum InputFieldMetadataTypes {
     SupportedAssetAddressFieldType = "supportedAssetAddress",
 }
 
-export class EncodedFunctionCallFieldMetadata {
+export interface EncodedFunctionCallFieldMetadata {
     templateId: string;
     functionSignature: string;
 }
 
-export class DeployedContractAddressFieldMetadata {
+export interface DeployedContractAddressFieldMetadata {
     templateId: string;
 }
 
 
-export class FieldMetadata {
+export interface FieldMetadata {
     type: string | InputFieldMetadataTypes;
     info: EncodedFunctionCallFieldMetadata | DeployedContractAddressFieldMetadata;
 }
