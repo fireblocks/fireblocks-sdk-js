@@ -93,6 +93,7 @@ import {
     SmartTransfersTicketTermResponse,
     ConsoleUser,
     ApiUser,
+    TRole,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1147,7 +1148,7 @@ export class FireblocksSDK {
      * @param role role of the user, for example: "ADMIN"
      * @param requestOptions
      */
-    public async createConsoleUser(firstName: string, lastName: string, email: string, role: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+    public async createConsoleUser(firstName: string, lastName: string, email: string, role: TRole, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = { firstName, lastName, email, role };
         return await this.apiClient.issuePostRequest("/v1/management/console-users", body, requestOptions);
     }
@@ -1161,7 +1162,7 @@ export class FireblocksSDK {
      * @param coSignerSetup your cosigner, for example: "SGX_MACHINE", read more: https://developers.fireblocks.com/docs/quickstart
      * @param coSignerSetupIsFirstUser [SGX server enabled only] If you are the first user to be configured on this SGX-enabled Co-Signer server, this has to be true
      */
-    public async createApiUser(name: string, role: string, csrPem: string, coSignerSetup?: string, coSignerSetupIsFirstUser?: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+    public async createApiUser(name: string, role: TRole, csrPem: string, coSignerSetup?: string, coSignerSetupIsFirstUser?: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = { name, role, csrPem, coSignerSetup, coSignerSetupIsFirstUser };
         return await this.apiClient.issuePostRequest("/v1/management/api-users", body, requestOptions);
     }
