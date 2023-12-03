@@ -2,11 +2,27 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.9.0...v5.11.0)
+#### [v5.12.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.11.0...v5.12.0)
+
+> 28 November 2023
+
+- Added sourceWalletId for NCW under TransactionFilter [`#228`](https://github.com/fireblocks/fireblocks-sdk-js/pull/228)
+
+#### [v5.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.10.0...v5.11.0)
 
 > 16 November 2023
 
 - staking-sdk: update staking sdk [`#222`](https://github.com/fireblocks/fireblocks-sdk-js/pull/222)
+- Revert mistake in updateVaultAccount [`#224`](https://github.com/fireblocks/fireblocks-sdk-js/pull/224)
+- Add getPaginatedAddresses method [`#223`](https://github.com/fireblocks/fireblocks-sdk-js/pull/223)
+
+#### [v5.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.9.0...v5.10.0)
+
+> 15 November 2023
+
+- contract-service - adding endpoints  [`#221`](https://github.com/fireblocks/fireblocks-sdk-js/pull/221)
+- added bulk functions [`#209`](https://github.com/fireblocks/fireblocks-sdk-js/pull/209)
+- Staking sdk [`#216`](https://github.com/fireblocks/fireblocks-sdk-js/pull/216)
 
 #### [v5.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.8.0...v5.9.0)
 

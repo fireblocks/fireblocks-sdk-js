@@ -1240,7 +1240,7 @@ export interface GetAssetWalletsResponse {
     paging: {
         after?: string;
         before?: string;
-    }
+    };
 }
 
 export interface VaultBalancesFilter {
