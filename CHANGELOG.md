@@ -2,6 +2,84 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.12.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.11.0...v5.12.0)
+
+> 28 November 2023
+
+- Added sourceWalletId for NCW under TransactionFilter [`#228`](https://github.com/fireblocks/fireblocks-sdk-js/pull/228)
+
+#### [v5.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.10.0...v5.11.0)
+
+> 16 November 2023
+
+- staking-sdk: update staking sdk [`#222`](https://github.com/fireblocks/fireblocks-sdk-js/pull/222)
+- Revert mistake in updateVaultAccount [`#224`](https://github.com/fireblocks/fireblocks-sdk-js/pull/224)
+- Add getPaginatedAddresses method [`#223`](https://github.com/fireblocks/fireblocks-sdk-js/pull/223)
+
+#### [v5.10.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.9.0...v5.10.0)
+
+> 15 November 2023
+
+- contract-service - adding endpoints  [`#221`](https://github.com/fireblocks/fireblocks-sdk-js/pull/221)
+- added bulk functions [`#209`](https://github.com/fireblocks/fireblocks-sdk-js/pull/209)
+- Staking sdk [`#216`](https://github.com/fireblocks/fireblocks-sdk-js/pull/216)
+
+#### [v5.9.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.8.0...v5.9.0)
+
+> 17 October 2023
+
+- COR-31331: Add support paged exchange account endpoint [`#213`](https://github.com/fireblocks/fireblocks-sdk-js/pull/213)
+- feat: added multi nft token status update endpoint [`#214`](https://github.com/fireblocks/fireblocks-sdk-js/pull/214)
+- feat: NCW supported assets [`#215`](https://github.com/fireblocks/fireblocks-sdk-js/pull/215)
+
+#### [v5.8.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.7.0...v5.8.0)
+
+> 28 September 2023
+
+- contract-registry - adding endpoints [`#210`](https://github.com/fireblocks/fireblocks-sdk-js/pull/210)
+- added sort to transaction filter [`#185`](https://github.com/fireblocks/fireblocks-sdk-js/pull/185)
+
+#### [v5.7.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.1...v5.7.0)
+
+> 19 September 2023
+
+- Travel Rule Configuration and Policy routes [`#187`](https://github.com/fireblocks/fireblocks-sdk-js/pull/187)
+- Change Collection and Token response [`#205`](https://github.com/fireblocks/fireblocks-sdk-js/pull/205)
+- feat: adding tap endpoints [`#207`](https://github.com/fireblocks/fireblocks-sdk-js/pull/207)
+
+#### [v5.6.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.6.0...v5.6.1)
+
+> 5 September 2023
+
+- Added list owned assets endpoint and NCW for NFTs [`#206`](https://github.com/fireblocks/fireblocks-sdk-js/pull/206)
+- Add Smart Transfers user groups endpoints [`#202`](https://github.com/fireblocks/fireblocks-sdk-js/pull/202)
+
+#### [v5.6.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.1...v5.6.0)
+
+> 24 August 2023
+
+- added registry endpoint for uploading contracts [`#190`](https://github.com/fireblocks/fireblocks-sdk-js/pull/190)
+
+#### [v5.5.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.5.0...v5.5.1)
+
+> 23 August 2023
+
+- Rename NCW base path [`#198`](https://github.com/fireblocks/fireblocks-sdk-js/pull/198)
+
+#### [v5.5.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.4.0...v5.5.0)
+
+> 22 August 2023
+
+- fix: add NCW methods [`#197`](https://github.com/fireblocks/fireblocks-sdk-js/pull/197)
+- add NCW feature [`#192`](https://github.com/fireblocks/fireblocks-sdk-js/pull/192)
+- changed return type to pending instead of TokenLink [`#188`](https://github.com/fireblocks/fireblocks-sdk-js/pull/188)
+
+#### [v5.4.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.1...v5.4.0)
+
+> 7 August 2023
+
+- Support users groups crud [`#179`](https://github.com/fireblocks/fireblocks-sdk-js/pull/179)
+
 #### [v5.3.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.3.0...v5.3.1)
 
 > 2 August 2023
