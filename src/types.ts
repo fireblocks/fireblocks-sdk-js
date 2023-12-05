@@ -1280,16 +1280,16 @@ export interface User {
 }
 
 
-export type TRole = 
-	"ADMIN" |
-    "SIGNER" |
-    "EDITOR" |
-    "APPROVER" |
-    "VIEWER" |
-	"NON_SIGNING_ADMIN" |
-	"AUDITOR" |
-    "NCW_ADMIN" |
-    "NCW_SIGNER";
+export type TRole =
+  | "ADMIN"
+  | "SIGNER"
+  | "EDITOR"
+  | "APPROVER"
+  | "VIEWER"
+  | "NON_SIGNING_ADMIN"
+  | "AUDITOR"
+  | "NCW_ADMIN"
+  | "NCW_SIGNER";
 
 interface BaseUser {
     id: string;
