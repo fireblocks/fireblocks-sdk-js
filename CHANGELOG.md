@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.13.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.12.0...v5.13.0)
+
+> 7 December 2023
+
+- Bump axios from 0.27.2 to 1.6.0 [`#231`](https://github.com/fireblocks/fireblocks-sdk-js/pull/231)
+
 #### [v5.12.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.11.0...v5.12.0)
 
 > 28 November 2023
 
 - Added sourceWalletId for NCW under TransactionFilter [`#228`](https://github.com/fireblocks/fireblocks-sdk-js/pull/228)
+- Add get asset wallets paginated endpoint [`#150`](https://github.com/fireblocks/fireblocks-sdk-js/pull/150)
 
 #### [v5.11.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.10.0...v5.11.0)
 
