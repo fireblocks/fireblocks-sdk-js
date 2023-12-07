@@ -1902,6 +1902,19 @@ export namespace NCW {
         enabled: boolean;
     }
 
+    export class LatestBackupKey {
+        deviceId: string;
+        publicKey: string;
+        keyId: string;
+        algorithm: string;
+    }
+
+    export class LatestBackupResponse {
+        passphraseId: string;
+        createdAt: number;
+        keys: Array<LatestBackupKey>;
+    }
+
     export interface GetWalletsPayload {
         pageCursor?: string;
         pageSize?: number;

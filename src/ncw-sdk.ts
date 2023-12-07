@@ -20,6 +20,14 @@ export interface NcwSdk {
      */
     getWallet(walletId: string): Promise<{ walletId: string; enabled: boolean; }>;
 
+
+    /**
+     * Get NCW wallet's latest backup
+     *
+     * @param {string} walletId
+     */
+    getLatestBackup(walletId: string): Promise<NCW.LatestBackupResponse>;
+
     /**
      * Enable a NCW wallet
      *
