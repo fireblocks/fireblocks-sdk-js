@@ -97,8 +97,6 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     ScreeningPolicyConfiguration,
-    TravelRulePolicy,
-    TravelRuleRulesConfiguration,
     SmartTransfersTicketTermResponse,
     ConsoleUser,
     ApiUser,
@@ -124,6 +122,10 @@ import {
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
     ParameterWithValueList,
+    ScreeningTenantConfiguration,
+    ScreeningType,
+    ScreeningConfigurationsResponse,
+    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1939,32 +1941,48 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get PostScreening Policies for travel rule compliance
+     * Get PostScreening Policies for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRulePostScreeningPolicy(): Promise<TravelRuleRulesConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/post_screening_policy`);
+    private async getPostScreeningPolicy(screeningType: ScreeningType): Promise<ScreeningProviderConfigurationResponse> {
+        const endpoint = `/v1/screening/${screeningType}/post_screening_policy`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Get Screening Policies for travel rule compliance
+     * Get Screening Policies for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRuleScreeningPolicy(): Promise<TravelRulePolicy> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/screening_policy`);
+    private async getScreeningPolicy(screeningType: ScreeningType): Promise<ScreeningPolicyRuleResponse> {
+        const endpoint = `/v1/screening/${screeningType}/screening_policy`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Get Screening Configuration for travel rule compliance
+     * Get Screening Configuration for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRuleScreeningConfiguration(): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/policy_configuration`);
+    private async getScreeningConfiguration(screeningType: ScreeningType): Promise<ScreeningConfigurationsResponse> {
+        const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Update Bypass Screening Configuration for travel rule compliance
-     * @param screeningPolicyConfiguration
+     * Update Bypass Screening Configuration for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
+     * @param screeningPolicyConfiguration The configuration to update
      */
-    public async updateTravelRulePolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/policy_configuration`, screeningPolicyConfiguration);
+    private async updatePolicyConfiguration(screeningType: ScreeningType, screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningConfigurationsResponse> {
+        const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
+        return await this.apiClient.issuePutRequest(endpoint, screeningPolicyConfiguration);
+    }
+
+    /**
+     * Update Bypass Screening Tenant Configuration for AML/KYT compliance
+     * @param screeningTenantConfiguration
+     */
+    public async updateTenantScreeningConfiguration(screeningTenantConfiguration: ScreeningTenantConfiguration): Promise<ScreeningTenantConfiguration> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/config`, screeningTenantConfiguration);
     }
 
     /**

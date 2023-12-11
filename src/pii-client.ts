@@ -43,7 +43,7 @@ export class PIIEncryption {
         };
         const { jsonDidKey } = this.config;
         const counterpartyDIDKey = travelRuleEncryptionOptions?.beneficiaryPIIDidKey;
-
+        
         let piiIvms;
 
         try {

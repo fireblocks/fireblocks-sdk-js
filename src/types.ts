@@ -512,13 +512,18 @@ export interface ScreeningPolicyConfiguration {
     outboundTransactionDelay?: number;
 }
 
-export enum TravelRuleAction {
+export interface ScreeningTenantConfiguration {
+    disableBypass: boolean;
+    disableUnfreeze: boolean;
+}
+
+export enum ScreeningAction {
     screen = "SCREEN",
     pass = "PASS",
     freeze = "FREEZE"
 }
 
-export interface TravelRulePolicyRule {
+export interface ScreeningPolicyRuleResponse {
     sourceType?: string;
     sourceSubType?: string;
     destType?: string;
@@ -532,7 +537,16 @@ export interface TravelRulePolicyRule {
     amountUSD?: number;
     networkProtocol?: string;
     operation?: string;
-    action: TravelRuleAction;
+    action: ScreeningAction;
+}
+
+export interface ScreeningProviderConfigurationResponse {
+    direction?: TransactionDirection;
+    status?: ScreeningTransactionStatus;
+    amountUSD?: number;
+    amount?: number;
+    asset?: string;
+    action: ScreeningVerdict;
 }
 
 export enum PolicyApprovalStatus {
@@ -545,7 +559,7 @@ export enum TransactionDirection {
     outbound = "OUTBOUND"
 }
 
-export enum FbTravelRuleTransactionStatus {
+export enum ScreeningTransactionStatus {
     completed = "COMPLETED",
     pending = "PENDING",
     rejected = "REJECTED",
@@ -554,7 +568,7 @@ export enum FbTravelRuleTransactionStatus {
     blockingTimeExpired = "BLOCKING_TIME_EXPIRED",
 }
 
-export enum TravelRuleVerdict {
+export enum ScreeningVerdict {
     accept = "ACCEPT",
     reject = "REJECT",
     alert = "ALERT",
@@ -563,23 +577,39 @@ export enum TravelRuleVerdict {
     cancel = "CANCEL"
 }
 
-export interface TravelRuleRulesConfiguration {
-    direction?: TransactionDirection;
-    status?: FbTravelRuleTransactionStatus;
-    amountUSD?: number;
-    amount?: number;
-    asset?: string;
-    action: TravelRuleVerdict;
+export interface ScreeningConfigurationsResponse {
+    bypassScreeningDuringServiceOutages: boolean;
+    inboundTransactionDelay: number;
+    outboundTransactionDelay: number;
 }
 
-export interface TravelRulePolicy {
+export interface ScreeningPolicyResponse {
     tenantId?: string;
-    policy: TravelRulePolicyRule[];
+    policy: ScreeningPolicyRuleResponse;
     policyStatus?: PolicyApprovalStatus;
     isDefault: boolean;
     createDate?: Date;
     lastUpdate: Date;
 }
+
+export interface ScreeningPolicyRuleResponse {
+    sourceType?: string;
+    sourceSubType?: string;
+    destType?: string;
+    destSubType?: string;
+    destAddress?: string;
+    sourceId?: string;
+    destId?: string;
+    asset?: string;
+    baseAsset?: string;
+    amount?: number;
+    amountUSD?: number;
+    networkProtocol?: string;
+    operation?: string;
+    action: ScreeningAction;
+}
+
+export type ScreeningType = "travel_rule" | "aml";
 
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
