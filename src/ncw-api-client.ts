@@ -17,8 +17,8 @@ export class NcwApiClient implements NcwSdk {
             ...(pageSize && { pageSize: pageSize.toString() }),
             ...(onlyBaseAssets !== undefined && { onlyBaseAssets: String(onlyBaseAssets) }),
         });
-
-        return await this.apiClient.issueGetRequest(`${this.NCW_BASE_PATH}/supported_assets?${params.toString()}`);
+        const url = normalizePath(`${this.NCW_BASE_PATH}/supported_assets?${params.toString()}`);
+        return await this.apiClient.issueGetRequest(url);
     }
 
     public async createWallet(): Promise<{ walletId: string; enabled: boolean; }> {
@@ -77,7 +77,8 @@ export class NcwApiClient implements NcwSdk {
             ...(order && { order }),
         });
 
-        return await this.apiClient.issueGetRequest(`${this.NCW_BASE_PATH}?${params.toString()}`);
+        const url = normalizePath(`${this.NCW_BASE_PATH}?${params.toString()}`);
+        return await this.apiClient.issueGetRequest(url);
     }
 
     public async getWalletAccounts(walletId: string, { pageCursor, pageSize, sort, order }: NCW.GetWalletsPayload = {}): Promise<Web3PagedResponse<{
@@ -91,8 +92,8 @@ export class NcwApiClient implements NcwSdk {
             ...(order && { order }),
         });
 
-        return await this.apiClient.issueGetRequest(
-            `${this.NCW_BASE_PATH}/${walletId}/accounts?${params.toString()}`);
+        const url = normalizePath(`${this.NCW_BASE_PATH}/${walletId}/accounts?${params.toString()}`);
+        return await this.apiClient.issueGetRequest(url);
     }
 
     public async getWalletAccount(walletId: string, accountId: number): Promise<{
@@ -111,8 +112,8 @@ export class NcwApiClient implements NcwSdk {
             ...(order && { order }),
         });
 
-        return await this.apiClient.issueGetRequest(
-            `${this.NCW_BASE_PATH}/${walletId}/accounts/${accountId}/assets?${params.toString()}`);
+        const url = normalizePath(`${this.NCW_BASE_PATH}/${walletId}/accounts/${accountId}/assets?${params.toString()}`);
+        return await this.apiClient.issueGetRequest(url);
     }
 
     public async getWalletAsset(walletId: string, accountId: number, assetId: string): Promise<NCW.WalletAssetResponse> {
@@ -133,8 +134,8 @@ export class NcwApiClient implements NcwSdk {
             ...(order && { order }),
         });
 
-        return await this.apiClient.issueGetRequest(
-            `${this.NCW_BASE_PATH}/${walletId}/accounts/${accountId}/assets/${assetId}/addresses?${params.toString()}`);
+        const url = normalizePath(`${this.NCW_BASE_PATH}/${walletId}/accounts/${accountId}/assets/${assetId}/addresses?${params.toString()}`);
+        return await this.apiClient.issueGetRequest(url);
     }
 
     public async getWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse> {
@@ -147,4 +148,10 @@ export class NcwApiClient implements NcwSdk {
             `${this.NCW_BASE_PATH}/${walletId}/accounts/${accountId}/assets/${assetId}/balance`,
             {});
     }
+}
+
+// This function allows backward compatibility with previous functions of axois that did not omit ? for 
+// Urls with no params. This function will make sure we are omitting the ? before signing it
+function normalizePath(rawPath: string) {
+    return rawPath.replace(/\?$/, "");
 }
