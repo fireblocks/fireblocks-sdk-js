@@ -1279,6 +1279,35 @@ export interface User {
     role: string;
 }
 
+
+export type TRole =
+  | "ADMIN"
+  | "SIGNER"
+  | "EDITOR"
+  | "APPROVER"
+  | "VIEWER"
+  | "NON_SIGNING_ADMIN"
+  | "AUDITOR"
+  | "NCW_ADMIN"
+  | "NCW_SIGNER";
+
+interface BaseUser {
+    id: string;
+    enabled: boolean;
+    role: TRole;
+    status: string;
+}
+export interface ConsoleUser extends BaseUser {
+    firstName: string;
+    lastName: string;
+    email: string;
+    userType: "CONSOLE";
+}
+
+export interface ApiUser extends BaseUser {
+    name: string;
+    userType: "API";
+}
 export interface UsersGroup {
     id: string;
     name: string;

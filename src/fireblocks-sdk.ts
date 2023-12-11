@@ -100,8 +100,11 @@ import {
     TravelRulePolicy,
     TravelRuleRulesConfiguration,
     SmartTransfersTicketTermResponse,
-    SmartTransfersUserGroupsResponse,
+    ConsoleUser,
+    ApiUser,
+    TRole,
     UsersGroup,
+    SmartTransfersUserGroupsResponse,
     LeanContractTemplateDto,
     ContractTemplateDto,
     BatchTask,
@@ -1263,7 +1266,65 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets all Users Groups for your tenant
+     * Gets all Console Users for your tenant
+     */
+    public async getConsoleUsers(): Promise<{ users: ConsoleUser[] }> {
+        return await this.apiClient.issueGetRequest("/v1/management/console-users");
+    }
+
+    /**
+     * Gets all Api Users for your tenant
+     */
+    public async getApiUsers(): Promise<{ users: ApiUser[] }> {
+        return await this.apiClient.issueGetRequest("/v1/management/api-users");
+    }
+
+    /**
+     * Create Console User for your tenant
+     * @param firstName firstName of the user, example: "Johnny".  Maximum length: 30 chars.
+     * @param lastName lastName of the user. Maximum length: 30 chars.
+     * @param email email of the user, example: "email@example.com"
+     * @param role role of the user, for example: "ADMIN"
+     * @param requestOptions
+     */
+    public async createConsoleUser(firstName: string, lastName: string, email: string, role: TRole, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        const body = { firstName, lastName, email, role };
+        return await this.apiClient.issuePostRequest("/v1/management/console-users", body, requestOptions);
+    }
+
+    /**
+     * Create Api User for your tenant
+     * @param name name of the api user, example: "Johnny The Api".  Maximum length: 30 chars.
+     * @param role role of the user, for example: "ADMIN"
+     * @param csrPem generate .csr file and provide its string content here, example:  "-----BEGIN CERTIFICATE REQUEST-----aaa-----END CERTIFICATE REQUEST-----"
+     * You can find more info about csrPem and how to create it here: https://developers.fireblocks.com/docs/quickstart
+     * @param coSignerSetup your cosigner, for example: "SGX_MACHINE", read more: https://developers.fireblocks.com/docs/quickstart
+     * @param coSignerSetupIsFirstUser [SGX server enabled only] If you are the first user to be configured on this SGX-enabled Co-Signer server, this has to be true
+     */
+    public async createApiUser(name: string, role: TRole, csrPem: string, coSignerSetup?: string, coSignerSetupIsFirstUser?: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        const body = { name, role, csrPem, coSignerSetup, coSignerSetupIsFirstUser };
+        return await this.apiClient.issuePostRequest("/v1/management/api-users", body, requestOptions);
+    }
+
+    /**
+     * Re-enroll Mobile Device of a user in your tenant
+     * @param id userId of the user to reset device
+     * @param requestOptions
+     */
+    public async resetDeviceRequest(id: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/management/console-users/${id}/reset-device`, {}, requestOptions);
+    }
+
+    /**
+     * Get whitelisted addresses of api user in your tenant
+     * @param id userId of the user
+     * @param requestOptions
+     */
+    public async getWhitelistedAddresses(id: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/management/api-users/${id}/whitelist-ip-addresses`);
+    }
+
+    /** Gets all Users Groups for your tenant
      */
     public async getUsersGroups(): Promise<UsersGroup[]> {
         return await this.apiClient.issueGetRequest("/v1/users_groups");
