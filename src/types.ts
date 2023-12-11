@@ -542,7 +542,7 @@ export interface ScreeningPolicyRuleResponse {
 
 export interface ScreeningProviderConfigurationResponse {
     direction?: TransactionDirection;
-    status?: TransactionStatusDirection;
+    status?: ScreeningTransactionStatus;
     amountUSD?: number;
     amount?: number;
     asset?: string;
@@ -559,7 +559,7 @@ export enum TransactionDirection {
     outbound = "OUTBOUND"
 }
 
-export enum TransactionStatusDirection {
+export enum ScreeningTransactionStatus {
     completed = "COMPLETED",
     pending = "PENDING",
     rejected = "REJECTED",
