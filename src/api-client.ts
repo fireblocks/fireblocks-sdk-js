@@ -37,7 +37,7 @@ export class ApiClient {
     }
 
     public async issueGetRequestForTransactionPages(rawPath: string): Promise<TransactionPageResponse> {
-        const path = normalizePath(rawPath)
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -52,7 +52,7 @@ export class ApiClient {
     }
 
     public async issueGetRequest<T>(rawPath: string): Promise<T> {
-        const path = normalizePath(rawPath)
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -61,7 +61,7 @@ export class ApiClient {
     }
 
     public async issuePostRequest<T>(rawPath: string, body: any, requestOptions?: RequestOptions): Promise<T> {
-        const path = normalizePath(rawPath)
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
         const headers: any = {"Authorization": `Bearer ${token}`};
         const idempotencyKey = requestOptions?.idempotencyKey;
@@ -79,7 +79,7 @@ export class ApiClient {
     }
 
     public async issuePutRequest<T>(rawPath: string, body: any): Promise<T> {
-        const path = normalizePath(rawPath)
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.put<T>(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -88,7 +88,7 @@ export class ApiClient {
     }
 
     public async issuePatchRequest<T>(rawPath: string, body: any): Promise<T> {
-        const path = normalizePath(rawPath)
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.patch<T>(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -97,7 +97,7 @@ export class ApiClient {
     }
 
     public async issueDeleteRequest<T>(rawPath: string): Promise<T> {
-        const path = normalizePath(rawPath)
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const res = (await this.axiosInstance.delete<T>(path, {
             headers: {"Authorization": `Bearer ${token}`}
