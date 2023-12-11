@@ -98,6 +98,14 @@ You can get more data on the Fireblocks error using the following fields:
 - `error.response.data.message`: Explanation of the Fireblocks error
 - `error.response.headers['x-request-id']`: The request ID correlated to the API request, should be provided on support tickets / Github issues
 
+#### Auth Provider
+You can supply an async auth provider instance that implements the following interface:
+```ts
+export interface IAuthProvider {
+    signJwt(path: string, bodyJson?: any): string | Promise<string>;
 
+    getApiKey(): string | Promise<string>;
+}
+```
 
-
+Methods can be async.

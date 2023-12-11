@@ -142,6 +142,8 @@ import {
 
 export * from "./types";
 
+export * from "./iauth-provider";
+
 export interface SDKOptions {
     /** HTTP request timeout */
     timeoutInMs?: number;
