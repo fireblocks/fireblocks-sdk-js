@@ -6,9 +6,6 @@ import {
 } from "./types";
 import { NcwSdk } from "./ncw-sdk";
 
-function normalizePath(rawPath: string) {
-    return rawPath.replace(/\?$/, "");
-}
 export class NcwApiClient implements NcwSdk {
     private readonly NCW_BASE_PATH = "/v1/ncw/wallets";
 
@@ -151,4 +148,8 @@ export class NcwApiClient implements NcwSdk {
             `${this.NCW_BASE_PATH}/${walletId}/accounts/${accountId}/assets/${assetId}/balance`,
             {});
     }
+}
+
+function normalizePath(rawPath: string) {
+    return rawPath.replace(/\?$/, "");
 }
