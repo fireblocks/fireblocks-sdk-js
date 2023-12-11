@@ -150,6 +150,8 @@ export class NcwApiClient implements NcwSdk {
     }
 }
 
+// This function allows backward compatibility with previous functions of axois that did not omit ? for 
+// Urls with no params. This function will make sure we are omitting the ? before signing it
 function normalizePath(rawPath: string) {
     return rawPath.replace(/\?$/, "");
 }
