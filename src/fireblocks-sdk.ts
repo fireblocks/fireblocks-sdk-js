@@ -95,8 +95,6 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     ScreeningPolicyConfiguration,
-    TravelRulePolicy,
-    TravelRuleRulesConfiguration,
     SmartTransfersTicketTermResponse,
     SmartTransfersUserGroupsResponse,
     UsersGroup,
@@ -118,7 +116,11 @@ import {
     ContractAbiResponseDto,
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
-    ParameterWithValueList, ScreeningTenantConfiguration, ScreeningType,
+    ParameterWithValueList,
+    ScreeningTenantConfiguration,
+    ScreeningType,
+    ScreeningConfigurationsResponse,
+    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1870,7 +1872,7 @@ export class FireblocksSDK {
      * Get PostScreening Policies for compliance
      * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    private async getPostScreeningPolicy(screeningType: ScreeningType): Promise<any> {
+    private async getPostScreeningPolicy(screeningType: ScreeningType): Promise<ScreeningProviderConfigurationResponse> {
         const endpoint = `/v1/screening/${screeningType}/post_screening_policy`;
         return await this.apiClient.issueGetRequest(endpoint);
     }
@@ -1879,7 +1881,7 @@ export class FireblocksSDK {
      * Get Screening Policies for compliance
      * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    private async getScreeningPolicy(screeningType: ScreeningType): Promise<any> {
+    private async getScreeningPolicy(screeningType: ScreeningType): Promise<ScreeningPolicyRuleResponse> {
         const endpoint = `/v1/screening/${screeningType}/screening_policy`;
         return await this.apiClient.issueGetRequest(endpoint);
     }
@@ -1888,7 +1890,7 @@ export class FireblocksSDK {
      * Get Screening Configuration for compliance
      * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    private async getScreeningConfiguration(screeningType: ScreeningType): Promise<any> {
+    private async getScreeningConfiguration(screeningType: ScreeningType): Promise<ScreeningConfigurationsResponse> {
         const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
         return await this.apiClient.issueGetRequest(endpoint);
     }
@@ -1898,13 +1900,13 @@ export class FireblocksSDK {
      * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      * @param screeningPolicyConfiguration The configuration to update
      */
-    private async updatePolicyConfiguration(screeningType: ScreeningType, screeningPolicyConfiguration: any): Promise<any> {
+    private async updatePolicyConfiguration(screeningType: ScreeningType, screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningConfigurationsResponse> {
         const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
         return await this.apiClient.issuePutRequest(endpoint, screeningPolicyConfiguration);
     }
 
     /**
-     * Update Bypass Screening Configuration for AML/KYT compliance
+     * Update Bypass Screening Tenant Configuration for AML/KYT compliance
      * @param screeningTenantConfiguration
      */
     public async updateTenantScreeningConfiguration(screeningTenantConfiguration: ScreeningTenantConfiguration): Promise<ScreeningTenantConfiguration> {
