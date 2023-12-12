@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.13.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.12.0...v5.13.0)
+#### [v5.14.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.12.0...v5.14.0)
 
-> 7 December 2023
+> 12 December 2023
 
-- Bump axios from 0.27.2 to 1.6.0 [`#231`](https://github.com/fireblocks/fireblocks-sdk-js/pull/231)
+- Fix empty querystring scenario [`#235`](https://github.com/fireblocks/fireblocks-sdk-js/pull/235)
 
 #### [v5.12.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.11.0...v5.12.0)
 

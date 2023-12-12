@@ -106,8 +106,8 @@ export class ApiClient {
     }
 }
 
-/** 
- * This function allows backward compatibility with previous version of axois that did not omit ? for 
+/**
+ * This function allows backward compatibility with previous version of axois that did not omit ? for
  * urls with no params. This function will make sure we are omitting the ? before signing it
  */
 function normalizePath(path: string) {
