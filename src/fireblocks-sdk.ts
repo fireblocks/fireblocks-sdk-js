@@ -1818,6 +1818,17 @@ export class FireblocksSDK {
     }
 
     /**
+     * Get contract ABI function by contractId
+     * @param contractId
+     * @param functionSignature
+     */
+    public async getContractAbiFunction(contractId: string, functionSignature: string): Promise<ContractAbiResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function?${queryString.stringify({
+            functionSignature
+        })}`);
+    }
+
+    /**
      * Call contract read function
      * @param blockchainId
      * @param templateId
