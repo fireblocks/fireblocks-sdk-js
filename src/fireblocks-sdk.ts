@@ -1338,7 +1338,7 @@ export class FireblocksSDK {
      * @param enable
      */
     public async updateOtaConfiguration(enable: boolean): Promise<{enabled: boolean}> {
-        const body = { enable };
+        const body = { enabled: enable };
         return await this.apiClient.issuePutRequest("/v1/management/ota", body);
     }
 
