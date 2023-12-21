@@ -122,7 +122,6 @@ import {
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
     ParameterWithValueList,
-
     ScreeningTenantConfiguration,
     ScreeningType,
     ScreeningConfigurationsResponse,
