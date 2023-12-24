@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.14.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.12.0...v5.14.0)
+#### [v5.15.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.12.0...v5.15.0)
 
-> 12 December 2023
+> 24 December 2023
 
-- Fix empty querystring scenario [`#235`](https://github.com/fireblocks/fireblocks-sdk-js/pull/235)
+- Support tenant's OTA configuration functionality [`#237`](https://github.com/fireblocks/fireblocks-sdk-js/pull/237)
 
 #### [v5.12.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.11.0...v5.12.0)
 
