@@ -1326,6 +1326,22 @@ export class FireblocksSDK {
         return await this.apiClient.issueGetRequest(`/v1/management/api-users/${id}/whitelist-ip-addresses`);
     }
 
+    /**
+     * Get the tenant's OTA (One-Time-Address) configuration
+     */
+    public async getOtaConfiguration(): Promise<{enabled: boolean}> {
+        return await this.apiClient.issueGetRequest("/v1/management/ota");
+    }
+
+    /**
+     * Update the tenant's OTA (One-Time-Address) configuration
+     * @param enable
+     */
+    public async updateOtaConfiguration(enable: boolean): Promise<void> {
+        const body = { enabled: enable };
+        return await this.apiClient.issuePutRequest("/v1/management/ota", body);
+    }
+
     /** Gets all Users Groups for your tenant
      */
     public async getUsersGroups(): Promise<UsersGroup[]> {
