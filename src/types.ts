@@ -1574,6 +1574,7 @@ export interface Audit {
 export interface AuditsResponse {
     data: Audit[];
     total: number;
+    cursor: string | null;
 }
 
 export interface ISystemMessageInfo {
