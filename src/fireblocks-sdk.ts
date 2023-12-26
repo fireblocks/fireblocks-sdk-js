@@ -1271,14 +1271,14 @@ export class FireblocksSDK {
      * Gets all Console Users for your tenant
      */
     public async getConsoleUsers(): Promise<{ users: ConsoleUser[] }> {
-        return await this.apiClient.issueGetRequest("/v1/management/console-users");
+        return await this.apiClient.issueGetRequest("/v1/management/users");
     }
 
     /**
      * Gets all Api Users for your tenant
      */
     public async getApiUsers(): Promise<{ users: ApiUser[] }> {
-        return await this.apiClient.issueGetRequest("/v1/management/api-users");
+        return await this.apiClient.issueGetRequest("/v1/management/api_users");
     }
 
     /**
@@ -1291,7 +1291,7 @@ export class FireblocksSDK {
      */
     public async createConsoleUser(firstName: string, lastName: string, email: string, role: TRole, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = { firstName, lastName, email, role };
-        return await this.apiClient.issuePostRequest("/v1/management/console-users", body, requestOptions);
+        return await this.apiClient.issuePostRequest("/v1/management/users", body, requestOptions);
     }
 
     /**
@@ -1305,7 +1305,7 @@ export class FireblocksSDK {
      */
     public async createApiUser(name: string, role: TRole, csrPem: string, coSignerSetup?: string, coSignerSetupIsFirstUser?: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
         const body = { name, role, csrPem, coSignerSetup, coSignerSetupIsFirstUser };
-        return await this.apiClient.issuePostRequest("/v1/management/api-users", body, requestOptions);
+        return await this.apiClient.issuePostRequest("/v1/management/api_users", body, requestOptions);
     }
 
     /**
@@ -1314,7 +1314,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async resetDeviceRequest(id: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/management/console-users/${id}/reset-device`, {}, requestOptions);
+        return await this.apiClient.issuePostRequest(`/v1/management/users/${id}/reset_device`, {}, requestOptions);
     }
 
     /**
@@ -1323,7 +1323,7 @@ export class FireblocksSDK {
      * @param requestOptions
      */
     public async getWhitelistedAddresses(id: string): Promise<OperationSuccessResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/management/api-users/${id}/whitelist-ip-addresses`);
+        return await this.apiClient.issueGetRequest(`/v1/management/api_users/${id}/whitelist_ip_addresses`);
     }
 
     /**
@@ -1345,7 +1345,7 @@ export class FireblocksSDK {
     /** Gets all Users Groups for your tenant
      */
     public async getUsersGroups(): Promise<UsersGroup[]> {
-        return await this.apiClient.issueGetRequest("/v1/users_groups");
+        return await this.apiClient.issueGetRequest("/v1/management/users_groups");
     }
 
     /**
@@ -1353,7 +1353,7 @@ export class FireblocksSDK {
      * @param id The ID of the User
      */
     public async getUsersGroup(id: string): Promise<UsersGroup> {
-        return await this.apiClient.issueGetRequest(`/v1/users_groups/${id}`);
+        return await this.apiClient.issueGetRequest(`/v1/management/users_groups/${id}`);
     }
 
     /**
@@ -1363,7 +1363,7 @@ export class FireblocksSDK {
      */
     public async createUserGroup(groupName: string, memberIds?: string[]): Promise<UsersGroup> {
         const body = { groupName, memberIds };
-        return await this.apiClient.issuePostRequest("/v1/users_groups", body);
+        return await this.apiClient.issuePostRequest("/v1/management/users_groups", body);
     }
 
     /**
@@ -1374,7 +1374,7 @@ export class FireblocksSDK {
      */
     public async updateUserGroup(id: string, groupName?: string, memberIds?: string[]): Promise<UsersGroup> {
         const body = { groupName, memberIds };
-        return await this.apiClient.issuePutRequest(`/v1/users_groups/${id}`, body);
+        return await this.apiClient.issuePutRequest(`/v1/management/users_groups/${id}`, body);
     }
 
     /**
@@ -1382,7 +1382,7 @@ export class FireblocksSDK {
      * @param id The ID of the Users Group
      */
     public async deleteUserGroup(id: string): Promise<void> {
-        return await this.apiClient.issueDeleteRequest(`/v1/users_groups/${id}`);
+        return await this.apiClient.issueDeleteRequest(`/v1/management/users_groups/${id}`);
     }
 
     /**
