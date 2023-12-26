@@ -2,11 +2,34 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.15.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.12.0...v5.15.0)
+#### [v5.15.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.15.0...v5.15.1)
+
+> 26 December 2023
+
+- Rename management paths [`#238`](https://github.com/fireblocks/fireblocks-sdk-js/pull/238)
+
+#### [v5.15.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.14.0...v5.15.0)
 
 > 24 December 2023
 
 - Support tenant's OTA configuration functionality [`#237`](https://github.com/fireblocks/fireblocks-sdk-js/pull/237)
+- feat: Add PeerType [`#227`](https://github.com/fireblocks/fireblocks-sdk-js/pull/227)
+
+#### [v5.14.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.13.0...v5.14.0)
+
+> 12 December 2023
+
+- Fix empty querystring scenario [`#235`](https://github.com/fireblocks/fireblocks-sdk-js/pull/235)
+-  Exposing external aml endpoints for screening setting [`#226`](https://github.com/fireblocks/fireblocks-sdk-js/pull/226)
+- User management [`#189`](https://github.com/fireblocks/fireblocks-sdk-js/pull/189)
+
+#### [v5.13.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.12.0...v5.13.0)
+
+> 7 December 2023
+
+- Bump axios from 0.27.2 to 1.6.0 [`#231`](https://github.com/fireblocks/fireblocks-sdk-js/pull/231)
+- feat: ncw latest backup [`#225`](https://github.com/fireblocks/fireblocks-sdk-js/pull/225)
+- Bump semver from 5.7.1 to 5.7.2 [`#182`](https://github.com/fireblocks/fireblocks-sdk-js/pull/182)
 
 #### [v5.12.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.11.0...v5.12.0)
 
