@@ -1565,13 +1565,14 @@ export class FireblocksSDK {
     /**
      * Gets all audits for selected time period
      * @param timePeriod
+     * @param cursor
      */
     public async getAudits(timePeriod?: TimePeriod, cursor?: string): Promise<AuditsResponse> {
         const queryParams = {
             timePeriod,
             cursor,
-        }
-        
+        };
+
         return await this.apiClient.issueGetRequest(`/v1/audits?${queryString.stringify(queryParams)}`);
     }
 
