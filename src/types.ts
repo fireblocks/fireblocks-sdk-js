@@ -1574,6 +1574,11 @@ export interface Audit {
 export interface AuditsResponse {
     data: Audit[];
     total: number;
+}
+
+export interface AuditLogsResponse {
+    data: Audit[];
+    total: number;
     cursor: string | null;
 }
 

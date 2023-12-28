@@ -125,7 +125,7 @@ import {
     ScreeningTenantConfiguration,
     ScreeningType,
     ScreeningConfigurationsResponse,
-    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse,
+    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse, AuditLogsResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1567,13 +1567,26 @@ export class FireblocksSDK {
      * @param timePeriod
      * @param cursor
      */
-    public async getAudits(timePeriod?: TimePeriod, cursor?: string): Promise<AuditsResponse> {
+    public async getAudits(timePeriod?: TimePeriod): Promise<AuditsResponse> {
+        const queryParams = {
+            timePeriod,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/audits?${queryString.stringify(queryParams)}`);
+    }
+
+    /**
+     * Gets paginated audit logs for selected time period
+     * @param timePeriod
+     * @param cursor
+     */
+    public async getAuditLogs(timePeriod?: TimePeriod, cursor?: string): Promise<AuditLogsResponse> {
         const queryParams = {
             timePeriod,
             cursor,
         };
 
-        return await this.apiClient.issueGetRequest(`/v1/audits?${queryString.stringify(queryParams)}`);
+        return await this.apiClient.issueGetRequest(`/v1/management/audit_logs?${queryString.stringify(queryParams)}`);
     }
 
     /**
