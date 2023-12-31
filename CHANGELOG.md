@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.16.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.15.1...v5.16.0)
+
+> 31 December 2023
+
+- fix: add missing params [`#241`](https://github.com/fireblocks/fireblocks-sdk-js/pull/241)
+
 #### [v5.15.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.15.0...v5.15.1)
 
 > 26 December 2023
