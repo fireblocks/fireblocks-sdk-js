@@ -882,6 +882,7 @@ export interface TransactionFilter {
     destType?: PeerType;
     sourceId?: string;
     sourceWalletId?: string;
+    destWalletId?: string;
     destId?: string;
     sort?: "ASC" | "DESC";
 }
