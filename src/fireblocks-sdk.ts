@@ -1580,7 +1580,7 @@ export class FireblocksSDK {
      * @param timePeriod
      * @param cursor
      */
-    public async getAuditLogs(timePeriod?: TimePeriod, cursor?: string): Promise<AuditLogsResponse> {
+    public async getPaginatedAuditLogs(timePeriod?: TimePeriod, cursor?: string): Promise<AuditLogsResponse> {
         const queryParams = {
             timePeriod,
             cursor,
