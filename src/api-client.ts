@@ -14,10 +14,11 @@ export class ApiClient {
             baseURL: this.apiBaseUrl,
             proxy: this.options?.proxy,
             timeout: this.options?.timeoutInMs,
+            httpsAgent: this.options?.httpsAgent,
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "User-Agent": this.getUserAgent()
-            }
+            },
         });
 
         if (options?.customAxiosOptions?.interceptors?.response) {

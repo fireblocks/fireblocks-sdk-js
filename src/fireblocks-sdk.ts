@@ -155,6 +155,9 @@ export interface SDKOptions {
     /** Additional product identifier to be prepended to the User-Agent header */
     userAgent?: string;
 
+    /** Replace default https agent */
+    httpsAgent?: any
+
     /**
      * Providing custom axios options including a response interceptor (https://axios-http.com/docs/interceptors)
      */
