@@ -1577,6 +1577,10 @@ export interface AuditsResponse {
     total: number;
 }
 
+export interface AuditLogsResponse extends AuditsResponse {
+    cursor: string | null;
+}
+
 export interface ISystemMessageInfo {
     type: string;
     message: string;
