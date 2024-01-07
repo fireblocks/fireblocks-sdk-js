@@ -1576,9 +1576,7 @@ export interface AuditsResponse {
     total: number;
 }
 
-export interface AuditLogsResponse {
-    data: Audit[];
-    total: number;
+export interface AuditLogsResponse extends AuditsResponse {
     cursor: string | null;
 }
 
