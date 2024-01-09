@@ -21,6 +21,9 @@ export class ApiClient {
             },
         });
 
+        if (options?.customAxiosOptions?.interceptors?.request) {
+            this.axiosInstance.interceptors.request.use(options.customAxiosOptions.interceptors.request.onFulfilled, options.customAxiosOptions.interceptors.request.onRejected);
+        }
         if (options?.customAxiosOptions?.interceptors?.response) {
             this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);
         }
