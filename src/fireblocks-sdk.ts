@@ -127,7 +127,7 @@ import {
     ScreeningConfigurationsResponse,
     ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse, AuditLogsResponse,
 } from "./types";
-import { AxiosProxyConfig, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosProxyConfig, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw-api-client";
 import { NcwSdk } from "./ncw-sdk";
@@ -164,7 +164,7 @@ export interface SDKOptions {
     customAxiosOptions?: {
       interceptors?: {
           request?: {
-              onFulfilled: (value: AxiosRequestConfig<any>) => AxiosRequestConfig<any> | Promise<AxiosRequestConfig<any>>;
+              onFulfilled: (value: InternalAxiosRequestConfig<any>) => InternalAxiosRequestConfig<any> | Promise<InternalAxiosRequestConfig<any>>;
               onRejected: (error: any) => any;
           };
           response?: {
