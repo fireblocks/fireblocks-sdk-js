@@ -125,7 +125,7 @@ import {
     ScreeningTenantConfiguration,
     ScreeningType,
     ScreeningConfigurationsResponse,
-    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse, AuditLogsResponse,
+    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse, AuditLogsResponse, ExternalKeys,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -2246,6 +2246,61 @@ export class FireblocksSDK {
     public continueJob(jobId: string): Promise<void> {
         return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/continue`, {});
     }
+
+      /**
+   * Creates a new asset within a list of existing vault accounts
+   * @param keys Array of external keys to add
+   */
+  public addExternalKeys(keys: ExternalKeys.SignedExternalKeyInfo[]): Promise<any> {
+    const body = {
+      externalKeys: keys,
+    };
+    return this.apiClient.issuePostRequest(
+      `/v1/external_keys/add_external_keys`,
+      body
+    );
+  }
+
+  /**
+   * Creates a new asset within a list of existing vault accounts
+   * @param keyId fireblocks key id of the external key.
+   * @param userIds the users this key should be linked to.
+   */
+  public linkExternalKeyToUsers(keyId: string, userIds: string[]): Promise<any> {
+    const body = {
+      keyId,
+      userIds,
+    };
+    return this.apiClient.issuePostRequest(
+      `/v1/external_keys/link_external_key_to_users`,
+      body
+    );
+  }
+
+  /**
+   * Creates a new asset within a list of existing vault accounts
+   * @param keyId fireblocks key id of the external key.
+   * @param userIds the users this key should be linked to.
+   */
+  public getExternalKeys(): Promise<ExternalKeys.ExternalKeyInfo[]> {
+    return this.apiClient.issueGetRequest(
+      `/v1/external_keys/get_external_keys`
+    );
+  }
+
+  /**
+   * Creates a new asset within a list of existing vault accounts
+   * @param validatorKey fireblocks key id of the external key.
+   */
+  public registerExternalKeysValidatorKey(validatorKey: string): Promise<ExternalKeys.ValidatorKeyInfo> {
+    const body = {
+      validatorKey,
+    };
+    return this.apiClient.issuePostRequest(
+      `/v1/external_keys/validator_key`,
+      body
+    );
+  }
 
     /**
      * Create multiple vault accounts in one bulk operation

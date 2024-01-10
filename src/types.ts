@@ -2052,6 +2052,26 @@ export namespace NCW {
     }
 }
 
+export namespace ExternalKeys {
+    export interface SignedExternalKeyInfo {
+      signingDeviceKeyId: string;
+      signedKey: string;
+    }
+  
+    export interface ExternalKeyInfo {
+      signingDeviceKeyId: string;
+      fbKeyId: string;
+      pubkeyPem: string;
+      enabled: boolean;
+    }
+  
+    export interface ValidatorKeyInfo {
+      status: number;
+      admins: string[];
+      approvalThreshold: number;
+      requestId: number;
+    }
+  }
 export namespace TAP {
     type PolicyTransactionType =
         | "*"
