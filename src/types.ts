@@ -1195,7 +1195,7 @@ export interface AddressResponse {
     tag: string;
     type?: number;
     customerRefId?: number;
-    addressFormat: number;
+    addressFormat?: string;
     legacyAddress?: string;
     enterpriseAddress?: string;
     bip44AddressIndex?: string;
