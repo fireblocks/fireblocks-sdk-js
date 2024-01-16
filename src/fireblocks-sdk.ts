@@ -1775,7 +1775,7 @@ export class FireblocksSDK {
      * @param payload.assetId NFT asset id
      * @param payload.spam Spam status
      */
-    public async updateTokenOwnershipSpamStatus(payload: TokenOwnershipSpamUpdatePayload[]): Promise<void> {
+    public async updateNFTTokenOwnershipSpamStatus(payload: TokenOwnershipSpamUpdatePayload[]): Promise<void> {
         return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/spam`, payload);
     }
 
