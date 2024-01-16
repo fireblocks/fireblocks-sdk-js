@@ -901,6 +901,7 @@ export interface NFTOwnershipFilter {
     ncwId?: string;
     ncwAccountIds?: string[];
     walletType?: NFTOwnershipWalletType;
+    spam?: SpamTokenOwnership;
 }
 
 export interface NFTOwnedCollectionsFilter {
@@ -923,6 +924,12 @@ export interface NFTOwnedAssetsFilter {
     pageSize?: number;
     sort?: GetOwnedAssetsSortValues[];
     order?: OrderValues;
+    spam?: SpamTokenOwnership;
+}
+
+export interface TokenOwnershipSpamUpdatePayload {
+    assetId: string;
+    spam: boolean;
 }
 
 export interface GetNFTsFilter {
@@ -1625,6 +1632,12 @@ export interface NFTOwnershipStatusUpdatedPayload {
 export enum NFTOwnershipWalletType {
     "VAULT_ACCOUNT" = "VAULT_ACCOUNT",
     "END_USER_WALLET" = "END_USER_WALLET",
+}
+
+export enum SpamTokenOwnership {
+    "true" = "true",
+    "false" = "false",
+    "all" = "all",
 }
 
 export interface ContractUploadRequest {
