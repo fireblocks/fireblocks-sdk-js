@@ -127,7 +127,7 @@ import {
     ScreeningConfigurationsResponse,
     ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse, AuditLogsResponse,
 } from "./types";
-import { AxiosProxyConfig, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw-api-client";
 import { NcwSdk } from "./ncw-sdk";
