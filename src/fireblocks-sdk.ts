@@ -2247,10 +2247,10 @@ export class FireblocksSDK {
         return this.apiClient.issuePostRequest(`/v1/batch/${jobId}/continue`, {});
     }
 
-      /**
-   * Creates a new asset within a list of existing vault accounts
-   * @param keys Array of external keys to add
-   */
+   /**
+    * Creates a new asset within a list of existing vault accounts
+    * @param keys Array of external keys to add
+    */
   public addExternalKeys(keys: ExternalKeys.SignedExternalKeyInfo[]): Promise<any> {
     const body = {
       externalKeys: keys,
