@@ -1883,6 +1883,7 @@ export interface SmartTransfersTicketTerm {
     id: string;
     asset: string;
     amount: string;
+    amountUsd?: string;
     fromNetworkId: string;
     fromNetworkIdName?: string;
     toNetworkId: string;
