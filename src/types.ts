@@ -1568,6 +1568,8 @@ export enum ContractTemplateType {
     UUPS_PROXY = "UUPS_PROXY",
 }
 
+export type SupportedContractTemplateType = ContractTemplateType.FUNGIBLE_TOKEN | ContractTemplateType.NON_FUNGIBLE_TOKEN;
+
 export enum ContractInitializationPhase {
     ON_DEPLOYMENT = "ON_DEPLOYMENT",
     POST_DEPLOYMENT = "POST_DEPLOYMENT",
@@ -1583,12 +1585,13 @@ export interface ContractUploadRequest {
     implementationContractId?: string;
     initializationPhase: ContractInitializationPhase;
     compilerOutputMetadata?: object;
+    inputFieldsMetadata?: object;
     docs?: ContractDoc;
     abi?: AbiFunction[];
     attributes?: Record<string, string>;
 }
 
-interface AbiFunction {
+export interface AbiFunction {
     name?: string;
     stateMutability?: string;
     type: "function" | "constructor" | string;
@@ -1632,9 +1635,6 @@ export interface ContractDeployRequest {
 
 export interface ContractDeployResponse {
     txId: string;
-    assetId: string;
-    vaultAccountId: string;
-    contractId: string;
 }
 
 export interface LeanContractTemplateDto {
@@ -1647,22 +1647,26 @@ export interface LeanContractTemplateDto {
     vendor?: VendorDto;
 }
 
+export interface CreateTokenResponseDto {
+    id: string;
+}
+
 export interface ContractTemplateDto {
     id: string;
     name: string;
     description: string;
     longDescription: string;
-    compilerOutputMetadata?: object;
     abi: AbiFunction[];
     attributes?: Record<string, string>;
     docs?: ContractDoc;
     owner?: string;
-    vendor?: VendorDto;
+    vendor?: VendorDto | null;
     isPublic: boolean;
     canDeploy: boolean;
     type: ContractTemplateType;
     implementationContractId?: string;
     initializationPhase: ContractInitializationPhase;
+    compilerOutputMetadata?: object;
 }
 
 export interface LinkedTokenMetadata {
@@ -1680,17 +1684,34 @@ export interface LinkedTokenMetadata {
     decimals?: number;
     vaultAccountId?: string;
 }
+
+export enum TokenLinkStatus {
+    PENDING = "PENDING",
+    COMPLETED = "COMPLETED",
+}
+
 export interface TokenLink {
-    assetId: string;
+    id: string;
+    type: ContractTemplateType;
+    status: TokenLinkStatus;
     assetMetadata?: LinkedTokenMetadata;
 }
-export interface PendingTokenLinkDto {
-    id: number;
-    txId?: string;
-    name?: string;
-    symbol?: string;
-    vaultAccountId?: string;
-    blockchainId?: string;
+
+export interface GetTokenLinksFilter {
+    status?: TokenLinkStatus;
+    pageSize?: number;
+    pageCursor?: string;
+}
+
+export interface GetTemplateContractsFilter {
+    initializationPhase?: ContractInitializationPhase;
+    type?: ContractTemplateType;
+    pageSize?: number;
+    pageCursor?: string;
+}
+
+export interface TokenLinksCount {
+    count: number;
 }
 
 export interface LeanDeployedContractResponseDto {
@@ -1716,8 +1737,6 @@ export interface WriteCallFunctionResponseDto {
 }
 
 export interface IssueTokenRequest {
-    symbol: string;
-    name: string;
     blockchainId: string;
     vaultAccountId: string;
     createParams: CreateTokenParams;
@@ -1762,7 +1781,9 @@ export class BatchTask {
 type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
 
 interface StellarRippleCreateParamsDto {
-    issuerAddress?: string;
+    symbol: string;
+    name: string;
+    issuerAddress: string;
 }
 
 interface ParameterWithValue {

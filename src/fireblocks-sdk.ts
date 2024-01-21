@@ -110,7 +110,6 @@ import {
     ContractUploadRequest,
     ContractDeployResponse,
     ContractDeployRequest,
-    PendingTokenLinkDto,
     ExchangeAccountsPageFilter,
     PagedExchangeResponse,
     TAP,
@@ -121,6 +120,13 @@ import {
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
     ParameterWithValueList,
+    CreateTokenResponseDto,
+    TokenLinksCount,
+    GetTokenLinksFilter,
+    GetTemplateContractsFilter,
+    TokenLinkStatus,
+    SupportedContractTemplateType,
+    AbiFunction,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1504,15 +1510,14 @@ export class FireblocksSDK {
     }
 
     /**
-     *
-     * @param filter.pageCursor
-     * @param filter.pageSize
-     * @param filter.ids
-     * @param filter.sort
-     * @param filter.order
+     * @param {Object} payload
+     * @param payload.pageCursor
+     * @param payload.pageSize
+     * @param payload.ids
+     * @param payload.sort
+     * @param payload.order
      */
-    public async getNFTs(filter: GetNFTsFilter): Promise<Web3PagedResponse<Token>> {
-        const { pageCursor, pageSize, ids, sort, order } = filter;
+    public async getNFTs({ pageCursor, pageSize, ids, sort, order }: GetNFTsFilter): Promise<Web3PagedResponse<Token>> {
         const queryParams = {
             pageCursor,
             pageSize,
@@ -1671,20 +1676,33 @@ export class FireblocksSDK {
 
     /**
      * Get all contract templates
-     * @param limit
-     * @param offset
+     * @param {Object} payload The payload for getting the current tenant's sessions
+     * @param {ContractInitializationPhase} payload.initializationPhase The contract initialization phase
+     * @param {ContractTemplateType} payload.type The type of the contract templates you wish to retrieve. May contain more than one type
+     * @param {number} payload.pageSize The amount of results to return on the next page
+     * @param {string} payload.pageCursor The cursor for the next page
+     *
+     * @returns {LeanContractTemplateDto[]} (paginated)
      */
-    public async getTemplateContracts(limit: number = 100, offset: number = 0): Promise<LeanContractTemplateDto[]> {
-        const requestFilter = {
-            limit,
-            offset
-        };
-        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts?${queryString.stringify(requestFilter)}`);
+    public async getTemplateContracts({
+        initializationPhase,
+        type,
+        pageSize = 100,
+        pageCursor
+    }: GetTemplateContractsFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts?${queryString.stringify({
+            initializationPhase,
+            type,
+            pageSize,
+            pageCursor
+        })}`);
     }
 
     /**
      * Upload a new contract. This contract would be private and only your tenant can see it
      * @param payload
+     *
+     * @returns ContractTemplateDto
      */
     public async uploadTemplateContract(payload: ContractUploadRequest): Promise<ContractTemplateDto> {
         return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, payload);
@@ -1693,6 +1711,8 @@ export class FireblocksSDK {
     /**
      * Get contract template by id
      * @param contractId
+     *
+     * @returns ContractTemplateDto
      */
     public async getTemplateContract(contractId: string): Promise<ContractTemplateDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}`);
@@ -1710,6 +1730,8 @@ export class FireblocksSDK {
      * Get contract template constructor by contract id
      * @param contractId
      * @param withDocs
+     *
+     * @returns ContractTemplateDto
      */
     public async getTemplateContractConstructor(contractId: string, withDocs: boolean = false): Promise<ContractTemplateDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}/constructor?withDocs=${withDocs}`);
@@ -1718,6 +1740,8 @@ export class FireblocksSDK {
     /**
      * Deploy a new contract by contract template id
      * @param contractId
+     *
+     * @returns {ContractDeployResponse}
      */
     public async deployContract(contractId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
         return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts/${contractId}/deploy`, payload);
@@ -1727,19 +1751,22 @@ export class FireblocksSDK {
      * Get all contracts by blockchain and template
      * @param blockchainId
      * @param templateId
+     *
+     * @returns LeanDeployedContractResponseDto[]
      */
     public async getContractsByFilter(templateId: string, blockchainId?: string): Promise<LeanDeployedContractResponseDto[]> {
-        const requestFilter = {
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract?${queryString.stringify({
             templateId,
             blockchainId,
-        };
-        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract?${queryString.stringify(requestFilter)}`);
+        })}`);
     }
 
     /**
      * Get contract by blockchain and address
      * @param blockchainId
      * @param templateId
+     *
+     * @returns DeployedContractResponseDto
      */
     public async getContractByAddress(blockchainId: string, contractAddress: string): Promise<DeployedContractResponseDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}`);
@@ -1749,6 +1776,8 @@ export class FireblocksSDK {
      * Get contract's ABI by blockchain and address
      * @param blockchainId
      * @param templateId
+     *
+     * @returns ContractAbiResponseDto
      */
     public async getContractAbi(blockchainId: string, contractAddress: string): Promise<ContractAbiResponseDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/abi`);
@@ -1758,8 +1787,10 @@ export class FireblocksSDK {
      * Get contract ABI function by contractId
      * @param contractId
      * @param functionSignature
+     *
+     * @returns {AbiFunction}
      */
-    public async getContractAbiFunction(contractId: string, functionSignature: string): Promise<ContractAbiResponseDto> {
+    public async getContractAbiFunction(contractId: string, functionSignature: string): Promise<AbiFunction> {
         return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function?${queryString.stringify({
             functionSignature
         })}`);
@@ -1769,6 +1800,8 @@ export class FireblocksSDK {
      * Call contract read function
      * @param blockchainId
      * @param templateId
+     *
+     * @returns ParameterWithValueList
      */
     public async readContractCallFunction(blockchainId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<ParameterWithValueList> {
         return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/read`, payload);
@@ -1778,61 +1811,90 @@ export class FireblocksSDK {
      * Call contract write function
      * @param blockchainId
      * @param templateId
+     *
+     * @returns WriteCallFunctionResponseDto
      */
     public async writeContractCallFunction(blockchainId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<WriteCallFunctionResponseDto> {
         return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/write`, payload);
     }
 
     /**
-     * Issue a new token and link it to the tenant
-     * @param payload
+     * Creates a new asset and links it as a token.
+     *
+     * @param {IssueTokenRequest} payload - The payload containing information for token issuance.
+     *
+     * @returns {Promise<CreateTokenResponseDto>} Response with created token ID
      */
-    public async issueNewToken(payload: IssueTokenRequest): Promise<PendingTokenLinkDto> {
+    public async issueNewToken(payload: IssueTokenRequest): Promise<CreateTokenResponseDto> {
         return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, payload);
     }
 
     /**
-     * Get all tokens linked to the tenant
-     * @param pageSize
-     * @param pageCursor
+     * Retrieves all linked tokens in a paginated format.
+     *
+     * @param {Object} payload - The payload for retrieving linked tokens
+     * @param {TokenLinkStatus} payload.status - The status of linked tokens (COMPLETED / PENDING)
+     * @param {number} payload.pageSize - The number of results to return on the next page
+     * @param {string} payload.pageCursor - The cursor for the next page
+     *
+     * @returns {Promise<Web3PagedResponse<TokenLink>>} A paginated array of linked tokens
      */
-    public async getLinkedTokens(pageSize: number = 100, pageCursor?: string): Promise<Web3PagedResponse<TokenLink>> {
-        const requestFilter = {
+    public async getLinkedTokens({ status = TokenLinkStatus.COMPLETED, pageSize = 100, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens?${queryString.stringify({
+            status,
             pageSize,
-            pageCursor
-        };
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens?${queryString.stringify(requestFilter)}`);
+            pageCursor,
+        })}`);
+    }
+
+    /**
+     * Get the total count of linked tokens
+     * @returns TokenLinksCount
+     */
+    public async getLinkedTokensCount(): Promise<TokenLinksCount> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/count`);
     }
 
     /**
      * Link a token to the tenant
-     * @param assetId
+     * @param type
+     * @param refId
+     *
+     * @returns TokenLink
      */
-    public async linkToken(assetId: string): Promise<TokenLink> {
-        return await this.apiClient.issuePutRequest(`/v1/tokenization/tokens/${assetId}/link`, {});
+    public async linkToken(type: SupportedContractTemplateType, refId: string): Promise<TokenLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId });
     }
 
     /**
-     * Get a token linked to the tenant by asset id
-     * @param assetId
+     * Get a linked token
+     * @param id
+     *
+     * @returns TokenLink
      */
-    public async getLinkedToken(assetId: string): Promise<TokenLink> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/${assetId}`);
+    public async getLinkedToken(id: string): Promise<TokenLink> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/${id}`);
     }
 
     /**
-     * Unlink a token from the tenant
-     * @param assetId
+     * Delete a token link
+     * @param id
      */
-    public async unlinkToken(assetId: string): Promise<TokenLink> {
-        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${assetId}`);
+    public async unlinkToken(id: string): Promise<TokenLink> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${id}`);
     }
 
     /**
-     * Get all pending tokens linked to the tenant
+     * Retrieves all pending linked tokens in a paginated format
+     *
+     * @param {Object} payload - The payload for retrieving pending linked tokens
+     * @param {number} payload.pageSize - The number of results to return on the next page
+     * @param {string} payload.pageCursor - The cursor for the next page
+     *
+     * @returns {Web3PagedResponse<TokenLink>} A paginated array of pending linked tokens
      */
-    public async getPendingLinkedTokens(): Promise<PendingTokenLinkDto[]> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens/pending`);
+    public async getPendingLinkedTokens({ pageSize, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
+        return await this.getLinkedTokens({ status: TokenLinkStatus.PENDING, pageSize, pageCursor });
     }
 
     /**
