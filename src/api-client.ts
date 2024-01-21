@@ -14,12 +14,16 @@ export class ApiClient {
             baseURL: this.apiBaseUrl,
             proxy: this.options?.proxy,
             timeout: this.options?.timeoutInMs,
+            httpsAgent: this.options?.httpsAgent,
             headers: {
                 "X-API-Key": this.authProvider.getApiKey(),
                 "User-Agent": this.getUserAgent()
-            }
+            },
         });
 
+        if (options?.customAxiosOptions?.interceptors?.request) {
+            this.axiosInstance.interceptors.request.use(options.customAxiosOptions.interceptors.request.onFulfilled, options.customAxiosOptions.interceptors.request.onRejected);
+        }
         if (options?.customAxiosOptions?.interceptors?.response) {
             this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);
         }
@@ -36,7 +40,8 @@ export class ApiClient {
         return userAgent;
     }
 
-    public async issueGetRequestForTransactionPages(path: string): Promise<TransactionPageResponse> {
+    public async issueGetRequestForTransactionPages(rawPath: string): Promise<TransactionPageResponse> {
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -50,7 +55,8 @@ export class ApiClient {
         };
     }
 
-    public async issueGetRequest<T>(path: string): Promise<T> {
+    public async issueGetRequest<T>(rawPath: string): Promise<T> {
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -58,7 +64,8 @@ export class ApiClient {
         return res.data;
     }
 
-    public async issuePostRequest<T>(path: string, body: any, requestOptions?: RequestOptions): Promise<T> {
+    public async issuePostRequest<T>(rawPath: string, body: any, requestOptions?: RequestOptions): Promise<T> {
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
         const headers: any = {"Authorization": `Bearer ${token}`};
         const idempotencyKey = requestOptions?.idempotencyKey;
@@ -75,7 +82,8 @@ export class ApiClient {
         return response.data;
     }
 
-    public async issuePutRequest<T>(path: string, body: any): Promise<T> {
+    public async issuePutRequest<T>(rawPath: string, body: any): Promise<T> {
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.put<T>(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -83,7 +91,8 @@ export class ApiClient {
         return res.data;
     }
 
-    public async issuePatchRequest<T>(path: string, body: any): Promise<T> {
+    public async issuePatchRequest<T>(rawPath: string, body: any): Promise<T> {
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
         const res = (await this.axiosInstance.patch<T>(path, body, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -91,11 +100,20 @@ export class ApiClient {
         return res.data;
     }
 
-    public async issueDeleteRequest<T>(path: string): Promise<T> {
+    public async issueDeleteRequest<T>(rawPath: string): Promise<T> {
+        const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const res = (await this.axiosInstance.delete<T>(path, {
             headers: {"Authorization": `Bearer ${token}`}
         }));
         return res.data;
     }
+}
+
+/**
+ * This function allows backward compatibility with previous version of axois that did not omit ? for
+ * urls with no params. This function will make sure we are omitting the ? before signing it
+ */
+function normalizePath(path: string) {
+    return path.replace(/\?$/, "");
 }

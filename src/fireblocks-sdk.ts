@@ -97,11 +97,12 @@ import {
     SmartTransfersTicketTermPayload,
     SmartTransfersTicketTermFundPayload,
     ScreeningPolicyConfiguration,
-    TravelRulePolicy,
-    TravelRuleRulesConfiguration,
     SmartTransfersTicketTermResponse,
-    SmartTransfersUserGroupsResponse,
+    ConsoleUser,
+    ApiUser,
+    TRole,
     UsersGroup,
+    SmartTransfersUserGroupsResponse,
     LeanContractTemplateDto,
     ContractTemplateDto,
     BatchTask,
@@ -120,6 +121,10 @@ import {
     DeployedContractResponseDto,
     LeanDeployedContractResponseDto,
     ParameterWithValueList,
+    ScreeningTenantConfiguration,
+    ScreeningType,
+    ScreeningConfigurationsResponse,
+    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse, AuditLogsResponse,
     CreateTokenResponseDto,
     TokenLinksCount,
     GetTokenLinksFilter,
@@ -128,7 +133,7 @@ import {
     SupportedContractTemplateType,
     AbiFunction,
 } from "./types";
-import { AxiosProxyConfig, AxiosResponse } from "axios";
+import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw-api-client";
 import { NcwSdk } from "./ncw-sdk";
@@ -156,11 +161,18 @@ export interface SDKOptions {
     /** Additional product identifier to be prepended to the User-Agent header */
     userAgent?: string;
 
+    /** Replace default https agent */
+    httpsAgent?: any;
+
     /**
      * Providing custom axios options including a response interceptor (https://axios-http.com/docs/interceptors)
      */
     customAxiosOptions?: {
       interceptors?: {
+          request?: {
+              onFulfilled: (value: InternalAxiosRequestConfig<any>) => InternalAxiosRequestConfig<any> | Promise<InternalAxiosRequestConfig<any>>;
+              onRejected: (error: any) => any;
+          };
           response?: {
               onFulfilled: (value: AxiosResponse<any, any>) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
               onRejected: (error: any) => any;
@@ -1269,10 +1281,84 @@ export class FireblocksSDK {
     }
 
     /**
-     * Gets all Users Groups for your tenant
+     * Gets all Console Users for your tenant
+     */
+    public async getConsoleUsers(): Promise<{ users: ConsoleUser[] }> {
+        return await this.apiClient.issueGetRequest("/v1/management/users");
+    }
+
+    /**
+     * Gets all Api Users for your tenant
+     */
+    public async getApiUsers(): Promise<{ users: ApiUser[] }> {
+        return await this.apiClient.issueGetRequest("/v1/management/api_users");
+    }
+
+    /**
+     * Create Console User for your tenant
+     * @param firstName firstName of the user, example: "Johnny".  Maximum length: 30 chars.
+     * @param lastName lastName of the user. Maximum length: 30 chars.
+     * @param email email of the user, example: "email@example.com"
+     * @param role role of the user, for example: "ADMIN"
+     * @param requestOptions
+     */
+    public async createConsoleUser(firstName: string, lastName: string, email: string, role: TRole, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        const body = { firstName, lastName, email, role };
+        return await this.apiClient.issuePostRequest("/v1/management/users", body, requestOptions);
+    }
+
+    /**
+     * Create Api User for your tenant
+     * @param name name of the api user, example: "Johnny The Api".  Maximum length: 30 chars.
+     * @param role role of the user, for example: "ADMIN"
+     * @param csrPem generate .csr file and provide its string content here, example:  "-----BEGIN CERTIFICATE REQUEST-----aaa-----END CERTIFICATE REQUEST-----"
+     * You can find more info about csrPem and how to create it here: https://developers.fireblocks.com/docs/quickstart
+     * @param coSignerSetup your cosigner, for example: "SGX_MACHINE", read more: https://developers.fireblocks.com/docs/quickstart
+     * @param coSignerSetupIsFirstUser [SGX server enabled only] If you are the first user to be configured on this SGX-enabled Co-Signer server, this has to be true
+     */
+    public async createApiUser(name: string, role: TRole, csrPem: string, coSignerSetup?: string, coSignerSetupIsFirstUser?: boolean, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        const body = { name, role, csrPem, coSignerSetup, coSignerSetupIsFirstUser };
+        return await this.apiClient.issuePostRequest("/v1/management/api_users", body, requestOptions);
+    }
+
+    /**
+     * Re-enroll Mobile Device of a user in your tenant
+     * @param id userId of the user to reset device
+     * @param requestOptions
+     */
+    public async resetDeviceRequest(id: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/management/users/${id}/reset_device`, {}, requestOptions);
+    }
+
+    /**
+     * Get whitelisted addresses of api user in your tenant
+     * @param id userId of the user
+     * @param requestOptions
+     */
+    public async getWhitelistedAddresses(id: string): Promise<OperationSuccessResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/management/api_users/${id}/whitelist_ip_addresses`);
+    }
+
+    /**
+     * Get the tenant's OTA (One-Time-Address) configuration
+     */
+    public async getOtaConfiguration(): Promise<{enabled: boolean}> {
+        return await this.apiClient.issueGetRequest("/v1/management/ota");
+    }
+
+    /**
+     * Update the tenant's OTA (One-Time-Address) configuration
+     * @param enable
+     */
+    public async updateOtaConfiguration(enable: boolean): Promise<void> {
+        const body = { enabled: enable };
+        return await this.apiClient.issuePutRequest("/v1/management/ota", body);
+    }
+
+    /** Gets all Users Groups for your tenant
      */
     public async getUsersGroups(): Promise<UsersGroup[]> {
-        return await this.apiClient.issueGetRequest("/v1/users_groups");
+        return await this.apiClient.issueGetRequest("/v1/management/users_groups");
     }
 
     /**
@@ -1280,7 +1366,7 @@ export class FireblocksSDK {
      * @param id The ID of the User
      */
     public async getUsersGroup(id: string): Promise<UsersGroup> {
-        return await this.apiClient.issueGetRequest(`/v1/users_groups/${id}`);
+        return await this.apiClient.issueGetRequest(`/v1/management/users_groups/${id}`);
     }
 
     /**
@@ -1290,7 +1376,7 @@ export class FireblocksSDK {
      */
     public async createUserGroup(groupName: string, memberIds?: string[]): Promise<UsersGroup> {
         const body = { groupName, memberIds };
-        return await this.apiClient.issuePostRequest("/v1/users_groups", body);
+        return await this.apiClient.issuePostRequest("/v1/management/users_groups", body);
     }
 
     /**
@@ -1301,7 +1387,7 @@ export class FireblocksSDK {
      */
     public async updateUserGroup(id: string, groupName?: string, memberIds?: string[]): Promise<UsersGroup> {
         const body = { groupName, memberIds };
-        return await this.apiClient.issuePutRequest(`/v1/users_groups/${id}`, body);
+        return await this.apiClient.issuePutRequest(`/v1/management/users_groups/${id}`, body);
     }
 
     /**
@@ -1309,7 +1395,7 @@ export class FireblocksSDK {
      * @param id The ID of the Users Group
      */
     public async deleteUserGroup(id: string): Promise<void> {
-        return await this.apiClient.issueDeleteRequest(`/v1/users_groups/${id}`);
+        return await this.apiClient.issueDeleteRequest(`/v1/management/users_groups/${id}`);
     }
 
     /**
@@ -1492,13 +1578,28 @@ export class FireblocksSDK {
     /**
      * Gets all audits for selected time period
      * @param timePeriod
+     * @param cursor
      */
     public async getAudits(timePeriod?: TimePeriod): Promise<AuditsResponse> {
-        let url = `/v1/audits`;
-        if (timePeriod) {
-            url += `?timePeriod=${timePeriod}`;
-        }
-        return await this.apiClient.issueGetRequest(url);
+        const queryParams = {
+            timePeriod,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/audits?${queryString.stringify(queryParams)}`);
+    }
+
+    /**
+     * Gets paginated audit logs for selected time period
+     * @param timePeriod
+     * @param cursor
+     */
+    public async getPaginatedAuditLogs(timePeriod?: TimePeriod, cursor?: string): Promise<AuditLogsResponse> {
+        const queryParams = {
+            timePeriod,
+            cursor,
+        };
+
+        return await this.apiClient.issueGetRequest(`/v1/management/audit_logs?${queryString.stringify(queryParams)}`);
     }
 
     /**
@@ -1951,32 +2052,48 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get PostScreening Policies for travel rule compliance
+     * Get PostScreening Policies for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRulePostScreeningPolicy(): Promise<TravelRuleRulesConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/post_screening_policy`);
+    private async getPostScreeningPolicy(screeningType: ScreeningType): Promise<ScreeningProviderConfigurationResponse> {
+        const endpoint = `/v1/screening/${screeningType}/post_screening_policy`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Get Screening Policies for travel rule compliance
+     * Get Screening Policies for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRuleScreeningPolicy(): Promise<TravelRulePolicy> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/screening_policy`);
+    private async getScreeningPolicy(screeningType: ScreeningType): Promise<ScreeningPolicyRuleResponse> {
+        const endpoint = `/v1/screening/${screeningType}/screening_policy`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Get Screening Configuration for travel rule compliance
+     * Get Screening Configuration for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
      */
-    public async getTravelRuleScreeningConfiguration(): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/policy_configuration`);
+    private async getScreeningConfiguration(screeningType: ScreeningType): Promise<ScreeningConfigurationsResponse> {
+        const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
+        return await this.apiClient.issueGetRequest(endpoint);
     }
 
     /**
-     * Update Bypass Screening Configuration for travel rule compliance
-     * @param screeningPolicyConfiguration
+     * Update Bypass Screening Configuration for compliance
+     * @param screeningType The type of screening (e.g., 'travel_rule', 'aml')
+     * @param screeningPolicyConfiguration The configuration to update
      */
-    public async updateTravelRulePolicyConfiguration(screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningPolicyConfiguration> {
-        return await this.apiClient.issuePutRequest(`/v1/screening/travel_rule/policy_configuration`, screeningPolicyConfiguration);
+    private async updatePolicyConfiguration(screeningType: ScreeningType, screeningPolicyConfiguration: ScreeningPolicyConfiguration): Promise<ScreeningConfigurationsResponse> {
+        const endpoint = `/v1/screening/${screeningType}/policy_configuration`;
+        return await this.apiClient.issuePutRequest(endpoint, screeningPolicyConfiguration);
+    }
+
+    /**
+     * Update Bypass Screening Tenant Configuration for AML/KYT compliance
+     * @param screeningTenantConfiguration
+     */
+    public async updateTenantScreeningConfiguration(screeningTenantConfiguration: ScreeningTenantConfiguration): Promise<ScreeningTenantConfiguration> {
+        return await this.apiClient.issuePutRequest(`/v1/screening/config`, screeningTenantConfiguration);
     }
 
     /**
