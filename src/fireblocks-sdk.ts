@@ -128,7 +128,7 @@ import {
     CreateTokenResponseDto,
     TokenLinksCount,
     GetTokenLinksFilter,
-    GetTemplateContractsFilter,
+    GetContractTemplatesFilter,
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
@@ -1790,7 +1790,7 @@ export class FireblocksSDK {
         type,
         pageSize = 100,
         pageCursor
-    }: GetTemplateContractsFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
+    }: GetContractTemplatesFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
         return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts?${queryString.stringify({
             initializationPhase,
             type,
@@ -1805,7 +1805,7 @@ export class FireblocksSDK {
      *
      * @returns {ContractTemplateDto}
      */
-    public async uploadTemplateContract(payload: ContractUploadRequest): Promise<ContractTemplateDto> {
+    public async uploadContractTemplate(payload: ContractUploadRequest): Promise<ContractTemplateDto> {
         return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, payload);
     }
 
@@ -1815,7 +1815,7 @@ export class FireblocksSDK {
      *
      * @returns {ContractTemplateDto}
      */
-    public async getTemplateContract(contractId: string): Promise<ContractTemplateDto> {
+    public async getContractTemplate(contractId: string): Promise<ContractTemplateDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}`);
     }
 
@@ -1823,7 +1823,7 @@ export class FireblocksSDK {
      * Delete a contract template by id
      * @param contractId
      */
-    public async deleteTemplateContract(contractId: string): Promise<void> {
+    public async deleteContractTemplate(contractId: string): Promise<void> {
         return await this.apiClient.issueDeleteRequest(`/v1/contract-registry/contracts/${contractId}`);
     }
 
@@ -1834,7 +1834,7 @@ export class FireblocksSDK {
      *
      * @returns {ContractTemplateDto}
      */
-    public async getTemplateContractConstructor(contractId: string, withDocs: boolean = false): Promise<ContractTemplateDto> {
+    public async getContractTemplateConstructor(contractId: string, withDocs: boolean = false): Promise<ContractTemplateDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}/constructor?withDocs=${withDocs}`);
     }
 

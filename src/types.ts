@@ -1794,7 +1794,7 @@ export interface GetTokenLinksFilter {
     pageCursor?: string;
 }
 
-export interface GetTemplateContractsFilter {
+export interface GetContractTemplatesFilter {
     initializationPhase?: ContractInitializationPhase;
     type?: ContractTemplateType;
     pageSize?: number;
