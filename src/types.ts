@@ -1641,6 +1641,30 @@ export enum ContractInitializationPhase {
     POST_DEPLOYMENT = "POST_DEPLOYMENT",
 }
 
+export enum InputFieldMetadataTypes {
+    EncodedFunctionCallFieldType = "encodedFunctionCall",
+    DeployedContractAddressFieldType = "deployedContractAddress",
+    SupportedAssetAddressFieldType = "supportedAssetAddress",
+}
+
+export interface EncodedFunctionCallFieldMetadata {
+    templateId: string;
+    functionSignature: string;
+}
+
+export interface DeployedContractAddressFieldMetadata {
+    templateId: string;
+}
+
+export interface FieldMetadata {
+    type: string | InputFieldMetadataTypes;
+    info: EncodedFunctionCallFieldMetadata | DeployedContractAddressFieldMetadata;
+}
+
+export interface InputFieldsMetadata {
+    [contractMethod: string]: Record<string, FieldMetadata>;
+}
+
 export interface ContractUploadRequest {
     name: string;
     description: string;
@@ -1651,7 +1675,7 @@ export interface ContractUploadRequest {
     implementationContractId?: string;
     initializationPhase: ContractInitializationPhase;
     compilerOutputMetadata?: object;
-    inputFieldsMetadata?: object;
+    inputFieldsMetadata?: InputFieldsMetadata;
     docs?: ContractDoc;
     abi?: AbiFunction[];
     attributes?: Record<string, string>;
