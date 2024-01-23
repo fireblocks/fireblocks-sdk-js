@@ -1785,7 +1785,7 @@ export class FireblocksSDK {
      *
      * @returns {LeanContractTemplateDto[]} A paginated array of contract templates
      */
-    public async getTemplateContracts({
+    public async getContractTemplates({
         initializationPhase,
         type,
         pageSize = 100,
