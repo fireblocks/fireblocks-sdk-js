@@ -1782,10 +1782,10 @@ export enum TokenLinkStatus {
 
 export interface TokenLink {
     id: string;
-    type: ContractTemplateType;
-    refId: string;
+    type?: ContractTemplateType;
+    refId?: string;
     status: TokenLinkStatus;
-    assetMetadata?: LinkedTokenMetadata;
+    tokenMetadata?: LinkedTokenMetadata;
 }
 
 export interface GetTokenLinksFilter {
