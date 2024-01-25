@@ -76,8 +76,6 @@ import {
     GetAssetWalletsFilters,
     GetAssetWalletsResponse,
     PeerType,
-    TokenLink,
-    IssueTokenRequest,
     NFTOwnershipStatus,
     NFTOwnershipStatusUpdatedPayload,
     NFTOwnedCollectionsFilter,
@@ -124,8 +122,11 @@ import {
     ScreeningTenantConfiguration,
     ScreeningType,
     ScreeningConfigurationsResponse,
-    ScreeningPolicyRuleResponse, ScreeningProviderConfigurationResponse, AuditLogsResponse,
-    CreateTokenResponseDto,
+    ScreeningPolicyRuleResponse,
+    ScreeningProviderConfigurationResponse,
+    AuditLogsResponse,
+    TokenLink,
+    IssueTokenRequest,
     TokenLinksCount,
     GetTokenLinksFilter,
     GetContractTemplatesFilter,
@@ -1924,9 +1925,9 @@ export class FireblocksSDK {
      *
      * @param {IssueTokenRequest} payload - The payload containing information for token issuance.
      *
-     * @returns {CreateTokenResponseDto} Response with created token ID
+     * @returns {TokenLink} Response with created token ID
      */
-    public async issueNewToken(payload: IssueTokenRequest): Promise<CreateTokenResponseDto> {
+    public async issueNewToken(payload: IssueTokenRequest): Promise<TokenLink> {
         return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens`, payload);
     }
 

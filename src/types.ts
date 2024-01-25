@@ -1737,10 +1737,6 @@ export interface LeanContractTemplateDto {
     vendor?: VendorDto;
 }
 
-export interface CreateTokenResponseDto {
-    id: string;
-}
-
 export interface ContractTemplateDto {
     id: string;
     name: string;
