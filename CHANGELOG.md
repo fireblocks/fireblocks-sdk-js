@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.18.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.18.0...v5.18.1)
+
+> 26 January 2024
+
+- Tokenization updated API [`#247`](https://github.com/fireblocks/fireblocks-sdk-js/pull/247)
+
 #### [v5.18.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.17.0...v5.18.0)
 
 > 18 January 2024
 
 - feat: Add request interceptor and httpsAgent options [`#245`](https://github.com/fireblocks/fireblocks-sdk-js/pull/245)
+- add missing amountUsd [`#239`](https://github.com/fireblocks/fireblocks-sdk-js/pull/239)
 
 #### [v5.17.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.16.0...v5.17.0)
 
