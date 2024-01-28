@@ -1358,16 +1358,16 @@ export class FireblocksSDK {
 
     /** Gets all Users Groups for your tenant
      */
-    public async getUsersGroups(): Promise<UsersGroup[]> {
-        return await this.apiClient.issueGetRequest("/v1/management/users_groups");
+    public async getUserGroups(): Promise<UsersGroup[]> {
+        return await this.apiClient.issueGetRequest("/v1/management/user_groups");
     }
 
     /**
      * Gets a Users Group by ID
      * @param id The ID of the User
      */
-    public async getUsersGroup(id: string): Promise<UsersGroup> {
-        return await this.apiClient.issueGetRequest(`/v1/management/users_groups/${id}`);
+    public async getUserGroup(id: string): Promise<UsersGroup> {
+        return await this.apiClient.issueGetRequest(`/v1/management/user_groups/${id}`);
     }
 
     /**
@@ -1377,7 +1377,7 @@ export class FireblocksSDK {
      */
     public async createUserGroup(groupName: string, memberIds?: string[]): Promise<UsersGroup> {
         const body = { groupName, memberIds };
-        return await this.apiClient.issuePostRequest("/v1/management/users_groups", body);
+        return await this.apiClient.issuePostRequest("/v1/management/user_groups", body);
     }
 
     /**
@@ -1388,7 +1388,7 @@ export class FireblocksSDK {
      */
     public async updateUserGroup(id: string, groupName?: string, memberIds?: string[]): Promise<UsersGroup> {
         const body = { groupName, memberIds };
-        return await this.apiClient.issuePutRequest(`/v1/management/users_groups/${id}`, body);
+        return await this.apiClient.issuePutRequest(`/v1/management/user_groups/${id}`, body);
     }
 
     /**
@@ -1396,7 +1396,7 @@ export class FireblocksSDK {
      * @param id The ID of the Users Group
      */
     public async deleteUserGroup(id: string): Promise<void> {
-        return await this.apiClient.issueDeleteRequest(`/v1/management/users_groups/${id}`);
+        return await this.apiClient.issueDeleteRequest(`/v1/management/user_groups/${id}`);
     }
 
     /**
