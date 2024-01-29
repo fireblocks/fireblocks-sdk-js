@@ -901,7 +901,7 @@ export interface NFTOwnershipFilter {
     ncwId?: string;
     ncwAccountIds?: string[];
     walletType?: NFTOwnershipWalletType;
-    spam?: SpamTokenOwnership;
+    spam?: NFTSpamTokenOwnership;
 }
 
 export interface NFTOwnedCollectionsFilter {
@@ -924,7 +924,7 @@ export interface NFTOwnedAssetsFilter {
     pageSize?: number;
     sort?: GetOwnedAssetsSortValues[];
     order?: OrderValues;
-    spam?: SpamTokenOwnership;
+    spam?: NFTSpamTokenOwnership;
 }
 
 export interface TokenOwnershipSpamUpdatePayload {
@@ -1688,7 +1688,7 @@ export interface InputFieldsMetadata {
     [contractMethod: string]: Record<string, FieldMetadata>;
 }
 
-export enum SpamTokenOwnership {
+export enum NFTSpamTokenOwnership {
     "true" = "true",
     "false" = "false",
     "all" = "all",
