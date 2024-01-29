@@ -983,7 +983,7 @@ export interface BaseTokenWithBalance extends Token {
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
     spam?: NFTSpamOwnershipResponse;
-    status?: NFTOwnershipStatus;
+    status: NFTOwnershipStatus;
 }
 
 export type TokenWithBalance = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseTokenWithBalance;
