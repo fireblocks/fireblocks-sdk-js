@@ -133,7 +133,7 @@ import {
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
-    NFTSpamSourceEnum
+    TokenOwnershipSpamUpdatePayload,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
