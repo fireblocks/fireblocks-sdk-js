@@ -951,6 +951,19 @@ interface MediaEntity {
     contentType: string;
 }
 
+enum NFTSpamSourceEnum {
+    OWNER = "OWNER",
+    SYSTEM = "SYSTEM",
+}
+
+interface NFTSpamTokenResponse {
+    result: boolean;
+}
+
+interface NFTSpamOwnershipResponse extends NFTSpamTokenResponse {
+    source: NFTSpamSourceEnum;
+}
+
 export interface Token {
     id: string;
     tokenId: string;
@@ -962,12 +975,15 @@ export interface Token {
     metadataURI?: string;
     cachedMetadataURI?: string;
     collection?: NFTCollection;
+    spam?: NFTSpamTokenResponse;
 }
 
 export interface BaseTokenWithBalance extends Token {
     balance: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
+    spam?: NFTSpamOwnershipResponse;
+    status?: NFTOwnershipStatus;
 }
 
 export type TokenWithBalance = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseTokenWithBalance;
