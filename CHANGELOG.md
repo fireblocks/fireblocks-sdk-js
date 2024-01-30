@@ -2,11 +2,25 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.19.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.18.0...v5.19.0)
+#### [v5.20.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.19.0...v5.20.0)
+
+> 30 January 2024
+
+- Add `errorDescription` to `TransactionResponse` [`#251`](https://github.com/fireblocks/fireblocks-sdk-js/pull/251)
+
+#### [v5.19.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.18.1...v5.19.0)
 
 > 30 January 2024
 
 - Add spam changes to js sdk [`#250`](https://github.com/fireblocks/fireblocks-sdk-js/pull/250)
+- Renamed management routes [`#248`](https://github.com/fireblocks/fireblocks-sdk-js/pull/248)
+
+#### [v5.18.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.18.0...v5.18.1)
+
+> 26 January 2024
+
+- Tokenization updated API [`#247`](https://github.com/fireblocks/fireblocks-sdk-js/pull/247)
+- update type of addressFormat to string | undefined [`#243`](https://github.com/fireblocks/fireblocks-sdk-js/pull/243)
 
 #### [v5.18.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.17.0...v5.18.0)
 
