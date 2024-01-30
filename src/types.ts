@@ -901,6 +901,7 @@ export interface NFTOwnershipFilter {
     ncwId?: string;
     ncwAccountIds?: string[];
     walletType?: NFTOwnershipWalletType;
+    spam?: NFTSpamTokenOwnership;
 }
 
 export interface NFTOwnedCollectionsFilter {
@@ -923,6 +924,12 @@ export interface NFTOwnedAssetsFilter {
     pageSize?: number;
     sort?: GetOwnedAssetsSortValues[];
     order?: OrderValues;
+    spam?: NFTSpamTokenOwnership;
+}
+
+export interface TokenOwnershipSpamUpdatePayload {
+    assetId: string;
+    spam: boolean;
 }
 
 export interface GetNFTsFilter {
@@ -944,6 +951,19 @@ interface MediaEntity {
     contentType: string;
 }
 
+enum NFTSpamSourceEnum {
+    OWNER = "OWNER",
+    SYSTEM = "SYSTEM",
+}
+
+interface NFTSpamTokenResponse {
+    result: boolean;
+}
+
+interface NFTSpamOwnershipResponse extends NFTSpamTokenResponse {
+    source: NFTSpamSourceEnum;
+}
+
 export interface Token {
     id: string;
     tokenId: string;
@@ -955,12 +975,15 @@ export interface Token {
     metadataURI?: string;
     cachedMetadataURI?: string;
     collection?: NFTCollection;
+    spam?: NFTSpamTokenResponse;
 }
 
 export interface BaseTokenWithBalance extends Token {
     balance: string;
     ownershipStartTime: number;
     ownershipLastUpdateTime: number;
+    spam?: NFTSpamOwnershipResponse;
+    status: NFTOwnershipStatus;
 }
 
 export type TokenWithBalance = (WorkspaceWalletIdentifier | NonCustodialWalletIdentifier) & BaseTokenWithBalance;
@@ -1663,6 +1686,12 @@ export interface FieldMetadata {
 
 export interface InputFieldsMetadata {
     [contractMethod: string]: Record<string, FieldMetadata>;
+}
+
+export enum NFTSpamTokenOwnership {
+    "true" = "true",
+    "false" = "false",
+    "all" = "all",
 }
 
 export interface ContractUploadRequest {

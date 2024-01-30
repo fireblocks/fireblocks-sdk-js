@@ -133,6 +133,7 @@ import {
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
+    TokenOwnershipSpamUpdatePayload,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1647,11 +1648,12 @@ export class FireblocksSDK {
      * @param filter.ncwAccountIds List of Non-Custodial wallet account IDs
      * @param filter.ncwId Non-Custodial wallet id
      * @param filter.walletType Wallet type (VAULT_ACCOUNT, END_USER_WALLET)
+     * @param filter.spam Spam filter (true, false, all)
      */
     public async getOwnedNFTs(filter?: NFTOwnershipFilter): Promise<Web3PagedResponse<TokenWithBalance>> {
         let url = "/v1/nfts/ownership/tokens";
         if (filter) {
-            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search, ncwId, ncwAccountIds, walletType } = filter;
+            const { blockchainDescriptor, vaultAccountIds, collectionIds, ids, pageCursor, pageSize, sort, order, status, search, ncwId, ncwAccountIds, walletType, spam } = filter;
             const requestFilter = {
                 vaultAccountIds: this.getCommaSeparatedList(vaultAccountIds),
                 blockchainDescriptor,
@@ -1666,6 +1668,7 @@ export class FireblocksSDK {
                 ncwId,
                 ncwAccountIds,
                 walletType,
+                spam,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
@@ -1716,11 +1719,12 @@ export class FireblocksSDK {
      * @param filter.pageSize Page size
      * @param filter.sort Sort by value
      * @param filter.order Order by value
+     * @param filter.spam Spam filter (true, false, all)
      */
     public async listOwnedAssets(filter?: NFTOwnedAssetsFilter): Promise<Web3PagedResponse<Token>> {
         let url = "/v1/nfts/ownership/assets";
         if (filter) {
-            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order } = filter;
+            const { search, status, ncwId, walletType, pageCursor, pageSize, sort, order, spam } = filter;
 
             const requestFilter = {
                 search,
@@ -1731,6 +1735,7 @@ export class FireblocksSDK {
                 pageSize,
                 sort: this.getCommaSeparatedList(sort),
                 order,
+                spam,
             };
             url += `?${queryString.stringify(requestFilter)}`;
         }
@@ -1774,6 +1779,15 @@ export class FireblocksSDK {
         return await this.apiClient.issuePutRequest(
             `/v1/nfts/ownership/tokens?vaultAccountId=${vaultAccountId}&blockchainDescriptor=${blockchainDescriptor}`,
             undefined);
+    }
+
+    /**
+     *
+     * @param payload.assetId NFT asset id
+     * @param payload.spam Spam status
+     */
+    public async updateNFTTokenOwnershipSpamStatus(payload: TokenOwnershipSpamUpdatePayload[]): Promise<void> {
+        return await this.apiClient.issuePutRequest(`/v1/nfts/ownership/tokens/spam`, payload);
     }
 
     /**
