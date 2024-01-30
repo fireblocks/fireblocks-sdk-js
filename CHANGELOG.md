@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.18.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.18.0...v5.18.1)
+#### [v5.19.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.18.0...v5.19.0)
 
-> 26 January 2024
+> 30 January 2024
 
-- Tokenization updated API [`#247`](https://github.com/fireblocks/fireblocks-sdk-js/pull/247)
+- Add spam changes to js sdk [`#250`](https://github.com/fireblocks/fireblocks-sdk-js/pull/250)
 
 #### [v5.18.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.17.0...v5.18.0)
 
