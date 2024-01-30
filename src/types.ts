@@ -717,6 +717,7 @@ export interface TransactionResponse {
     index?: number;
     rewardInfo?: RewardInfo;
     feePayerInfo?: FeePayerInfo;
+    errorDescription?: string;
 }
 
 export interface AmountInfo {
