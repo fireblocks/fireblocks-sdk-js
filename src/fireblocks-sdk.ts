@@ -843,6 +843,16 @@ export class FireblocksSDK {
     }
 
     /**
+     * Creates a new asset and adds tenant to it
+     * @param blockchainId Blockchain ID or asset ID
+     * @param contractAddress Asset contract address
+     * @param symbol Asset symbol
+     */
+    public async createErc20Asset(blockchainId: string, contractAddress: string, symbol?: string): Promise<any> {
+        return await this.apiClient.issuePostRequest(`/v1/assets`, { blockchainId, contractAddress, symbol });
+    }
+
+    /**
      * Creates a new external wallet
      * @param name A name for the new external wallet
      * @param customerRefId A customer reference ID
