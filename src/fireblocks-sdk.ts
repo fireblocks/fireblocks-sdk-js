@@ -135,17 +135,25 @@ import {
     AbiFunction,
     TokenOwnershipSpamUpdatePayload,
 } from "./types";
-import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { AxiosProxyConfig, AxiosResponse } from "axios";
 import { PIIEncryption } from "./pii-client";
 import { NcwApiClient } from "./ncw-api-client";
 import { NcwSdk } from "./ncw-sdk";
 import { StakingApiClient } from "./staking/staking-api-client";
 import {
-    ChainInfo, CheckTermsOfServiceResponseDto,
+    ChainInfo,
+    CheckTermsOfServiceResponseDto,
     DelegationSummaryDto,
     DelegationSummaryDtoByVault,
-    ExecuteActionResponse, StakeRequestDto, StakingAction,
-    StakingChain, StakingPosition, StakingProvider, UnstakeRequestDto, WithdrawRequestDto
+    StakeRequestDto,
+    StakeResponse,
+    StakingChain,
+    StakingPosition,
+    StakingProvider,
+    UnstakeRequestDto,
+    UnstakeResponse,
+    WithdrawRequestDto,
+    WithdrawResponse
 } from "./staking";
 
 export * from "./types";
@@ -263,10 +271,28 @@ export class FireblocksSDK {
         return await this.stakingApiClient.getPositionsSummaryByVault();
     }
     /**
-     * Execute staking action on a chain
+     * Initiate staking stake on a chain
      */
-    public async executeStakingAction(actionId: StakingAction, chainDescriptor: StakingChain, body: StakeRequestDto | UnstakeRequestDto | WithdrawRequestDto): Promise<ExecuteActionResponse> {
-        return await this.stakingApiClient.executeAction(actionId, chainDescriptor, body);
+    public async executeStakingStake(chainDescriptor: StakingChain, body: StakeRequestDto): Promise<StakeResponse> {
+        return await this.stakingApiClient.stake(chainDescriptor, body);
+    }
+    /**
+     * Execute staking unstake on a chain
+     */
+    public async executeStakingUnstake(chainDescriptor: StakingChain, body: UnstakeRequestDto): Promise<UnstakeResponse> {
+        return await this.stakingApiClient.unstake(chainDescriptor, body);
+    }
+    /**
+     * Execute staking withdraw on a chain
+     */
+    public async executeStakingWithdraw(chainDescriptor: StakingChain, body: WithdrawRequestDto): Promise<WithdrawResponse> {
+        return await this.stakingApiClient.withdraw(chainDescriptor, body);
+    }
+    /**
+     * Execute staking claim rewards on a chain
+     */
+    public async executeStakingClaimRewards(chainDescriptor: StakingChain, body: WithdrawRequestDto): Promise<WithdrawResponse> {
+        return await this.stakingApiClient.withdraw(chainDescriptor, body);
     }
     /**
      * Get all staking positions, optionally filtered by chain

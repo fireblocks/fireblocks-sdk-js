@@ -1,13 +1,12 @@
 import {
     ChainInfo,
-    CheckTermsOfServiceResponseDto,
+    CheckTermsOfServiceResponseDto, ClaimRewardsRequestDto, ClaimRewardsResponse,
     DelegationSummaryDto,
     DelegationSummaryDtoByVault,
-    ExecuteActionResponse, StakeRequestDto,
-    StakingAction,
+    StakeRequestDto, StakeResponse,
     StakingChain,
     StakingPosition, StakingProvider,
-    UnstakeRequestDto, WithdrawRequestDto,
+    UnstakeRequestDto, UnstakeResponse, WithdrawRequestDto, WithdrawResponse,
 } from "./types";
 import { StakingSDK } from "./staking-sdk";
 import { ApiClient } from "../api-client";
@@ -28,13 +27,39 @@ export class StakingApiClient implements StakingSDK {
     public async getPositionsSummaryByVault(): Promise<DelegationSummaryDtoByVault> {
         return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/positions/summary/vaults`);
     }
-    public async executeAction(
-        actionId: StakingAction,
+    public async stake(
         chainDescriptor: StakingChain,
-        body: StakeRequestDto | UnstakeRequestDto | WithdrawRequestDto,
-    ): Promise<ExecuteActionResponse> {
+        body: StakeRequestDto,
+    ): Promise<StakeResponse> {
         return await this.apiClient.issuePostRequest(
-            `${STAKING_BASE_PATH}/chains/${chainDescriptor}/${actionId}`,
+            `${STAKING_BASE_PATH}/chains/${chainDescriptor}/stake`,
+            body,
+        );
+    }
+    public async unstake(
+        chainDescriptor: StakingChain,
+        body: UnstakeRequestDto,
+    ): Promise<UnstakeResponse> {
+        return await this.apiClient.issuePostRequest(
+            `${STAKING_BASE_PATH}/chains/${chainDescriptor}/unstake`,
+            body,
+        );
+    }
+    public async withdraw(
+        chainDescriptor: StakingChain,
+        body: WithdrawRequestDto,
+    ): Promise<WithdrawResponse> {
+        return await this.apiClient.issuePostRequest(
+            `${STAKING_BASE_PATH}/chains/${chainDescriptor}/withdraw`,
+            body,
+        );
+    }
+    public async claimRewards(
+        chainDescriptor: StakingChain,
+        body: ClaimRewardsRequestDto,
+    ): Promise<ClaimRewardsResponse> {
+        return await this.apiClient.issuePostRequest(
+            `${STAKING_BASE_PATH}/chains/${chainDescriptor}/claimRewards`,
             body,
         );
     }

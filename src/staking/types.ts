@@ -175,6 +175,7 @@ export enum StakingChain {
     SOLANA_TESTNET = "SOL_TEST",
     ETHEREUM = "ETH",
     GOERLI = "ETH_TEST3",
+    MATIC = "MATIC",
 }
 
 /**
@@ -223,9 +224,15 @@ export class DelegationSummaryDtoByVault {
     [vaultAccountId: string]: DelegationSummaryDto;
 }
 
-export type ExecuteActionResponse = {} | {
+export type StakeResponse = {
     delegationRequestId: string;
 };
+
+export type UnstakeResponse = {};
+
+export type WithdrawResponse = {};
+
+export type ClaimRewardsResponse = {};
 
 export interface StakeRequestDto {
     /**
@@ -284,6 +291,28 @@ export interface UnstakeRequestDto {
 export interface WithdrawRequestDto {
     /**
      * id of position to withdraw
+     */
+    id: string;
+
+    /**
+     * Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required
+     */
+    fee?: string;
+
+    /**
+     * Represents the fee level for a transaction, which can be set as slow, medium, or fast. Only one of fee/feeLevel is required
+     */
+    feeLevel?: string;
+
+    /**
+     * The note to associate with the transactions
+     */
+    txNote?: string;
+}
+
+export interface ClaimRewardsRequestDto {
+    /**
+     * id of position to withdraw rewards from
      */
     id: string;
 
