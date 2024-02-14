@@ -1854,7 +1854,8 @@ export interface WriteCallFunctionResponseDto {
 }
 
 export interface IssueTokenRequest {
-    blockchainId: string;
+    assetId?: string;
+    blockchainId?: string;
     vaultAccountId: string;
     createParams: CreateTokenParams;
 }
@@ -1909,6 +1910,7 @@ interface ParameterWithValue {
     type: string;
     description?: string;
     value: any;
+    functionValue: Pick<AbiFunction, "name" | "inputs">;
 }
 export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueList[];
 
