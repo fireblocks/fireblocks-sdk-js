@@ -1,10 +1,17 @@
 import {
-    ChainInfo, CheckTermsOfServiceResponseDto,
+    ChainInfo,
+    CheckTermsOfServiceResponseDto, ClaimRewardsRequestDto, ClaimRewardsResponse,
     DelegationSummaryDto,
     DelegationSummaryDtoByVault,
-    ExecuteActionResponse,
-    StakingAction,
-    StakingChain, StakingPosition, StakingProvider,
+    StakeRequestDto,
+    StakeResponse,
+    StakingChain,
+    StakingPosition,
+    StakingProvider,
+    UnstakeRequestDto,
+    UnstakeResponse,
+    WithdrawRequestDto,
+    WithdrawResponse,
 } from "./types";
 
 export interface StakingSDK {
@@ -29,9 +36,24 @@ export interface StakingSDK {
     getPositionsSummaryByVault(): Promise<DelegationSummaryDtoByVault>;
 
     /**
-     * Execute staking action on a chain
+     * Initiate staking stake on a chain
      */
-    executeAction(actionId: StakingAction, chainDescriptor: StakingChain, body: any): Promise<ExecuteActionResponse>;
+    stake(chainDescriptor: StakingChain, body: StakeRequestDto): Promise<StakeResponse>;
+
+    /**
+     * Execute staking unstake on a chain
+     */
+    unstake(chainDescriptor: StakingChain, body: UnstakeRequestDto): Promise<UnstakeResponse>;
+
+    /**
+     * Execute staking withdraw on a chain
+     */
+    withdraw(chainDescriptor: StakingChain, body: WithdrawRequestDto): Promise<WithdrawResponse>;
+
+    /**
+     * Execute staking claim rewards on a chain
+     */
+    claimRewards(chainDescriptor: StakingChain, body: ClaimRewardsRequestDto): Promise<ClaimRewardsResponse>;
 
     /**
      * Get all staking positions, optionally filtered by chain
