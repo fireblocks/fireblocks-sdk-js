@@ -133,7 +133,7 @@ import {
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
-    TokenOwnershipSpamUpdatePayload, NCW, ScreeningSupportedAssetResponse, ScreeningSupportedProviders,
+    TokenOwnershipSpamUpdatePayload, ScreeningSupportedAssetResponse, ScreeningSupportedProviders,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -155,7 +155,6 @@ import {
     WithdrawRequestDto,
     WithdrawResponse
 } from "./staking";
-import GetSupportedAssetsPayload = NCW.GetSupportedAssetsPayload;
 
 export * from "./types";
 
