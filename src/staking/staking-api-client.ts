@@ -67,7 +67,7 @@ export class StakingApiClient implements StakingSDK {
         const url = `${STAKING_BASE_PATH}/positions${chainDescriptor ? `?chainDescriptor=${chainDescriptor}` : ""}`;
         return await this.apiClient.issueGetRequest(url);
     }
-    public async getPosition(positionId: string): Promise<StakingPosition[]> {
+    public async getPosition(positionId: string): Promise<StakingPosition> {
         return await this.apiClient.issueGetRequest(`${STAKING_BASE_PATH}/positions/${positionId}`);
     }
     public async getProviders(): Promise<StakingProvider[]> {
