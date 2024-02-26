@@ -1,15 +1,15 @@
 export enum PositionStatus {
-    "error" = "error",
-    "creating" = "creating",
-    "failed" = "failed",
-    "pending" = "pending",
-    "canceled" = "canceled",
-    "activating" = "activating",
-    "active" = "active",
-    "deactivating" = "deactivating",
-    "deactivated" = "deactivated",
-    "withdrawing" = "withdrawing",
-    "withdrawn" = "withdrawn",
+    error = "error",
+    creating = "creating",
+    failed = "failed",
+    pending = "pending",
+    canceled = "canceled",
+    activating = "activating",
+    active = "active",
+    deactivating = "deactivating",
+    deactivated = "deactivated",
+    withdrawing = "withdrawing",
+    withdrawn = "withdrawn",
 }
 
 interface ISolanaBlockchainData {
