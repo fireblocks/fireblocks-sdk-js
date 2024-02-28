@@ -303,7 +303,7 @@ export class FireblocksSDK {
     /**
      * Get a staking position by id
      */
-    public async getStakingPosition(positionId: string): Promise<StakingPosition[]> {
+    public async getStakingPosition(positionId: string): Promise<StakingPosition> {
         return await this.stakingApiClient.getPosition(positionId);
     }
     /**

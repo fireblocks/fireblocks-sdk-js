@@ -62,7 +62,7 @@ export interface StakingSDK {
     /**
      * Get a staking position by id
      */
-    getPosition(positionId?: string): Promise<StakingPosition[]>;
+    getPosition(positionId?: string): Promise<StakingPosition>;
 
     /**
      * Get all staking providers
