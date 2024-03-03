@@ -1812,6 +1812,7 @@ export interface TokenLink {
     refId?: string;
     status: TokenLinkStatus;
     tokenMetadata?: LinkedTokenMetadata;
+    displayName?: string;
 }
 
 export interface GetTokenLinksFilter {
