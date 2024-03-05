@@ -1859,6 +1859,7 @@ export interface IssueTokenRequest {
     blockchainId?: string;
     vaultAccountId: string;
     createParams: CreateTokenParams;
+    displayName?: string;
 }
 
 export interface JobCreatedResponse {
