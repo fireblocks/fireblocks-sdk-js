@@ -860,6 +860,17 @@ export class FireblocksSDK {
     }
 
     /**
+     * Creates a new asset and adds tenant to it
+     * @param blockchainId Blockchain ID or asset ID
+     * @param address Asset contract address
+     * @param symbol Asset symbol
+     * @param requestOptions
+     */
+    public async createNewAsset(blockchainId: string, address: string, symbol?: string, requestOptions?: RequestOptions): Promise<any> {
+        return await this.apiClient.issuePostRequest(`/v1/assets`, { blockchainId, address, symbol }, requestOptions);
+    }
+
+    /**
      * Retry to create a vault asset for a vault asset that failed
      * @param vaultAccountId The vault account ID
      * @param assetId The asset to add
