@@ -626,7 +626,6 @@ export enum ScreeningSupportedProviders {
     ELLIPTIC = "ELLIPTIC",
     CHAINALYSIS_V2 = "CHAINALYSIS_V2",
     ELLIPTIC_HOLISTIC = "ELLIPTIC_HOLISTIC",
-
 }
 
 export enum Web3ConnectionFeeLevel {
