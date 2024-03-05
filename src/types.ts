@@ -611,6 +611,23 @@ export interface ScreeningPolicyRuleResponse {
 
 export type ScreeningType = "travel_rule" | "aml";
 
+export interface ScreeningSupportedAssetResponse {
+    id: string;
+    name: string;
+    type: string;
+    contractAddress: string;
+    nativeAsset: string;
+    decimals?: number;
+    blockchain: string;
+}
+
+export enum ScreeningSupportedProviders {
+    CHAINALYSIS = "CHAINALYSIS",
+    ELLIPTIC = "ELLIPTIC",
+    CHAINALYSIS_V2 = "CHAINALYSIS_V2",
+    ELLIPTIC_HOLISTIC = "ELLIPTIC_HOLISTIC",
+}
+
 export enum Web3ConnectionFeeLevel {
     HIGH = "HIGH",
     MEDIUM = "MEDIUM",
