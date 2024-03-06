@@ -860,8 +860,8 @@ export class FireblocksSDK {
     }
 
     /**
-     * Creates a new asset and adds tenant to it
-     * @param blockchainId Blockchain ID or asset ID
+     * Registers new asset
+     * @param blockchainId Native asset of blockchain
      * @param address Asset contract address
      * @param symbol Asset symbol
      * @param requestOptions
