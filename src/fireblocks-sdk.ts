@@ -134,6 +134,7 @@ import {
     SupportedContractTemplateType,
     AbiFunction,
     TokenOwnershipSpamUpdatePayload,
+    RegisterAssetResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -866,7 +867,7 @@ export class FireblocksSDK {
      * @param symbol Asset symbol
      * @param requestOptions
      */
-    public async createNewAsset(blockchainId: string, address: string, symbol?: string, requestOptions?: RequestOptions): Promise<any> {
+    public async registerNewAsset(blockchainId: string, address: string, symbol?: string, requestOptions?: RequestOptions): Promise<RegisterAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/assets`, { blockchainId, address, symbol }, requestOptions);
     }
 
