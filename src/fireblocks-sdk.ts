@@ -2142,7 +2142,7 @@ export class FireblocksSDK {
      * @param provider The provider to get supported assets for
      */
     public async getSupportedAssetsForScreening(provider: ScreeningSupportedProviders): Promise<ScreeningSupportedAssetResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/screening/supported_assets/:${provider}`);
+        return await this.apiClient.issueGetRequest(`/v1/screening/supported_assets/${provider}`);
     }
 
     /**
