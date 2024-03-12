@@ -1,14 +1,15 @@
 export enum PositionStatus {
-    "error" = "error",
-
-    "activating" = "activating",
-    "active" = "active",
-
-    "deactivating" = "deactivating",
-    "deactivated" = "deactivated",
-
-    "withdrawing" = "withdrawing",
-    "withdrawn" = "withdrawn",
+    error = "error",
+    creating = "creating",
+    failed = "failed",
+    pending = "pending",
+    canceled = "canceled",
+    activating = "activating",
+    active = "active",
+    deactivating = "deactivating",
+    deactivated = "deactivated",
+    withdrawing = "withdrawing",
+    withdrawn = "withdrawn",
 }
 
 interface ISolanaBlockchainData {
@@ -161,11 +162,6 @@ export interface StakingProvider {
 /**
  * Staking actions
  */
-export enum StakingAction {
-    stake = "stake",
-    unstake = "unstake",
-    withdraw = "withdraw",
-}
 
 /**
  * Staking chain descriptors
@@ -225,7 +221,7 @@ export class DelegationSummaryDtoByVault {
 }
 
 export type StakeResponse = {
-    delegationRequestId: string;
+    id: string;
 };
 
 export type UnstakeResponse = {};
