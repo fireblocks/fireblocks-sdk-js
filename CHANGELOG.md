@@ -2,11 +2,20 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.22.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.21.0...v5.22.0)
+
+> 12 March 2024
+
+- Remove colon from supported screening URL [`#265`](https://github.com/fireblocks/fireblocks-sdk-js/pull/265)
+
 #### [v5.21.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.20.0...v5.21.0)
 
 > 28 February 2024
 
 - staking-sdk: fix PositionStatus missing statuses, StakeResponse respo… [`#260`](https://github.com/fireblocks/fireblocks-sdk-js/pull/260)
+- Update README.md [`#261`](https://github.com/fireblocks/fireblocks-sdk-js/pull/261)
+- staking-sdk: update staking sdk [`#254`](https://github.com/fireblocks/fireblocks-sdk-js/pull/254)
+- assetId [`#256`](https://github.com/fireblocks/fireblocks-sdk-js/pull/256)
 
 #### [v5.20.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.19.0...v5.20.0)
 
