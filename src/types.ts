@@ -1912,7 +1912,7 @@ interface ParameterWithValue {
     type: string;
     description?: string;
     value: any;
-    functionValue: Pick<AbiFunction, "name" | "inputs">;
+    functionValue?: Pick<AbiFunction, "name" | "inputs">;
 }
 export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueList[];
 
