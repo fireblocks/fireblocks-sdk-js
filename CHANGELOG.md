@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.22.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.21.0...v5.22.0)
+#### [v5.23.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.21.0...v5.23.0)
 
-> 12 March 2024
+> 14 March 2024
 
-- Remove colon from supported screening URL [`#265`](https://github.com/fireblocks/fireblocks-sdk-js/pull/265)
+- Tokenization - Add displayName [`#262`](https://github.com/fireblocks/fireblocks-sdk-js/pull/262)
 
 #### [v5.21.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.20.0...v5.21.0)
 
