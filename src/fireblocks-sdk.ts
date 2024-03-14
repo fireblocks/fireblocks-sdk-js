@@ -2001,11 +2001,12 @@ export class FireblocksSDK {
      * Link a token to the tenant
      * @param type
      * @param refId
+     * @param [displayName]
      *
      * @returns TokenLink
      */
-    public async linkToken(type: SupportedContractTemplateType, refId: string): Promise<TokenLink> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId });
+    public async linkToken(type: SupportedContractTemplateType, refId: string, displayName?: string): Promise<TokenLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId, displayName });
     }
 
     /**

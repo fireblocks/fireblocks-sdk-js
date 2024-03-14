@@ -1829,6 +1829,7 @@ export interface TokenLink {
     refId?: string;
     status: TokenLinkStatus;
     tokenMetadata?: LinkedTokenMetadata;
+    displayName?: string;
 }
 
 export interface GetTokenLinksFilter {
@@ -1875,6 +1876,7 @@ export interface IssueTokenRequest {
     blockchainId?: string;
     vaultAccountId: string;
     createParams: CreateTokenParams;
+    displayName?: string;
 }
 
 export interface JobCreatedResponse {
@@ -1927,7 +1929,7 @@ interface ParameterWithValue {
     type: string;
     description?: string;
     value: any;
-    functionValue: Pick<AbiFunction, "name" | "inputs">;
+    functionValue?: Pick<AbiFunction, "name" | "inputs">;
 }
 export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueList[];
 
