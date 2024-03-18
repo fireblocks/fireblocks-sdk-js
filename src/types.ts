@@ -9,7 +9,7 @@ export interface Web3PagedResponse<T> {
     paging?: Paging;
 }
 
-export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+export type APIResponseHeaders = AxiosResponseHeaders & { "x-request-id"?: string };
 
 export interface VaultAccountResponse {
     id: string;
@@ -1354,15 +1354,15 @@ export interface User {
 
 
 export type TRole =
-  | "ADMIN"
-  | "SIGNER"
-  | "EDITOR"
-  | "APPROVER"
-  | "VIEWER"
-  | "NON_SIGNING_ADMIN"
-  | "AUDITOR"
-  | "NCW_ADMIN"
-  | "NCW_SIGNER";
+    | "ADMIN"
+    | "SIGNER"
+    | "EDITOR"
+    | "APPROVER"
+    | "VIEWER"
+    | "NON_SIGNING_ADMIN"
+    | "AUDITOR"
+    | "NCW_ADMIN"
+    | "NCW_SIGNER";
 
 interface BaseUser {
     id: string;
@@ -2164,6 +2164,30 @@ export namespace NCW {
         deviceId: string;
         enabled: boolean;
     }
+
+    export enum SetupStatus {
+        COMPLETE = "COMPLETE",
+        INCOMPLETE = "INCOMPLETE",
+    }
+
+    export class KeySetup {
+        status: SetupStatus;
+        algorithmName: string;
+        confirmed: boolean;
+        backedUp: boolean;
+    }
+
+    export class DeviceKeySetupResponse {
+        status: SetupStatus;
+        deviceId: string;
+        setupStatus: Array<KeySetup>;
+    }
+
+    export class WalletSetupStatusResponse {
+        status: SetupStatus;
+        deviceSetupStatus: Array<DeviceKeySetupResponse>;
+    }
+
 }
 
 export namespace TAP {

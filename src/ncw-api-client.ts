@@ -147,4 +147,15 @@ export class NcwApiClient implements NcwSdk {
             `${this.NCW_BASE_PATH}/${walletId}/accounts/${accountId}/assets/${assetId}/balance`,
             {});
     }
+
+    public async getWalletSetupStatus(walletId: string): Promise<NCW.WalletSetupStatusResponse> {
+        return await this.apiClient.issueGetRequest(
+            `${this.NCW_BASE_PATH}/${walletId}/setup_status`);
+    }
+
+    public async getDeviceSetupStatus(walletId: string, deviceId: string): Promise<NCW.DeviceKeySetupResponse> {
+        return await this.apiClient.issueGetRequest(
+            `${this.NCW_BASE_PATH}/${walletId}/devices/${deviceId}/setup_status`);
+
+    }
 }
