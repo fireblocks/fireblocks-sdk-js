@@ -175,7 +175,7 @@ export interface NcwSdk {
     getWalletSetupStatus(walletId: string): Promise<NCW.WalletSetupStatusResponse>;
 
     /**
-     * refresh a NCW asset balance
+     * get NCW device setup status
      *
      * @param {string} walletId
      * @param {string} deviceId
