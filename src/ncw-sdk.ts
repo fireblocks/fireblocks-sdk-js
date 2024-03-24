@@ -165,4 +165,21 @@ export interface NcwSdk {
      * @return {*}  {Promise<AssetResponse>}
      */
     refreshWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse>;
+
+    /**
+     * get NCW wallet setup status
+     *
+     * @param {string} walletId
+     * @return {*}  {Promise<NCW.WalletSetupStatusResponse>}
+     */
+    getWalletSetupStatus(walletId: string): Promise<NCW.WalletSetupStatusResponse>;
+
+    /**
+     * get NCW device setup status
+     *
+     * @param {string} walletId
+     * @param {string} deviceId
+     * @return {*}  {Promise<NCW.DeviceKeySetupResponse>}
+     */
+    getDeviceSetupStatus(walletId: string, deviceId: string): Promise<NCW.DeviceKeySetupResponse>;
 }

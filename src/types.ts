@@ -2164,6 +2164,30 @@ export namespace NCW {
         deviceId: string;
         enabled: boolean;
     }
+
+    export enum SetupStatus {
+        COMPLETE = "COMPLETE",
+        INCOMPLETE = "INCOMPLETE",
+    }
+
+    export class KeySetup {
+        status: SetupStatus;
+        algorithmName: string;
+        confirmed: boolean;
+        backedUp: boolean;
+    }
+
+    export class DeviceKeySetupResponse {
+        status: SetupStatus;
+        deviceId: string;
+        setupStatus: Array<KeySetup>;
+    }
+
+    export class WalletSetupStatusResponse {
+        status: SetupStatus;
+        deviceSetupStatus: Array<DeviceKeySetupResponse>;
+    }
+
 }
 
 export namespace TAP {
