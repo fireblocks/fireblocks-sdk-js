@@ -2374,3 +2374,27 @@ export namespace TAP {
         metadata?: Metadata;
     }
 }
+
+export interface Cosigner {
+    id: string;
+    archived: boolean;
+    name: string;
+}
+
+export interface ApiKey {
+    id: string;
+    lastSeen: string;
+}
+
+export interface PaginationOptions {
+    order?: OrderValues;
+    pageCursor?: string;
+    pageSize?: number;
+    sortBy?: string;
+}
+
+export interface PaginatedResponse<T> {
+    data: T[];
+    next?: string;
+}
+
