@@ -133,7 +133,13 @@ import {
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
-    TokenOwnershipSpamUpdatePayload, ScreeningSupportedAssetResponse, ScreeningSupportedProviders,
+    TokenOwnershipSpamUpdatePayload,
+    ScreeningSupportedAssetResponse,
+    ScreeningSupportedProviders,
+    Cosigner,
+    ApiKey,
+    PaginationOptions,
+    PaginatedResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -2403,5 +2409,25 @@ export class FireblocksSDK {
             assetId, vaultAccountIdFrom, vaultAccountIdTo
         };
         return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
+    }
+
+    public getCosigners(options?: PaginationOptions): Promise<PaginatedResponse<Cosigner>> {
+        return this.apiClient.issueGetRequest(`/v1/cosigners?${queryString.stringify(options)}`);
+    }
+
+    public getCosigner(cosignerId: string): Promise<Cosigner> {
+        return this.apiClient.issueGetRequest(`/v1/cosigners/${cosignerId}`);
+    }
+
+    public renameCosigner(cosignerId: string, name: string): Promise<Cosigner> {
+        return this.apiClient.issuePatchRequest(`/v1/cosigners/${cosignerId}`, { name });
+    }
+
+    public getApiKeys(cosignerId: string, options?: PaginationOptions): Promise<PaginatedResponse<ApiKey>> {
+        return this.apiClient.issueGetRequest(`/v1/cosigners/${cosignerId}/api_keys?${queryString.stringify(options)}`);
+    }
+
+    public getApiKey(cosignerId: string, apiKeyId: string): Promise<ApiKey> {
+        return this.apiClient.issueGetRequest(`/v1/cosigners/${cosignerId}/api_keys/${apiKeyId}`);
     }
 }
