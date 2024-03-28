@@ -67,7 +67,6 @@ export interface UnfreezeTransactionResponse {
 
 export interface RegisterAssetResponse {
     id: string;
-    blockchainId: string;
     "class": AssetClass;
     onchain: OnchainAsset;
     metadata: AssetMetadata;
