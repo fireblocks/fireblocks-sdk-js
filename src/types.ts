@@ -66,7 +66,7 @@ export interface UnfreezeTransactionResponse {
 }
 
 export interface RegisterAssetResponse {
-    id: string;
+    legacyId: string;
     "class": AssetClass;
     onchain: OnchainAsset;
     metadata: AssetMetadata;
