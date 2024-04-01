@@ -65,6 +65,38 @@ export interface UnfreezeTransactionResponse {
     success: boolean;
 }
 
+export interface RegisterAssetResponse {
+    legacyId: string;
+    assetClass: AssetClass;
+    onchain: OnchainAsset;
+    metadata: AssetMetadata;
+}
+
+export enum AssetClass {
+    NATIVE = "NATIVE",
+    FT = "FT",
+    NFT = "NFT",
+    SFT = "SFT",
+}
+
+export interface OnchainAsset {
+    symbol: string;
+    name: string;
+    address?: string;
+    decimals: number;
+    standard: string;
+}
+
+export interface AssetMetadata {
+    scope: AssetScope;
+    deprecated: boolean;
+}
+
+export enum AssetScope {
+    GLOBAL = "Global",
+    LOCAL = "Local",
+}
+
 export interface VaultAssetResponse {
     id: string;
     address: string;
