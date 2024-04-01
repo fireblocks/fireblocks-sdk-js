@@ -67,16 +67,16 @@ export interface UnfreezeTransactionResponse {
 
 export interface RegisterAssetResponse {
     legacyId: string;
-    "class": AssetClass;
+    assetClass: AssetClass;
     onchain: OnchainAsset;
     metadata: AssetMetadata;
 }
 
 export enum AssetClass {
-    NATIVE = "Native",
-    FUNGIBLE_TOKEN = "FT",
-    NON_FUNGIBLE_TOKEN = "NFT",
-    SEMI_FUNGIBLE_TOKEN = "SFT",
+    NATIVE = "NATIVE",
+    FT = "FT",
+    NFT = "NFT",
+    SFT = "SFT",
 }
 
 export interface OnchainAsset {
