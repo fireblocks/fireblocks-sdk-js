@@ -133,7 +133,11 @@ import {
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
-    TokenOwnershipSpamUpdatePayload, ScreeningSupportedAssetResponse, ScreeningSupportedProviders, UnspentInputsResponse,
+    TokenOwnershipSpamUpdatePayload,
+    ScreeningSupportedAssetResponse,
+    ScreeningSupportedProviders,
+    RegisterAssetResponse,
+    UnspentInputsResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -857,6 +861,17 @@ export class FireblocksSDK {
      */
     public async createVaultAsset(vaultAccountId: string, assetId: string, requestOptions?: RequestOptions): Promise<VaultAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}`, {}, requestOptions);
+    }
+
+    /**
+     * Registers new asset
+     * @param blockchainId Native asset of blockchain
+     * @param address Asset contract address
+     * @param symbol Asset symbol
+     * @param requestOptions
+     */
+    public async registerNewAsset(blockchainId: string, address: string, symbol?: string, requestOptions?: RequestOptions): Promise<RegisterAssetResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/assets`, { blockchainId, address, symbol }, requestOptions);
     }
 
     /**
