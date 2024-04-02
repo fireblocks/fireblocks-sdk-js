@@ -1,5 +1,5 @@
 import {
-    AssetResponse, Web3PagedResponse, NCW, DepositAddressResponse,
+    AssetResponse, Web3PagedResponse, NCW, UnspentInputsResponse,
 } from "./types";
 
 export interface NcwSdk {
@@ -189,7 +189,7 @@ export interface NcwSdk {
      * @param {string} walletId
      * @param {string} accountId
      * @param {string} assetId
-     * @return {*}  {Promise<DepositAddressResponse>}
+     * @return {*}  {Promise<UnspentInputsResponse>}
      */
-    getUnspentInputs(walletId: string, accountId: string, assetId: string): Promise<DepositAddressResponse[]>
+    getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]>
 }
