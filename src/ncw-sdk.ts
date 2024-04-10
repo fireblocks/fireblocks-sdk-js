@@ -1,5 +1,5 @@
 import {
-    AssetResponse, Web3PagedResponse, NCW,
+    AssetResponse, Web3PagedResponse, NCW, UnspentInputsResponse,
 } from "./types";
 
 export interface NcwSdk {
@@ -182,4 +182,14 @@ export interface NcwSdk {
      * @return {*}  {Promise<NCW.DeviceKeySetupResponse>}
      */
     getDeviceSetupStatus(walletId: string, deviceId: string): Promise<NCW.DeviceKeySetupResponse>;
+    
+    /**
+     * Gets utxo list for an asset
+     *
+     * @param {string} walletId
+     * @param {string} accountId
+     * @param {string} assetId
+     * @return {*}  {Promise<UnspentInputsResponse>}
+     */
+    getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]>
 }

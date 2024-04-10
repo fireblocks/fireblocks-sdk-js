@@ -137,6 +137,7 @@ import {
     ScreeningSupportedAssetResponse,
     ScreeningSupportedProviders,
     RegisterAssetResponse,
+    UnspentInputsResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -384,7 +385,7 @@ export class FireblocksSDK {
      * @param vaultAccountId The vault account ID
      * @param assetId The ID of the asset for which to get the utxo list
      */
-    public async getUnspentInputs(vaultAccountId: string, assetId: string): Promise<DepositAddressResponse[]> {
+    public async getUnspentInputs(vaultAccountId: string, assetId: string): Promise<UnspentInputsResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/unspent_inputs`);
     }
 

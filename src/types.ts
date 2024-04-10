@@ -2105,6 +2105,17 @@ export interface SmartTransfersTicketTermFundPayload {
     feeLevel?: FeeLevel;
 }
 
+export interface UnspentInputsResponse {
+    input: {
+        txHash: string;
+        index: number;
+    },
+    address: string;
+    amount: string;
+    confirmations: number;
+    status: string;
+}
+
 export namespace NCW {
     export const WalletIdHeader = "X-End-User-Wallet-Id";
 

@@ -3,6 +3,7 @@ import {
     AssetResponse,
     Web3PagedResponse,
     NCW,
+    UnspentInputsResponse,
 } from "./types";
 import { NcwSdk } from "./ncw-sdk";
 
@@ -156,6 +157,9 @@ export class NcwApiClient implements NcwSdk {
     public async getDeviceSetupStatus(walletId: string, deviceId: string): Promise<NCW.DeviceKeySetupResponse> {
         return await this.apiClient.issueGetRequest(
             `${this.NCW_BASE_PATH}/${walletId}/devices/${deviceId}/setup_status`);
+    }
 
+    public async getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/accounts/${accountId}/${assetId}/unspent_inputs`);
     }
 }
