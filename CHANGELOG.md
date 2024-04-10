@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.25.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.24.0...v5.25.0)
+
+> 10 April 2024
+
+- NCW: get unspent inputs [`#272`](https://github.com/fireblocks/fireblocks-sdk-js/pull/272)
+
 #### [v5.24.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.23.0...v5.24.0)
 
 > 1 April 2024
 
 - Add registerNewAsset function [`#264`](https://github.com/fireblocks/fireblocks-sdk-js/pull/264)
+- NCW: wallet & device setup status EPs [`#267`](https://github.com/fireblocks/fireblocks-sdk-js/pull/267)
 
 #### [v5.23.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.22.0...v5.23.0)
 

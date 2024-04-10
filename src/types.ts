@@ -2109,7 +2109,7 @@ export interface UnspentInputsResponse {
     input: {
         txHash: string;
         index: number;
-    },
+    };
     address: string;
     amount: string;
     confirmations: number;

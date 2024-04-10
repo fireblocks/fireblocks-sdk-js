@@ -182,7 +182,7 @@ export interface NcwSdk {
      * @return {*}  {Promise<NCW.DeviceKeySetupResponse>}
      */
     getDeviceSetupStatus(walletId: string, deviceId: string): Promise<NCW.DeviceKeySetupResponse>;
-    
+
     /**
      * Gets utxo list for an asset
      *
@@ -191,5 +191,5 @@ export interface NcwSdk {
      * @param {string} assetId
      * @return {*}  {Promise<UnspentInputsResponse>}
      */
-    getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]>
+    getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]>;
 }
