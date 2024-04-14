@@ -1936,7 +1936,7 @@ export class FireblocksSDK {
      *
      * @returns {LeanDeployedContractResponseDto[]}
      */
-    public async getContractsByFilter({ templateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<LeanDeployedContractResponseDto[]> {
+    public async getContractsByFilter({ templateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts?${queryString.stringify({
             templateId,
             baseAssetId,

@@ -1901,8 +1901,9 @@ export interface TokenLinksCount {
 }
 
 export interface LeanDeployedContractResponseDto {
+    id: string;
+    baseAssetId: string;
     contractAddress: string;
-    blockchainId: string;
     contractTemplateId: string;
 }
 
