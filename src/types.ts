@@ -1800,6 +1800,17 @@ export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
     constructorParameters?: object[];
+    deployFunctionParameters?: object[];
+}
+
+export interface SupportedBlockChain {
+    assetId: string;
+    contractAddress: string;
+}
+
+export interface SupportedBlockchainsResponse {
+    supportsAllBlockchains: boolean;
+    supportedBlockchains?: Array<SupportedBlockChain>;
 }
 
 export interface ContractDeployResponse {

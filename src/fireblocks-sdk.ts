@@ -137,7 +137,7 @@ import {
     ScreeningSupportedAssetResponse,
     ScreeningSupportedProviders,
     RegisterAssetResponse,
-    UnspentInputsResponse,
+    UnspentInputsResponse, SupportedBlockchainsResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1847,7 +1847,7 @@ export class FireblocksSDK {
         pageSize = 100,
         pageCursor
     }: GetContractTemplatesFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates?${queryString.stringify({
             initializationPhase,
             type,
             pageSize,
@@ -1862,46 +1862,69 @@ export class FireblocksSDK {
      * @returns {ContractTemplateDto}
      */
     public async uploadContractTemplate(payload: ContractUploadRequest): Promise<ContractTemplateDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, payload);
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/templates`, payload);
     }
 
     /**
      * Get contract template by id
-     * @param contractId
+     * @param templateId
      *
      * @returns {ContractTemplateDto}
      */
-    public async getContractTemplate(contractId: string): Promise<ContractTemplateDto> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}`);
+    public async getContractTemplate(templateId: string): Promise<ContractTemplateDto> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}`);
     }
 
     /**
      * Delete a contract template by id
-     * @param contractId
+     * @param templateId
      */
-    public async deleteContractTemplate(contractId: string): Promise<void> {
-        return await this.apiClient.issueDeleteRequest(`/v1/contract-registry/contracts/${contractId}`);
+    public async deleteContractTemplate(templateId: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/templates/${templateId}`);
     }
 
     /**
-     * Get contract template constructor by contract id
-     * @param contractId
+     * @deprecated Use getContractTemplateDeployFunction instead
+     *
+     * Get contract template constructor by id
+     * @param templateId
      * @param withDocs
      *
-     * @returns {ContractTemplateDto}
+     * @returns {AbiFunction}
      */
-    public async getContractTemplateConstructor(contractId: string, withDocs: boolean = false): Promise<ContractTemplateDto> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}/constructor?withDocs=${withDocs}`);
+    public async getContractTemplateConstructor(templateId: string, withDocs: boolean = false): Promise<AbiFunction> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}/constructor?withDocs=${withDocs}`);
+    }
+
+    /**
+     * Get contract template deploy function by id
+     * @param templateId
+     * @param withDocs
+     *
+     * @returns {AbiFunction}
+     */
+    public async getContractTemplateDeployFunction(templateId: string, withDocs: boolean = false): Promise<AbiFunction> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}/deploy_function?withDocs=${withDocs}`);
     }
 
     /**
      * Deploy a new contract by contract template id
-     * @param contractId
+     * @param templateId
      *
      * @returns {ContractDeployResponse}
      */
-    public async deployContract(contractId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts/${contractId}/deploy`, payload);
+    public async deployContract(templateId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/templates/${templateId}/deploy`, payload);
+    }
+
+    /**
+     * Get supported blockchains by template id
+     * @param templateId
+     *
+     * @returns {SupportedBlockchainsResponse}
+     */
+    public async getSupportedBlockchains(templateId: string): Promise<SupportedBlockchainsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}/supported_blockchains`);
     }
 
     /**
