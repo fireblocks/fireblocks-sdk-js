@@ -1888,6 +1888,14 @@ export interface GetContractTemplatesFilter {
     pageCursor?: string;
 }
 
+export interface GetContractsFilter {
+    templateId?: string;
+    baseAssetId?: string;
+    contractAddress?: string;
+    pageSize?: number;
+    pageCursor?: string;
+}
+
 export interface TokenLinksCount {
     count: number;
 }

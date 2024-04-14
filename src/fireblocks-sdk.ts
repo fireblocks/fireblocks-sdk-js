@@ -133,11 +133,13 @@ import {
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
+    SupportedBlockchainsResponse,
+    GetContractsFilter,
     TokenOwnershipSpamUpdatePayload,
     ScreeningSupportedAssetResponse,
     ScreeningSupportedProviders,
     RegisterAssetResponse,
-    UnspentInputsResponse, SupportedBlockchainsResponse,
+    UnspentInputsResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1934,10 +1936,26 @@ export class FireblocksSDK {
      *
      * @returns {LeanDeployedContractResponseDto[]}
      */
-    public async getContractsByFilter(templateId: string, blockchainId?: string): Promise<LeanDeployedContractResponseDto[]> {
+    public async getContractsByFilter({ templateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<LeanDeployedContractResponseDto[]> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts?${queryString.stringify({
             templateId,
-            blockchainId,
+            baseAssetId,
+            contractAddress,
+            pageSize,
+            pageCursor,
+        })}`);
+    }
+
+    /**
+     * Get contract ABI function by contractId
+     * @param contractId
+     * @param functionSignature
+     *
+     * @returns {AbiFunction}
+     */
+    public async getContractAbiFunction(contractId: string, functionSignature: string): Promise<AbiFunction> {
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function?${queryString.stringify({
+            functionSignature
         })}`);
     }
 
@@ -1964,38 +1982,25 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get contract ABI function by contractId
-     * @param contractId
-     * @param functionSignature
-     *
-     * @returns {AbiFunction}
-     */
-    public async getContractAbiFunction(contractId: string, functionSignature: string): Promise<AbiFunction> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function?${queryString.stringify({
-            functionSignature
-        })}`);
-    }
-
-    /**
      * Call contract read function by blockchain base assetId and contract address
-     * @param blockchainId
+     * @param baseAssetId
      * @param templateId
      *
      * @returns ParameterWithValueList
      */
-    public async readContractCallFunction(blockchainId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<ParameterWithValueList> {
-        return await this.apiClient.issuePostRequest(`/v1/contract_interactions/${blockchainId}/${contractAddress}/functions/read`, payload);
+    public async readContractCallFunction(baseAssetId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<ParameterWithValueList> {
+        return await this.apiClient.issuePostRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/functions/read`, payload);
     }
 
     /**
      * Call contract write function by blockchain base assetId and contract address
-     * @param blockchainId
+     * @param baseAssetId
      * @param templateId
      *
      * @returns WriteCallFunctionResponseDto
      */
-    public async writeContractCallFunction(blockchainId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<WriteCallFunctionResponseDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract_interactions/${blockchainId}/${contractAddress}/functions/write`, payload);
+    public async writeContractCallFunction(baseAssetId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/functions/write`, payload);
     }
 
     /**
