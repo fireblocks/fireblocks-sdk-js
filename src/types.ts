@@ -1889,7 +1889,7 @@ export interface GetContractTemplatesFilter {
 }
 
 export interface GetContractsFilter {
-    templateId?: string;
+    contractTemplateId?: string;
     baseAssetId?: string;
     contractAddress?: string;
     pageSize?: number;

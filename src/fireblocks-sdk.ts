@@ -1932,13 +1932,13 @@ export class FireblocksSDK {
     /**
      * Get all contracts by blockchain and template
      * @param blockchainId
-     * @param templateId
+     * @param contractTemplateId
      *
      * @returns {LeanDeployedContractResponseDto[]}
      */
-    public async getContractsByFilter({ templateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
+    public async getContractsByFilter({ contractTemplateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts?${queryString.stringify({
-            templateId,
+            contractTemplateId,
             baseAssetId,
             contractAddress,
             pageSize,
