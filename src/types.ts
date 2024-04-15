@@ -1804,7 +1804,7 @@ export interface ContractDeployRequest {
 }
 
 export interface SupportedBlockchain {
-    assetId: string;
+    baseAssetId: string;
     contractAddress: string;
 }
 
