@@ -1803,14 +1803,14 @@ export interface ContractDeployRequest {
     deployFunctionParameters?: object[];
 }
 
-export interface SupportedBlockChain {
+export interface SupportedBlockchain {
     assetId: string;
     contractAddress: string;
 }
 
 export interface SupportedBlockchainsResponse {
     supportsAllBlockchains: boolean;
-    supportedBlockchains?: Array<SupportedBlockChain>;
+    supportedBlockchains?: Array<SupportedBlockchain>;
 }
 
 export interface ContractDeployResponse {
