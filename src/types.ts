@@ -1800,6 +1800,17 @@ export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
     constructorParameters?: object[];
+    deployFunctionParameters?: object[];
+}
+
+export interface SupportedBlockchain {
+    baseAssetId: string;
+    contractAddress: string;
+}
+
+export interface SupportedBlockchainsResponse {
+    supportsAllBlockchains: boolean;
+    supportedBlockchains?: Array<SupportedBlockchain>;
 }
 
 export interface ContractDeployResponse {
@@ -1877,13 +1888,22 @@ export interface GetContractTemplatesFilter {
     pageCursor?: string;
 }
 
+export interface GetContractsFilter {
+    contractTemplateId?: string;
+    baseAssetId?: string;
+    contractAddress?: string;
+    pageSize?: number;
+    pageCursor?: string;
+}
+
 export interface TokenLinksCount {
     count: number;
 }
 
 export interface LeanDeployedContractResponseDto {
+    id: string;
+    baseAssetId: string;
     contractAddress: string;
-    blockchainId: string;
     contractTemplateId: string;
 }
 

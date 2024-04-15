@@ -1,9 +1,11 @@
 import os from "os";
 import platform from "platform";
+import axios, { AxiosInstance } from "axios";
+import queryString from "query-string";
+
 import { IAuthProvider } from "./iauth-provider";
 import { RequestOptions, TransactionPageResponse } from "./types";
 import { SDKOptions } from "./fireblocks-sdk";
-import axios, { AxiosInstance } from "axios";
 import { version as SDK_VERSION } from "../package.json";
 
 export class ApiClient {
@@ -55,8 +57,10 @@ export class ApiClient {
         };
     }
 
-    public async issueGetRequest<T>(rawPath: string): Promise<T> {
-        const path = normalizePath(rawPath);
+    public async issueGetRequest<T>(rawPath: string, queryStringParams?: object): Promise<T> {
+        const pathWithParams = queryStringParams ? `${rawPath}?${queryString.stringify(queryStringParams)}` : rawPath;
+        const path = normalizePath(pathWithParams);
+
         const token = this.authProvider.signJwt(path);
         const res = await this.axiosInstance.get(path, {
             headers: {"Authorization": `Bearer ${token}`}
@@ -111,8 +115,8 @@ export class ApiClient {
 }
 
 /**
- * This function allows backward compatibility with previous version of axois that did not omit ? for
- * urls with no params. This function will make sure we are omitting the ? before signing it
+ * This function allows backward compatibility with previous version of axios that did not omit "?" for
+ * urls with no params. This function will make sure we are omitting the "?" before signing it
  */
 function normalizePath(path: string) {
     return path.replace(/\?$/, "");

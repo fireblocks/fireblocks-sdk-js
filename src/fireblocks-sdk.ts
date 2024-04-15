@@ -133,6 +133,8 @@ import {
     TokenLinkStatus,
     SupportedContractTemplateType,
     AbiFunction,
+    SupportedBlockchainsResponse,
+    GetContractsFilter,
     TokenOwnershipSpamUpdatePayload,
     ScreeningSupportedAssetResponse,
     ScreeningSupportedProviders,
@@ -1847,12 +1849,12 @@ export class FireblocksSDK {
         pageSize = 100,
         pageCursor
     }: GetContractTemplatesFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates`, {
             initializationPhase,
             type,
             pageSize,
             pageCursor
-        })}`);
+        });
     }
 
     /**
@@ -1862,82 +1864,86 @@ export class FireblocksSDK {
      * @returns {ContractTemplateDto}
      */
     public async uploadContractTemplate(payload: ContractUploadRequest): Promise<ContractTemplateDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts`, payload);
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/templates`, payload);
     }
 
     /**
      * Get contract template by id
-     * @param contractId
+     * @param templateId
      *
      * @returns {ContractTemplateDto}
      */
-    public async getContractTemplate(contractId: string): Promise<ContractTemplateDto> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}`);
+    public async getContractTemplate(templateId: string): Promise<ContractTemplateDto> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}`);
     }
 
     /**
      * Delete a contract template by id
-     * @param contractId
+     * @param templateId
      */
-    public async deleteContractTemplate(contractId: string): Promise<void> {
-        return await this.apiClient.issueDeleteRequest(`/v1/contract-registry/contracts/${contractId}`);
+    public async deleteContractTemplate(templateId: string): Promise<void> {
+        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/templates/${templateId}`);
     }
 
     /**
-     * Get contract template constructor by contract id
-     * @param contractId
+     * @deprecated Use getContractTemplateDeployFunction instead
+     *
+     * Get contract template constructor by id
+     * @param templateId
      * @param withDocs
      *
-     * @returns {ContractTemplateDto}
+     * @returns {AbiFunction}
      */
-    public async getContractTemplateConstructor(contractId: string, withDocs: boolean = false): Promise<ContractTemplateDto> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-registry/contracts/${contractId}/constructor?withDocs=${withDocs}`);
+    public async getContractTemplateConstructor(templateId: string, withDocs: boolean = false): Promise<AbiFunction> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}/constructor?withDocs=${withDocs}`);
+    }
+
+    /**
+     * Get contract template deploy function by id
+     * @param templateId
+     * @param withDocs
+     *
+     * @returns {AbiFunction}
+     */
+    public async getContractTemplateDeployFunction(templateId: string, withDocs: boolean = false): Promise<AbiFunction> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}/deploy_function?withDocs=${withDocs}`);
     }
 
     /**
      * Deploy a new contract by contract template id
-     * @param contractId
+     * @param templateId
      *
      * @returns {ContractDeployResponse}
      */
-    public async deployContract(contractId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-registry/contracts/${contractId}/deploy`, payload);
+    public async deployContract(templateId: string, payload: ContractDeployRequest): Promise<ContractDeployResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/templates/${templateId}/deploy`, payload);
+    }
+
+    /**
+     * Get supported blockchains by template id
+     * @param templateId
+     *
+     * @returns {SupportedBlockchainsResponse}
+     */
+    public async getSupportedBlockchains(templateId: string): Promise<SupportedBlockchainsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}/supported_blockchains`);
     }
 
     /**
      * Get all contracts by blockchain and template
      * @param blockchainId
-     * @param templateId
+     * @param contractTemplateId
      *
      * @returns {LeanDeployedContractResponseDto[]}
      */
-    public async getContractsByFilter(templateId: string, blockchainId?: string): Promise<LeanDeployedContractResponseDto[]> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract?${queryString.stringify({
-            templateId,
-            blockchainId,
-        })}`);
-    }
-
-    /**
-     * Get contract by blockchain and address
-     * @param blockchainId
-     * @param templateId
-     *
-     * @returns {DeployedContractResponseDto}
-     */
-    public async getContractByAddress(blockchainId: string, contractAddress: string): Promise<DeployedContractResponseDto> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}`);
-    }
-
-    /**
-     * Get contract's ABI by blockchain and address
-     * @param blockchainId
-     * @param templateId
-     *
-     * @returns {ContractAbiResponseDto}
-     */
-    public async getContractAbi(blockchainId: string, contractAddress: string): Promise<ContractAbiResponseDto> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/abi`);
+    public async getContractsByFilter({ contractTemplateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts`, {
+            contractTemplateId,
+            baseAssetId,
+            contractAddress,
+            pageSize,
+            pageCursor,
+        });
     }
 
     /**
@@ -1948,31 +1954,53 @@ export class FireblocksSDK {
      * @returns {AbiFunction}
      */
     public async getContractAbiFunction(contractId: string, functionSignature: string): Promise<AbiFunction> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function`, {
             functionSignature
-        })}`);
+        });
     }
 
     /**
-     * Call contract read function
-     * @param blockchainId
+     * Get contract by blockchain base assetId and contract address
+     * @param baseAssetId
+     * @param templateId
+     *
+     * @returns {DeployedContractResponseDto}
+     */
+    public async getContractByAddress(baseAssetId: string, contractAddress: string): Promise<DeployedContractResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}`);
+    }
+
+    /**
+     * Get contract's ABI by blockchain base assetId and contract address
+     * @param baseAssetId
+     * @param contractAddress
+     *
+     * @returns {ContractAbiResponseDto}
+     */
+    public async getContractAbi(baseAssetId: string, contractAddress: string): Promise<ContractAbiResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/abi`);
+    }
+
+    /**
+     * Call contract read function by blockchain base assetId and contract address
+     * @param baseAssetId
      * @param templateId
      *
      * @returns ParameterWithValueList
      */
-    public async readContractCallFunction(blockchainId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<ParameterWithValueList> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/read`, payload);
+    public async readContractCallFunction(baseAssetId: string, contractAddress: string, payload: ReadCallFunctionDto): Promise<ParameterWithValueList> {
+        return await this.apiClient.issuePostRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/functions/read`, payload);
     }
 
     /**
-     * Call contract write function
-     * @param blockchainId
+     * Call contract write function by blockchain base assetId and contract address
+     * @param baseAssetId
      * @param templateId
      *
      * @returns WriteCallFunctionResponseDto
      */
-    public async writeContractCallFunction(blockchainId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<WriteCallFunctionResponseDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-service/contract/${blockchainId}/${contractAddress}/function/write`, payload);
+    public async writeContractCallFunction(baseAssetId: string, contractAddress: string, payload: WriteCallFunctionDto): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/functions/write`, payload);
     }
 
     /**
@@ -1997,11 +2025,11 @@ export class FireblocksSDK {
      * @returns {TokenLink[]} A paginated array of linked tokens
      */
     public async getLinkedTokens({ status = TokenLinkStatus.COMPLETED, pageSize = 100, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens`, {
             status,
             pageSize,
             pageCursor,
-        })}`);
+        });
     }
 
     /**
