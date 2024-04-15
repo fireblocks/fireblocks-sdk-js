@@ -1849,12 +1849,12 @@ export class FireblocksSDK {
         pageSize = 100,
         pageCursor
     }: GetContractTemplatesFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates`, {
             initializationPhase,
             type,
             pageSize,
             pageCursor
-        })}`);
+        });
     }
 
     /**
@@ -1937,13 +1937,13 @@ export class FireblocksSDK {
      * @returns {LeanDeployedContractResponseDto[]}
      */
     public async getContractsByFilter({ contractTemplateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts`, {
             contractTemplateId,
             baseAssetId,
             contractAddress,
             pageSize,
             pageCursor,
-        })}`);
+        });
     }
 
     /**
@@ -1954,9 +1954,9 @@ export class FireblocksSDK {
      * @returns {AbiFunction}
      */
     public async getContractAbiFunction(contractId: string, functionSignature: string): Promise<AbiFunction> {
-        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/contract-service/contract/${contractId}/function`, {
             functionSignature
-        })}`);
+        });
     }
 
     /**
@@ -2025,11 +2025,11 @@ export class FireblocksSDK {
      * @returns {TokenLink[]} A paginated array of linked tokens
      */
     public async getLinkedTokens({ status = TokenLinkStatus.COMPLETED, pageSize = 100, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens?${queryString.stringify({
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens`, {
             status,
             pageSize,
             pageCursor,
-        })}`);
+        });
     }
 
     /**
