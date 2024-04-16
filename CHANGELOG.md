@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.25.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.24.0...v5.25.0)
+#### [v5.25.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.24.0...v5.25.1)
 
-> 10 April 2024
+> 15 April 2024
 
-- NCW: get unspent inputs [`#272`](https://github.com/fireblocks/fireblocks-sdk-js/pull/272)
+- Tokenization api changes [`#273`](https://github.com/fireblocks/fireblocks-sdk-js/pull/273)
 
 #### [v5.24.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.23.0...v5.24.0)
 
