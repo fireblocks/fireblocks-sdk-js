@@ -1799,7 +1799,7 @@ interface VendorDto {
 export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
-    deployFunctionParameters?: object[];
+    deployFunctionParams?: object[];
 }
 
 export interface SupportedBlockchain {
