@@ -1886,19 +1886,6 @@ export class FireblocksSDK {
     }
 
     /**
-     * @deprecated Use getContractTemplateDeployFunction instead
-     *
-     * Get contract template constructor by id
-     * @param templateId
-     * @param withDocs
-     *
-     * @returns {AbiFunction}
-     */
-    public async getContractTemplateConstructor(templateId: string, withDocs: boolean = false): Promise<AbiFunction> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/templates/${templateId}/constructor?withDocs=${withDocs}`);
-    }
-
-    /**
      * Get contract template deploy function by id
      * @param templateId
      * @param withDocs
