@@ -1987,7 +1987,7 @@ export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueLi
 
 interface EVMTokenCreateParamsDto {
     contractId: string;
-    constructorParams?: Array<ParameterWithValue>;
+    deployFunctionParams?: Array<ParameterWithValue>;
 }
 
 export interface ReadCallFunctionDto {
