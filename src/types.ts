@@ -1799,7 +1799,6 @@ interface VendorDto {
 export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
-    constructorParameters?: object[];
     deployFunctionParameters?: object[];
 }
 
