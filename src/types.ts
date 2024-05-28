@@ -1799,8 +1799,7 @@ interface VendorDto {
 export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
-    constructorParameters?: object[];
-    deployFunctionParameters?: object[];
+    deployFunctionParams?: object[];
 }
 
 export interface SupportedBlockchain {
@@ -1988,7 +1987,7 @@ export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueLi
 
 interface EVMTokenCreateParamsDto {
     contractId: string;
-    constructorParams?: Array<ParameterWithValue>;
+    deployFunctionParams?: Array<ParameterWithValue>;
 }
 
 export interface ReadCallFunctionDto {
