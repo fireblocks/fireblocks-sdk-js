@@ -160,11 +160,13 @@ export class NcwApiClient implements NcwSdk {
             `${this.NCW_BASE_PATH}/${walletId}/devices/${deviceId}/setup_status`);
     }
 
-    public async getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]> {
-        return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/accounts/${accountId}/${assetId}/unspent_inputs`);
+    public async setWalletRequiredAlgorithms(walletId: string, algorithms: SigningAlgorithm[]): Promise<void> {
+        return await this.apiClient.issuePatchRequest(
+            `${this.NCW_BASE_PATH}/${walletId}/required_algorithms`,
+            { algorithms });
     }
 
-    public async setWalletRequiredAlgorithms(walletId: string, algorithms: SigningAlgorithm[]): Promise<void> {
-        return await this.apiClient.issuePatchRequest(`${this.NCW_BASE_PATH}/${walletId}/required_algorithms`, { algorithms });
+    public async getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]> {
+        return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/accounts/${accountId}/${assetId}/unspent_inputs`);
     }
 }
