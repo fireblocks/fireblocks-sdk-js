@@ -4,6 +4,7 @@ import {
     Web3PagedResponse,
     NCW,
     UnspentInputsResponse,
+    SigningAlgorithm,
 } from "./types";
 import { NcwSdk } from "./ncw-sdk";
 
@@ -161,5 +162,9 @@ export class NcwApiClient implements NcwSdk {
 
     public async getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/accounts/${accountId}/${assetId}/unspent_inputs`);
+    }
+    
+    public async setWalletRequiredAlgorithms(walletId: string, algorithms: SigningAlgorithm[]): Promise<void> {
+        return await this.apiClient.issuePatchRequest(`/v1/ncw/${walletId}/required_algorithms`, { algorithms });
     }
 }
