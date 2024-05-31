@@ -1375,6 +1375,19 @@ export interface AssetTypeResponse {
     decimals?: number;
 }
 
+export interface AssetPriceResponse {
+    legacyId: string;
+    lastUpdateAt: number;
+    currency: number;
+    price: string;
+    source: AssetPriceSource;
+}
+
+enum AssetPriceSource {
+    PUBLIC = "PUBLIC",
+    PRIVATE = "PRIVATE"
+}
+
 export interface User {
     id: string;
     firstName: string;
