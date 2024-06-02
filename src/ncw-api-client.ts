@@ -44,7 +44,7 @@ export class NcwApiClient implements NcwSdk {
             { enabled });
     }
 
-    public async getWalletDevices(walletId: string): Promise<NCW.Device> {
+    public async getWalletDevices(walletId: string): Promise<NCW.Device[]> {
         return await this.apiClient.issueGetRequest(
             `${this.NCW_BASE_PATH}/${walletId}/devices/`);
     }
