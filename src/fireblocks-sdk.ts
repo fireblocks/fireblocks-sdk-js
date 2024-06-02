@@ -139,7 +139,7 @@ import {
     ScreeningSupportedAssetResponse,
     ScreeningSupportedProviders,
     RegisterAssetResponse,
-    UnspentInputsResponse,
+    UnspentInputsResponse
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -161,6 +161,9 @@ import {
     WithdrawRequestDto,
     WithdrawResponse
 } from "./staking";
+
+import { PaymentsApiClient } from "./payments/payments-api-client";
+import { Payments } from "./payments/payments-types"
 
 export * from "./types";
 
@@ -208,6 +211,7 @@ export class FireblocksSDK {
     private readonly apiClient: ApiClient;
     private readonly apiNcw: NcwApiClient;
     private readonly stakingApiClient: StakingApiClient;
+    private readonly paymentsApiClient: PaymentsApiClient;
 
     private piiClient: PIIEncryption;
 
@@ -235,6 +239,8 @@ export class FireblocksSDK {
         this.apiNcw = new NcwApiClient(this.apiClient);
 
         this.stakingApiClient = new StakingApiClient(this.apiClient);
+
+        this.paymentsApiClient = new PaymentsApiClient(this.apiClient);
     }
 
     /**
@@ -2433,5 +2439,53 @@ export class FireblocksSDK {
             assetId, vaultAccountIdFrom, vaultAccountIdTo
         };
         return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
+    }
+
+    /**
+     * Creates new payment workflow configuration
+     * @param request - Payments.CreateWorkflowConfigurationRequest
+     */
+    public async createPaymentWorkflowConfiguration(request: Payments.CreateWorkflowConfigurationRequest): Promise<Payments.WorkflowConfiguration> {
+        return await this.paymentsApiClient.createPaymentWorkflowConfiguration(request);
+    }
+
+    /**
+     * Get payment workflow configuration
+     * @param configId - configuration id
+     */
+    public async getPaymentWorkflowConfiguration(configId: string): Promise<Payments.WorkflowConfiguration> {
+        return await this.paymentsApiClient.getPaymentWorkflowConfiguration(configId);
+    }
+
+    /**
+     * Delete payment workflow configuration
+     * @param configId - configuration id
+     */
+    public async deletePaymentWorkflowConfiguration(configId: string): Promise<Payments.WorkflowConfigurationId> {
+        return await this.paymentsApiClient.deletePaymentWorkflowConfiguration(configId);
+    }
+
+    /**
+     * Creates new payment workflow execution
+     * @param request - Payments.CreateWorkflowExecutionRequest
+     */
+    public async createPaymentWorkflowExecution(request: Payments.CreateWorkflowExecutionRequest): Promise<Payments.WorkflowExecution> {
+        return await this.paymentsApiClient.createPaymentWorkflowExecution(request);
+    }
+
+    /**
+     * Get payment workflow execution
+     * @param workflowExeuctionId
+     */
+    public async getPaymentWorkflowExecution(workflowExeuctionId: string): Promise<Payments.WorkflowExecution> {
+        return await this.paymentsApiClient.getPaymentWorkflowExecution(workflowExeuctionId);
+    }
+
+    /**
+     * Execute payment workflow
+     * @param workflowExeuctionId
+     */
+    public async executePaymentFlow(workflowExeuctionId: string): Promise<Payments.WorkflowExecution> {
+        return await this.paymentsApiClient.executePaymentFlow(workflowExeuctionId);
     }
 }
