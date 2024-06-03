@@ -1378,8 +1378,8 @@ export interface AssetTypeResponse {
 export interface AssetPriceResponse {
     legacyId: string;
     lastUpdateAt: number;
-    currency: number;
-    price: string;
+    currency: string;
+    price: number;
     source: AssetPriceSource;
 }
 

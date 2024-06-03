@@ -139,7 +139,7 @@ import {
     ScreeningSupportedAssetResponse,
     ScreeningSupportedProviders,
     RegisterAssetResponse,
-    UnspentInputsResponse,
+    UnspentInputsResponse, AssetPriceResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -337,7 +337,7 @@ export class FireblocksSDK {
      * @param currency The currency (according to ISO 4217 currency codes)
      * @param price The price in currency
      */
-    public async setAssetPrice(id: string, currency: number, price: string): Promise<any> {
+    public async setAssetPrice(id: string, currency: string, price: number): Promise<AssetPriceResponse> {
         return await this.apiClient.issuePostRequest(`/v1/assets/prices/${id}`, {currency, price});
     }
 
