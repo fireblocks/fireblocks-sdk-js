@@ -139,7 +139,7 @@ import {
     ScreeningSupportedAssetResponse,
     ScreeningSupportedProviders,
     RegisterAssetResponse,
-    UnspentInputsResponse,
+    UnspentInputsResponse, AssetPriceResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -330,6 +330,17 @@ export class FireblocksSDK {
     public async getSupportedAssets(): Promise<AssetTypeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
+
+    /**
+     * Sets asset price
+     * @param id The asset ID
+     * @param currency The currency (according to ISO 4217 currency codes)
+     * @param price The price in currency
+     */
+    public async setAssetPrice(id: string, currency: string, price: number): Promise<AssetPriceResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/assets/prices/${id}`, {currency, price});
+    }
+
     /**
      * Gets a list of vault accounts per page matching the given filter or path
      * @param pagedVaultAccountsRequestFilters Filters for the first request
