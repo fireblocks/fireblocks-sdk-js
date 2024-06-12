@@ -1910,7 +1910,10 @@ export interface DeployedContractResponseDto extends LeanDeployedContractRespons
     id: string;
     vaultAccountId?: string;
 }
+export interface ContractAddressResponseDto {
 
+    contractAddress: string;
+}
 type ContractAbi = AbiFunction[];
 
 export interface ContractAbiResponseDto {
