@@ -140,6 +140,7 @@ import {
     ScreeningSupportedProviders,
     RegisterAssetResponse,
     UnspentInputsResponse,
+    ContractAddressResponseDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1946,6 +1947,16 @@ export class FireblocksSDK {
         });
     }
 
+    /**
+     * Get contract's address by blockchain base assetId and the transaction hash
+     * @param baseAssetId
+     * @param txHash
+     *
+     * @returns {ContractAddressResponseDto}
+     */
+    public async getContractAddress(baseAssetId: string, txHash: string): Promise<ContractAddressResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/tx_hash/${txHash}`);
+    }
     /**
      * Get contract by blockchain base assetId and contract address
      * @param baseAssetId
