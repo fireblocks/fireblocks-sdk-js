@@ -2212,7 +2212,9 @@ export namespace NCW {
         blockchain: string;
         blockchainDisplayName?: string;
         blockchainId?: string;
+        algorithm?: SigningAlgorithm;
     }
+
     export interface WalletAssetAddress {
         accountName: string;
         accountId: string;
