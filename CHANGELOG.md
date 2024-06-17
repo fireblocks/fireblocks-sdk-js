@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.27.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.26.0...v5.27.0)
+
+> 17 June 2024
+
+- Add algorithm id to asset response [`#271`](https://github.com/fireblocks/fireblocks-sdk-js/pull/271)
+
 #### [v5.26.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.25.1...v5.26.0)
 
 > 28 May 2024
