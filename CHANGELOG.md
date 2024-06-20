@@ -2,11 +2,29 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.25.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.24.0...v5.25.1)
+#### [v5.27.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.26.0...v5.27.1)
+
+> 20 June 2024
+
+- functions instead of abi [`#280`](https://github.com/fireblocks/fireblocks-sdk-js/pull/280)
+
+#### [v5.26.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.25.1...v5.26.0)
+
+> 28 May 2024
+
+- Update Tokenization DTOs and deprecate unused route [`#276`](https://github.com/fireblocks/fireblocks-sdk-js/pull/276)
+
+#### [v5.25.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.25.0...v5.25.1)
 
 > 15 April 2024
 
 - Tokenization api changes [`#273`](https://github.com/fireblocks/fireblocks-sdk-js/pull/273)
+
+#### [v5.25.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.24.0...v5.25.0)
+
+> 10 April 2024
+
+- NCW: get unspent inputs [`#272`](https://github.com/fireblocks/fireblocks-sdk-js/pull/272)
 
 #### [v5.24.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.23.0...v5.24.0)
 
