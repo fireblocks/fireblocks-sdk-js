@@ -43,7 +43,7 @@ export interface NcwSdk {
      * @param {string} walletId
      * @return {*}  {Promise<NCW.Device>}
      */
-    getWalletDevices(walletId: string): Promise<NCW.Device>;
+    getWalletDevices(walletId: string): Promise<NCW.Device[]>;
 
     /**
      * Set NCW wallet device's enabled state
