@@ -1976,7 +1976,7 @@ export class FireblocksSDK {
      * @returns {ContractAbiResponseDto}
      */
     public async getContractAbi(baseAssetId: string, contractAddress: string): Promise<ContractAbiResponseDto> {
-        return await this.apiClient.issueGetRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/abi`);
+        return await this.apiClient.issueGetRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/functions`);
     }
 
     /**
