@@ -2448,12 +2448,12 @@ export class FireblocksSDK {
         return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
 
-        /**
-     * rescan transactions base on assetId and txHash
+    /**
+     * Rescan transactions base on assetId and txHash
      * @param rescanTxs An array of RescanTx
      */
-        public rescanTransactions(rescanTxs: RescanTx[]): Promise<RescanTxResponse []> {
-            const body = { transactions: rescanTxs };
-            return this.apiClient.issuePostRequest(`/v1/rescan/transactions`, body);
-        }
+    public rescanTransactions(rescanTxs: RescanTx[]): Promise<RescanTxResponse []> {
+        const body = { transactions: rescanTxs };
+        return this.apiClient.issuePostRequest(`/v1/rescan/transactions`, body);
+    }
 }
