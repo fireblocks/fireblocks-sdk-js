@@ -141,6 +141,8 @@ import {
     RegisterAssetResponse,
     UnspentInputsResponse,
     ContractAddressResponseDto,
+    RescanTx,
+    RescanTxResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -2444,5 +2446,14 @@ export class FireblocksSDK {
             assetId, vaultAccountIdFrom, vaultAccountIdTo
         };
         return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
+    }
+
+    /**
+     * Rescan transactions base on assetId and txHash
+     * @param rescanTxs An array of RescanTx
+     */
+    public rescanTransactions(rescanTxs: RescanTx[]): Promise<RescanTxResponse []> {
+        const body = { transactions: rescanTxs };
+        return this.apiClient.issuePostRequest(`/v1/rescan/transactions`, body);
     }
 }
