@@ -2445,4 +2445,25 @@ export class FireblocksSDK {
         };
         return this.apiClient.issuePostRequest(`/v1/vault/assets/bulk`, body, requestOptions);
     }
+
+    /**
+     * Creates a new internal transfer between two trading accounts
+     * @param exchangeAccountId The exchange account ID
+     * @param asset The asset to transfer
+     * @param amount The amount to transfer
+     * @param sourceType The source account type
+     * @param destType The destination account type
+     * @returns The created internal transfer
+     */
+    public exchangeInternalTransfer(exchangeAccountId: string, asset: string, amount: string, sourceType: string, destType: string) {
+        const body = {
+            exchangeAccountId,
+            asset,
+            amount,
+            sourceType,
+            destType
+        };
+
+        return this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/internal_transfer`, body);
+    }
 }
