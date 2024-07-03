@@ -1955,6 +1955,30 @@ export interface CreateCollectionRequest {
     displayName?: string;
 }
 
+export interface TokenMetadataAttributesDto {
+    traitType: string;
+    value: string;
+    displayType?: string;
+}
+
+export interface TokenMetadataDto {
+    name: string;
+    description: string;
+    image?: string;
+    animationUrl?: string;
+    externalUrl?: string;
+    attributes?: TokenMetadataAttributesDto[];
+}
+
+export interface MintCollectionTokenRequest {
+    to: string;
+    tokenId: string;
+    vaultAccountId: string;
+    amount?: string;
+    metadataURI?: string;
+    metadata?: TokenMetadataDto;
+}
+
 export interface IssueTokenRequest {
     assetId?: string;
     blockchainId?: string;

@@ -144,6 +144,7 @@ import {
     CollectionLink,
     CreateCollectionRequest,
     CollectionTokenResponseDto,
+    MintCollectionTokenRequest,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -2087,6 +2088,17 @@ export class FireblocksSDK {
     }
 
     /**
+     * Creates a new collection and links it
+     *
+     * @param {CreateCollectionRequest} payload - The payload containing information for collection creation
+     *
+     * @returns {CollectionLink} Response with created collection link ID
+     */
+    public async createNewCollection(payload: CreateCollectionRequest): Promise<CollectionLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections`, payload);
+    }
+
+    /**
      * Retrieves all linked collections in a paginated format.
      *
      * @param {Object} payload
@@ -2097,7 +2109,7 @@ export class FireblocksSDK {
      * @returns {CollectionLink[]} A paginated array of linked collections
      */
     public async getLinkedCollections({ status, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<CollectionLink>> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/collections`, {
+        return await this.apiClient.issueGetRequest("/v1/tokenization/collections", {
             status,
             pageSize,
             pageCursor,
@@ -2123,25 +2135,25 @@ export class FireblocksSDK {
     }
 
     /**
-     * Creates a new collection and links it
-     *
-     * @param {CreateCollectionRequest} payload - The payload containing information for token issuance.
-     *
-     * @returns {CollectionLink} Response with created collection link ID
-     */
-    public async createNewCollection(payload: CreateCollectionRequest): Promise<CollectionLink> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections`, payload);
-    }
-
-    /**
      * Get collection token details
      * @param id
-     * @param tokenId
      *
      * @returns CollectionTokenResponseDto
      */
     public async getLinkedCollectionTokenDetails(id: string, tokenId: string): Promise<CollectionTokenResponseDto> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${id}/tokens/${tokenId}`);
+    }
+
+    /**
+     * Mint collection token
+     *
+     * @param {string} id
+     * @param {TokenLinkStatus} payload
+     *
+     * @returns WriteCallFunctionResponseDto
+     */
+    public async mintCollectionToken(id: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${id}/tokens`, payload);
     }
 
     /**
