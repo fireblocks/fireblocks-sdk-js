@@ -2021,13 +2021,13 @@ export class FireblocksSDK {
      * Retrieves all linked tokens in a paginated format.
      *
      * @param {Object} payload
-     * @param {TokenLinkStatus} payload.status - The status of linked tokens (COMPLETED / PENDING)
+     * @param {TokenLinkStatus} payload.status - The status of linked tokens (COMPLETED / PENDING). Default is COMPLETED
      * @param {number} payload.pageSize - The number of results to return on the next page
      * @param {string} payload.pageCursor - The cursor for the next page
      *
      * @returns {TokenLink[]} A paginated array of linked tokens
      */
-    public async getLinkedTokens({ status = TokenLinkStatus.COMPLETED, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
+    public async getLinkedTokens({ status, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens`, {
             status,
             pageSize,
@@ -2090,14 +2090,15 @@ export class FireblocksSDK {
      * Retrieves all linked collections in a paginated format.
      *
      * @param {Object} payload
-     * @param {TokenLinkStatus} payload.status - The status of linked collections (COMPLETED / PENDING)
+     * @param {TokenLinkStatus} payload.status - The status of linked collections (COMPLETED / PENDING). Default is COMPLETED
      * @param {number} payload.pageSize - The number of results to return on the next page
      * @param {string} payload.pageCursor - The cursor for the next page
      *
      * @returns {CollectionLink[]} A paginated array of linked collections
      */
-    public async getLinkedCollections({ pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<CollectionLink>> {
+    public async getLinkedCollections({ status, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<CollectionLink>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/collections`, {
+            status,
             pageSize,
             pageCursor,
         });
