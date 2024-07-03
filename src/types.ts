@@ -1874,6 +1874,26 @@ export interface TokenLink {
     displayName?: string;
 }
 
+export enum CollectionType {
+    NON_FUNGIBLE_TOKEN = "NON_FUNGIBLE_TOKEN",
+    SEMI_FUNGIBLE_TOKEN = "SEMI_FUNGIBLE_TOKEN",
+}
+
+export interface CollectionLink {
+    id: string;
+    type: CollectionType;
+    refId: string;
+    status: TokenLinkStatus;
+    collectionMetadata?: LinkedTokenMetadata;
+    displayName?: string;
+}
+
+export interface CollectionTokenResponseDto {
+    tokenId: string;
+    metadataURI: string;
+    totalSupply: string;
+}
+
 export interface GetTokenLinksFilter {
     status?: TokenLinkStatus;
     pageSize?: number;
@@ -1923,6 +1943,16 @@ export interface ContractAbiResponseDto {
 
 export interface WriteCallFunctionResponseDto {
     txId: string;
+}
+
+export interface CreateCollectionRequest {
+    baseAssetId: string;
+    vaultAccountId: string;
+    type: CollectionType;
+    name: string;
+    symbol: string;
+    adminAddress: string;
+    displayName?: string;
 }
 
 export interface IssueTokenRequest {
