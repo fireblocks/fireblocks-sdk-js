@@ -145,6 +145,7 @@ import {
     CreateCollectionRequest,
     CollectionTokenResponseDto,
     MintCollectionTokenRequest,
+    BurnCollectionTokenRequest,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -2135,25 +2136,38 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get collection token details
-     * @param id
-     *
-     * @returns CollectionTokenResponseDto
-     */
-    public async getLinkedCollectionTokenDetails(id: string, tokenId: string): Promise<CollectionTokenResponseDto> {
-        return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${id}/tokens/${tokenId}`);
-    }
-
-    /**
      * Mint collection token
      *
-     * @param {string} id
-     * @param {TokenLinkStatus} payload
+     * @param {string} collectionId
+     * @param {MintCollectionTokenRequest} payload
      *
      * @returns WriteCallFunctionResponseDto
      */
-    public async mintCollectionToken(id: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${id}/tokens`, payload);
+    public async mintCollectionToken(collectionId: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens`, payload);
+    }
+
+    /**
+     * Get collection token details
+     * @param {string} collectionId
+     * @param {string} tokenId
+     *
+     * @returns CollectionTokenResponseDto
+     */
+    public async getLinkedCollectionTokenDetails(collectionId: string, tokenId: string): Promise<CollectionTokenResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${collectionId}/tokens/${tokenId}`);
+    }
+
+    /**
+     * Burn collection token
+     *
+     * @param {string} collectionId
+     * @param {BurnCollectionTokenRequest} payload
+     *
+     * @returns WriteCallFunctionResponseDto
+     */
+    public async burnCollectionToken(collectionId: string, payload: BurnCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens`, payload);
     }
 
     /**
