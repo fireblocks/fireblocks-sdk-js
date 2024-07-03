@@ -2119,7 +2119,6 @@ export class FireblocksSDK {
 
     /**
      * Get a linked collection
-     * @param id
      *
      * @returns CollectionLink
      */
@@ -2129,7 +2128,6 @@ export class FireblocksSDK {
 
     /**
      * Unlink a collection
-     * @param id
      */
     public async unlinkCollection(id: string): Promise<void> {
         await this.apiClient.issueDeleteRequest(`/v1/tokenization/collections/${id}`);
@@ -2137,9 +2135,6 @@ export class FireblocksSDK {
 
     /**
      * Mint collection token
-     *
-     * @param {string} collectionId
-     * @param {MintCollectionTokenRequest} payload
      *
      * @returns WriteCallFunctionResponseDto
      */
@@ -2149,8 +2144,6 @@ export class FireblocksSDK {
 
     /**
      * Get collection token details
-     * @param {string} collectionId
-     * @param {string} tokenId
      *
      * @returns CollectionTokenResponseDto
      */
@@ -2160,9 +2153,6 @@ export class FireblocksSDK {
 
     /**
      * Burn collection token
-     *
-     * @param {string} collectionId
-     * @param {BurnCollectionTokenRequest} payload
      *
      * @returns WriteCallFunctionResponseDto
      */
