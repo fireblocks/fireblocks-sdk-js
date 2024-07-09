@@ -2152,15 +2152,6 @@ export class FireblocksSDK {
     }
 
     /**
-     * Burn collection token
-     *
-     * @returns WriteCallFunctionResponseDto
-     */
-    public async burnCollectionToken(collectionId: string, payload: BurnCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens`, payload);
-    }
-
-    /**
      * Validate VASP details for travel rule compliance
      * @param travelRuleMessageVaspInfo
      */
