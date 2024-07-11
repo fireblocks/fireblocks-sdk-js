@@ -1,5 +1,6 @@
 import {
     AssetResponse, Web3PagedResponse, NCW, UnspentInputsResponse,
+    SigningAlgorithm,
 } from "./types";
 
 export interface NcwSdk {
@@ -43,7 +44,7 @@ export interface NcwSdk {
      * @param {string} walletId
      * @return {*}  {Promise<NCW.Device>}
      */
-    getWalletDevices(walletId: string): Promise<NCW.Device>;
+    getWalletDevices(walletId: string): Promise<NCW.Device[]>;
 
     /**
      * Set NCW wallet device's enabled state
@@ -192,4 +193,14 @@ export interface NcwSdk {
      * @return {*}  {Promise<UnspentInputsResponse>}
      */
     getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]>;
+
+    /**
+     * refresh a NCW asset balance
+     *
+     * @param {string} walletId
+     * @param {string} walletId
+     * @return {*}  {Promise<void>}
+     */
+    setWalletRequiredAlgorithms(walletId: string, algorithms: SigningAlgorithm[]): Promise<void>;
+
 }

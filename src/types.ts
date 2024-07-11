@@ -1923,7 +1923,10 @@ export interface DeployedContractResponseDto extends LeanDeployedContractRespons
     id: string;
     vaultAccountId?: string;
 }
+export interface ContractAddressResponseDto {
 
+    contractAddress: string;
+}
 type ContractAbi = AbiFunction[];
 
 export interface ContractAbiResponseDto {
@@ -2222,7 +2225,9 @@ export namespace NCW {
         blockchain: string;
         blockchainDisplayName?: string;
         blockchainId?: string;
+        algorithm?: SigningAlgorithm;
     }
+
     export interface WalletAssetAddress {
         accountName: string;
         accountId: string;
