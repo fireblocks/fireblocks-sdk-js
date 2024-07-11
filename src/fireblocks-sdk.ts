@@ -145,6 +145,7 @@ import {
     CreateCollectionRequest,
     CollectionTokenResponseDto,
     MintCollectionTokenRequest,
+    BurnCollectionTokenRequest,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -2138,7 +2139,16 @@ export class FireblocksSDK {
      * @returns WriteCallFunctionResponseDto
      */
     public async mintCollectionToken(collectionId: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens`, payload);
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/mint`, payload);
+    }
+
+    /**
+     * Burn collection token
+     *
+     * @returns WriteCallFunctionResponseDto
+     */
+    public async burnCollectionToken(collectionId: string, payload: BurnCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/burn`, payload);
     }
 
     /**

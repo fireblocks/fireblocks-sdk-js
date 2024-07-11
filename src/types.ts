@@ -1979,6 +1979,13 @@ export interface MintCollectionTokenRequest {
     metadata?: TokenMetadataDto;
 }
 
+export interface BurnCollectionTokenRequest {
+    to: string;
+    tokenId: string;
+    vaultAccountId: string;
+    amount?: string;
+}
+
 export interface IssueTokenRequest {
     assetId?: string;
     blockchainId?: string;
