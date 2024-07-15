@@ -141,6 +141,11 @@ import {
     RegisterAssetResponse,
     UnspentInputsResponse,
     ContractAddressResponseDto,
+    CollectionLink,
+    CreateCollectionRequest,
+    CollectionTokenResponseDto,
+    MintCollectionTokenRequest,
+    BurnCollectionTokenRequest,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -202,6 +207,8 @@ export interface SDKOptions {
      */
     travelRuleOptions?: TravelRuleOptions;
 }
+
+const DEFAULT_MAX_PAGE_SIZE = 100;
 
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
@@ -1847,7 +1854,7 @@ export class FireblocksSDK {
     public async getContractTemplates({
         initializationPhase,
         type,
-        pageSize = 100,
+        pageSize = DEFAULT_MAX_PAGE_SIZE,
         pageCursor
     }: GetContractTemplatesFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/templates`, {
@@ -1924,7 +1931,7 @@ export class FireblocksSDK {
      *
      * @returns {LeanDeployedContractResponseDto[]}
      */
-    public async getContractsByFilter({ contractTemplateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
+    public async getContractsByFilter({ contractTemplateId, baseAssetId, contractAddress, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts`, {
             contractTemplateId,
             baseAssetId,
@@ -2015,14 +2022,14 @@ export class FireblocksSDK {
     /**
      * Retrieves all linked tokens in a paginated format.
      *
-     * @param {Object} payload - The payload for retrieving linked tokens
-     * @param {TokenLinkStatus} payload.status - The status of linked tokens (COMPLETED / PENDING)
+     * @param {Object} payload
+     * @param {TokenLinkStatus} payload.status - The status of linked tokens (COMPLETED / PENDING). Default is COMPLETED
      * @param {number} payload.pageSize - The number of results to return on the next page
      * @param {string} payload.pageCursor - The cursor for the next page
      *
      * @returns {TokenLink[]} A paginated array of linked tokens
      */
-    public async getLinkedTokens({ status = TokenLinkStatus.COMPLETED, pageSize = 100, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
+    public async getLinkedTokens({ status, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens`, {
             status,
             pageSize,
@@ -2064,8 +2071,8 @@ export class FireblocksSDK {
      * Delete a token link
      * @param id
      */
-    public async unlinkToken(id: string): Promise<TokenLink> {
-        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${id}`);
+    public async unlinkToken(id: string): Promise<void> {
+        await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${id}`);
     }
 
     /**
@@ -2079,6 +2086,78 @@ export class FireblocksSDK {
      */
     public async getPendingLinkedTokens({ pageSize, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
         return await this.getLinkedTokens({ status: TokenLinkStatus.PENDING, pageSize, pageCursor });
+    }
+
+    /**
+     * Creates a new collection and links it
+     *
+     * @param {CreateCollectionRequest} payload - The payload containing information for collection creation
+     *
+     * @returns {CollectionLink} Response with created collection link ID
+     */
+    public async createNewCollection(payload: CreateCollectionRequest): Promise<CollectionLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections`, payload);
+    }
+
+    /**
+     * Retrieves all linked collections in a paginated format.
+     *
+     * @param {Object} payload
+     * @param {TokenLinkStatus} payload.status - The status of linked collections (COMPLETED / PENDING). Default is COMPLETED
+     * @param {number} payload.pageSize - The number of results to return on the next page
+     * @param {string} payload.pageCursor - The cursor for the next page
+     *
+     * @returns {CollectionLink[]} A paginated array of linked collections
+     */
+    public async getLinkedCollections({ status, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<CollectionLink>> {
+        return await this.apiClient.issueGetRequest("/v1/tokenization/collections", {
+            status,
+            pageSize,
+            pageCursor,
+        });
+    }
+
+    /**
+     * Get a linked collection
+     *
+     * @returns CollectionLink
+     */
+    public async getLinkedCollection(id: string): Promise<CollectionLink> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${id}`);
+    }
+
+    /**
+     * Unlink a collection
+     */
+    public async unlinkCollection(id: string): Promise<void> {
+        await this.apiClient.issueDeleteRequest(`/v1/tokenization/collections/${id}`);
+    }
+
+    /**
+     * Mint collection NFT
+     *
+     * @returns WriteCallFunctionResponseDto
+     */
+    public async mintNFT(collectionId: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/mint`, payload);
+    }
+
+    /**
+     * Burn collection NFT
+     *
+     * @returns WriteCallFunctionResponseDto
+     */
+    public async burnNFT(collectionId: string, payload: BurnCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/burn`, payload);
+    }
+
+    /**
+     * Get collection token details
+     *
+     * @returns CollectionTokenResponseDto
+     */
+    public async getLinkedCollectionTokenDetails(collectionId: string, tokenId: string): Promise<CollectionTokenResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${collectionId}/tokens/${tokenId}`);
     }
 
     /**
