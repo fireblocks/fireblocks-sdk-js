@@ -2134,20 +2134,20 @@ export class FireblocksSDK {
     }
 
     /**
-     * Mint collection token
+     * Mint collection NFT
      *
      * @returns WriteCallFunctionResponseDto
      */
-    public async mintCollectionToken(collectionId: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+    public async mintNFT(collectionId: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
         return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/mint`, payload);
     }
 
     /**
-     * Burn collection token
+     * Burn collection NFT
      *
      * @returns WriteCallFunctionResponseDto
      */
-    public async burnCollectionToken(collectionId: string, payload: BurnCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+    public async burnNFT(collectionId: string, payload: BurnCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
         return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/burn`, payload);
     }
 
