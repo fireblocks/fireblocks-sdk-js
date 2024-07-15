@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.28.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.27.2...v5.28.0)
+
+> 15 July 2024
+
+- Add Tokenization Collections API [`#285`](https://github.com/fireblocks/fireblocks-sdk-js/pull/285)
+
 #### [v5.27.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.27.1...v5.27.2)
 
 > 20 June 2024
 
 - feat: set ncw wallet required algorithms [`#281`](https://github.com/fireblocks/fireblocks-sdk-js/pull/281)
+- fix: getWalletDevices type [`#278`](https://github.com/fireblocks/fireblocks-sdk-js/pull/278)
 
 #### [v5.27.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.27.0...v5.27.1)
 
