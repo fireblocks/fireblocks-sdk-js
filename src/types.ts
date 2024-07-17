@@ -1873,6 +1873,24 @@ export interface LinkedTokenMetadata {
     vaultAccountId?: string;
 }
 
+export interface LinkedContractMetadataDto {
+    id: string;
+    blockchainId: string;
+    baseAssetId: string;
+    contractAddress: string;
+    contractTemplateId: string;
+    vaultAccountId?: string;
+}
+
+export interface LinkedCollectionMetadataDto {
+    fbCollectionId: string;
+    name?: string;
+    symbol?: string;
+    standard?: string;
+    blockchainDescriptor: string;
+    contractAddress?: string;
+}
+
 export enum TokenLinkStatus {
     PENDING = "PENDING",
     COMPLETED = "COMPLETED",
@@ -1883,8 +1901,27 @@ export interface TokenLink {
     type?: ContractTemplateType;
     refId?: string;
     status: TokenLinkStatus;
-    tokenMetadata?: LinkedTokenMetadata;
+    tokenMetadata?: LinkedTokenMetadata | LinkedCollectionMetadataDto | LinkedContractMetadataDto;
     displayName?: string;
+}
+
+export enum CollectionType {
+    NON_FUNGIBLE_TOKEN = "NON_FUNGIBLE_TOKEN",
+    SEMI_FUNGIBLE_TOKEN = "SEMI_FUNGIBLE_TOKEN",
+}
+
+export interface CollectionLink {
+    id: string;
+    type: CollectionType;
+    status: TokenLinkStatus;
+    displayName?: string;
+    collectionMetadata?: LinkedCollectionMetadataDto;
+}
+
+export interface CollectionTokenResponseDto {
+    tokenId: string;
+    metadataURI: string;
+    totalSupply: string;
 }
 
 export interface GetTokenLinksFilter {
@@ -1936,6 +1973,47 @@ export interface ContractAbiResponseDto {
 
 export interface WriteCallFunctionResponseDto {
     txId: string;
+}
+
+export interface CreateCollectionRequest {
+    baseAssetId: string;
+    vaultAccountId: string;
+    type: CollectionType;
+    name: string;
+    symbol: string;
+    adminAddress: string;
+    displayName?: string;
+}
+
+export interface TokenMetadataAttributesDto {
+    traitType: string;
+    value: string;
+    displayType?: string;
+}
+
+export interface TokenMetadataDto {
+    name: string;
+    description: string;
+    image?: string;
+    animationUrl?: string;
+    externalUrl?: string;
+    attributes?: TokenMetadataAttributesDto[];
+}
+
+export interface MintCollectionTokenRequest {
+    to: string;
+    tokenId: string;
+    vaultAccountId: string;
+    amount?: string;
+    metadataURI?: string;
+    metadata?: TokenMetadataDto;
+}
+
+export interface BurnCollectionTokenRequest {
+    to: string;
+    tokenId: string;
+    vaultAccountId: string;
+    amount?: string;
 }
 
 export interface IssueTokenRequest {
