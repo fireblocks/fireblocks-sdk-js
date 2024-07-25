@@ -2078,7 +2078,9 @@ export class FireblocksSDK {
      * Link a token to the tenant
      * @param type
      * @param refId
-     * @param [displayName]
+     * @param displayName
+     * @param baseAssetId
+     * @param contractAddress
      *
      * @returns TokenLink
      */
