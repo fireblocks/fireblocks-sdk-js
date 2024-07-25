@@ -1990,7 +1990,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Fetches the contract with ABI if exists and scrapes ABI from block explorer otherwise
+     * Fetch the ABI. If not found fetch the ABI from the block explorer
      * @param baseAssetId
      * @param contractAddress
      *
@@ -2004,7 +2004,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Fetches the contract with ABI if exists and scrapes ABI from block explorer otherwise
+     * Save contract ABI for the tenant
      * @param baseAssetId
      * @param contractAddress
      *
