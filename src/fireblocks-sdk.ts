@@ -140,6 +140,7 @@ import {
     ScreeningSupportedProviders,
     RegisterAssetResponse,
     UnspentInputsResponse,
+    ContractWithABIDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -1946,6 +1947,8 @@ export class FireblocksSDK {
         });
     }
 
+
+
     /**
      * Get contract by blockchain base assetId and contract address
      * @param baseAssetId
@@ -1966,6 +1969,34 @@ export class FireblocksSDK {
      */
     public async getContractAbi(baseAssetId: string, contractAddress: string): Promise<ContractAbiResponseDto> {
         return await this.apiClient.issueGetRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/contract_address/${contractAddress}/abi`);
+    }
+
+    /**
+     * Fetches the contract with ABI if exists and scrapes ABI from block explorer otherwise
+     * @param baseAssetId
+     * @param contractAddress
+     *
+     * @returns {ContractWithABIDto}
+     */
+    public async fetchOrScrapeABI(baseAssetId: string, contractAddress: string): Promise<ContractWithABIDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-service/fetch-abi`, {
+            baseAssetId,
+            contractAddress
+        });
+    }
+
+    /**
+     * Fetches the contract with ABI if exists and scrapes ABI from block explorer otherwise
+     * @param baseAssetId
+     * @param contractAddress
+     *
+     * @returns {ContractWithABIDto}
+     */
+    public async addABI(baseAssetId: string, contractAddress: string): Promise<ContractWithABIDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contract-service/abi`, {
+            baseAssetId,
+            contractAddress
+        });
     }
 
     /**
@@ -2035,8 +2066,8 @@ export class FireblocksSDK {
      *
      * @returns TokenLink
      */
-    public async linkToken(type: SupportedContractTemplateType, refId: string, displayName?: string): Promise<TokenLink> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId, displayName });
+    public async linkToken(type: SupportedContractTemplateType, refId?: string, displayName?: string, baseAssetId?:string, contractAddress?:string): Promise<TokenLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId, displayName, baseAssetId, contractAddress });
     }
 
     /**

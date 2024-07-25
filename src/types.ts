@@ -1918,6 +1918,16 @@ export interface ContractAbiResponseDto {
     implementationAbi?: ContractAbi;
 }
 
+export interface ContractWithABIDto {
+    address: string;
+    baseAssetId: string;
+    name: string;
+    abi: ContractAbi;
+    isProxy?: boolean;
+    implementation?: string;
+    isPublic: boolean;
+}
+
 export interface WriteCallFunctionResponseDto {
     txId: string;
 }
