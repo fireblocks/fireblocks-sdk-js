@@ -1955,8 +1955,6 @@ export class FireblocksSDK {
         });
     }
 
-
-
     /**
      * Get contract's address by blockchain base assetId and the transaction hash
      * @param baseAssetId
