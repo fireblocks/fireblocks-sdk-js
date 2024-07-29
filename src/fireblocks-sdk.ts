@@ -1995,7 +1995,7 @@ export class FireblocksSDK {
      * @returns {ContractWithABIDto}
      */
     public async fetchOrScrapeABI(baseAssetId: string, contractAddress: string): Promise<ContractWithABIDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-service/fetch-abi`, {
+        return await this.apiClient.issuePostRequest(`/v1/contracts/fetch-abi`, {
             baseAssetId,
             contractAddress
         });
@@ -2009,7 +2009,7 @@ export class FireblocksSDK {
      * @returns {ContractWithABIDto}
      */
     public async addABI(baseAssetId: string, contractAddress: string): Promise<ContractWithABIDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contract-service/abi`, {
+        return await this.apiClient.issuePostRequest(`/v1/contracts/abi`, {
             baseAssetId,
             contractAddress
         });
