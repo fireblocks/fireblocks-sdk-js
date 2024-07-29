@@ -1973,17 +1973,17 @@ export interface CreateCollectionRequest {
 }
 
 export interface TokenMetadataAttributesDto {
-    traitType: string;
+    trait_type: string;
     value: string;
-    displayType?: string;
+    display_type?: string;
 }
 
 export interface TokenMetadataDto {
     name: string;
     description: string;
     image?: string;
-    animationUrl?: string;
-    externalUrl?: string;
+    animation_url?: string;
+    external_url?: string;
     attributes?: TokenMetadataAttributesDto[];
 }
 
