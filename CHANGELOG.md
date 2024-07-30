@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.28.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.28.0...v5.28.1)
+
+> 29 July 2024
+
+- [OC-4662] Tokenization Collection API - Changed token metadata objects' fields from camel Case to snake case [`#288`](https://github.com/fireblocks/fireblocks-sdk-js/pull/288)
+
 #### [v5.28.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.27.2...v5.28.0)
 
 > 15 July 2024
