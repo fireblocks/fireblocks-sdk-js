@@ -1997,7 +1997,6 @@ export interface MintCollectionTokenRequest {
 }
 
 export interface BurnCollectionTokenRequest {
-    to: string;
     tokenId: string;
     vaultAccountId: string;
     amount?: string;
