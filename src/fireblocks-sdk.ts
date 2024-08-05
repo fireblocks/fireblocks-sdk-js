@@ -2075,7 +2075,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Link a token to the tenant
+     * Link a token by refId to the tenant
      * @param type
      * @param refId
      * @param displayName
@@ -2084,8 +2084,21 @@ export class FireblocksSDK {
      *
      * @returns TokenLink
      */
-    public async linkToken(type: SupportedContractTemplateType, refId?: string, displayName?: string, baseAssetId?:string, contractAddress?:string): Promise<TokenLink> {
-        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId, displayName, baseAssetId, contractAddress });
+    public async linkToken(type: SupportedContractTemplateType, refId: string, displayName?: string): Promise<TokenLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId, displayName });
+    }
+
+    /**
+     * Link a token by baseAssetId and contract address to the tenant
+     * @param type
+     * @param baseAssetId
+     * @param contractAddress
+     * @param displayName
+     *
+     * @returns TokenLink
+     */
+    public async linkContractByAddress(type: SupportedContractTemplateType,  baseAssetId?:string, contractAddress?:string, displayName?: string,): Promise<TokenLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, displayName, baseAssetId, contractAddress });
     }
 
     /**
