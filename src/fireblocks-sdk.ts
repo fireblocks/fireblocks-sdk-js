@@ -2095,7 +2095,7 @@ export class FireblocksSDK {
      *
      * @returns TokenLink
      */
-    public async linkContractByAddress(type: SupportedContractTemplateType,  baseAssetId: string, contractAddress: string, displayName?: string, ): Promise<TokenLink> {
+    public async linkContractByAddress(type: SupportedContractTemplateType,  baseAssetId: string, contractAddress: string, displayName?: string): Promise<TokenLink> {
         return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, baseAssetId, contractAddress, displayName });
     }
 
