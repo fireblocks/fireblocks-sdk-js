@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.29.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.28.1...v5.29.0)
+
+> 7 August 2024
+
+- add set asset price api [`#277`](https://github.com/fireblocks/fireblocks-sdk-js/pull/277)
+
 #### [v5.28.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.28.0...v5.28.1)
 
 > 29 July 2024
