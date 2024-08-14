@@ -2022,7 +2022,7 @@ export class FireblocksSDK {
      *
      * @returns {ContractWithABIDto}
      */
-    public async addABI(baseAssetId: string, contractAddress: string, abi: AbiFunction[], name?: string): Promise<ContractWithABIDto> {
+    public async saveABI(baseAssetId: string, contractAddress: string, abi: AbiFunction[], name?: string): Promise<ContractWithABIDto> {
         return await this.apiClient.issuePostRequest(`/v1/contracts/abi`, {
             baseAssetId,
             contractAddress,
