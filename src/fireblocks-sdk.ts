@@ -2007,7 +2007,7 @@ export class FireblocksSDK {
      * @returns {ContractWithABIDto}
      */
     public async fetchOrScrapeABI(baseAssetId: string, contractAddress: string): Promise<ContractWithABIDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contracts/fetch-abi`, {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/contracts/fetch-abi`, {
             baseAssetId,
             contractAddress
         });
@@ -2023,7 +2023,7 @@ export class FireblocksSDK {
      * @returns {ContractWithABIDto}
      */
     public async saveABI(baseAssetId: string, contractAddress: string, abi: AbiFunction[], name?: string): Promise<ContractWithABIDto> {
-        return await this.apiClient.issuePostRequest(`/v1/contracts/abi`, {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/contracts/abi`, {
             baseAssetId,
             contractAddress,
             abi,
