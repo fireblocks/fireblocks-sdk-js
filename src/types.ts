@@ -1375,6 +1375,19 @@ export interface AssetTypeResponse {
     decimals?: number;
 }
 
+export interface AssetPriceResponse {
+    legacyId: string;
+    lastUpdateAt: number;
+    currency: string;
+    price: number;
+    source: AssetPriceSource;
+}
+
+enum AssetPriceSource {
+    PUBLIC = "PUBLIC",
+    PRIVATE = "PRIVATE"
+}
+
 export interface User {
     id: string;
     firstName: string;
@@ -1860,6 +1873,24 @@ export interface LinkedTokenMetadata {
     vaultAccountId?: string;
 }
 
+export interface LinkedContractMetadataDto {
+    id: string;
+    blockchainId: string;
+    baseAssetId: string;
+    contractAddress: string;
+    contractTemplateId: string;
+    vaultAccountId?: string;
+}
+
+export interface LinkedCollectionMetadataDto {
+    fbCollectionId: string;
+    name?: string;
+    symbol?: string;
+    standard?: string;
+    blockchainDescriptor: string;
+    contractAddress?: string;
+}
+
 export enum TokenLinkStatus {
     PENDING = "PENDING",
     COMPLETED = "COMPLETED",
@@ -1870,8 +1901,27 @@ export interface TokenLink {
     type?: ContractTemplateType;
     refId?: string;
     status: TokenLinkStatus;
-    tokenMetadata?: LinkedTokenMetadata;
+    tokenMetadata?: LinkedTokenMetadata | LinkedCollectionMetadataDto | LinkedContractMetadataDto;
     displayName?: string;
+}
+
+export enum CollectionType {
+    NON_FUNGIBLE_TOKEN = "NON_FUNGIBLE_TOKEN",
+    SEMI_FUNGIBLE_TOKEN = "SEMI_FUNGIBLE_TOKEN",
+}
+
+export interface CollectionLink {
+    id: string;
+    type: CollectionType;
+    status: TokenLinkStatus;
+    displayName?: string;
+    collectionMetadata?: LinkedCollectionMetadataDto;
+}
+
+export interface CollectionTokenResponseDto {
+    tokenId: string;
+    metadataURI: string;
+    totalSupply: string;
 }
 
 export interface GetTokenLinksFilter {
@@ -1921,8 +1971,58 @@ export interface ContractAbiResponseDto {
     implementationAbi?: ContractAbi;
 }
 
+export interface ContractWithABIDto {
+    address: string;
+    baseAssetId: string;
+    name: string;
+    abi: ContractAbi;
+    isProxy?: boolean;
+    implementation?: string;
+    isPublic: boolean;
+}
+
 export interface WriteCallFunctionResponseDto {
     txId: string;
+}
+
+export interface CreateCollectionRequest {
+    baseAssetId: string;
+    vaultAccountId: string;
+    type: CollectionType;
+    name: string;
+    symbol: string;
+    adminAddress: string;
+    displayName?: string;
+}
+
+export interface TokenMetadataAttributesDto {
+    trait_type: string;
+    value: string;
+    display_type?: string;
+}
+
+export interface TokenMetadataDto {
+    name: string;
+    description: string;
+    image?: string;
+    animation_url?: string;
+    external_url?: string;
+    attributes?: TokenMetadataAttributesDto[];
+}
+
+export interface MintCollectionTokenRequest {
+    to: string;
+    tokenId: string;
+    vaultAccountId: string;
+    amount?: string;
+    metadataURI?: string;
+    metadata?: TokenMetadataDto;
+}
+
+export interface BurnCollectionTokenRequest {
+    tokenId: string;
+    vaultAccountId: string;
+    amount?: string;
 }
 
 export interface IssueTokenRequest {

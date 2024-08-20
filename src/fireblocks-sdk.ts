@@ -141,6 +141,13 @@ import {
     RegisterAssetResponse,
     UnspentInputsResponse,
     ContractAddressResponseDto,
+    AssetPriceResponse,
+    CollectionLink,
+    CreateCollectionRequest,
+    CollectionTokenResponseDto,
+    MintCollectionTokenRequest,
+    BurnCollectionTokenRequest,
+    ContractWithABIDto,
     RescanTx,
     RescanTxResponse,
 } from "./types";
@@ -204,6 +211,8 @@ export interface SDKOptions {
      */
     travelRuleOptions?: TravelRuleOptions;
 }
+
+const DEFAULT_MAX_PAGE_SIZE = 100;
 
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
@@ -333,6 +342,17 @@ export class FireblocksSDK {
     public async getSupportedAssets(): Promise<AssetTypeResponse[]> {
         return await this.apiClient.issueGetRequest("/v1/supported_assets");
     }
+
+    /**
+     * Sets asset price
+     * @param id The asset ID
+     * @param currency The currency (according to ISO 4217 currency codes)
+     * @param price The price in currency
+     */
+    public async setAssetPrice(id: string, currency: string, price: number): Promise<AssetPriceResponse> {
+        return await this.apiClient.issuePostRequest(`/v1/assets/prices/${id}`, {currency, price});
+    }
+
     /**
      * Gets a list of vault accounts per page matching the given filter or path
      * @param pagedVaultAccountsRequestFilters Filters for the first request
@@ -1849,7 +1869,7 @@ export class FireblocksSDK {
     public async getContractTemplates({
         initializationPhase,
         type,
-        pageSize = 100,
+        pageSize = DEFAULT_MAX_PAGE_SIZE,
         pageCursor
     }: GetContractTemplatesFilter = {}): Promise<Web3PagedResponse<LeanContractTemplateDto>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/templates`, {
@@ -1926,7 +1946,7 @@ export class FireblocksSDK {
      *
      * @returns {LeanDeployedContractResponseDto[]}
      */
-    public async getContractsByFilter({ contractTemplateId, baseAssetId, contractAddress, pageSize = 100, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
+    public async getContractsByFilter({ contractTemplateId, baseAssetId, contractAddress, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetContractsFilter = {}): Promise<Web3PagedResponse<LeanDeployedContractResponseDto>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/contracts`, {
             contractTemplateId,
             baseAssetId,
@@ -1982,6 +2002,34 @@ export class FireblocksSDK {
     }
 
     /**
+     * Fetch the ABI. If not found fetch the ABI from the block explorer
+     * @param baseAssetId
+     * @param contractAddress
+     *
+     * @returns {ContractWithABIDto}
+     */
+    public async fetchOrScrapeABI(baseAssetId: string, contractAddress: string): Promise<ContractWithABIDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contracts/fetch-abi`, {
+            baseAssetId,
+            contractAddress
+        });
+    }
+
+    /**
+     * Save contract ABI for the tenant
+     * @param baseAssetId
+     * @param contractAddress
+     *
+     * @returns {ContractWithABIDto}
+     */
+    public async addABI(baseAssetId: string, contractAddress: string): Promise<ContractWithABIDto> {
+        return await this.apiClient.issuePostRequest(`/v1/contracts/abi`, {
+            baseAssetId,
+            contractAddress
+        });
+    }
+
+    /**
      * Call contract read function by blockchain base assetId and contract address
      * @param baseAssetId
      * @param templateId
@@ -2017,14 +2065,14 @@ export class FireblocksSDK {
     /**
      * Retrieves all linked tokens in a paginated format.
      *
-     * @param {Object} payload - The payload for retrieving linked tokens
-     * @param {TokenLinkStatus} payload.status - The status of linked tokens (COMPLETED / PENDING)
+     * @param {Object} payload
+     * @param {TokenLinkStatus} payload.status - The status of linked tokens (COMPLETED / PENDING). Default is COMPLETED
      * @param {number} payload.pageSize - The number of results to return on the next page
      * @param {string} payload.pageCursor - The cursor for the next page
      *
      * @returns {TokenLink[]} A paginated array of linked tokens
      */
-    public async getLinkedTokens({ status = TokenLinkStatus.COMPLETED, pageSize = 100, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
+    public async getLinkedTokens({ status, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/tokens`, {
             status,
             pageSize,
@@ -2041,15 +2089,28 @@ export class FireblocksSDK {
     }
 
     /**
-     * Link a token to the tenant
+     * Link a token by refId to the tenant
      * @param type
      * @param refId
-     * @param [displayName]
+     * @param displayName
      *
      * @returns TokenLink
      */
     public async linkToken(type: SupportedContractTemplateType, refId: string, displayName?: string): Promise<TokenLink> {
         return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, refId, displayName });
+    }
+
+    /**
+     * Link a token by baseAssetId and contract address to the tenant
+     * @param type
+     * @param baseAssetId
+     * @param contractAddress
+     * @param displayName
+     *
+     * @returns TokenLink
+     */
+    public async linkContractByAddress(type: SupportedContractTemplateType,  baseAssetId: string, contractAddress: string, displayName?: string): Promise<TokenLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/tokens/link`, { type, baseAssetId, contractAddress, displayName });
     }
 
     /**
@@ -2066,8 +2127,8 @@ export class FireblocksSDK {
      * Delete a token link
      * @param id
      */
-    public async unlinkToken(id: string): Promise<TokenLink> {
-        return await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${id}`);
+    public async unlinkToken(id: string): Promise<void> {
+        await this.apiClient.issueDeleteRequest(`/v1/tokenization/tokens/${id}`);
     }
 
     /**
@@ -2081,6 +2142,78 @@ export class FireblocksSDK {
      */
     public async getPendingLinkedTokens({ pageSize, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<TokenLink>> {
         return await this.getLinkedTokens({ status: TokenLinkStatus.PENDING, pageSize, pageCursor });
+    }
+
+    /**
+     * Creates a new collection and links it
+     *
+     * @param {CreateCollectionRequest} payload - The payload containing information for collection creation
+     *
+     * @returns {CollectionLink} Response with created collection link ID
+     */
+    public async createNewCollection(payload: CreateCollectionRequest): Promise<CollectionLink> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections`, payload);
+    }
+
+    /**
+     * Retrieves all linked collections in a paginated format.
+     *
+     * @param {Object} payload
+     * @param {TokenLinkStatus} payload.status - The status of linked collections (COMPLETED / PENDING). Default is COMPLETED
+     * @param {number} payload.pageSize - The number of results to return on the next page
+     * @param {string} payload.pageCursor - The cursor for the next page
+     *
+     * @returns {CollectionLink[]} A paginated array of linked collections
+     */
+    public async getLinkedCollections({ status, pageSize = DEFAULT_MAX_PAGE_SIZE, pageCursor }: GetTokenLinksFilter = {}): Promise<Web3PagedResponse<CollectionLink>> {
+        return await this.apiClient.issueGetRequest("/v1/tokenization/collections", {
+            status,
+            pageSize,
+            pageCursor,
+        });
+    }
+
+    /**
+     * Get a linked collection
+     *
+     * @returns CollectionLink
+     */
+    public async getLinkedCollection(id: string): Promise<CollectionLink> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${id}`);
+    }
+
+    /**
+     * Unlink a collection
+     */
+    public async unlinkCollection(id: string): Promise<void> {
+        await this.apiClient.issueDeleteRequest(`/v1/tokenization/collections/${id}`);
+    }
+
+    /**
+     * Mint collection NFT
+     *
+     * @returns WriteCallFunctionResponseDto
+     */
+    public async mintNFT(collectionId: string, payload: MintCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/mint`, payload);
+    }
+
+    /**
+     * Burn collection NFT
+     *
+     * @returns WriteCallFunctionResponseDto
+     */
+    public async burnNFT(collectionId: string, payload: BurnCollectionTokenRequest): Promise<WriteCallFunctionResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/collections/${collectionId}/tokens/burn`, payload);
+    }
+
+    /**
+     * Get collection token details
+     *
+     * @returns CollectionTokenResponseDto
+     */
+    public async getLinkedCollectionTokenDetails(collectionId: string, tokenId: string): Promise<CollectionTokenResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${collectionId}/tokens/${tokenId}`);
     }
 
     /**
