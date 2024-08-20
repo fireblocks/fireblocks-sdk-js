@@ -2453,7 +2453,6 @@ export class FireblocksSDK {
      * @param rescanTxs An array of RescanTx
      */
     public rescanTransactions(rescanTxs: RescanTx[]): Promise<RescanTxResponse []> {
-        const body = { transactions: rescanTxs };
-        return this.apiClient.issuePostRequest(`/v1/rescan/transactions`, body);
+        return this.apiClient.issuePostRequest(`/v1/rescan/transactions`, rescanTxs);
     }
 }
