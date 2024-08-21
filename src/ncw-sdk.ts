@@ -1,5 +1,5 @@
 import {
-    AssetResponse, Web3PagedResponse, NCW, UnspentInputsResponse,
+    AssetResponseNCW, Web3PagedResponse, NCW, UnspentInputsResponse,
     SigningAlgorithm,
 } from "./types";
 
@@ -155,7 +155,7 @@ export interface NcwSdk {
      * @param {string} assetId
      * @return {*}  {Promise<AssetResponse>}
      */
-    getWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse>;
+    getWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponseNCW>;
 
     /**
      * refresh a NCW asset balance
@@ -165,7 +165,7 @@ export interface NcwSdk {
      * @param {string} assetId
      * @return {*}  {Promise<AssetResponse>}
      */
-    refreshWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponse>;
+    refreshWalletAssetBalance(walletId: string, accountId: number, assetId: string): Promise<AssetResponseNCW>;
 
     /**
      * get NCW wallet setup status

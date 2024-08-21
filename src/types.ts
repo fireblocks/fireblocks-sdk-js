@@ -61,6 +61,17 @@ export interface AssetResponse {
     }[];
 }
 
+export interface AssetResponseNCW
+  extends Pick<
+    AssetResponse,
+    "id" | "total" | "pending" | "blockHash"
+  > {
+  frozen?: string;
+  reserved?: string;
+  staked?: string;
+  blockNumber?: string;
+}
+
 export interface UnfreezeTransactionResponse {
     success: boolean;
 }
