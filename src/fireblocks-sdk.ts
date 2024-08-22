@@ -2585,7 +2585,7 @@ export class FireblocksSDK {
      * Rescan transactions base on assetId and txHash
      * @param rescanTxs An array of RescanTx
      */
-    public rescanTransactions(rescanTxs: RescanTx[]): Promise<RescanTxResponse []> {
-        return this.apiClient.issuePostRequest(`/v1/rescan/transactions`, rescanTxs);
+    public rescanTransactionsBeta(rescanTxs: RescanTx[]): Promise<RescanTxResponse []> {
+        return this.apiClient.issuePostRequest(`/v1/transactions/rescan`, rescanTxs);
     }
 }

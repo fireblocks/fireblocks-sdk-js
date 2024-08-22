@@ -2244,7 +2244,7 @@ export interface RescanTx {
 }
 
 export interface RescanTxResponse {
-    txHashs: string[],
+    txHashes: string[],
     baseAsset: string,
     networkProtocol:string,
 }
