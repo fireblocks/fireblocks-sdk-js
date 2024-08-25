@@ -2238,6 +2238,17 @@ export interface UnspentInputsResponse {
     status: string;
 }
 
+export interface RescanTx {
+    assetId: string;
+    txHash: string;
+}
+
+export interface RescanTxResponse {
+    txHashes: string[],
+    baseAsset: string,
+    networkProtocol:string,
+}
+
 export namespace NCW {
     export const WalletIdHeader = "X-End-User-Wallet-Id";
 
