@@ -2245,9 +2245,9 @@ export interface RescanTx {
 }
 
 export interface RescanTxResponse {
-    txHashes: string[],
-    baseAsset: string,
-    networkProtocol:string,
+    txHashes: string[];
+    baseAsset: string;
+    networkProtocol: string;
 }
 
 export namespace NCW {

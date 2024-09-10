@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.31.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.29.0...v5.31.2)
+
+> 10 September 2024
+
+- Update publish-npm.yml [`7fc1307`](https://github.com/fireblocks/fireblocks-sdk-js/commit/7fc130780c6971b52bdd2f7950dcde492b54d1a4)
+
 #### [v5.29.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.28.1...v5.29.0)
 
 > 7 August 2024
 
 - add set asset price api [`#277`](https://github.com/fireblocks/fireblocks-sdk-js/pull/277)
+- Add link contract routes [`#287`](https://github.com/fireblocks/fireblocks-sdk-js/pull/287)
+- removed unnecessary field from BurnCollectionTokenRequest [`#289`](https://github.com/fireblocks/fireblocks-sdk-js/pull/289)
 
 #### [v5.28.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.28.0...v5.28.1)
 
