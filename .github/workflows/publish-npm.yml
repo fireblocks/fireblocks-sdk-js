@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.RELEASE_TOKEN }}
       - uses: actions/setup-node@v2
         with:
           node-version: '16.x'
@@ -31,6 +29,8 @@ jobs:
           git add .
           git commit -m "release $tag"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
