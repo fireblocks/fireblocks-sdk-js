@@ -1219,12 +1219,17 @@ export interface PublicKeyInfoArgs {
     compressed?: boolean;
 }
 
-export interface PublicKeyInfoForVaultAccountArgs {
+export interface PublicKeyInfoByAccountAssetArgs {
     assetId: string;
-    vaultAccountId: number;
+    accountId: number;
     change: number;
     addressIndex: number;
     compressed?: boolean;
+}
+
+export interface PublicKeyInfoForVaultAccountArgs
+    extends Omit<PublicKeyInfoByAccountAssetArgs, "accountId"> {
+    vaultAccountId: number;
 }
 
 export interface GasStationInfo {

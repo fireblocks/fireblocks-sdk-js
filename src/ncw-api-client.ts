@@ -5,6 +5,10 @@ import {
     NCW,
     UnspentInputsResponse,
     SigningAlgorithm,
+    PublicKeyInfoArgs,
+    PublicKeyInformation,
+    PublicKeyResponse,
+    PublicKeyInfoByAccountAssetArgs,
 } from "./types";
 import { NcwSdk } from "./ncw-sdk";
 
@@ -168,5 +172,27 @@ export class NcwApiClient implements NcwSdk {
 
     public async getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/accounts/${accountId}/${assetId}/unspent_inputs`);
+    }
+
+    public async getPublicKeyInfo(walletId: string, args: PublicKeyInfoArgs): Promise<PublicKeyInformation> {
+        let url = `/v1/ncw/${walletId}/public_key_info`;
+        if (args.algorithm) {
+            url += `?algorithm=${args.algorithm}`;
+        }
+        if (args.derivationPath) {
+            url += `&derivationPath=${JSON.stringify(args.derivationPath)}`;
+        }
+        if (args.compressed) {
+            url += `&compressed=${args.compressed}`;
+        }
+        return await this.apiClient.issueGetRequest(url, undefined, { ncw: { walletId } });
+    }
+
+    public async getPublicKeyInfoByAccountAsset(walletId: string, args: PublicKeyInfoByAccountAssetArgs): Promise<PublicKeyResponse> {
+        let url = `/v1/ncw/${walletId}/accounts/${args.accountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
+        if (args.compressed) {
+            url += `?compressed=${args.compressed}`;
+        }
+        return await this.apiClient.issueGetRequest(url, undefined, { ncw: { walletId } });
     }
 }
