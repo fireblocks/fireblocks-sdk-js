@@ -1,5 +1,5 @@
-import { ApiClient } from "src/api-client";
-import { PeerType, PublicKeyInfoArgs, PublicKeyInfoByAccountAssetArgs, PublicKeyInfoForVaultAccountArgs, PublicKeyInformation, PublicKeyResponse, RequestOptions } from "src/types";
+import { ApiClient } from "../api-client";
+import { PeerType, PublicKeyInfoArgs, PublicKeyInfoByAccountAssetArgs, PublicKeyInfoForVaultAccountArgs, PublicKeyInformation, PublicKeyResponse, RequestOptions } from "../types";
 import queryString from "query-string";
 
 export async function getPublicKeyInfoImpl(peerType: PeerType, args: PublicKeyInfoArgs, apiClient: ApiClient, walletId?: string): Promise<PublicKeyInformation> {
