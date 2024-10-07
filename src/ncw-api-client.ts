@@ -5,8 +5,14 @@ import {
     NCW,
     UnspentInputsResponse,
     SigningAlgorithm,
+    PublicKeyInfoArgs,
+    PublicKeyInformation,
+    PublicKeyResponse,
+    PublicKeyInfoByAccountAssetArgs,
+    PeerType,
 } from "./types";
 import { NcwSdk } from "./ncw-sdk";
+import { getPublicKeyInfoByAccountAssetImpl, getPublicKeyInfoImpl } from "./common/public_key_info";
 
 export class NcwApiClient implements NcwSdk {
     private readonly NCW_BASE_PATH = "/v1/ncw/wallets";
@@ -168,5 +174,13 @@ export class NcwApiClient implements NcwSdk {
 
     public async getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/accounts/${accountId}/${assetId}/unspent_inputs`);
+    }
+
+    public async getPublicKeyInfo(walletId: string, args: PublicKeyInfoArgs): Promise<PublicKeyInformation> {
+        return await getPublicKeyInfoImpl(PeerType.END_USER_WALLET, args, this.apiClient, walletId);
+    }
+
+    public async getPublicKeyInfoByAccountAsset(walletId: string, args: PublicKeyInfoByAccountAssetArgs): Promise<PublicKeyResponse> {
+        return await getPublicKeyInfoByAccountAssetImpl(PeerType.END_USER_WALLET, args, this.apiClient, walletId);
     }
 }

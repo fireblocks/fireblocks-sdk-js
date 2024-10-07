@@ -171,6 +171,7 @@ import {
     WithdrawRequestDto,
     WithdrawResponse
 } from "./staking";
+import { getPublicKeyInfoByAccountAssetImpl, getPublicKeyInfoImpl } from "./common/public_key_info";
 
 export * from "./types";
 
@@ -1160,17 +1161,7 @@ export class FireblocksSDK {
      * @param args
      */
     public async getPublicKeyInfo(args: PublicKeyInfoArgs): Promise<PublicKeyInformation> {
-        let url = `/v1/vault/public_key_info`;
-        if (args.algorithm) {
-            url += `?algorithm=${args.algorithm}`;
-        }
-        if (args.derivationPath) {
-            url += `&derivationPath=${JSON.stringify(args.derivationPath)}`;
-        }
-        if (args.compressed) {
-            url += `&compressed=${args.compressed}`;
-        }
-        return await this.apiClient.issueGetRequest(url);
+        return await getPublicKeyInfoImpl(PeerType.VAULT_ACCOUNT, args, this.apiClient);
     }
 
     /**
@@ -1204,11 +1195,7 @@ export class FireblocksSDK {
      * @param args
      */
     public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs): Promise<PublicKeyResponse> {
-        let url = `/v1/vault/accounts/${args.vaultAccountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
-        if (args.compressed) {
-            url += `?compressed=${args.compressed}`;
-        }
-        return await this.apiClient.issueGetRequest(url);
+        return await getPublicKeyInfoByAccountAssetImpl(PeerType.VAULT_ACCOUNT, args, this.apiClient);
     }
 
     /**
@@ -1275,9 +1262,9 @@ export class FireblocksSDK {
     /**
      * Gets a paginated response of the addresses for a given vault account and asset
      */
-        public async getPaginatedAddresses(vaultAccountId: string, assetId: string, paginatedAddressesRequestFilters?: OptionalPaginatedAddressesRequestFilters): Promise<PaginatedAddressesResponse> {
-            return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses_paginated?${queryString.stringify(paginatedAddressesRequestFilters)}`);
-        }
+    public async getPaginatedAddresses(vaultAccountId: string, assetId: string, paginatedAddressesRequestFilters?: OptionalPaginatedAddressesRequestFilters): Promise<PaginatedAddressesResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/vault/accounts/${vaultAccountId}/${assetId}/addresses_paginated?${queryString.stringify(paginatedAddressesRequestFilters)}`);
+    }
 
     /**
      * Get all vault assets balance overview
