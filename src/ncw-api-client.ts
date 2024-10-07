@@ -9,8 +9,10 @@ import {
     PublicKeyInformation,
     PublicKeyResponse,
     PublicKeyInfoByAccountAssetArgs,
+    PeerType,
 } from "./types";
 import { NcwSdk } from "./ncw-sdk";
+import { getPublicKeyInfoByAccountAssetImpl, getPublicKeyInfoImpl } from "./common/public_key_info";
 
 export class NcwApiClient implements NcwSdk {
     private readonly NCW_BASE_PATH = "/v1/ncw/wallets";
@@ -175,24 +177,10 @@ export class NcwApiClient implements NcwSdk {
     }
 
     public async getPublicKeyInfo(walletId: string, args: PublicKeyInfoArgs): Promise<PublicKeyInformation> {
-        let url = `/v1/ncw/${walletId}/public_key_info`;
-        if (args.algorithm) {
-            url += `?algorithm=${args.algorithm}`;
-        }
-        if (args.derivationPath) {
-            url += `&derivationPath=${JSON.stringify(args.derivationPath)}`;
-        }
-        if (args.compressed) {
-            url += `&compressed=${args.compressed}`;
-        }
-        return await this.apiClient.issueGetRequest(url, undefined, { ncw: { walletId } });
+        return await getPublicKeyInfoImpl(PeerType.END_USER_WALLET, args, this.apiClient, walletId);
     }
 
     public async getPublicKeyInfoByAccountAsset(walletId: string, args: PublicKeyInfoByAccountAssetArgs): Promise<PublicKeyResponse> {
-        let url = `/v1/ncw/${walletId}/accounts/${args.accountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
-        if (args.compressed) {
-            url += `?compressed=${args.compressed}`;
-        }
-        return await this.apiClient.issueGetRequest(url, undefined, { ncw: { walletId } });
+        return await getPublicKeyInfoByAccountAssetImpl(PeerType.END_USER_WALLET, args, this.apiClient, walletId);
     }
 }

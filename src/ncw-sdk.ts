@@ -216,7 +216,7 @@ export interface NcwSdk {
     getPublicKeyInfo(walletId: string, args: PublicKeyInfoArgs): Promise<PublicKeyInformation>;
 
     /**
-     * Get the public key information for a vault account
+     * Get the public key information for an NCW account
      * @param {string} walletId
      * @param {PublicKeyInfoByAccountAssetArgs} args
      * @return {*}  {Promise<PublicKeyResponse>}
