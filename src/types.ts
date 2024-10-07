@@ -9,7 +9,7 @@ export interface Web3PagedResponse<T> {
     paging?: Paging;
 }
 
-export type APIResponseHeaders = AxiosResponseHeaders & {"x-request-id"?: string};
+export type APIResponseHeaders = AxiosResponseHeaders & { "x-request-id"?: string };
 
 export interface VaultAccountResponse {
     id: string;
@@ -537,6 +537,10 @@ export interface TravelRuleVaspFilter {
     page?: number;
     per_page?: number;
     order?: string;
+}
+
+export interface TravelRuleVaspForVaultRequestResponse {
+    vaspDid: string | null;
 }
 
 export interface ScreeningPolicyConfiguration {
@@ -1400,15 +1404,15 @@ export interface User {
 
 
 export type TRole =
-  | "ADMIN"
-  | "SIGNER"
-  | "EDITOR"
-  | "APPROVER"
-  | "VIEWER"
-  | "NON_SIGNING_ADMIN"
-  | "AUDITOR"
-  | "NCW_ADMIN"
-  | "NCW_SIGNER";
+    | "ADMIN"
+    | "SIGNER"
+    | "EDITOR"
+    | "APPROVER"
+    | "VIEWER"
+    | "NON_SIGNING_ADMIN"
+    | "AUDITOR"
+    | "NCW_ADMIN"
+    | "NCW_SIGNER";
 
 interface BaseUser {
     id: string;
