@@ -7,9 +7,11 @@ export async function getPublicKeyInfoImpl(peerType: PeerType, args: PublicKeyIn
     let requestOptions: RequestOptions;
     if (peerType === PeerType.VAULT_ACCOUNT) {
         url = `/v1/vault/public_key_info`;
-    } else {
+    } else if (peerType === PeerType.END_USER_WALLET) {
         requestOptions = { ncw: { walletId } };
         url = `/v1/ncw/${walletId}/public_key_info`;
+    } else {
+        throw new Error(`Unsupported peer type: ${peerType}`);
     }
 
     const query = queryString.stringify({
@@ -27,9 +29,11 @@ export async function getPublicKeyInfoByAccountAssetImpl(peerType: PeerType, arg
     let requestOptions: RequestOptions;
     if (peerType === PeerType.VAULT_ACCOUNT) {
         url = `/v1/vault/accounts/${(args as PublicKeyInfoForVaultAccountArgs).vaultAccountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
-    } else {
+    } else if (peerType === PeerType.END_USER_WALLET) {
         requestOptions = { ncw: { walletId } };
         url = `/v1/ncw/${walletId}/accounts/${(args as PublicKeyInfoByAccountAssetArgs).accountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
+    } else {
+        throw new Error(`Unsupported peer type: ${peerType}`);
     }
 
     const query = queryString.stringify({
