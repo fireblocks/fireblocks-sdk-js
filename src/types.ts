@@ -540,7 +540,7 @@ export interface TravelRuleVaspFilter {
 }
 
 export interface TravelRuleVaspForVaultRequestResponse {
-    vaspDid: string | null;
+    vaspDid: string;
 }
 
 export interface ScreeningPolicyConfiguration {
