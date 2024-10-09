@@ -2282,7 +2282,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Sets the VASP Did for a specific vault. Pass empty string to remove existing one.
+     * Sets the VASP Did for a specific vault. Pass empty string or null to remove existing one.
      */
     public async setVaspForVault(vaultAccountId: number, vaspDid: string): Promise<TravelRuleVaspForVaultRequestResponse> {
         return await this.apiClient.issuePostRequest(`/screening/travel_rule/vault/${vaultAccountId.toString()}/vasp`, {
