@@ -2278,14 +2278,14 @@ export class FireblocksSDK {
      * Get assigned VASP Did for a specific vault. Returns empty string vaspDid value in response if none assigned.
      */
     public async getVaspForVault(vaultAccountId: number): Promise<TravelRuleVaspForVaultRequestResponse> {
-        return await this.apiClient.issueGetRequest(`/screening/travel_rule/vault/${vaultAccountId.toString()}/vasp`);
+        return await this.apiClient.issueGetRequest(`/v1/screening/travel_rule/vault/${vaultAccountId.toString()}/vasp`);
     }
 
     /**
      * Sets the VASP Did for a specific vault. Pass empty string to remove existing one.
      */
     public async setVaspForVault(vaultAccountId: number, vaspDid: string): Promise<TravelRuleVaspForVaultRequestResponse> {
-        return await this.apiClient.issuePostRequest(`/screening/travel_rule/vault/${vaultAccountId.toString()}/vasp`, {
+        return await this.apiClient.issuePostRequest(`/v1/screening/travel_rule/vault/${vaultAccountId.toString()}/vasp`, {
             vaspDid
         });
     }
