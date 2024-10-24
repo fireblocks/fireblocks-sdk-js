@@ -1814,6 +1814,8 @@ export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
     deployFunctionParams?: object[];
+    fee?: string;
+    feeLevel?: FeeLevel;
 }
 
 export interface SupportedBlockchain {
