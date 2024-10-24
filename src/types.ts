@@ -2108,7 +2108,7 @@ export interface WriteCallFunctionDto {
     amount?: string;
     feeLevel?: FeeLevel;
     note?: string;
-    externalTxnId?: string;
+    externalTxId?: string;
 }
 
 export enum SmartTransfersTicketDirection {
