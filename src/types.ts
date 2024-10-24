@@ -1814,6 +1814,8 @@ export interface ContractDeployRequest {
     assetId: string;
     vaultAccountId: string;
     deployFunctionParams?: object[];
+    fee?: string;
+    feeLevel?: FeeLevel;
 }
 
 export interface SupportedBlockchain {
@@ -2032,6 +2034,8 @@ export interface IssueTokenRequest {
     vaultAccountId: string;
     createParams: CreateTokenParams;
     displayName?: string;
+    fee?: string;
+    feeLevel?: FeeLevel;
 }
 
 export interface JobCreatedResponse {
@@ -2104,6 +2108,7 @@ export interface WriteCallFunctionDto {
     amount?: string;
     feeLevel?: FeeLevel;
     note?: string;
+    externalTxId?: string;
 }
 
 export enum SmartTransfersTicketDirection {
