@@ -2032,6 +2032,8 @@ export interface IssueTokenRequest {
     vaultAccountId: string;
     createParams: CreateTokenParams;
     displayName?: string;
+    fee?: string;
+    feeLevel?: FeeLevel;
 }
 
 export interface JobCreatedResponse {
