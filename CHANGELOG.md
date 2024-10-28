@@ -2,11 +2,36 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.31.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.29.0...v5.31.2)
+#### [v5.32.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.31.2...v5.32.0)
+
+> 28 October 2024
+
+- Get/set VASP assigned to vault [`#296`](https://github.com/fireblocks/fireblocks-sdk-js/pull/296)
+
+#### [v5.31.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.31.1...v5.31.2)
 
 > 10 September 2024
 
 - Update publish-npm.yml [`7fc1307`](https://github.com/fireblocks/fireblocks-sdk-js/commit/7fc130780c6971b52bdd2f7950dcde492b54d1a4)
+
+#### [v5.31.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.31.0...v5.31.1)
+
+> 10 September 2024
+
+- Update publish-npm.yml [`0c240cd`](https://github.com/fireblocks/fireblocks-sdk-js/commit/0c240cd2473c57a47e2db0de635d48e0f5d0271e)
+
+#### [v5.31.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.30.0...v5.31.0)
+
+> 9 September 2024
+
+- add maxTotalFee tx-request param [`#290`](https://github.com/fireblocks/fireblocks-sdk-js/pull/290)
+
+#### [v5.30.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.29.0...v5.30.0)
+
+> 29 August 2024
+
+- Fix issue with add abi [`#291`](https://github.com/fireblocks/fireblocks-sdk-js/pull/291)
+- Add-rescan-txs [`#283`](https://github.com/fireblocks/fireblocks-sdk-js/pull/283)
 
 #### [v5.29.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.28.1...v5.29.0)
 
