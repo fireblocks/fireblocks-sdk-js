@@ -2324,7 +2324,7 @@ export namespace NCW {
         hasFee: boolean;
         type: string;
         baseAsset: string;
-        ethNetwork?: number;
+        ethNetwork?: string;
         ethContractAddress?: string;
         issuerAddress?: string;
         blockchainSymbol?: string;
