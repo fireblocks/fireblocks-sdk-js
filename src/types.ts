@@ -2041,6 +2041,7 @@ export interface IssueTokenRequest {
     displayName?: string;
     fee?: string;
     feeLevel?: FeeLevel;
+    useGasless?: boolean;
 }
 
 export interface JobCreatedResponse {
@@ -2101,7 +2102,6 @@ export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueLi
 interface EVMTokenCreateParamsDto {
     contractId: string;
     deployFunctionParams?: Array<ParameterWithValue>;
-    useGasless?: boolean;
 }
 
 export interface ReadCallFunctionDto {
@@ -2113,6 +2113,7 @@ export interface WriteCallFunctionDto {
     abiFunction: AbiFunction;
     amount?: string;
     feeLevel?: FeeLevel;
+    fee?: string;
     note?: string;
     externalTxId?: string;
     useGasless?: boolean;
