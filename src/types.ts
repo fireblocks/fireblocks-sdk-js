@@ -1820,6 +1820,7 @@ export interface ContractDeployRequest {
     deployFunctionParams?: object[];
     fee?: string;
     feeLevel?: FeeLevel;
+    useGasless?: boolean;
 }
 
 export interface SupportedBlockchain {
@@ -2100,6 +2101,7 @@ export type ParameterWithValueList = ParameterWithValue[] | ParameterWithValueLi
 interface EVMTokenCreateParamsDto {
     contractId: string;
     deployFunctionParams?: Array<ParameterWithValue>;
+    useGasless?: boolean;
 }
 
 export interface ReadCallFunctionDto {
@@ -2113,6 +2115,7 @@ export interface WriteCallFunctionDto {
     feeLevel?: FeeLevel;
     note?: string;
     externalTxId?: string;
+    useGasless?: boolean;
 }
 
 export enum SmartTransfersTicketDirection {
