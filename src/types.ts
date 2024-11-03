@@ -1820,6 +1820,7 @@ export interface ContractDeployRequest {
     deployFunctionParams?: object[];
     fee?: string;
     feeLevel?: FeeLevel;
+    useGasless?: boolean;
 }
 
 export interface SupportedBlockchain {
@@ -2040,6 +2041,7 @@ export interface IssueTokenRequest {
     displayName?: string;
     fee?: string;
     feeLevel?: FeeLevel;
+    useGasless?: boolean;
 }
 
 export interface JobCreatedResponse {
@@ -2111,8 +2113,10 @@ export interface WriteCallFunctionDto {
     abiFunction: AbiFunction;
     amount?: string;
     feeLevel?: FeeLevel;
+    fee?: string;
     note?: string;
     externalTxId?: string;
+    useGasless?: boolean;
 }
 
 export enum SmartTransfersTicketDirection {
