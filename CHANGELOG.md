@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.33.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.32.0...v5.33.0)
+
+> 6 November 2024
+
+- fix: upgrade axios from 1.6.0 to 1.7.7 [`#301`](https://github.com/fireblocks/fireblocks-sdk-js/pull/301)
+
 #### [v5.32.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.31.2...v5.32.0)
 
 > 28 October 2024
 
 - Get/set VASP assigned to vault [`#296`](https://github.com/fireblocks/fireblocks-sdk-js/pull/296)
+- OC-5460 - Add externalId in WriteCallFunctionDto && OC-5461 - Add SDK to support fee and feeLevel [`#298`](https://github.com/fireblocks/fireblocks-sdk-js/pull/298)
+- [OC-5077] Updated fetch-abi to fetch_abi [`#293`](https://github.com/fireblocks/fireblocks-sdk-js/pull/293)
 
 #### [v5.31.2](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.31.1...v5.31.2)
 
