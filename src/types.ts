@@ -1781,8 +1781,8 @@ export interface ContractUploadRequest {
 export interface AbiFunction {
     name?: string;
     stateMutability?: string;
-    type: "function" | "constructor" | string;
-    inputs: Parameter[];
+    type: "function" | "constructor" | "fallback" | "receive" | string;
+    inputs?: Parameter[];
     outputs?: Parameter[];
     description?: string;
     returns?: Record<string, string>;
