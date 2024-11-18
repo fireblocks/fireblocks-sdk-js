@@ -169,4 +169,8 @@ export class NcwApiClient implements NcwSdk {
     public async getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]> {
         return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/accounts/${accountId}/${assetId}/unspent_inputs`);
     }
+
+    public async deleteSigningAlgorithm(walletId: string, algorithm: SigningAlgorithm): Promise<void> {
+        return await this.apiClient.issueGetRequest(`/v1/ncw/${walletId}/remove_signing_algorithm/${algorithm}`);
+    }
 }
