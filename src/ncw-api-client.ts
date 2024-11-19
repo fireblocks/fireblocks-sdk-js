@@ -171,6 +171,6 @@ export class NcwApiClient implements NcwSdk {
     }
 
     public async deleteSigningAlgorithm(walletId: string, algorithm: SigningAlgorithm): Promise<void> {
-        return await this.apiClient.issueGetRequest(`${this.NCW_BASE_PATH}/${walletId}/remove_signing_algorithm/${algorithm}`);
+        return await this.apiClient.issueDeleteRequest(`${this.NCW_BASE_PATH}/${walletId}/remove_signing_algorithm/${algorithm}`);
     }
 }
