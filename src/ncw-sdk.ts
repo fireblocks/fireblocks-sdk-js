@@ -180,9 +180,10 @@ export interface NcwSdk {
      *
      * @param {string} walletId
      * @param {string} deviceId
+     * @param {boolean} [enabled=true] State of the device. default: true.
      * @return {*}  {Promise<NCW.DeviceKeySetupResponse>}
      */
-    getDeviceSetupStatus(walletId: string, deviceId: string): Promise<NCW.DeviceKeySetupResponse>;
+    getDeviceSetupStatus(walletId: string, deviceId: string, enabled?: boolean): Promise<NCW.DeviceKeySetupResponse>;
 
     /**
      * Gets utxo list for an asset

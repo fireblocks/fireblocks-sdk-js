@@ -155,9 +155,9 @@ export class NcwApiClient implements NcwSdk {
             `${this.NCW_BASE_PATH}/${walletId}/setup_status`);
     }
 
-    public async getDeviceSetupStatus(walletId: string, deviceId: string): Promise<NCW.DeviceKeySetupResponse> {
+    public async getDeviceSetupStatus(walletId: string, deviceId: string, enabled = true): Promise<NCW.DeviceKeySetupResponse> {
         return await this.apiClient.issueGetRequest(
-            `${this.NCW_BASE_PATH}/${walletId}/devices/${deviceId}/setup_status`);
+            `${this.NCW_BASE_PATH}/${walletId}/devices/${deviceId}/setup_status?enabled=${enabled}`);
     }
 
     public async setWalletRequiredAlgorithms(walletId: string, algorithms: SigningAlgorithm[]): Promise<void> {
