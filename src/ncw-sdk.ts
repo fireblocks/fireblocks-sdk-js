@@ -1,6 +1,10 @@
 import {
     AssetResponse, Web3PagedResponse, NCW, UnspentInputsResponse,
     SigningAlgorithm,
+    PublicKeyInfoArgs,
+    PublicKeyInformation,
+    PublicKeyResponse,
+    PublicKeyInfoByAccountAssetArgs,
 } from "./types";
 
 export interface NcwSdk {
@@ -198,9 +202,24 @@ export interface NcwSdk {
      * refresh a NCW asset balance
      *
      * @param {string} walletId
-     * @param {string} walletId
+     * @param {SigningAlgorithm[]} algorithms
      * @return {*}  {Promise<void>}
      */
     setWalletRequiredAlgorithms(walletId: string, algorithms: SigningAlgorithm[]): Promise<void>;
 
+    /**
+     * Get the public key information
+     * @param {string} walletId
+     * @param {PublicKeyInfoArgs} args
+     * @return {*}  {Promise<PublicKeyInformation>}
+     */
+    getPublicKeyInfo(walletId: string, args: PublicKeyInfoArgs): Promise<PublicKeyInformation>;
+
+    /**
+     * Get the public key information for an NCW account
+     * @param {string} walletId
+     * @param {PublicKeyInfoByAccountAssetArgs} args
+     * @return {*}  {Promise<PublicKeyResponse>}
+     */
+    getPublicKeyInfoByAccountAsset(walletId: string, args: PublicKeyInfoByAccountAssetArgs): Promise<PublicKeyResponse>;
 }

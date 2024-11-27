@@ -1223,12 +1223,19 @@ export interface PublicKeyInfoArgs {
     compressed?: boolean;
 }
 
-export interface PublicKeyInfoForVaultAccountArgs {
+export interface BasePublicKeyInfoByAccountAssetArgs {
     assetId: string;
-    vaultAccountId: number;
     change: number;
     addressIndex: number;
     compressed?: boolean;
+}
+
+export interface PublicKeyInfoByAccountAssetArgs extends BasePublicKeyInfoByAccountAssetArgs {
+    accountId: number;
+}
+
+export interface PublicKeyInfoForVaultAccountArgs extends BasePublicKeyInfoByAccountAssetArgs {
+    vaultAccountId: number;
 }
 
 export interface GasStationInfo {

@@ -57,14 +57,19 @@ export class ApiClient {
         };
     }
 
-    public async issueGetRequest<T>(rawPath: string, queryStringParams?: object): Promise<T> {
+    public async issueGetRequest<T>(rawPath: string, queryStringParams?: object, requestOptions?: RequestOptions): Promise<T> {
         const pathWithParams = queryStringParams ? `${rawPath}?${queryString.stringify(queryStringParams)}` : rawPath;
         const path = normalizePath(pathWithParams);
 
         const token = this.authProvider.signJwt(path);
-        const res = await this.axiosInstance.get(path, {
-            headers: {"Authorization": `Bearer ${token}`}
-        });
+        const headers: any = {"Authorization": `Bearer ${token}`};
+
+        const ncwWalletId = requestOptions?.ncw?.walletId;
+        if (ncwWalletId) {
+            headers["X-End-User-Wallet-Id"] = ncwWalletId;
+        }
+
+        const res = await this.axiosInstance.get(path, { headers });
         return res.data;
     }
 
