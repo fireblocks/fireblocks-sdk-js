@@ -2,7 +2,7 @@ import {
     ChainInfo,
     CheckTermsOfServiceResponseDto, ClaimRewardsRequestDto, ClaimRewardsResponse,
     DelegationSummaryDto,
-    DelegationSummaryDtoByVault,
+    DelegationSummaryDtoByVault, SplitRequestDto, SplitResponse,
     StakeRequestDto,
     StakeResponse,
     StakingChain,
@@ -54,6 +54,11 @@ export interface StakingSDK {
      * Execute staking claim rewards on a chain
      */
     claimRewards(chainDescriptor: StakingChain, body: ClaimRewardsRequestDto): Promise<ClaimRewardsResponse>;
+
+    /**
+     * Execute staking split on a chain
+     */
+    split(chainDescriptor: StakingChain, body: SplitRequestDto): Promise<SplitResponse>;
 
     /**
      * Get all staking positions, optionally filtered by chain

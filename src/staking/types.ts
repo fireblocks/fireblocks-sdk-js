@@ -230,6 +230,10 @@ export type WithdrawResponse = {};
 
 export type ClaimRewardsResponse = {};
 
+export type SplitResponse = {
+    id: string;
+};
+
 export interface StakeRequestDto {
     /**
      * The source vault account to stake from
@@ -311,6 +315,33 @@ export interface ClaimRewardsRequestDto {
      * id of position to withdraw rewards from
      */
     id: string;
+
+    /**
+     * Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required
+     */
+    fee?: string;
+
+    /**
+     * Represents the fee level for a transaction, which can be set as slow, medium, or fast. Only one of fee/feeLevel is required
+     */
+    feeLevel?: string;
+
+    /**
+     * The note to associate with the transactions
+     */
+    txNote?: string;
+}
+
+export interface SplitRequestDto {
+    /**
+     * id of position to split
+     */
+    id: string;
+
+    /**
+     * Amount of tokens to split
+     */
+    amount: string;
 
     /**
      * Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required
