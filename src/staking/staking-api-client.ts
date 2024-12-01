@@ -2,7 +2,7 @@ import {
     ChainInfo,
     CheckTermsOfServiceResponseDto, ClaimRewardsRequestDto, ClaimRewardsResponse,
     DelegationSummaryDto,
-    DelegationSummaryDtoByVault,
+    DelegationSummaryDtoByVault, SplitRequestDto, SplitResponse,
     StakeRequestDto, StakeResponse,
     StakingChain,
     StakingPosition, StakingProvider,
@@ -60,6 +60,12 @@ export class StakingApiClient implements StakingSDK {
     ): Promise<ClaimRewardsResponse> {
         return await this.apiClient.issuePostRequest(
             `${STAKING_BASE_PATH}/chains/${chainDescriptor}/claimRewards`,
+            body,
+        );
+    }
+    public async split(chainDescriptor: StakingChain, body: SplitRequestDto): Promise<SplitResponse> {
+        return await this.apiClient.issuePostRequest(
+            `${STAKING_BASE_PATH}/chains/${chainDescriptor}/split`,
             body,
         );
     }

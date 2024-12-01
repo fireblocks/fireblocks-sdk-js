@@ -161,7 +161,7 @@ import {
     ChainInfo,
     CheckTermsOfServiceResponseDto,
     DelegationSummaryDto,
-    DelegationSummaryDtoByVault,
+    DelegationSummaryDtoByVault, SplitRequestDto, SplitResponse,
     StakeRequestDto,
     StakeResponse,
     StakingChain,
@@ -313,6 +313,12 @@ export class FireblocksSDK {
      */
     public async executeStakingClaimRewards(chainDescriptor: StakingChain, body: WithdrawRequestDto): Promise<WithdrawResponse> {
         return await this.stakingApiClient.withdraw(chainDescriptor, body);
+    }
+    /**
+     * Execute staking split on a chain
+     */
+    public async executeStakingSplit(chainDescriptor: StakingChain, body: SplitRequestDto): Promise<SplitResponse> {
+        return await this.stakingApiClient.split(chainDescriptor, body);
     }
     /**
      * Get all staking positions, optionally filtered by chain
