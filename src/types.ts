@@ -2371,7 +2371,7 @@ export namespace NCW {
 
     export class KeySetup {
         status: SetupStatus;
-        algorithmName: string;
+        algorithmName: SigningAlgorithm;
         confirmed: boolean;
         backedUp: boolean;
     }
@@ -2384,6 +2384,7 @@ export namespace NCW {
 
     export class WalletSetupStatusResponse {
         status: SetupStatus;
+        requiredAlgorithms: Array<SigningAlgorithm>;
         deviceSetupStatus: Array<DeviceKeySetupResponse>;
     }
 
