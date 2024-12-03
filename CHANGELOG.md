@@ -2,11 +2,21 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.34.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.33.0...v5.34.0)
+
+> 2 December 2024
+
+- WLT-1945 - [Fireblocks JS SDK] Fix missing field in return type of WalletSetupStatusResponse [`#313`](https://github.com/fireblocks/fireblocks-sdk-js/pull/313)
+
 #### [v5.33.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.32.0...v5.33.0)
 
 > 6 November 2024
 
 - fix: upgrade axios from 1.6.0 to 1.7.7 [`#301`](https://github.com/fireblocks/fireblocks-sdk-js/pull/301)
+- fix: upgrade jsonwebtoken from 9.0.0 to 9.0.2 [`#303`](https://github.com/fireblocks/fireblocks-sdk-js/pull/303)
+- fix: package.json & package-lock.json to reduce vulnerabilities [`#304`](https://github.com/fireblocks/fireblocks-sdk-js/pull/304)
+- add useGasless option [`#300`](https://github.com/fireblocks/fireblocks-sdk-js/pull/300)
+- [ncw] change ethNetwork from number to string on asset response  [`#299`](https://github.com/fireblocks/fireblocks-sdk-js/pull/299)
 
 #### [v5.32.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.31.2...v5.32.0)
 
