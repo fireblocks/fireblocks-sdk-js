@@ -161,7 +161,7 @@ import {
     ChainInfo,
     CheckTermsOfServiceResponseDto,
     DelegationSummaryDto,
-    DelegationSummaryDtoByVault,
+    DelegationSummaryDtoByVault, SplitRequestDto, SplitResponse,
     StakeRequestDto,
     StakeResponse,
     StakingChain,
@@ -172,6 +172,7 @@ import {
     WithdrawRequestDto,
     WithdrawResponse
 } from "./staking";
+import { getPublicKeyInfoByAccountAssetImpl, getPublicKeyInfoImpl } from "./common/public_key_info";
 
 export * from "./types";
 
@@ -312,6 +313,12 @@ export class FireblocksSDK {
      */
     public async executeStakingClaimRewards(chainDescriptor: StakingChain, body: WithdrawRequestDto): Promise<WithdrawResponse> {
         return await this.stakingApiClient.withdraw(chainDescriptor, body);
+    }
+    /**
+     * Execute staking split on a chain
+     */
+    public async executeStakingSplit(chainDescriptor: StakingChain, body: SplitRequestDto): Promise<SplitResponse> {
+        return await this.stakingApiClient.split(chainDescriptor, body);
     }
     /**
      * Get all staking positions, optionally filtered by chain
@@ -1161,17 +1168,7 @@ export class FireblocksSDK {
      * @param args
      */
     public async getPublicKeyInfo(args: PublicKeyInfoArgs): Promise<PublicKeyInformation> {
-        let url = `/v1/vault/public_key_info`;
-        if (args.algorithm) {
-            url += `?algorithm=${args.algorithm}`;
-        }
-        if (args.derivationPath) {
-            url += `&derivationPath=${JSON.stringify(args.derivationPath)}`;
-        }
-        if (args.compressed) {
-            url += `&compressed=${args.compressed}`;
-        }
-        return await this.apiClient.issueGetRequest(url);
+        return await getPublicKeyInfoImpl(PeerType.VAULT_ACCOUNT, args, this.apiClient);
     }
 
     /**
@@ -1205,11 +1202,7 @@ export class FireblocksSDK {
      * @param args
      */
     public async getPublicKeyInfoForVaultAccount(args: PublicKeyInfoForVaultAccountArgs): Promise<PublicKeyResponse> {
-        let url = `/v1/vault/accounts/${args.vaultAccountId}/${args.assetId}/${args.change}/${args.addressIndex}/public_key_info`;
-        if (args.compressed) {
-            url += `?compressed=${args.compressed}`;
-        }
-        return await this.apiClient.issueGetRequest(url);
+        return await getPublicKeyInfoByAccountAssetImpl(PeerType.VAULT_ACCOUNT, args, this.apiClient);
     }
 
     /**

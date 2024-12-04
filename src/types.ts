@@ -1223,12 +1223,19 @@ export interface PublicKeyInfoArgs {
     compressed?: boolean;
 }
 
-export interface PublicKeyInfoForVaultAccountArgs {
+export interface BasePublicKeyInfoByAccountAssetArgs {
     assetId: string;
-    vaultAccountId: number;
     change: number;
     addressIndex: number;
     compressed?: boolean;
+}
+
+export interface PublicKeyInfoByAccountAssetArgs extends BasePublicKeyInfoByAccountAssetArgs {
+    accountId: number;
+}
+
+export interface PublicKeyInfoForVaultAccountArgs extends BasePublicKeyInfoByAccountAssetArgs {
+    vaultAccountId: number;
 }
 
 export interface GasStationInfo {
@@ -2364,7 +2371,7 @@ export namespace NCW {
 
     export class KeySetup {
         status: SetupStatus;
-        algorithmName: string;
+        algorithmName: SigningAlgorithm;
         confirmed: boolean;
         backedUp: boolean;
     }
@@ -2377,6 +2384,7 @@ export namespace NCW {
 
     export class WalletSetupStatusResponse {
         status: SetupStatus;
+        requiredAlgorithms: Array<SigningAlgorithm>;
         deviceSetupStatus: Array<DeviceKeySetupResponse>;
     }
 
