@@ -46,6 +46,7 @@ export interface NcwSdk {
      * Get NCW wallet devices
      *
      * @param {string} walletId
+     * @param {string} deviceId
      * @return {*}  {Promise<NCW.Device>}
      */
     getWalletDevice(walletId: string, deviceId: string): Promise<NCW.Device>;
