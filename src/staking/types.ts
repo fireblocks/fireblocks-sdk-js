@@ -273,6 +273,13 @@ export interface UnstakeRequestDto {
     id: string;
 
     /**
+     * The number of tokens to unstake.
+     * This optional field is applicable only for liquid staking and allows for a partial unstake of the position.
+     * If not provided, the entire position will be unstaked by default.
+     */
+    amount?: string;
+
+    /**
      * Represents the fee for a transaction, which can be specified as a percentage value. Only one of fee/feeLevel is required
      */
     fee?: string;
