@@ -199,7 +199,7 @@ export interface NcwSdk {
     getUnspentInputs(walletId: string, accountId: number, assetId: string): Promise<UnspentInputsResponse[]>;
 
     /**
-     * refresh a NCW asset balance
+     * set required algorithms for a wallet
      *
      * @param {string} walletId
      * @param {SigningAlgorithm[]} algorithms
@@ -222,4 +222,14 @@ export interface NcwSdk {
      * @return {*}  {Promise<PublicKeyResponse>}
      */
     getPublicKeyInfoByAccountAsset(walletId: string, args: PublicKeyInfoByAccountAssetArgs): Promise<PublicKeyResponse>;
+
+    /**
+     * delete signing algorithm for a wallet
+     *
+     * @param {string} walletId
+     * @param {SigningAlgorithm} algorithm
+     * @return {*}  {Promise<void>}
+     */
+    deleteSigningAlgorithm(walletId: string, algorithm: SigningAlgorithm): Promise<void>;
+
 }
