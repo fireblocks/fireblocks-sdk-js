@@ -224,7 +224,7 @@ export interface NcwSdk {
     getPublicKeyInfoByAccountAsset(walletId: string, args: PublicKeyInfoByAccountAssetArgs): Promise<PublicKeyResponse>;
 
     /**
-     * delete signing algorithms for a wallet
+     * delete signing algorithm for a wallet
      *
      * @param {string} walletId
      * @param {SigningAlgorithm} algorithm
