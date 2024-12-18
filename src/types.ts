@@ -2362,6 +2362,7 @@ export namespace NCW {
     export interface Device {
         deviceId: string;
         enabled: boolean;
+        physicalDeviceId: string;
     }
 
     export enum SetupStatus {
