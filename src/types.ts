@@ -79,6 +79,14 @@ export enum AssetClass {
     SFT = "SFT",
 }
 
+export enum AssetClassBeta {
+    NATIVE = "NATIVE",
+    FT = "FT",
+    FIAT = "FIAT",
+    NFT = "NFT",
+    SFT = "SFT",
+}
+
 export interface OnchainAsset {
     symbol: string;
     name: string;
@@ -87,14 +95,125 @@ export interface OnchainAsset {
     standard: string;
 }
 
+export interface OnchainAssetBeta {
+    symbol: string;
+    name: string;
+    address?: string;
+    decimals: number;
+    standards?: string[];
+}
+
 export interface AssetMetadata {
     scope: AssetScope;
     deprecated: boolean;
 }
 
+export interface AssetMediaAttributes {
+    monochrome?: boolean;
+}
+
+export interface AssetMedia {
+    url: string;
+    type: string;
+    attributes?: AssetMediaAttributes;
+}
+
+export interface AssetMetadataBeta {
+    scope: AssetScope;
+    deprecated: boolean;
+    deprecationReferralId?: string;
+    verified: boolean;
+    website?: string;
+    media?: AssetMedia[];
+}
+
 export enum AssetScope {
     GLOBAL = "Global",
     LOCAL = "Local",
+}
+
+export interface ListAssetResponse {
+    id: string;
+    legacyId: string;
+    blockchainId?: string;
+    displayName?: string;
+    displaySymbol?: string;
+    assetClass: AssetClassBeta;
+    onchain?: OnchainAssetBeta;
+    metadata: AssetMetadataBeta;
+}
+
+export interface ListAssetsResponse {
+    next: string | null;
+    data: ListAssetResponse[];
+}
+
+export interface ListAssetsFilters {
+    blockchainId?: string;
+    assetClass?: AssetClassBeta;
+    symbol?: string;
+    scope?: AssetScope;
+    deprecated?: boolean;
+    pageCursor?: string;
+    pageSize?: number;
+}
+
+export enum BlockchainSigningAlgo {
+    ECDSA_SECP256K1 = "ECDSA_SECP256K1",
+    EDDSA_ED25519 = "EDDSA_ED25519",
+}
+
+export interface BlockchainOnchain {
+    protocol: string;
+    chainId?: string;
+    test: boolean;
+    signingAlgo: BlockchainSigningAlgo;
+}
+
+export class BlockchainMedia {
+    url: string;
+    type: string;
+}
+
+export class BlockchainExplorer {
+    base: string;
+    address?: string;
+    tx?: string;
+    token?: string;
+}
+
+export enum BlockchainScope {
+    GLOBAL = "Global",
+    LOCAL = "Local",
+}
+
+export interface BlockchainMetadata {
+    scope: BlockchainScope;
+    deprecated: boolean;
+    media?: BlockchainMedia[];
+    explorer?: BlockchainExplorer;
+}
+
+export interface ListBlockchainResponse {
+    id: string;
+    legacyId: string;
+    displayName: string;
+    nativeAssetId: string;
+    onchain: BlockchainOnchain;
+    metadata: BlockchainMetadata;
+}
+
+export interface ListBlockchainsResponse {
+    next: string | null;
+    data: ListBlockchainResponse[];
+}
+
+export interface ListBlockchainsFilters {
+    protocol?: string;
+    deprecated?: boolean;
+    test?: boolean;
+    pageCursor?: string;
+    pageSize?: number;
 }
 
 export interface VaultAssetResponse {
@@ -237,6 +356,7 @@ export interface TransactionArgumentsFeePayerInfo {
     feePayerAccountId: string;
 }
 
+// example
 export interface TransactionArguments {
     assetId?: string;
     source?: TransferPeerPath;

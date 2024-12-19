@@ -151,6 +151,12 @@ import {
     ContractWithABIDto,
     RescanTx,
     RescanTxResponse,
+    ListAssetsResponse,
+    ListAssetsFilters,
+    ListAssetResponse,
+    ListBlockchainResponse,
+    ListBlockchainsFilters,
+    ListBlockchainsResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -905,6 +911,38 @@ export class FireblocksSDK {
      */
     public async registerNewAsset(blockchainId: string, address: string, symbol?: string, requestOptions?: RequestOptions): Promise<RegisterAssetResponse> {
         return await this.apiClient.issuePostRequest(`/v1/assets`, { blockchainId, address, symbol }, requestOptions);
+    }
+
+    /**
+     * List assets [BETA]
+     * @param filters
+     */
+    public async listAssets(filters?: ListAssetsFilters): Promise<ListAssetsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/assets`, filters);
+    }
+
+    /**
+     * Get an asset [BETA]
+     * @param assetId The ID or legacyId of the asset
+     */
+    public async getAssetById(assetId: string): Promise<ListAssetResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/assets/${assetId}`);
+    }
+
+    /**
+     * List blockchains [BETA]
+     * @param filters
+     */
+    public async listBlockchains(filters?: ListBlockchainsFilters): Promise<ListBlockchainsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/blockchains`, filters);
+    }
+
+    /**
+     * Get an blockchain [BETA]
+     * @param blockchainId The ID or legacyId of the blockchain
+     */
+    public async getBlockchainById(blockchainId: string): Promise<ListBlockchainResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/blockchains/${blockchainId}`);
     }
 
     /**
