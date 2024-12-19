@@ -2,11 +2,20 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.35.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.34.0...v5.35.0)
+
+> 19 December 2024
+
+- Add asset and blockchain beta apis [`#317`](https://github.com/fireblocks/fireblocks-sdk-js/pull/317)
+
 #### [v5.34.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.33.0...v5.34.0)
 
 > 2 December 2024
 
 - WLT-1945 - [Fireblocks JS SDK] Fix missing field in return type of WalletSetupStatusResponse [`#313`](https://github.com/fireblocks/fireblocks-sdk-js/pull/313)
+- staking-sdk: add solana split support [`#312`](https://github.com/fireblocks/fireblocks-sdk-js/pull/312)
+- GetPublicKey For NCW [`#294`](https://github.com/fireblocks/fireblocks-sdk-js/pull/294)
+- support fallback function in abi [`#306`](https://github.com/fireblocks/fireblocks-sdk-js/pull/306)
 
 #### [v5.33.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.32.0...v5.33.0)
 
