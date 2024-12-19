@@ -916,37 +916,33 @@ export class FireblocksSDK {
     /**
      * List assets [BETA]
      * @param filters
-     * @param requestOptions
      */
-    public async listAssets(filters?: ListAssetsFilters, requestOptions?: RequestOptions): Promise<ListAssetsResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/assets`, filters, requestOptions);
+    public async listAssets(filters?: ListAssetsFilters): Promise<ListAssetsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/assets`, filters);
     }
 
     /**
      * Get an asset [BETA]
      * @param assetId The ID or legacyId of the asset
-     * @param requestOptions
      */
-    public async getAssetById(assetId: string, requestOptions?: RequestOptions): Promise<ListAssetResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/assets/${assetId}`, {}, requestOptions);
+    public async getAssetById(assetId: string): Promise<ListAssetResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/assets/${assetId}`);
     }
 
     /**
      * List blockchains [BETA]
      * @param filters
-     * @param requestOptions
      */
-    public async listBlockchains(filters?: ListBlockchainsFilters, requestOptions?: RequestOptions): Promise<ListBlockchainsResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/blockchains`, filters, requestOptions);
+    public async listBlockchains(filters?: ListBlockchainsFilters): Promise<ListBlockchainsResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/blockchains`, filters);
     }
 
     /**
      * Get an blockchain [BETA]
      * @param blockchainId The ID or legacyId of the blockchain
-     * @param requestOptions
      */
-    public async getBlockchainById(blockchainId: string, requestOptions?: RequestOptions): Promise<ListBlockchainResponse> {
-        return await this.apiClient.issueGetRequest(`/v1/blockchains/${blockchainId}`, {}, requestOptions);
+    public async getBlockchainById(blockchainId: string): Promise<ListBlockchainResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/blockchains/${blockchainId}`);
     }
 
     /**
