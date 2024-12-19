@@ -114,17 +114,17 @@ export interface AssetMediaAttributes {
 
 export interface AssetMedia {
     url: string;
-	type: string;
-	attributes?: AssetMediaAttributes;
+    type: string;
+    attributes?: AssetMediaAttributes;
 }
 
 export interface AssetMetadataBeta {
-	scope: AssetScope;
-	deprecated: boolean;
-	deprecationReferralId?: string;
-	verified: boolean;
-	website?: string;
-	media?: AssetMedia[];
+    scope: AssetScope;
+    deprecated: boolean;
+    deprecationReferralId?: string;
+    verified: boolean;
+    website?: string;
+    media?: AssetMedia[];
 }
 
 export enum AssetScope {
@@ -133,14 +133,14 @@ export enum AssetScope {
 }
 
 export interface ListAssetResponse {
-	id: string;
-	legacyId: string;
-	blockchainId?: string;
-	displayName?: string;
-	displaySymbol?: string;
-	assetClass: AssetClassBeta;
-	onchain?: OnchainAssetBeta;
-	metadata: AssetMetadataBeta;
+    id: string;
+    legacyId: string;
+    blockchainId?: string;
+    displayName?: string;
+    displaySymbol?: string;
+    assetClass: AssetClassBeta;
+    onchain?: OnchainAssetBeta;
+    metadata: AssetMetadataBeta;
 }
 
 export interface ListAssetsResponse {
@@ -150,36 +150,36 @@ export interface ListAssetsResponse {
 
 export interface ListAssetsFilters {
     blockchainId?: string;
-	assetClass?: AssetClassBeta;
-	symbol?: string;
-	scope?: AssetScope;
-	deprecated?: boolean;
-	pageCursor?: string;
-	pageSize?: number;
+    assetClass?: AssetClassBeta;
+    symbol?: string;
+    scope?: AssetScope;
+    deprecated?: boolean;
+    pageCursor?: string;
+    pageSize?: number;
 }
 
 export enum BlockchainSigningAlgo {
-	ECDSA_SECP256K1 = "ECDSA_SECP256K1",
-	EDDSA_ED25519 = "EDDSA_ED25519",
+    ECDSA_SECP256K1 = "ECDSA_SECP256K1",
+    EDDSA_ED25519 = "EDDSA_ED25519",
 }
 
 export interface BlockchainOnchain {
-	protocol: string;
-	chainId?: string;
-	test: boolean;
-	signingAlgo: BlockchainSigningAlgo;
+    protocol: string;
+    chainId?: string;
+    test: boolean;
+    signingAlgo: BlockchainSigningAlgo;
 }
 
 export class BlockchainMedia {
-	url: string;
-	type: string;
+    url: string;
+    type: string;
 }
 
 export class BlockchainExplorer {
-	base: string;
-	address?: string;
-	tx?: string;
-	token?: string;
+    base: string;
+    address?: string;
+    tx?: string;
+    token?: string;
 }
 
 export enum BlockchainScope {
@@ -188,19 +188,19 @@ export enum BlockchainScope {
 }
 
 export interface BlockchainMetadata {
-	scope: BlockchainScope;
-	deprecated: boolean;
-	media?: BlockchainMedia[];
-	explorer?: BlockchainExplorer;
+    scope: BlockchainScope;
+    deprecated: boolean;
+    media?: BlockchainMedia[];
+    explorer?: BlockchainExplorer;
 }
 
 export interface ListBlockchainResponse {
     id: string;
-	legacyId: string;
-	displayName: string;
-	nativeAssetId: string;
-	onchain: BlockchainOnchain;
-	metadata: BlockchainMetadata;
+    legacyId: string;
+    displayName: string;
+    nativeAssetId: string;
+    onchain: BlockchainOnchain;
+    metadata: BlockchainMetadata;
 }
 
 export interface ListBlockchainsResponse {
@@ -210,10 +210,10 @@ export interface ListBlockchainsResponse {
 
 export interface ListBlockchainsFilters {
     protocol?: string;
-	deprecated?: boolean;
-	test?: boolean;
-	pageCursor?: string;
-	pageSize?: number;
+    deprecated?: boolean;
+    test?: boolean;
+    pageCursor?: string;
+    pageSize?: number;
 }
 
 export interface VaultAssetResponse {
