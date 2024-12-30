@@ -1915,6 +1915,35 @@ export interface AbiFunction {
     returns?: Record<string, string>;
 }
 
+export interface TxLogDto {
+    address: string;
+    topics: string[];
+    data: string;
+    blockNumber: number;
+    transactionHash: string;
+    transactionIndex: number;
+    blockHash: string;
+    logIndex: number;
+    removed: boolean;
+}
+
+export interface TransactionReceiptResponseDto {
+    blockHash: string;
+    blockNumber: number;
+    contractAddress?: string;
+    cumulativeGasUsed: number;
+    effectiveGasPrice: number;
+    from: string;
+    gasUsed: number;
+    logs: TxLogDto[];
+    logsBloom: string;
+    status: number;
+    to?: string;
+    transactionHash: string;
+    transactionIndex: number;
+    type: string;
+}
+
 interface Parameter {
     name: string;
     description?: string;

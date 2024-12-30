@@ -118,6 +118,7 @@ import {
     WriteCallFunctionResponseDto,
     ContractAbiResponseDto,
     DeployedContractResponseDto,
+    TransactionReceiptResponseDto,
     LeanDeployedContractResponseDto,
     ParameterWithValueList,
     ScreeningTenantConfiguration,
@@ -2063,6 +2064,17 @@ export class FireblocksSDK {
             abi,
             name
         });
+    }
+
+    /**
+     * Get transaction receipt by blockchain base assetId and transaction hash
+     * @param baseAssetId
+     * @param txHash
+     *
+     * @returns TransactionReceiptResponseDto
+     */
+    public async getTransactionReceipt(baseAssetId: string, txHash: string): Promise<TransactionReceiptResponseDto> {
+        return await this.apiClient.issueGetRequest(`/v1/contract_interactions/base_asset_id/${baseAssetId}/tx_hash/${txHash}/receipt`);
     }
 
     /**
