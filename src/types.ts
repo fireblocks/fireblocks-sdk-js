@@ -387,8 +387,13 @@ export interface TransactionArguments {
 }
 
 export type OwnershipProof = {
-    type: string;
-    proof: string;
+    type?: string;
+    proof?: string;
+    attestation?: string;
+    address?: string;
+    wallet_provider?: string;
+    url?: string;
+    confirmed?: boolean;
 };
 
 export enum TravelRuleAddressTypeCode {
@@ -460,8 +465,19 @@ export interface TravelRule {
     beneficiaryRef?: string;
     originatorVASPdid: string;
     travelRuleBehavior?: boolean;
-    beneficiaryVASPdid: string;
+    beneficiaryVASPdid?: string;
     beneficiaryVASPname?: string;
+    originatorVASPname?: string;
+    beneficiaryVASPwebsite?: string;
+    encryptedMessage?: string;
+    protocol?: string;
+    skipBeneficiaryDataValidation?: boolean;
+    travelRuleBehaviorRef?: string;
+    originatorProof?: OwnershipProof;
+    beneficiaryProof?: OwnershipProof;
+    beneficiaryDid?: string;
+    originatorDid?: string;
+    isNonCustodial?: boolean;
     originator: TROriginator;
     beneficiary: TRBeneficiary;
     pii?: PII;
