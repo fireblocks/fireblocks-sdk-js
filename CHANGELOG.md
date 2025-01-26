@@ -2,11 +2,20 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.36.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.35.0...v5.36.0)
+
+> 23 January 2025
+
+- Travel Rule - beneficiaryVASPdid is optional [`#320`](https://github.com/fireblocks/fireblocks-sdk-js/pull/320)
+
 #### [v5.35.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.34.0...v5.35.0)
 
 > 19 December 2024
 
 - Add asset and blockchain beta apis [`#317`](https://github.com/fireblocks/fireblocks-sdk-js/pull/317)
+- NCW: add getWalletDevice method to retrieve specific wallet device details [`#315`](https://github.com/fireblocks/fireblocks-sdk-js/pull/315)
+- [ncw] delete signing algo EP [`#309`](https://github.com/fireblocks/fireblocks-sdk-js/pull/309)
+- staking-sdk: add amount to the UnstakeRequestDto for liquid unstake [`#316`](https://github.com/fireblocks/fireblocks-sdk-js/pull/316)
 
 #### [v5.34.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.33.0...v5.34.0)
 
