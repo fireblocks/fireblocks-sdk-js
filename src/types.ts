@@ -1911,7 +1911,7 @@ export interface ContractUploadRequest {
     longDescription: string;
     bytecode: string;
     sourcecode: string;
-    type?: ContractTemplateType;
+    type: ContractTemplateType;
     implementationContractId?: string;
     initializationPhase: ContractInitializationPhase;
     compilerOutputMetadata?: object;
