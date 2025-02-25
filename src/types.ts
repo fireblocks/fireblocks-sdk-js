@@ -122,22 +122,21 @@ export interface AssetMetadataBeta {
     scope: AssetScope;
     deprecated: boolean;
     deprecationReferralId?: string;
-    verified: boolean;
     website?: string;
     media?: AssetMedia[];
 }
 
 export enum AssetScope {
-    GLOBAL = "Global",
-    LOCAL = "Local",
+    GLOBAL = "GLOBAL",
+    LOCAL = "LOCAL",
 }
 
 export interface ListAssetResponse {
     id: string;
     legacyId: string;
     blockchainId?: string;
-    displayName?: string;
-    displaySymbol?: string;
+    displayName: string;
+    displaySymbol: string;
     assetClass: AssetClassBeta;
     onchain?: OnchainAssetBeta;
     metadata: AssetMetadataBeta;
@@ -183,8 +182,8 @@ export class BlockchainExplorer {
 }
 
 export enum BlockchainScope {
-    GLOBAL = "Global",
-    LOCAL = "Local",
+    GLOBAL = "GLOBAL",
+    LOCAL = "LOCAL",
 }
 
 export interface BlockchainMetadata {
