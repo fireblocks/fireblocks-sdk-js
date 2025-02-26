@@ -158,6 +158,7 @@ import {
     ListBlockchainResponse,
     ListBlockchainsFilters,
     ListBlockchainsResponse,
+    PaginatedInternalWalletContainerResponse,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -755,6 +756,16 @@ export class FireblocksSDK {
      */
     public async getInternalWallet(walletId: string): Promise<WalletContainerResponse<InternalWalletAsset>> {
         return await this.apiClient.issueGetRequest(`/v1/internal_wallets/${walletId}`);
+    }
+
+    /**
+     * Gets a paginated response of assets for a single internal wallet
+     * @param walletId The internal wallet ID
+     * @param pageSize Number of assets to return per page (default=50, max=200)
+     * @param pageCursor Cursor for pagination
+     */
+    public async getInternalWalletAssets(walletId: string, pageSize?: number, pageCursor?: string): Promise<PaginatedInternalWalletContainerResponse> {
+        return await this.apiClient.issueGetRequest(`/v1/internal_wallets/${walletId}/assets`, {pageSize, pageCursor});
     }
 
     /**
