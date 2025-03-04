@@ -240,6 +240,12 @@ export interface WalletContainerResponse<WalletAssetType> {
     customerRefId?: string;
 }
 
+export interface PaginatedInternalWalletContainerResponse{
+    total: number;
+    data: WalletContainerResponse<InternalWalletAsset>;
+    next: string | null;
+}
+
 export interface ExternalWalletAsset {
     id: string;
     status: string;
