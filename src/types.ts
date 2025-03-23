@@ -104,7 +104,7 @@ export interface OnchainAssetBeta {
 }
 
 export interface AssetMetadata {
-    scope: AssetScope;
+    scope: RegisterAssetScope;
     deprecated: boolean;
 }
 
@@ -124,6 +124,11 @@ export interface AssetMetadataBeta {
     deprecationReferralId?: string;
     website?: string;
     media?: AssetMedia[];
+}
+
+export enum RegisterAssetScope {
+    GLOBAL = "Global",
+    LOCAL = "Local",
 }
 
 export enum AssetScope {
