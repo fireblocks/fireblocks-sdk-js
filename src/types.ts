@@ -244,6 +244,12 @@ export interface WalletContainerResponse<WalletAssetType> {
     customerRefId?: string;
 }
 
+export interface PaginatedInternalWalletContainerResponse{
+    total: number;
+    data: WalletContainerResponse<InternalWalletAsset>;
+    next: string | null;
+}
+
 export interface ExternalWalletAsset {
     id: string;
     status: string;
@@ -391,8 +397,13 @@ export interface TransactionArguments {
 }
 
 export type OwnershipProof = {
-    type: string;
-    proof: string;
+    type?: string;
+    proof?: string;
+    attestation?: string;
+    address?: string;
+    wallet_provider?: string;
+    url?: string;
+    confirmed?: boolean;
 };
 
 export enum TravelRuleAddressTypeCode {
@@ -464,8 +475,19 @@ export interface TravelRule {
     beneficiaryRef?: string;
     originatorVASPdid: string;
     travelRuleBehavior?: boolean;
-    beneficiaryVASPdid: string;
+    beneficiaryVASPdid?: string;
     beneficiaryVASPname?: string;
+    originatorVASPname?: string;
+    beneficiaryVASPwebsite?: string;
+    encryptedMessage?: string;
+    protocol?: string;
+    skipBeneficiaryDataValidation?: boolean;
+    travelRuleBehaviorRef?: string;
+    originatorProof?: OwnershipProof;
+    beneficiaryProof?: OwnershipProof;
+    beneficiaryDid?: string;
+    originatorDid?: string;
+    isNonCustodial?: boolean;
     originator: TROriginator;
     beneficiary: TRBeneficiary;
     pii?: PII;
@@ -1899,7 +1921,7 @@ export interface ContractUploadRequest {
     longDescription: string;
     bytecode: string;
     sourcecode: string;
-    type?: ContractTemplateType;
+    type: ContractTemplateType;
     implementationContractId?: string;
     initializationPhase: ContractInitializationPhase;
     compilerOutputMetadata?: object;
