@@ -67,19 +67,12 @@ export interface UnfreezeTransactionResponse {
 
 export interface RegisterAssetResponse {
     legacyId: string;
-    assetClass: AssetClass;
-    onchain: OnchainAsset;
-    metadata: AssetMetadata;
+    assetClass: AssetClassRegisterAsset;
+    onchain: OnchainAssetRegisterAsset;
+    metadata: AssetMetadataRegisterAsset;
 }
 
 export enum AssetClass {
-    NATIVE = "NATIVE",
-    FT = "FT",
-    NFT = "NFT",
-    SFT = "SFT",
-}
-
-export enum AssetClassBeta {
     NATIVE = "NATIVE",
     FT = "FT",
     FIAT = "FIAT",
@@ -87,7 +80,14 @@ export enum AssetClassBeta {
     SFT = "SFT",
 }
 
-export interface OnchainAsset {
+export enum AssetClassRegisterAsset {
+    NATIVE = "NATIVE",
+    FT = "FT",
+    NFT = "NFT",
+    SFT = "SFT",
+}
+
+export interface OnchainAssetRegisterAsset {
     symbol: string;
     name: string;
     address?: string;
@@ -95,7 +95,7 @@ export interface OnchainAsset {
     standard: string;
 }
 
-export interface OnchainAssetBeta {
+export interface OnchainAsset {
     symbol: string;
     name: string;
     address?: string;
@@ -103,7 +103,7 @@ export interface OnchainAssetBeta {
     standards?: string[];
 }
 
-export interface AssetMetadata {
+export interface AssetMetadataRegisterAsset {
     scope: RegisterAssetScope;
     deprecated: boolean;
 }
@@ -118,7 +118,7 @@ export interface AssetMedia {
     attributes?: AssetMediaAttributes;
 }
 
-export interface AssetMetadataBeta {
+export interface AssetMetadata {
     scope: AssetScope;
     deprecated: boolean;
     deprecationReferralId?: string;
@@ -142,9 +142,9 @@ export interface ListAssetResponse {
     blockchainId?: string;
     displayName: string;
     displaySymbol: string;
-    assetClass: AssetClassBeta;
-    onchain?: OnchainAssetBeta;
-    metadata: AssetMetadataBeta;
+    assetClass: AssetClass;
+    onchain?: OnchainAsset;
+    metadata: AssetMetadata;
 }
 
 export interface ListAssetsResponse {
@@ -154,7 +154,7 @@ export interface ListAssetsResponse {
 
 export interface ListAssetsFilters {
     blockchainId?: string;
-    assetClass?: AssetClassBeta;
+    assetClass?: AssetClass;
     symbol?: string;
     scope?: AssetScope;
     deprecated?: boolean;
