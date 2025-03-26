@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.37.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.36.0...v5.37.0)
+
+> 26 March 2025
+
+- feat: blockchains and assets endpoints GA [`#326`](https://github.com/fireblocks/fireblocks-sdk-js/pull/326)
+
 #### [v5.36.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.35.0...v5.36.0)
 
 > 23 January 2025
 
 - Travel Rule - beneficiaryVASPdid is optional [`#320`](https://github.com/fireblocks/fireblocks-sdk-js/pull/320)
+- feat: add getTransactionReceipt method and TransactionReceiptResponseDto type [`#318`](https://github.com/fireblocks/fireblocks-sdk-js/pull/318)
 
 #### [v5.35.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.34.0...v5.35.0)
 
