@@ -67,12 +67,12 @@ export interface UnfreezeTransactionResponse {
 
 export interface RegisterAssetResponse {
     legacyId: string;
-    assetClass: AssetClassRegisterAsset;
-    onchain: OnchainAssetRegisterAsset;
-    metadata: AssetMetadataRegisterAsset;
+    assetClass: AssetClass;
+    onchain: OnchainAsset;
+    metadata: AssetMetadata;
 }
 
-export enum AssetClass {
+export enum AssetDetailsClass {
     NATIVE = "NATIVE",
     FT = "FT",
     FIAT = "FIAT",
@@ -80,19 +80,11 @@ export enum AssetClass {
     SFT = "SFT",
 }
 
-export enum AssetClassRegisterAsset {
+export enum AssetClass {
     NATIVE = "NATIVE",
     FT = "FT",
     NFT = "NFT",
     SFT = "SFT",
-}
-
-export interface OnchainAssetRegisterAsset {
-    symbol: string;
-    name: string;
-    address?: string;
-    decimals: number;
-    standard: string;
 }
 
 export interface OnchainAsset {
@@ -100,11 +92,19 @@ export interface OnchainAsset {
     name: string;
     address?: string;
     decimals: number;
+    standard: string;
+}
+
+export interface AssetOnchain {
+    symbol: string;
+    name: string;
+    address?: string;
+    decimals: number;
     standards?: string[];
 }
 
-export interface AssetMetadataRegisterAsset {
-    scope: RegisterAssetScope;
+export interface AssetMetadata {
+    scope: AssetScope;
     deprecated: boolean;
 }
 
@@ -118,20 +118,20 @@ export interface AssetMedia {
     attributes?: AssetMediaAttributes;
 }
 
-export interface AssetMetadata {
-    scope: AssetScope;
+export interface AssetDetailsMetadata {
+    scope: AssetDetailsScope;
     deprecated: boolean;
     deprecationReferralId?: string;
     website?: string;
     media?: AssetMedia[];
 }
 
-export enum RegisterAssetScope {
+export enum AssetScope {
     GLOBAL = "Global",
     LOCAL = "Local",
 }
 
-export enum AssetScope {
+export enum AssetDetailsScope {
     GLOBAL = "GLOBAL",
     LOCAL = "LOCAL",
 }
@@ -142,9 +142,9 @@ export interface ListAssetResponse {
     blockchainId?: string;
     displayName: string;
     displaySymbol: string;
-    assetClass: AssetClass;
-    onchain?: OnchainAsset;
-    metadata: AssetMetadata;
+    assetClass: AssetDetailsClass;
+    onchain?: AssetOnchain;
+    metadata: AssetDetailsMetadata;
 }
 
 export interface ListAssetsResponse {
@@ -154,9 +154,9 @@ export interface ListAssetsResponse {
 
 export interface ListAssetsFilters {
     blockchainId?: string;
-    assetClass?: AssetClass;
+    assetClass?: AssetDetailsClass;
     symbol?: string;
-    scope?: AssetScope;
+    scope?: AssetDetailsScope;
     deprecated?: boolean;
     pageCursor?: string;
     pageSize?: number;
