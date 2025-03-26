@@ -244,7 +244,7 @@ export interface WalletContainerResponse<WalletAssetType> {
     customerRefId?: string;
 }
 
-export interface PaginatedInternalWalletContainerResponse{
+export interface PaginatedInternalWalletContainerResponse {
     total: number;
     data: WalletContainerResponse<InternalWalletAsset>;
     next: string | null;
