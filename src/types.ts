@@ -72,17 +72,17 @@ export interface RegisterAssetResponse {
     metadata: AssetMetadata;
 }
 
-export enum AssetClass {
+export enum AssetDetailsClass {
     NATIVE = "NATIVE",
     FT = "FT",
+    FIAT = "FIAT",
     NFT = "NFT",
     SFT = "SFT",
 }
 
-export enum AssetClassBeta {
+export enum AssetClass {
     NATIVE = "NATIVE",
     FT = "FT",
-    FIAT = "FIAT",
     NFT = "NFT",
     SFT = "SFT",
 }
@@ -95,7 +95,7 @@ export interface OnchainAsset {
     standard: string;
 }
 
-export interface OnchainAssetBeta {
+export interface AssetOnchain {
     symbol: string;
     name: string;
     address?: string;
@@ -104,7 +104,7 @@ export interface OnchainAssetBeta {
 }
 
 export interface AssetMetadata {
-    scope: RegisterAssetScope;
+    scope: AssetScope;
     deprecated: boolean;
 }
 
@@ -118,20 +118,20 @@ export interface AssetMedia {
     attributes?: AssetMediaAttributes;
 }
 
-export interface AssetMetadataBeta {
-    scope: AssetScope;
+export interface AssetDetailsMetadata {
+    scope: AssetDetailsScope;
     deprecated: boolean;
     deprecationReferralId?: string;
     website?: string;
     media?: AssetMedia[];
 }
 
-export enum RegisterAssetScope {
+export enum AssetScope {
     GLOBAL = "Global",
     LOCAL = "Local",
 }
 
-export enum AssetScope {
+export enum AssetDetailsScope {
     GLOBAL = "GLOBAL",
     LOCAL = "LOCAL",
 }
@@ -142,9 +142,9 @@ export interface ListAssetResponse {
     blockchainId?: string;
     displayName: string;
     displaySymbol: string;
-    assetClass: AssetClassBeta;
-    onchain?: OnchainAssetBeta;
-    metadata: AssetMetadataBeta;
+    assetClass: AssetDetailsClass;
+    onchain?: AssetOnchain;
+    metadata: AssetDetailsMetadata;
 }
 
 export interface ListAssetsResponse {
@@ -154,9 +154,9 @@ export interface ListAssetsResponse {
 
 export interface ListAssetsFilters {
     blockchainId?: string;
-    assetClass?: AssetClassBeta;
+    assetClass?: AssetDetailsClass;
     symbol?: string;
-    scope?: AssetScope;
+    scope?: AssetDetailsScope;
     deprecated?: boolean;
     pageCursor?: string;
     pageSize?: number;

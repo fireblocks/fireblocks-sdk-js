@@ -926,7 +926,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * List assets [BETA]
+     * List assets
      * @param filters
      */
     public async listAssets(filters?: ListAssetsFilters): Promise<ListAssetsResponse> {
@@ -934,7 +934,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get an asset [BETA]
+     * Get an asset
      * @param assetId The ID or legacyId of the asset
      */
     public async getAssetById(assetId: string): Promise<ListAssetResponse> {
@@ -942,7 +942,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * List blockchains [BETA]
+     * List blockchains
      * @param filters
      */
     public async listBlockchains(filters?: ListBlockchainsFilters): Promise<ListBlockchainsResponse> {
@@ -950,7 +950,7 @@ export class FireblocksSDK {
     }
 
     /**
-     * Get an blockchain [BETA]
+     * Get an blockchain
      * @param blockchainId The ID or legacyId of the blockchain
      */
     public async getBlockchainById(blockchainId: string): Promise<ListBlockchainResponse> {
