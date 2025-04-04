@@ -158,6 +158,7 @@ export interface ListAssetsFilters {
     symbol?: string;
     scope?: AssetDetailsScope;
     deprecated?: boolean;
+    ids?: string[];
     pageCursor?: string;
     pageSize?: number;
 }
@@ -216,6 +217,7 @@ export interface ListBlockchainsFilters {
     protocol?: string;
     deprecated?: boolean;
     test?: boolean;
+    ids?: string[];
     pageCursor?: string;
     pageSize?: number;
 }
