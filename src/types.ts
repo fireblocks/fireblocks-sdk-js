@@ -2156,7 +2156,7 @@ export class GaslessConfig {
 }
 
 export enum GaslessStandard {
-    EIP2771Standard = '2771',
+    EIP2771Standard = "2771",
 }
 
 export class EIP2771Configuration {
@@ -2175,12 +2175,12 @@ export type MultichainDeploymentMetadata = {
     deploymentSalt: string;
     initParams: ParameterWithValueList;
     encodedInitParams: string;
-}
+};
 
 export enum SolanaTokenProgramType {
-    SPL = 'SPL',
-    TOKEN2022 = 'TOKEN2022',
-    PROGRAM = 'PROGRAM',
+    SPL = "SPL",
+    TOKEN2022 = "TOKEN2022",
+    PROGRAM = "PROGRAM",
 }
 
 export class SolanaConfig {
@@ -2371,7 +2371,7 @@ export type SolanaSimpleCreateParamsDto = {
     name: string;
     symbol: string;
     decimals: number;
-}
+};
 
 type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto | SolanaSimpleCreateParamsDto;
 

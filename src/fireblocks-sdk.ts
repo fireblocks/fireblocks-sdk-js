@@ -2281,13 +2281,13 @@ export class FireblocksSDK {
 
     /**
      * Get deterministic address for contract deployment
-     * 
+     *
      * @param {object} payload
      * @param {string} [payload.chainDescriptor] - The base asset identifier of the blockchain (legacyId) to calculate deterministic address
      * @param {string} [payload.templateId] - The contract template identifier
      * @param {Array<ParameterWithValue>} [payload.initParams] - The constructor parameters and values of the contract template
      * @param {string} [payload.salt] - The salt value to use for the deterministic address calculation
-     * 
+     *
      * @returns {DeployableAddressResponseDto} The deployable address response
      */
     public async getDeployableAddress(payload: GetDeployableAddressRequestDto): Promise<DeployableAddressResponseDto> {
@@ -2296,7 +2296,7 @@ export class FireblocksSDK {
 
     /**
      * Issue a token on multiple chains
-     * 
+     *
      * @param {object} payload - The payload for creating a multichain token.
      * @param {string} [payload.vaultAccountId] - The ID of the vault account where the token will be created.
      * @param {EVMTokenCreateParamsDto} [payload.createParams] - The parameters required for creating the token on EVM-compatible chains.
@@ -2315,7 +2315,7 @@ export class FireblocksSDK {
 
     /**
      * Reissue a token on one or more blockchains
-     * 
+     *
      * @param {string} tokenLinkId - The ID of the token link to reissue.
      * @param {object} payload - The payload for reissuing the token.
      * @param {string} [payload.vaultAccountId] - The ID of the vault account where the token will be created.
