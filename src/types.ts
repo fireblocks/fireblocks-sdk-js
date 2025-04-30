@@ -2095,6 +2095,7 @@ export interface TokenLink {
     status: TokenLinkStatus;
     tokenMetadata?: LinkedTokenMetadata | LinkedCollectionMetadataDto | LinkedContractMetadataDto;
     displayName?: string;
+    multichainMetadataId?: string;
 }
 
 export enum CollectionType {
@@ -2147,20 +2148,92 @@ export interface LeanDeployedContractResponseDto {
     contractAddress: string;
     contractTemplateId: string;
 }
+export class GaslessConfig {
+    gaslessStandardConfigurations: Record<
+        keyof GaslessStandardAndConfigurationMapping,
+        GaslessStandardAndConfigurationMapping[keyof GaslessStandardAndConfigurationMapping]
+    >;
+}
+
+export enum GaslessStandard {
+    EIP2771Standard = "2771",
+}
+
+export class EIP2771Configuration {
+    lastOnChainCheck: Date;
+    forwarderAddresses: string[];
+}
+
+export type GaslessStandardAndConfigurationMapping = {
+    [GaslessStandard.EIP2771Standard]: EIP2771Configuration;
+};
+
+export type MultichainDeploymentMetadata = {
+    id: string;
+    address: string;
+    templateId: string;
+    deploymentSalt: string;
+    initParams: ParameterWithValueList;
+    encodedInitParams: string;
+};
+
+export enum SolanaTokenProgramType {
+    SPL = "SPL",
+    TOKEN2022 = "TOKEN2022",
+    PROGRAM = "PROGRAM",
+}
+
+export class SolanaConfig {
+    extensions: string[];
+    type: SolanaTokenProgramType;
+}
 
 export interface DeployedContractResponseDto extends LeanDeployedContractResponseDto {
     id: string;
     vaultAccountId?: string;
+    gaslessConfig: GaslessConfig;
+    multiChainDeploymentMetadata?: MultichainDeploymentMetadata;
+    solanaConfig?: SolanaConfig;
 }
-export interface ContractAddressResponseDto {
 
+export interface ContractAddressResponseDto {
     contractAddress: string;
 }
+
 type ContractAbi = AbiFunction[];
+
+export type IdlType = "bool" | "u8" | "i8" | "u16" | "i16" | "u32" | "i32" | "f32" | "u64" | "i64" | "f64" | "u128" | "i128" | "u256" | "i256" | "bytes" | "string" | "pubkey";
+
+export type SolParameter = {
+    name: string;
+    type: IdlType;
+};
+
+export type SOLAccount = {
+    name: string;
+    signer?: boolean;
+    writable?: boolean;
+    address?: string;
+};
+
+export type SOLAccountWithValue = SOLAccount & {
+    address: string;
+};
+
+export type SolParameterWithValue = SolParameter & {
+    value?: string;
+};
+
+export type SolanaInstruction = {
+    name: string;
+    discriminator: number[];
+    accounts: SOLAccount[];
+    args: SolParameter[];
+};
 
 export interface ContractAbiResponseDto {
     abi: ContractAbi;
-    implementationAbi?: ContractAbi;
+    implementationAbi?: ContractAbi | SolanaInstruction[];
 }
 
 export interface ContractWithABIDto {
@@ -2228,6 +2301,36 @@ export interface IssueTokenRequest {
     useGasless?: boolean;
 }
 
+export type GetDeployableAddressRequestDto = {
+    chainDescriptor: string;
+    templateId: string;
+    initParams: Array<ParameterWithValue>;
+    salt: string;
+};
+
+export type DeployableAddressResponseDto = {
+    address: string;
+};
+
+export interface CreateMultichainTokenRequestDto {
+    vaultAccountId: string;
+    createParams: EVMTokenCreateParamsDto;
+    salt?: string;
+    chains: string[];
+    displayName?: string;
+    useGasless?: boolean;
+    fee?: string;
+    feeLevel?: FeeLevel;
+}
+
+export interface ReissueMultichainTokenRequestDto {
+    vaultAccountId: string;
+    chains: string[];
+    useGasless?: boolean;
+    fee?: string;
+    feeLevel?: FeeLevel;
+}
+
 export interface JobCreatedResponse {
     jobId: string;
 }
@@ -2264,7 +2367,13 @@ export class BatchTask {
     result?: string;
 }
 
-type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto;
+export type SolanaSimpleCreateParamsDto = {
+    name: string;
+    symbol: string;
+    decimals: number;
+};
+
+type CreateTokenParams = EVMTokenCreateParamsDto | StellarRippleCreateParamsDto | SolanaSimpleCreateParamsDto;
 
 interface StellarRippleCreateParamsDto {
     symbol: string;
@@ -2288,13 +2397,17 @@ interface EVMTokenCreateParamsDto {
     deployFunctionParams?: Array<ParameterWithValue>;
 }
 
+export type SolanaInstructionWithValue = SolanaInstruction & {
+    args: SolParameterWithValue[];
+    accounts: SOLAccountWithValue[];
+};
 export interface ReadCallFunctionDto {
-    abiFunction: AbiFunction;
+    abiFunction: AbiFunction | SolanaInstructionWithValue;
 }
 
 export interface WriteCallFunctionDto {
     vaultAccountId: string;
-    abiFunction: AbiFunction;
+    abiFunction: AbiFunction | SolanaInstructionWithValue;
     amount?: string;
     feeLevel?: FeeLevel;
     fee?: string;

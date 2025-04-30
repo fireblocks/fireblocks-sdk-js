@@ -159,6 +159,10 @@ import {
     ListBlockchainsFilters,
     ListBlockchainsResponse,
     PaginatedInternalWalletContainerResponse,
+    GetDeployableAddressRequestDto,
+    DeployableAddressResponseDto,
+    CreateMultichainTokenRequestDto,
+    ReissueMultichainTokenRequestDto,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -2273,6 +2277,57 @@ export class FireblocksSDK {
      */
     public async getLinkedCollectionTokenDetails(collectionId: string, tokenId: string): Promise<CollectionTokenResponseDto> {
         return await this.apiClient.issueGetRequest(`/v1/tokenization/collections/${collectionId}/tokens/${tokenId}`);
+    }
+
+    /**
+     * Get deterministic address for contract deployment
+     *
+     * @param {object} payload
+     * @param {string} [payload.chainDescriptor] - The base asset identifier of the blockchain (legacyId) to calculate deterministic address
+     * @param {string} [payload.templateId] - The contract template identifier
+     * @param {Array<ParameterWithValue>} [payload.initParams] - The constructor parameters and values of the contract template
+     * @param {string} [payload.salt] - The salt value to use for the deterministic address calculation
+     *
+     * @returns {DeployableAddressResponseDto} The deployable address response
+     */
+    public async getDeployableAddress(payload: GetDeployableAddressRequestDto): Promise<DeployableAddressResponseDto> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/multichain/deterministic_address`, payload);
+    }
+
+    /**
+     * Issue a token on multiple chains
+     *
+     * @param {object} payload - The payload for creating a multichain token.
+     * @param {string} [payload.vaultAccountId] - The ID of the vault account where the token will be created.
+     * @param {EVMTokenCreateParamsDto} [payload.createParams] - The parameters required for creating the token on EVM-compatible chains.
+     * @param {string} [payload.salt] - An optional salt value used for deterministic address calculation.
+     * @param {string[]} payload.chains - The list of blockchain identifiers where the token will be created.
+     * @param {string} [payload.displayName] - An optional display name for the token.
+     * @param {boolean} [payload.useGasless] - Indicates whether to use gasless transactions for token creation.
+     * @param {string} [payload.fee] - The fee amount for the token creation process.
+     * @param {FeeLevel} [payload.feeLevel] - The fee level to be used for the token creation process.
+     *
+     * @returns {TokenLink[]} Response with created token links
+     */
+    public async issueTokenMultiChain(payload: CreateMultichainTokenRequestDto): Promise<TokenLink[]> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/multichain/tokens`, payload);
+    }
+
+    /**
+     * Reissue a token on one or more blockchains
+     *
+     * @param {string} tokenLinkId - The ID of the token link to reissue.
+     * @param {object} payload - The payload for reissuing the token.
+     * @param {string} [payload.vaultAccountId] - The ID of the vault account where the token will be created.
+     * @param {string[]} [payload.chains] - The list of blockchain identifiers where the token will be reissued.
+     * @param {boolean} [payload.useGasless] - Indicates whether to use gasless transactions for token reissuance.
+     * @param {string} [payload.fee] - The fee amount for the token reissuance process.
+     * @param {FeeLevel} [payload.feeLevel] - The fee level to be used for the token reissuance process.
+     *
+     * @returns {TokenLink[]} Response with updated token links
+     */
+    public async reIssueTokenMultiChain(tokenLinkId: string, payload: ReissueMultichainTokenRequestDto): Promise<TokenLink[]> {
+        return await this.apiClient.issuePostRequest(`/v1/tokenization/multichain/reissue/token${tokenLinkId}`, payload);
     }
 
     /**
