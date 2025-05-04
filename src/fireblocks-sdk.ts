@@ -628,39 +628,24 @@ export class FireblocksSDK {
     }
 
     /**
-     * Transfer from a main exchange account to a subaccount
+     * Internal Transfer from a main exchange account to a subaccount
      * @param exchangeAccountId The exchange ID in Fireblocks
      * @param subaccountId The ID of the subaccount in the exchange
      * @param assetId The asset to transfer
      * @param amount The amount to transfer
+     * @param note A description of the transfer
      * @param requestOptions
      */
-    public async transferToSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        const body = {
-            subaccountId,
-            amount
-        };
+    public async internalTransfer(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number, note: string, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
+      const body = {
+          subaccountId,
+          assetId,
+          amount,
+          note
+      };
 
-        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_to_subaccount`, body, requestOptions);
-    }
-
-    /**
-     * Transfer from a subaccount to a main exchange account
-     * @param exchangeAccountId The exchange ID in Fireblocks
-     * @param subaccountId The ID of the subaccount in the exchange
-     * @param assetId The asset to transfer
-     * @param amount The amount to transfer
-     * @param requestOptions
-     */
-    public async transferFromSubaccount(exchangeAccountId: string, subaccountId: string, assetId: string, amount: number, requestOptions?: RequestOptions): Promise<OperationSuccessResponse> {
-        const body = {
-            subaccountId,
-            amount
-        };
-
-        return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/${assetId}/transfer_from_subaccount`, body, requestOptions);
-    }
-
+      return await this.apiClient.issuePostRequest(`/v1/exchange_accounts/${exchangeAccountId}/internal_transfer`, body, requestOptions);
+  }
     /**
      * Gets all fiat accounts for your tenant
      */
