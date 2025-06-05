@@ -2,11 +2,20 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.38.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.37.0...v5.38.0)
+
+> 5 June 2025
+
+- added ncw header [`#329`](https://github.com/fireblocks/fireblocks-sdk-js/pull/329)
+
 #### [v5.37.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.36.0...v5.37.0)
 
 > 26 March 2025
 
 - feat: blockchains and assets endpoints GA [`#326`](https://github.com/fireblocks/fireblocks-sdk-js/pull/326)
+- feat: change asset and blockchain apis response [`#319`](https://github.com/fireblocks/fireblocks-sdk-js/pull/319)
+- Add paginated endpoint to get balance on /internal_wallets/&lt;wallet id&gt;/assets [`#322`](https://github.com/fireblocks/fireblocks-sdk-js/pull/322)
+- mak type non optional [`#321`](https://github.com/fireblocks/fireblocks-sdk-js/pull/321)
 
 #### [v5.36.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.35.0...v5.36.0)
 
