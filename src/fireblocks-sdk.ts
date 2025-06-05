@@ -1624,8 +1624,8 @@ export class FireblocksSDK {
         sort,
         filter,
         order,
-        
-    }: GetWeb3ConnectionsPayload = {},requestOptions?: RequestOptions): Promise<Web3PagedResponse<Session>> {
+
+    }: GetWeb3ConnectionsPayload = {}, requestOptions?: RequestOptions): Promise<Web3PagedResponse<Session>> {
         const params = new URLSearchParams({
             ...(pageCursor && { next: pageCursor }),
             ...(pageSize && { pageSize: pageSize.toString() }),
@@ -1634,7 +1634,7 @@ export class FireblocksSDK {
             ...(order && { order }),
         });
 
-        return await this.apiClient.issueGetRequest(`/v1/connections?${params.toString()}`,requestOptions);
+        return await this.apiClient.issueGetRequest(`/v1/connections?${params.toString()}`, undefined, requestOptions);
     }
 
     /**
@@ -1673,7 +1673,7 @@ export class FireblocksSDK {
     public async submitWeb3Connection(type: Web3ConnectionType, sessionId: string, approve: boolean, requestOptions?: RequestOptions): Promise<void> {
         const path = this.getWeb3ConnectionPath(type);
 
-        return await this.apiClient.issuePutRequest(`${path}/${sessionId}`, { approve },requestOptions);
+        return await this.apiClient.issuePutRequest(`${path}/${sessionId}`, { approve }, requestOptions);
     }
 
     /**
@@ -1681,11 +1681,11 @@ export class FireblocksSDK {
      * @param type The type of the connection
      * @param sessionId The ID of the session
      */
-    public async removeWeb3Connection(type: Web3ConnectionType.WALLET_CONNECT, sessionId: string,requestOptions?: RequestOptions): Promise<void>;
-    public async removeWeb3Connection(type: Web3ConnectionType, sessionId: string,requestOptions?: RequestOptions): Promise<void> {
+    public async removeWeb3Connection(type: Web3ConnectionType.WALLET_CONNECT, sessionId: string, requestOptions?: RequestOptions): Promise<void>;
+    public async removeWeb3Connection(type: Web3ConnectionType, sessionId: string, requestOptions?: RequestOptions): Promise<void> {
         const path = this.getWeb3ConnectionPath(type);
 
-        return await this.apiClient.issueDeleteRequest(`${path}/${sessionId}`,requestOptions);
+        return await this.apiClient.issueDeleteRequest(`${path}/${sessionId}`, requestOptions);
     }
 
     /**
