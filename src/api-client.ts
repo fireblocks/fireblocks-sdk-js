@@ -66,7 +66,7 @@ export class ApiClient {
 
         const ncwWalletId = requestOptions?.ncw?.walletId;
         if (ncwWalletId) {
-            headers["X-End-User-Wallet-Id"] = ncwWalletId;
+            this.addNCWHeader(headers, ncwWalletId);
         }
 
         const res = await this.axiosInstance.get(path, { headers });
@@ -79,43 +79,46 @@ export class ApiClient {
         const headers: any = {"Authorization": `Bearer ${token}`};
         const idempotencyKey = requestOptions?.idempotencyKey;
         if (idempotencyKey) {
-            headers["Idempotency-Key"] = idempotencyKey;
+            headers["Idempotency-Key"] = idempotencyKey;                 
         }
-
-        const ncwWalletId = requestOptions?.ncw?.walletId;
-        if (ncwWalletId) {
-            headers["X-End-User-Wallet-Id"] = ncwWalletId;
-        }
-
+        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)                       
         const response = await this.axiosInstance.post<T>(path, body, {headers});
         return response.data;
     }
 
-    public async issuePutRequest<T>(rawPath: string, body: any): Promise<T> {
+    public async issuePutRequest<T>(rawPath: string, body: any,requestOptions?: RequestOptions): Promise<T> {
         const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
-        const res = (await this.axiosInstance.put<T>(path, body, {
-            headers: {"Authorization": `Bearer ${token}`}
-        }));
+        const headers: any = { "Authorization": `Bearer ${token}` };       
+        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)         
+        const res = (await this.axiosInstance.put<T>(path, body));       
+       
         return res.data;
     }
 
-    public async issuePatchRequest<T>(rawPath: string, body: any): Promise<T> {
+    public async issuePatchRequest<T>(rawPath: string, body: any,requestOptions?: RequestOptions): Promise<T> {
         const path = normalizePath(rawPath);
-        const token = this.authProvider.signJwt(path, body);
-        const res = (await this.axiosInstance.patch<T>(path, body, {
-            headers: {"Authorization": `Bearer ${token}`}
-        }));
+        const token = this.authProvider.signJwt(path, body);      
+        const headers: any = { "Authorization": `Bearer ${token}` };
+        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)            
+        const res = (await this.axiosInstance.patch<T>(path, body));
         return res.data;
     }
 
-    public async issueDeleteRequest<T>(rawPath: string): Promise<T> {
+    public async issueDeleteRequest<T>(rawPath: string,requestOptions?: RequestOptions): Promise<T> {
         const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
-        const res = (await this.axiosInstance.delete<T>(path, {
-            headers: {"Authorization": `Bearer ${token}`}
-        }));
+        const headers: any = { "Authorization": `Bearer ${token}` };
+        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)            
+        const res = (await this.axiosInstance.delete<T>(path));
         return res.data;
+    }
+
+    private addNCWHeader(headers:any,ncwWalletId:string)
+    {
+        if (ncwWalletId) {
+            headers["X-End-User-Wallet-Id"] = ncwWalletId;
+        }
     }
 }
 
