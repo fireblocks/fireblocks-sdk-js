@@ -65,10 +65,9 @@ export class ApiClient {
         const headers: any = {"Authorization": `Bearer ${token}`};
 
         const ncwWalletId = requestOptions?.ncw?.walletId;
-        if (ncwWalletId) {
-            this.addNCWHeader(headers, ncwWalletId);
-        }
-
+        
+        this.addNCWHeader(headers, requestOptions?.ncw?.walletId);
+         
         const res = await this.axiosInstance.get(path, { headers });
         return res.data;
     }
