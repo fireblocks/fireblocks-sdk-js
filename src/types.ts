@@ -877,6 +877,7 @@ export interface FeePayerInfo {
 export interface TransactionResponse {
     id: string;
     assetId: string;
+    operation: string;
     source: TransferPeerPathResponse;
     destination: TransferPeerPathResponse;
     amount: number;
@@ -938,6 +939,9 @@ export interface FeeInfo {
 export interface TransactionResponseDestination {
     amount?: string;
     amountUSD?: string;
+    customerRefId?: string;
+    destinationAddress?: string;
+    destinationAddressDescription?: string;
     amlScreeningResult?: AmlScreeningResult;
     destination?: TransferPeerPathResponse;
     authorizationInfo?: AuthorizationInfo;
