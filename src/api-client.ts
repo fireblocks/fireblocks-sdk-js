@@ -107,7 +107,7 @@ export class ApiClient {
         const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const headers: any = { "Authorization": `Bearer ${token}` };
-        this.addNcwHeaderIfNeededIfNeeded(headers, requestOptions);
+        this.addNcwHeaderIfNeeded(headers, requestOptions);
         const res = (await this.axiosInstance.delete<T>(path, {headers}));
         return res.data;
     }
