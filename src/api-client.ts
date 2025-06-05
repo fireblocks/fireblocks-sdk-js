@@ -63,10 +63,8 @@ export class ApiClient {
 
         const token = this.authProvider.signJwt(path);
         const headers: any = {"Authorization": `Bearer ${token}`};
-
-        const ncwWalletId = requestOptions?.ncw?.walletId;
         
-        this.addNCWHeader(headers, requestOptions?.ncw?.walletId);
+        this.addNCWHeader(headers, requestOptions);
          
         const res = await this.axiosInstance.get(path, { headers });
         return res.data;
@@ -80,7 +78,7 @@ export class ApiClient {
         if (idempotencyKey) {
             headers["Idempotency-Key"] = idempotencyKey;                 
         }
-        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)                       
+        this.addNCWHeader(headers,requestOptions)                       
         const response = await this.axiosInstance.post<T>(path, body, {headers});
         return response.data;
     }
@@ -89,8 +87,8 @@ export class ApiClient {
         const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);
         const headers: any = { "Authorization": `Bearer ${token}` };       
-        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)         
-        const res = (await this.axiosInstance.put<T>(path, body));       
+        this.addNCWHeader(headers,requestOptions)         
+        const res = (await this.axiosInstance.put<T>(path, body,{headers}));       
        
         return res.data;
     }
@@ -99,8 +97,8 @@ export class ApiClient {
         const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path, body);      
         const headers: any = { "Authorization": `Bearer ${token}` };
-        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)            
-        const res = (await this.axiosInstance.patch<T>(path, body));
+        this.addNCWHeader(headers,requestOptions)            
+        const res = (await this.axiosInstance.patch<T>(path, body,{headers}));
         return res.data;
     }
 
@@ -108,15 +106,15 @@ export class ApiClient {
         const path = normalizePath(rawPath);
         const token = this.authProvider.signJwt(path);
         const headers: any = { "Authorization": `Bearer ${token}` };
-        this.addNCWHeader(headers,requestOptions?.ncw?.walletId)            
-        const res = (await this.axiosInstance.delete<T>(path));
+        this.addNCWHeader(headers,requestOptions)            
+        const res = (await this.axiosInstance.delete<T>(path,{headers}));
         return res.data;
     }
 
-    private addNCWHeader(headers:any,ncwWalletId:string)
+    private addNCWHeader(headers:any,requestOptions:RequestOptions)
     {
-        if (ncwWalletId) {
-            headers["X-End-User-Wallet-Id"] = ncwWalletId;
+        if (requestOptions?.ncw?.walletId) {
+            headers["X-End-User-Wallet-Id"] = requestOptions.ncw.walletId;
         }
     }
 }
