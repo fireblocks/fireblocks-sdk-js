@@ -14,7 +14,6 @@ export class ApiClient {
     constructor(private authProvider: IAuthProvider, private apiBaseUrl: string, private options?: SDKOptions) {
         this.axiosInstance = axios.create({
             baseURL: this.apiBaseUrl,
-
             proxy: this.options?.proxy,
             timeout: this.options?.timeoutInMs,
             httpsAgent: this.options?.httpsAgent,
@@ -61,12 +60,9 @@ export class ApiClient {
     public async issueGetRequest<T>(rawPath: string, queryStringParams?: object, requestOptions?: RequestOptions): Promise<T> {
         const pathWithParams = queryStringParams ? `${rawPath}?${queryString.stringify(queryStringParams)}` : rawPath;
         const path = normalizePath(pathWithParams);
-
         const token = this.authProvider.signJwt(path);
         const headers: any = {"Authorization": `Bearer ${token}`};
-
         this.addNcwHeaderIfNeeded(headers, requestOptions);
-
         const res = await this.axiosInstance.get(path, { headers });
         return res.data;
     }
@@ -90,7 +86,6 @@ export class ApiClient {
         const headers: any = { "Authorization": `Bearer ${token}` };
         this.addNcwHeaderIfNeeded(headers, requestOptions);
         const res = (await this.axiosInstance.put<T>(path, body, {headers}));
-
         return res.data;
     }
 
