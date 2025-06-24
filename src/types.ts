@@ -118,12 +118,20 @@ export interface AssetMedia {
     attributes?: AssetMediaAttributes;
 }
 
+export interface AssetNote {
+    text: string;
+    userId: string;
+    userName: string;
+    updatedAt: string;
+}
+
 export interface AssetDetailsMetadata {
     scope: AssetDetailsScope;
     deprecated: boolean;
     deprecationReferralId?: string;
     website?: string;
     media?: AssetMedia[];
+    note?: AssetNote;
 }
 
 export enum AssetScope {
@@ -161,6 +169,18 @@ export interface ListAssetsFilters {
     ids?: string[];
     pageCursor?: string;
     pageSize?: number;
+}
+
+interface AssetNoteRequest {
+    text: string;
+}
+
+interface AssetMetadataRequest {
+    note: AssetNoteRequest;
+}
+
+export interface UpdateAssetUserMetadataRequest {
+    metadata: AssetMetadataRequest
 }
 
 export enum BlockchainSigningAlgo {
