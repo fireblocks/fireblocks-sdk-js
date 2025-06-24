@@ -961,18 +961,10 @@ export class FireblocksSDK {
     /**
      * Update the user’s metadata for an asset
      * @param assetId The ID or legacyId of the asset
-     * @param note Asset user note
+     * @param updateAssetUserMetadataRequest Asset user metadata
      */
-    public async updateAssetUserMetadata(assetId: string, note: string | null): Promise<ListAssetResponse> {
-        const payload: UpdateAssetUserMetadataRequest = {
-            metadata: {
-                note: {
-                    text: note,
-                },
-            },
-        };
-
-        return await this.apiClient.issuePatchRequest(`/v1/assets/${assetId}`, payload);
+    public async updateAssetUserMetadata(assetId: string, updateAssetUserMetadataRequest: UpdateAssetUserMetadataRequest): Promise<ListAssetResponse> {
+        return await this.apiClient.issuePatchRequest(`/v1/assets/${assetId}`, updateAssetUserMetadataRequest);
     }
 
     /**

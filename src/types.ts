@@ -172,7 +172,7 @@ export interface ListAssetsFilters {
 }
 
 interface AssetNoteRequest {
-    text: string;
+    text: string | null;
 }
 
 interface AssetMetadataRequest {
@@ -180,7 +180,7 @@ interface AssetMetadataRequest {
 }
 
 export interface UpdateAssetUserMetadataRequest {
-    metadata: AssetMetadataRequest
+    metadata: AssetMetadataRequest;
 }
 
 export enum BlockchainSigningAlgo {
