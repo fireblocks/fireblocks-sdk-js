@@ -120,6 +120,7 @@ export interface AssetMedia {
 
 export interface AssetDetailsMetadata {
     scope: AssetDetailsScope;
+    verified: boolean;
     deprecated: boolean;
     deprecationReferralId?: string;
     website?: string;
