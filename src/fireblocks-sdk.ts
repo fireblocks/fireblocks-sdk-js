@@ -159,6 +159,7 @@ import {
     ListBlockchainsFilters,
     ListBlockchainsResponse,
     PaginatedInternalWalletContainerResponse,
+    UpdateAssetUserMetadataRequest,
 } from "./types";
 import { AxiosProxyConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { PIIEncryption } from "./pii-client";
@@ -955,6 +956,15 @@ export class FireblocksSDK {
      */
     public async getBlockchainById(blockchainId: string): Promise<ListBlockchainResponse> {
         return await this.apiClient.issueGetRequest(`/v1/blockchains/${blockchainId}`);
+    }
+
+    /**
+     * Update the user’s metadata for an asset
+     * @param assetId The ID or legacyId of the asset
+     * @param updateAssetUserMetadataRequest Asset user metadata
+     */
+    public async updateAssetUserMetadata(assetId: string, updateAssetUserMetadataRequest: UpdateAssetUserMetadataRequest): Promise<ListAssetResponse> {
+        return await this.apiClient.issuePatchRequest(`/v1/assets/${assetId}`, updateAssetUserMetadataRequest);
     }
 
     /**
