@@ -133,6 +133,7 @@ export interface AssetDetailsMetadata {
     website?: string;
     media?: AssetMedia[];
     note?: AssetNote;
+    features?: AssetFeature[];
 }
 
 export enum AssetScope {
@@ -143,6 +144,10 @@ export enum AssetScope {
 export enum AssetDetailsScope {
     GLOBAL = "GLOBAL",
     LOCAL = "LOCAL",
+}
+
+export enum AssetFeature {
+    STABLECOIN = "STABLECOIN",
 }
 
 export interface ListAssetResponse {
