@@ -1435,8 +1435,9 @@ export interface PublicKeyInformation {
 }
 
 export interface DropTransactionResponse {
-    success: boolean;
-    transactions?: string[];
+    txStatus: TransactionStatus;
+    txId: string;
+    replacedTxHash: string;
 }
 
 export interface MaxSpendableAmountResponse {
