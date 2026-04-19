@@ -1452,7 +1452,7 @@ export interface AddressResponse {
     address: string;
     description?: string;
     tag: string;
-    type?: number;
+    type?: string;
     customerRefId?: number;
     addressFormat?: string;
     legacyAddress?: string;
