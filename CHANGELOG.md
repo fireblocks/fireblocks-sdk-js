@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file. Dates are d
 
 #### [v5.39.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.38.0...v5.39.0)
 
-> 15 April 2026
+> 19 April 2026
 
-- fix: Internal Infra Change To Publish With Github App [`#337`](https://github.com/fireblocks/fireblocks-sdk-js/pull/337)
+- fix: Internal Infra Change To Publish With OIDC [`#339`](https://github.com/fireblocks/fireblocks-sdk-js/pull/339)
 
 #### [v5.38.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.37.0...v5.38.0)
 
