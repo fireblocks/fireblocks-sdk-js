@@ -1,11 +1,10 @@
 name: Publish to NPM
 on:
   release:
-    types: [published]
-env:
-  GIT_TERMINAL_PROMPT: 1    
+    types: [ published ]
+
 jobs:
-  publish:
+  bump-version:
     runs-on: ubuntu-latest
     steps:
       - name: Generate GitHub App token
@@ -14,15 +13,24 @@ jobs:
         with:
           app-id: ${{ vars.SDK_GENERATION_APP_ID }}
           private-key: ${{ secrets.SDK_GENERATION_APP_PRIVATE_KEY }}
-      - uses: actions/checkout@v4
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
         with:
           token: ${{ steps.generate-token.outputs.token }}
-      - uses: actions/setup-node@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm install
-      - run: |
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm i -g auto-changelog
+
+      - name: Bump version and add changelog
+        run: |
           initialTag=${{ github.event.release.tag_name }}
           tag="${initialTag//[v]/}"
           echo $tag
@@ -32,11 +40,36 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "Github Actions"
           npm --no-git-tag-version --allow-same-version version $tag
-          npm i -g auto-changelog
           auto-changelog --hide-credit -l 0 -b 3
           git add .
           git commit -m "release $tag"
           git push
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish:
+    needs: bump-version
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for OIDC/Trusted Publishing
+      contents: read
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Ensure npm 11.5.1+
+        run: npm install -g npm@^11
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish package
+        run: npm publish
+        # No NODE_AUTH_TOKEN needed - OIDC handles authentication
