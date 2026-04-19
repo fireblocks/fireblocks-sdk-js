@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.39.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.38.0...v5.39.0)
+
+> 15 April 2026
+
+- fix: Internal Infra Change To Publish With Github App [`#337`](https://github.com/fireblocks/fireblocks-sdk-js/pull/337)
+
 #### [v5.38.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.37.0...v5.38.0)
 
 > 5 June 2025
 
 - added ncw header [`#329`](https://github.com/fireblocks/fireblocks-sdk-js/pull/329)
+- Add ids filter for assets and blockchains listing endpoints [`#327`](https://github.com/fireblocks/fireblocks-sdk-js/pull/327)
 
 #### [v5.37.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.36.0...v5.37.0)
 
