@@ -2,11 +2,22 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v5.39.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.39.0...v5.39.1)
+
+> 19 July 2026
+
+- fix: Update Axios Version [`#343`](https://github.com/fireblocks/fireblocks-sdk-js/pull/343)
+
 #### [v5.39.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.38.0...v5.39.0)
 
 > 19 April 2026
 
 - fix: Internal Infra Change To Publish With OIDC [`#339`](https://github.com/fireblocks/fireblocks-sdk-js/pull/339)
+- fix: Internal Infra Change To Publish With Github App [`#337`](https://github.com/fireblocks/fireblocks-sdk-js/pull/337)
+- fix: Update axios package version [`#336`](https://github.com/fireblocks/fireblocks-sdk-js/pull/336)
+- add asset features support [`#334`](https://github.com/fireblocks/fireblocks-sdk-js/pull/334)
+- feat: Add verified to asset response dto [`#331`](https://github.com/fireblocks/fireblocks-sdk-js/pull/331)
+- Add updateAssetUserMetadata endpoint [`#330`](https://github.com/fireblocks/fireblocks-sdk-js/pull/330)
 
 #### [v5.38.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.37.0...v5.38.0)
 
