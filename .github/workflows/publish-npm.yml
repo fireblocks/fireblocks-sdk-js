@@ -73,3 +73,24 @@ jobs:
       - name: Publish package
         run: npm publish
         # No NODE_AUTH_TOKEN needed - OIDC handles authentication
+
+      # npm deprecate only marks versions that already exist, so every release must
+      # re-mark the package or the version just published installs without a warning.
+      # OIDC covers publish only, so this step needs its own token.
+      - name: Mark every version deprecated
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_DEPRECATE_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          MESSAGE: "fireblocks-sdk is deprecated and reaches end-of-life (no further updates or fixes) on Nov 1, 2026. Existing installs continue to work. Migrate to @fireblocks/ts-sdk — https://developers.fireblocks.com/reference/sdk-migration-guide"
+        run: |
+          version="${RELEASE_TAG//[v]/}"
+          # The registry can lag a moment behind a fresh publish; retry until the new version carries the mark.
+          for attempt in 1 2 3 4 5; do
+            npm deprecate fireblocks-sdk "$MESSAGE"
+            if [ -n "$(npm view "fireblocks-sdk@$version" deprecated)" ]; then
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "fireblocks-sdk@$version is still not marked deprecated" >&2
+          exit 1
