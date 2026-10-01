@@ -225,6 +225,11 @@ export interface SDKOptions {
 
 const DEFAULT_MAX_PAGE_SIZE = 100;
 
+const DEPRECATION_WARNING = "fireblocks-sdk is deprecated and reaches end-of-life on November 1, 2026: no further updates or fixes after that date. " +
+    "Existing installs continue to work. Migrate to @fireblocks/ts-sdk: https://developers.fireblocks.com/reference/sdk-migration-guide " +
+    "(set FIREBLOCKS_SDK_SUPPRESS_DEPRECATION_WARNING=1 to silence this warning)";
+let deprecationWarningShown = false;
+
 export class FireblocksSDK {
     private readonly authProvider: IAuthProvider;
     private readonly apiBaseUrl: string;
@@ -243,6 +248,11 @@ export class FireblocksSDK {
      * @param sdkOptions
      */
     constructor(privateKey: string, apiKey: string, apiBaseUrl: string = "https://api.fireblocks.io", authProvider: IAuthProvider = undefined, sdkOptions?: SDKOptions) {
+        if (!deprecationWarningShown && !process.env.FIREBLOCKS_SDK_SUPPRESS_DEPRECATION_WARNING) {
+            deprecationWarningShown = true;
+            console.warn(DEPRECATION_WARNING);
+        }
+
         this.authProvider = !!authProvider ? authProvider : new ApiTokenProvider(privateKey, apiKey);
 
         if (!!apiBaseUrl) {

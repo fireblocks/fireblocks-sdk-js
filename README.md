@@ -1,6 +1,14 @@
 ## The Official Javascript & Typescript SDK for Fireblocks API
 [![npm version](https://badge.fury.io/js/fireblocks-sdk.svg)](https://badge.fury.io/js/fireblocks-sdk)
 
+> **⚠️ This package is deprecated.**
+>
+> `fireblocks-sdk` is deprecated and reaches **end-of-life on November 1, 2026** — no further updates or fixes will be released after that date.
+>
+> Existing installs continue to work, and this package will never be unpublished.
+>
+> Migrate to [`@fireblocks/ts-sdk`](https://www.npmjs.com/package/@fireblocks/ts-sdk) — see the [SDK Migration Guide](https://developers.fireblocks.com/reference/sdk-migration-guide).
+
 > The current version of the SDK has changed the minimum supported Node.js version from v12 to v16.
 > 
 > Versions older than v16 are no longer maintained by the Node.js community and are considered EOL.
