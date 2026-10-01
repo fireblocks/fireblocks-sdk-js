@@ -8,6 +8,8 @@
 > Existing installs continue to work, and this package will never be unpublished.
 >
 > Migrate to [`@fireblocks/ts-sdk`](https://www.npmjs.com/package/@fireblocks/ts-sdk) — see the [SDK Migration Guide](https://developers.fireblocks.com/reference/sdk-migration-guide).
+>
+> To silence the startup warning, set `FIREBLOCKS_SDK_SUPPRESS_DEPRECATION_WARNING=1`.
 
 > The current version of the SDK has changed the minimum supported Node.js version from v12 to v16.
 > 
