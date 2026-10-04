@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.39.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.39.0...v5.39.1)
+#### [v5.40.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.39.0...v5.40.0)
 
-> 19 July 2026
+> 4 October 2026
 
-- fix: Update Axios Version [`#343`](https://github.com/fireblocks/fireblocks-sdk-js/pull/343)
+- DEX-2183: warn once at startup and add a README deprecation banner [`#347`](https://github.com/fireblocks/fireblocks-sdk-js/pull/347)
 
 #### [v5.39.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.38.0...v5.39.0)
 
