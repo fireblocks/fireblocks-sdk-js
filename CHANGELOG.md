@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### [v5.40.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.39.0...v5.40.0)
+#### [v5.40.1](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.39.0...v5.40.1)
 
 > 4 October 2026
 
-- DEX-2183: warn once at startup and add a README deprecation banner [`#347`](https://github.com/fireblocks/fireblocks-sdk-js/pull/347)
+- release 5.40.0 [`9cdae28`](https://github.com/fireblocks/fireblocks-sdk-js/commit/9cdae28336f5a7a1d85f3f81d4447fbd30a60b65)
 
 #### [v5.39.0](https://github.com/fireblocks/fireblocks-sdk-js/compare/v5.38.0...v5.39.0)
 
