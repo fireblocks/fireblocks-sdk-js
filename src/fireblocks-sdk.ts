@@ -730,15 +730,15 @@ export class FireblocksSDK {
     /**
      * Gets a list of transactions per page matching the given filter or path
      * @param pageFilter Get transactions matching pageFilter params
-     * @param nextOrPreviousPath Get transactions from each of pageDetails paths
+     * @param nextOrPreviousPath Get transactions from each of pageDetails paths. Takes precedence over pageFilter when both are provided.
      */
     public async getTransactionsWithPageInfo(pageFilter?: TransactionPageFilter, nextOrPreviousPath?: string): Promise<TransactionPageResponse> {
-        if (pageFilter) {
-            return await this.apiClient.issueGetRequestForTransactionPages(`/v1/transactions?${queryString.stringify(pageFilter)}`);
-        } else if (nextOrPreviousPath) {
+        if (nextOrPreviousPath) {
             const index = nextOrPreviousPath.indexOf("/v1/");
             const path = nextOrPreviousPath.substring(index, nextOrPreviousPath.length);
             return await this.apiClient.issueGetRequestForTransactionPages(path);
+        } else if (pageFilter) {
+            return await this.apiClient.issueGetRequestForTransactionPages(`/v1/transactions?${queryString.stringify(pageFilter)}`);
         }
 
         return {
